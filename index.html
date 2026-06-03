@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anthony Orque — AI-Enabled Event & Revenue Systems</title>
+  <title>Anthony Orque — Events & Revenue Systems</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -11,21 +11,22 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #0a0a0f;
-      --bg-2:     #0f0f18;
-      --bg-3:     #14141f;
-      --bg-card:  #111118;
-      --border:   #1e1e30;
-      --border-2: #2a2a40;
-      --teal:     #00b4d8;
-      --teal-dim: rgba(0,180,216,0.12);
-      --teal-glow:rgba(0,180,216,0.25);
-      --amber:    #e8a020;
-      --amber-dim:rgba(232,160,32,0.12);
-      --green:    #39d98a;
-      --text:     #c8cfe8;
-      --text-2:   #7a82a0;
-      --text-3:   #4a5068;
+      --bg:        #0a0a0f;
+      --bg-2:      #0f0f18;
+      --bg-card:   #111118;
+      --bg-3:      #16161f;
+      --border:    #1e1e30;
+      --border-2:  #2a2a40;
+      --teal:      #00b4d8;
+      --teal-dim:  rgba(0,180,216,0.10);
+      --teal-glow: rgba(0,180,216,0.22);
+      --amber:     #e8a020;
+      --amber-dim: rgba(232,160,32,0.10);
+      --green:     #39d98a;
+      --red:       #ff4f6e;
+      --text:      #c8cfe8;
+      --text-2:    #7a82a0;
+      --text-3:    #444860;
       --mono: 'Space Mono', 'Courier New', monospace;
       --sans: 'Inter', system-ui, sans-serif;
     }
@@ -37,540 +38,741 @@
       color: var(--text);
       font-family: var(--sans);
       font-size: 15px;
-      line-height: 1.6;
+      line-height: 1.65;
       -webkit-font-smoothing: antialiased;
-      /* CRT scanline overlay */
-      position: relative;
     }
 
-    body::before {
+    /* scanlines */
+    body::after {
       content: '';
       position: fixed;
       inset: 0;
       background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.03) 2px,
-        rgba(0,0,0,0.03) 4px
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,0.025) 2px, rgba(0,0,0,0.025) 4px
       );
       pointer-events: none;
       z-index: 9999;
     }
 
-    /* ─── LAYOUT ─────────────────────────────── */
-    .container {
-      max-width: 780px;
+    /* ─── LAYOUT ─────────────────────── */
+    .wrap {
+      max-width: 760px;
       margin: 0 auto;
       padding: 0 2rem;
     }
 
-    section {
-      padding: 4rem 0;
+    /* ─── NAV ────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,15,0.92);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
     }
 
-    section:last-of-type { border-bottom: none; }
+    .nav-name {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
 
-    /* ─── EYEBROW LABELS ─────────────────────── */
-    .eyebrow {
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a {
       font-family: var(--mono);
       font-size: 0.65rem;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--teal);
-      margin-bottom: 0.75rem;
-      opacity: 0.8;
+      color: var(--text-3);
+      text-decoration: none;
+      transition: color 0.2s;
     }
+    .nav-links a:hover { color: var(--teal); }
 
-    /* ─── HERO ───────────────────────────────── */
+    /* ─── HERO ───────────────────────── */
     .hero {
       padding: 5rem 0 3.5rem;
       border-bottom: 1px solid var(--border);
     }
 
-    .hero-location {
+    .hero-meta {
       font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--text-3);
-      margin-bottom: 1.25rem;
-    }
-
-    .hero-location span {
-      color: var(--teal);
-      opacity: 0.7;
+      margin-bottom: 1.5rem;
     }
 
     .hero h1 {
       font-family: var(--mono);
-      font-size: clamp(2.2rem, 5vw, 3rem);
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
       font-weight: 700;
       color: #fff;
-      letter-spacing: -0.01em;
-      line-height: 1.05;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0 40px rgba(0,180,216,0.15);
+      line-height: 1.02;
+      margin-bottom: 0.6rem;
+      text-shadow: 0 0 60px rgba(0,180,216,0.12);
     }
 
-    .hero-title {
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--teal);
-      margin-bottom: 1.25rem;
+    .hero-role {
       font-family: var(--mono);
-      letter-spacing: 0.02em;
+      font-size: 0.82rem;
+      color: var(--teal);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.03em;
     }
 
-    .hero-desc {
+    .hero-bio {
       font-size: 0.95rem;
       color: var(--text-2);
-      max-width: 560px;
-      line-height: 1.7;
-      margin-bottom: 1rem;
+      max-width: 540px;
+      line-height: 1.75;
+      margin-bottom: 2.25rem;
     }
 
-    .hero-tags {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 2rem;
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--text-3);
-      letter-spacing: 0.05em;
-    }
-
-    .hero-tags span { color: var(--teal); margin-right: 0.25rem; }
-
-    .hero-ctas {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.6rem 1.25rem;
-      border-radius: 4px;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s;
-      display: inline-block;
-    }
-
-    .btn-primary {
-      background: var(--teal);
-      color: var(--bg);
-      font-weight: 700;
-    }
-    .btn-primary:hover {
-      background: #00d4f8;
-      box-shadow: 0 0 20px var(--teal-glow);
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border-2);
-    }
-    .btn-secondary:hover {
-      border-color: var(--teal);
-      color: var(--teal);
-    }
-
-    /* ─── STATS GRID ─────────────────────────── */
-    .stats-grid {
+    .hero-stats {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 6px;
       overflow: hidden;
-      margin-top: 0;
+      margin-bottom: 2rem;
     }
 
-    .stat-card {
+    .hs {
       background: var(--bg-card);
-      padding: 1.5rem 1.25rem;
-      transition: background 0.2s;
+      padding: 1.25rem 1rem;
     }
 
-    .stat-card:hover { background: var(--bg-3); }
-
-    .stat-val {
+    .hs-val {
       font-family: var(--mono);
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       font-weight: 700;
       color: #fff;
       line-height: 1;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0 20px var(--teal-glow);
+      margin-bottom: 0.4rem;
     }
 
-    .stat-val.amber { text-shadow: 0 0 20px rgba(232,160,32,0.3); color: var(--amber); }
+    .hs-val.amber { color: var(--amber); }
+    .hs-val.teal  { color: var(--teal); }
 
-    .stat-desc {
-      font-size: 0.75rem;
+    .hs-label {
+      font-size: 0.7rem;
       color: var(--text-3);
-      line-height: 1.4;
+      line-height: 1.35;
     }
 
-    /* ─── POSITIONING ────────────────────────── */
-    .positioning h2 {
+    .hero-ctas { display: flex; gap: 0.75rem; }
+
+    .btn {
       font-family: var(--mono);
-      font-size: clamp(1.4rem, 3vw, 1.9rem);
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 1.25rem;
-      line-height: 1.2;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.2rem;
+      border-radius: 4px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.18s;
     }
 
-    .positioning p {
-      font-size: 0.925rem;
-      color: var(--text-2);
-      line-height: 1.8;
-      max-width: 580px;
-      margin-bottom: 1rem;
-    }
-
-    /* ─── CAPABILITIES ───────────────────────── */
-    .cap-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .cap-card {
-      background: var(--bg-card);
-      padding: 1.5rem;
-      transition: background 0.2s;
-      position: relative;
-    }
-
-    .cap-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
+    .btn-teal {
       background: var(--teal);
-      opacity: 0;
-      transition: opacity 0.2s;
+      color: var(--bg);
+      font-weight: 700;
+    }
+    .btn-teal:hover { background: #00ccf5; box-shadow: 0 0 20px var(--teal-glow); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-2);
+      border: 1px solid var(--border-2);
+    }
+    .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ─── SECTION SHARED ─────────────── */
+    .section {
+      padding: 3.5rem 0;
+      border-bottom: 1px solid var(--border);
     }
 
-    .cap-card:hover { background: var(--bg-3); }
-    .cap-card:hover::before { opacity: 1; }
+    .section:last-child { border-bottom: none; }
 
-    .cap-card h3 {
+    .eyebrow {
       font-family: var(--mono);
-      font-size: 0.8rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      opacity: 0.75;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: var(--mono);
+      font-size: clamp(1.3rem, 2.5vw, 1.75rem);
       font-weight: 700;
       color: #fff;
-      margin-bottom: 0.6rem;
-      letter-spacing: 0.02em;
-      line-height: 1.3;
+      margin-bottom: 2rem;
+      line-height: 1.1;
     }
 
-    .cap-card p {
-      font-size: 0.78rem;
-      color: var(--text-3);
-      line-height: 1.6;
-    }
-
-    /* ─── CASE STUDIES ───────────────────────── */
-    .case-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      background: var(--border);
+    /* ─── CASE STUDIES ───────────────── */
+    .case {
       border: 1px solid var(--border);
       border-radius: 8px;
       overflow: hidden;
-    }
-
-    .case-card {
+      margin-bottom: 1.5rem;
       background: var(--bg-card);
-      padding: 1.75rem 1.75rem;
-      transition: background 0.2s;
-      position: relative;
+      transition: border-color 0.2s;
     }
 
-    .case-card:hover { background: var(--bg-3); }
+    .case:last-child { margin-bottom: 0; }
+    .case:hover { border-color: var(--border-2); }
 
-    .case-tag {
+    .case-header {
+      padding: 1.75rem 2rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 1rem;
+    }
+
+    .case-co {
       font-family: var(--mono);
       font-size: 0.6rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--amber);
-      margin-bottom: 0.6rem;
-      opacity: 0.8;
+      margin-bottom: 0.5rem;
+      opacity: 0.85;
     }
 
-    .case-card h3 {
+    .case-title {
       font-family: var(--mono);
-      font-size: 1rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+
+    .case-tenure {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--text-3);
+      letter-spacing: 0.06em;
+    }
+
+    .case-metrics {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.35rem;
+    }
+
+    .metric-pill {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.7rem;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .pill-teal { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(0,180,216,0.2); }
+    .pill-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(232,160,32,0.2); }
+    .pill-green { background: rgba(57,217,138,0.08); color: var(--green); border: 1px solid rgba(57,217,138,0.2); }
+
+    .case-body {
+      padding: 1.75rem 2rem;
+    }
+
+    .case-body h4 {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .case-body h4:first-child { margin-top: 0; }
+
+    .case-body p {
+      font-size: 0.875rem;
+      color: var(--text-2);
+      line-height: 1.75;
+      margin-bottom: 0.75rem;
+    }
+
+    .case-body p:last-child { margin-bottom: 0; }
+
+    .case-body ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 0.75rem;
+    }
+
+    .case-body ul li {
+      font-size: 0.875rem;
+      color: var(--text-2);
+      line-height: 1.7;
+      padding: 0.2rem 0 0.2rem 1.25rem;
+      position: relative;
+    }
+
+    .case-body ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--teal);
+      font-size: 0.65rem;
+      top: 0.35rem;
+    }
+
+    .case-body ul li strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .case-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.5rem 0;
+    }
+
+    .name-drop {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+    }
+
+    .name-tag {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--text-2);
+      background: var(--bg-3);
+      border: 1px solid var(--border-2);
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+    }
+
+    .press-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--teal);
+      text-decoration: none;
+      border: 1px solid rgba(0,180,216,0.2);
+      padding: 0.35rem 0.75rem;
+      border-radius: 3px;
+      background: var(--teal-dim);
+      transition: all 0.2s;
+      margin-top: 0.75rem;
+    }
+
+    .press-link:hover { background: rgba(0,180,216,0.18); }
+
+    /* ─── SKILLS ─────────────────────── */
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .skill-card {
+      background: var(--bg-card);
+      padding: 1.35rem 1.5rem;
+      transition: background 0.2s;
+    }
+    .skill-card:hover { background: var(--bg-3); }
+
+    .skill-card h3 {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+
+    .skill-card p {
+      font-size: 0.78rem;
+      color: var(--text-3);
+      line-height: 1.5;
+    }
+
+    /* ─── CONNECT ────────────────────── */
+    .connect-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .connect-cta h2 {
+      font-family: var(--mono);
+      font-size: clamp(1.3rem, 2.5vw, 1.75rem);
       font-weight: 700;
       color: #fff;
       margin-bottom: 0.5rem;
     }
 
-    .case-card p {
-      font-size: 0.82rem;
-      color: var(--text-2);
-      line-height: 1.65;
-      max-width: 580px;
+    .connect-cta p {
+      font-size: 0.85rem;
+      color: var(--text-3);
+      margin-bottom: 1.25rem;
+      line-height: 1.6;
     }
 
-    /* ─── LINKS SECTION ──────────────────────── */
-    .link-list {
+    .connect-links {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      max-width: 340px;
     }
 
-    .link-btn {
-      display: block;
-      text-align: center;
-      padding: 0.85rem 1.5rem;
+    .connect-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 1rem;
       background: var(--bg-card);
-      border: 1px solid var(--border-2);
-      border-radius: 6px;
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 5px;
       text-decoration: none;
-      text-transform: uppercase;
-      transition: all 0.2s;
+      transition: border-color 0.18s, background 0.18s;
     }
 
-    .link-btn:hover {
+    .connect-row:hover {
       border-color: var(--teal);
-      color: var(--teal);
       background: var(--teal-dim);
     }
 
-    /* ─── CONNECT ────────────────────────────── */
-    .connect h2 {
+    .connect-row-label {
       font-family: var(--mono);
-      font-size: clamp(1.4rem, 3vw, 1.9rem);
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.6rem;
-    }
-
-    .connect-sub {
-      font-size: 0.85rem;
-      color: var(--text-3);
-      margin-bottom: 1.5rem;
-    }
-
-    .connect-detail {
-      font-size: 0.85rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       color: var(--text-2);
-      margin-bottom: 0.4rem;
+    }
+
+    .connect-row-val {
       font-family: var(--mono);
-    }
-
-    .connect-detail a {
-      color: var(--teal);
-      text-decoration: none;
-    }
-
-    .connect-detail a:hover {
-      text-decoration: underline;
-    }
-
-    .connect-detail strong {
+      font-size: 0.65rem;
       color: var(--text-3);
-      margin-right: 0.5rem;
     }
 
-    /* ─── TEAL ACCENT GLOW LINE ──────────────── */
-    .section-head {
-      margin-bottom: 2rem;
+    .connect-row:hover .connect-row-label { color: var(--teal); }
+
+    /* ─── FOOTER ─────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--text-3);
     }
 
-    /* ─── RESPONSIVE ─────────────────────────── */
+    /* ─── RESPONSIVE ─────────────────── */
     @media (max-width: 680px) {
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .cap-grid { grid-template-columns: 1fr; }
-      .container { padding: 0 1.25rem; }
-      .hero { padding: 3.5rem 0 2.5rem; }
-    }
-
-    @media (max-width: 420px) {
-      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .skill-grid { grid-template-columns: 1fr; }
+      .connect-grid { grid-template-columns: 1fr; }
+      .case-header { grid-template-columns: 1fr; }
+      .case-metrics { flex-direction: row; align-items: flex-start; }
+      .nav-links { display: none; }
+      .wrap { padding: 0 1.25rem; }
     }
   </style>
 </head>
 <body>
 
-<div class="container">
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-name">Anthony Orque</a>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-location">Las Vegas &nbsp;<span>·</span>&nbsp; Open to Remote / Hybrid</div>
+    <div class="hero-meta">Las Vegas, NV &nbsp;·&nbsp; Available for Remote / Hybrid</div>
     <h1>Anthony Orque</h1>
-    <div class="hero-title">AI-Enabled Event &amp; Revenue Systems Architect</div>
-    <p class="hero-desc">I build scalable event systems that drive revenue, streamline execution, and deliver premium client experiences.</p>
-    <div class="hero-tags">
-      <span>▸</span> $1M+ in upsell revenue &nbsp;·&nbsp;
-      <span>▸</span> Built event infrastructure from scratch &nbsp;·&nbsp;
-      <span>▸</span> AI-assisted operational systems
+    <div class="hero-role">Senior Events Manager &amp; Revenue Systems Builder</div>
+    <p class="hero-bio">I build the infrastructure behind events that generate revenue — systems, upsell pipelines, vendor networks, and team playbooks. I've done it from scratch, multiple times, at scale.</p>
+
+    <div class="hero-stats">
+      <div class="hs">
+        <div class="hs-val amber">$3.3M</div>
+        <div class="hs-label">events revenue in 6 months (F1 Arcade)</div>
+      </div>
+      <div class="hs">
+        <div class="hs-val">$177K</div>
+        <div class="hs-label">single client upsell expansion (PWC)</div>
+      </div>
+      <div class="hs">
+        <div class="hs-val teal">53%</div>
+        <div class="hs-label">of venue revenue driven through events</div>
+      </div>
+      <div class="hs">
+        <div class="hs-val amber">400+</div>
+        <div class="hs-label">grassroots events funded via Metafy</div>
+      </div>
     </div>
+
     <div class="hero-ctas">
-      <a href="mailto:aorque@gmail.com" class="btn btn-primary">Contact Me</a>
-      <a href="https://linktr.ee/aorque" target="_blank" rel="noopener" class="btn btn-secondary">More Links</a>
+      <a href="#connect" class="btn btn-teal">Get in Touch</a>
+      <a href="https://linkedin.com/in/anthony-orque" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
     </div>
   </section>
 
-  <!-- STATS -->
-  <section style="padding: 2.5rem 0; border-bottom: 1px solid var(--border);">
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-val">$1M+</div>
-        <div class="stat-desc">annual upsell revenue generated</div>
+  <!-- WORK -->
+  <section class="section" id="work">
+    <div class="eyebrow">Experience</div>
+    <div class="section-title">Case Studies</div>
+
+    <!-- F1 ARCADE -->
+    <div class="case">
+      <div class="case-header">
+        <div>
+          <div class="case-co">F1 Arcade · Las Vegas</div>
+          <div class="case-title">Built an entire events operation from zero</div>
+          <div class="case-tenure">Senior Events Manager &nbsp;·&nbsp; 2023–2024</div>
+        </div>
+        <div class="case-metrics">
+          <span class="metric-pill pill-amber">$3.3M Revenue</span>
+          <span class="metric-pill pill-teal">53% of Venue Rev</span>
+          <span class="metric-pill pill-green">$270K Upsells</span>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-val amber">$177K</div>
-        <div class="stat-desc">single-client upsell expansion</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val">53%</div>
-        <div class="stat-desc">venue revenue driven by events infrastructure</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val amber">400+</div>
-        <div class="stat-desc">events supported through sponsorship systems</div>
+      <div class="case-body">
+        <h4>The Starting Point</h4>
+        <p>When I joined F1 Arcade Las Vegas, the events function was essentially nonexistent. Two days of shadowing a manager in Boston. A brand guide. A few templates. That was it. No vendor relationships, no team comms infrastructure, no upsell tools, no playbooks, no events staff — just me.</p>
+
+        <h4>What I Built</h4>
+        <ul>
+          <li><strong>Full vendor repository from scratch</strong> — personally outreached to and onboarded ~15 vendors, all drawn from pre-existing relationships I'd built at Tag Group</li>
+          <li><strong>All team communications infrastructure</strong> — stood up every operational group chat: events, AV, ops, kitchen, and logistics (Teams + iMessage)</li>
+          <li><strong>Triple Seat system buildout</strong> — created custom templates and workflows that went significantly beyond the national standard, tailored to how Las Vegas operates</li>
+          <li><strong>Complete upsell pipeline</strong> — built every upsell tool from scratch using Canva and Adobe Illustrator (personal account for the first 5 months): menus, floor plans, add-on packages, F&amp;B packages, AV options, branded experiences</li>
+          <li><strong>Email and handoff playbooks</strong> — built all client onboarding templates for the sales-to-events handoff, including the pre-event planning and upsell sequence I owned</li>
+          <li><strong>Trained the ops team</strong> — solo for 2.5 months before getting support; eventually trained the full ops staff to execute events alongside me</li>
+        </ul>
+
+        <hr class="case-divider" />
+
+        <h4>The Numbers</h4>
+        <ul>
+          <li>Events consistently drove <strong>~53% of total venue revenue</strong> within 5–6 months of operation</li>
+          <li>Estimated <strong>$3.3M total events revenue</strong> generated across the active period</li>
+          <li><strong>$270K+ personally attributed to upsells</strong> I built and executed the pipeline for</li>
+          <li>Largest single client: <strong>PWC at $177K</strong> — the largest single-account expansion in my time there</li>
+        </ul>
+
+        <hr class="case-divider" />
+
+        <h4>Hired My Own Replacement</h4>
+        <p>By February, the system was solid enough that I brought on a junior events manager (Laxia) whose primary role was client comms and outreach — because I'd already built everything else. She stepped into a functioning machine.</p>
       </div>
     </div>
+
+    <!-- TAG GROUP -->
+    <div class="case">
+      <div class="case-header">
+        <div>
+          <div class="case-co">Tag Group · Las Vegas</div>
+          <div class="case-title">~$1M in upsell revenue in one calendar year</div>
+          <div class="case-tenure">Senior Manager, Event Operations &nbsp;·&nbsp; 2022–2023</div>
+        </div>
+        <div class="case-metrics">
+          <span class="metric-pill pill-amber">~$1M in Sales</span>
+          <span class="metric-pill pill-teal">$150K Single Upsell</span>
+        </div>
+      </div>
+      <div class="case-body">
+        <h4>Role</h4>
+        <p>Hybrid sales-and-ops role. Once events sales closed the venue, everything transitioned to me: full client onboarding, pre-event planning, upsell execution, and day-of operations across Tag Group venues.</p>
+
+        <h4>How I Operated</h4>
+        <ul>
+          <li>Built a complete <strong>client onboarding workflow</strong> — from introduction handoff to event-day execution — including custom RFPs and proposals for any client customizations</li>
+          <li>Developed the <strong>"How to Work With Us" guide</strong> — a client-facing document that set expectations, reduced back-and-forth, and primed clients for upsell conversations</li>
+          <li>Ran <strong>upsell conversations entirely from feel</strong> — no script, deep product knowledge. When I eventually brought in support I translated it into talking points</li>
+          <li>Upsell categories: F&amp;B enhancements, custom AV, entertainment, branding packages, experiential add-ons, and incentive program buildouts</li>
+        </ul>
+
+        <hr class="case-divider" />
+
+        <h4>Results</h4>
+        <ul>
+          <li>Came in mid-2023; hit <strong>~$1M in sales by end of 2024</strong> calendar year</li>
+          <li>Largest single upsell: <strong>Snowflake at ~$150K</strong></li>
+          <li>Worked primarily with corporate receptions, networking events, incentive programs, and brand-sponsored after-parties</li>
+        </ul>
+
+        <hr class="case-divider" />
+
+        <h4>Flagship Project: Fanatics Super Bowl LVIII Party</h4>
+        <p>The biggest event I worked on at Tag Group. Six months of lead time. A partnership with MGM and the Cosmopolitan. 700 guests. Blue carpet. I owned day-of ops and vendor coordination — split venue liaison responsibilities with my Assistant Director of Event Operations.</p>
+
+        <div class="name-drop">
+          <span class="name-tag">Travis Scott</span>
+          <span class="name-tag">Meek Mill</span>
+          <span class="name-tag">Ice Spice</span>
+          <span class="name-tag">The Chainsmokers</span>
+          <span class="name-tag">Tom Brady</span>
+          <span class="name-tag">Joe Burrow</span>
+          <span class="name-tag">Peyton Manning</span>
+          <span class="name-tag">Shaquille O'Neal</span>
+          <span class="name-tag">Jelly Roll</span>
+          <span class="name-tag">Lil Baby</span>
+          <span class="name-tag">A'ja Wilson</span>
+          <span class="name-tag">Gary Vaynerchuk</span>
+          <span class="name-tag">Guy Fieri</span>
+          <span class="name-tag">Robert Kraft</span>
+          <span class="name-tag">Damar Hamlin</span>
+          <span class="name-tag">CeeDee Lamb</span>
+          <span class="name-tag">Queen Latifah</span>
+        </div>
+
+        <a href="https://www.reviewjournal.com/sports/football/super-bowl/fanatics-super-bowl-party-brings-big-stars-to-strip-photos-2998328/" target="_blank" rel="noopener" class="press-link">
+          ↗ Las Vegas Review-Journal Coverage
+        </a>
+      </div>
+    </div>
+
+    <!-- METAFY -->
+    <div class="case">
+      <div class="case-header">
+        <div>
+          <div class="case-co">Metafy · Remote</div>
+          <div class="case-title">Managed a $1M grassroots esports fund end-to-end</div>
+          <div class="case-tenure">Event Marketing Lead &nbsp;·&nbsp; ~8–9 months</div>
+        </div>
+        <div class="case-metrics">
+          <span class="metric-pill pill-teal">$1M Fund</span>
+          <span class="metric-pill pill-amber">400+ Events</span>
+        </div>
+      </div>
+      <div class="case-body">
+        <h4>The Program</h4>
+        <p>After Metafy's Series A ($26M raised), CEO created a $1M pledge to the grassroots gaming and esports community — micro-grants and sponsorships to local tournaments, content creators, and community-run events that major brands typically ignore. I was the program manager.</p>
+
+        <h4>What I Owned</h4>
+        <ul>
+          <li><strong>Full intake and evaluation system</strong> — built on Coda + Zapier + Google Workspace + Typeform, with cross-functional coordination across product, legal, and accounting</li>
+          <li><strong>Every funding decision</strong> — evaluated and approved all applications personally across the life of the program</li>
+          <li><strong>Refined the process continuously</strong> — started with an intern, went solo after month 2, and kept the pipeline running while also executing live IRL activations</li>
+          <li><strong>On-site activation operations</strong> — staffing, scheduling, logistics, and vendor coordination at live grassroots events</li>
+        </ul>
+
+        <hr class="case-divider" />
+
+        <h4>Scale</h4>
+        <ul>
+          <li>Funded <strong>400+ grassroots events</strong> over ~8–9 months</li>
+          <li>Sponsorships ranged from small community grants ($100 comedy show) to larger tournament sponsorships</li>
+          <li>Program built from scratch — no predecessor, no playbook</li>
+        </ul>
+      </div>
+    </div>
+
   </section>
 
-  <!-- POSITIONING -->
-  <section class="positioning">
-    <div class="section-head">
-      <div class="eyebrow">Positioning</div>
-      <h2>Not just events. Systems.</h2>
-    </div>
-    <p>My work sits at the intersection of revenue, operations, AI workflow design, and experience strategy. I don't just plan events — I build the systems behind them.</p>
-    <p>I specialize in turning chaotic, one-off executions into repeatable frameworks that increase revenue, improve delivery, and create operational clarity.</p>
-  </section>
-
-  <!-- CAPABILITIES -->
-  <section>
-    <div class="section-head">
-      <div class="eyebrow">Core Capabilities</div>
-      <h2 style="font-family: var(--mono); font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 700; color: #fff; line-height: 1.2;">What I build</h2>
-    </div>
-    <div class="cap-grid">
-      <div class="cap-card">
-        <h3>Event Revenue Systems</h3>
-        <p>Turn event demand into structured upsell and monetization engines.</p>
+  <!-- SKILLS -->
+  <section class="section" id="skills">
+    <div class="eyebrow">Capabilities</div>
+    <div class="section-title">What I Build</div>
+    <div class="skill-grid">
+      <div class="skill-card">
+        <h3>Revenue Systems</h3>
+        <p>Upsell pipelines, sales assets, pricing frameworks, client handoff workflows.</p>
       </div>
-      <div class="cap-card">
+      <div class="skill-card">
         <h3>Operations Playbooks</h3>
-        <p>SOPs, workflows, staffing systems, and execution frameworks.</p>
+        <p>SOPs, team comms infrastructure, vendor onboarding, staffing systems.</p>
       </div>
-      <div class="cap-card">
-        <h3>AI-Assisted Workflows</h3>
-        <p>Agent-based systems, automation, research, and coordination.</p>
+      <div class="skill-card">
+        <h3>Event Production</h3>
+        <p>Full-cycle execution: intake → planning → day-of → debrief. 400+ events.</p>
       </div>
-      <div class="cap-card" style="grid-column: span 1;">
-        <h3>Premium Experience Design</h3>
-        <p>High-impact, branded, revenue-generating experiences.</p>
+      <div class="skill-card">
+        <h3>AI-Assisted Ops</h3>
+        <p>Automations, agent-based workflows, research pipelines, and coordination tools.</p>
       </div>
-      <div class="cap-card" style="grid-column: span 2; background: var(--teal-dim); border-top: 1px solid rgba(0,180,216,0.2);">
-        <h3 style="color: var(--teal);">Teamwire — AI Marketing Platform</h3>
-        <p style="color: var(--text-2);">Building next-gen AI-driven marketing and operations tooling for event businesses. Currently in development.</p>
+      <div class="skill-card">
+        <h3>Client Experience</h3>
+        <p>Onboarding guides, proposal design, communication systems, expectation-setting.</p>
       </div>
-    </div>
-  </section>
-
-  <!-- CASE STUDIES -->
-  <section>
-    <div class="section-head">
-      <div class="eyebrow">Selected Proof</div>
-      <h2 style="font-family: var(--mono); font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 700; color: #fff;">Case Studies</h2>
-    </div>
-    <div class="case-list">
-      <div class="case-card">
-        <div class="case-tag">F1 Arcade</div>
-        <h3>Built event system from scratch</h3>
-        <p>Scaled events into a major venue revenue driver through SOPs, workflows, and upsell systems. Drove 53% of venue revenue through events infrastructure built from zero.</p>
+      <div class="skill-card">
+        <h3>Tools</h3>
+        <p>Triple Seat · Coda · Canva · Adobe Illustrator · Zapier · Google Workspace · HubSpot</p>
       </div>
-      <div class="case-card">
-        <div class="case-tag">Tag Group</div>
-        <h3>$1M+ upsell revenue</h3>
-        <p>Built monetization packages across F&amp;B, AV, branding, entertainment, and experiential add-ons. Achieved $177K single-client expansion.</p>
-      </div>
-      <div class="case-card">
-        <div class="case-tag">Fanatics · Super Bowl LV</div>
-        <h3>A-list celebrity activation, Las Vegas Strip</h3>
-        <p>Produced star-studded Super Bowl party on the Strip — covered by Las Vegas Review-Journal. Coordinated talent, logistics, and premium guest experience.</p>
-      </div>
-      <div class="case-card">
-        <div class="case-tag">Metafy</div>
-        <h3>$1M fund → 400+ events</h3>
-        <p>Built intake, evaluation, ROI tracking, and sponsorship pipeline systems for grassroots esports events across the US.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRESS -->
-  <section>
-    <div class="section-head">
-      <div class="eyebrow">Press</div>
-      <h2 style="font-family: var(--mono); font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 700; color: #fff;">In the news</h2>
-    </div>
-    <div class="case-list">
-      <a href="https://www.reviewjournal.com/sports/football/super-bowl/fanatics-super-bowl-party-brings-big-stars-to-strip-photos-2998328/" target="_blank" rel="noopener" class="case-card" style="text-decoration:none; display:block;">
-        <div class="case-tag">Las Vegas Review-Journal</div>
-        <h3 style="font-size:0.9rem;">Fanatics Super Bowl Party Brings Big Stars to Strip</h3>
-      </a>
-      <a href="https://people.com/jennifer-lopez-ben-affleck-glam-date-night-las-vegas-poker-tournament-photos-8404279" target="_blank" rel="noopener" class="case-card" style="text-decoration:none; display:block;">
-        <div class="case-tag">People Magazine</div>
-        <h3 style="font-size:0.9rem;">Jennifer Lopez &amp; Ben Affleck's Glam Date Night at Las Vegas Poker Tournament</h3>
-      </a>
-    </div>
-  </section>
-
-  <!-- LINKS -->
-  <section>
-    <div class="section-head">
-      <div class="eyebrow">Links</div>
-      <h2 style="font-family: var(--mono); font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 700; color: #fff; margin-bottom: 1.5rem;">Explore more</h2>
-    </div>
-    <div class="link-list">
-      <a href="https://www.linkedin.com/in/anthony-orque/" target="_blank" rel="noopener" class="link-btn">LinkedIn</a>
-      <a href="https://linktr.ee/aorque" target="_blank" rel="noopener" class="link-btn">Linktree / Full Links</a>
-      <a href="mailto:aorque@gmail.com" class="link-btn">Email Me</a>
     </div>
   </section>
 
   <!-- CONNECT -->
-  <section class="connect" style="border-bottom: none; padding-bottom: 5rem;">
-    <h2>Let's connect.</h2>
-    <p class="connect-sub">Open to remote / hybrid roles at $170K+ total comp.</p>
-    <div class="connect-detail"><strong>Email</strong><a href="mailto:aorque@gmail.com">aorque@gmail.com</a></div>
-    <div class="connect-detail"><strong>LinkedIn</strong><a href="https://www.linkedin.com/in/anthony-orque/" target="_blank" rel="noopener">linkedin.com/in/anthony-orque</a></div>
-    <div class="connect-detail"><strong>X</strong><a href="https://x.com/anthony_orque" target="_blank" rel="noopener">@anthony_orque</a></div>
-    <div class="connect-detail"><strong>Linktree</strong><a href="https://linktr.ee/aorque" target="_blank" rel="noopener">linktr.ee/aorque</a></div>
+  <section class="section" id="connect" style="border-bottom: none; padding-bottom: 4rem;">
+    <div class="connect-grid">
+      <div class="connect-cta">
+        <div class="eyebrow">Contact</div>
+        <h2>Let's connect.</h2>
+        <p>Open to full-time, consulting, and fractional work. Remote or Las Vegas.</p>
+        <a href="mailto:aorque@gmail.com" class="btn btn-teal">Send an Email</a>
+      </div>
+      <div class="connect-links">
+        <a href="https://linkedin.com/in/anthony-orque" target="_blank" rel="noopener" class="connect-row">
+          <span class="connect-row-label">LinkedIn</span>
+          <span class="connect-row-val">anthony-orque</span>
+        </a>
+        <a href="https://x.com/anthony_orque" target="_blank" rel="noopener" class="connect-row">
+          <span class="connect-row-label">X / Twitter</span>
+          <span class="connect-row-val">@anthony_orque</span>
+        </a>
+        <a href="https://linktr.ee/aorque" target="_blank" rel="noopener" class="connect-row">
+          <span class="connect-row-label">Linktree</span>
+          <span class="connect-row-val">linktr.ee/aorque</span>
+        </a>
+        <a href="mailto:aorque@gmail.com" class="connect-row">
+          <span class="connect-row-label">Email</span>
+          <span class="connect-row-val">aorque@gmail.com</span>
+        </a>
+      </div>
+    </div>
   </section>
 
-</div><!-- /container -->
+</div><!-- /wrap -->
+
+<footer>
+  <span>© 2026 Anthony Orque · Las Vegas, NV</span>
+  <span>EVENTS &amp; REVENUE SYSTEMS</span>
+</footer>
 
 </body>
 </html>
