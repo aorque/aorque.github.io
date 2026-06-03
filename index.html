@@ -3,545 +3,126 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anthony Orque — Events & Revenue Systems</title>
+  <title>Anthony Orque — Events & AI Systems</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:        #0a0a0f;
-      --bg-2:      #0f0f18;
-      --bg-card:   #111118;
-      --bg-3:      #16161f;
-      --border:    #1e1e30;
-      --border-2:  #2a2a40;
-      --teal:      #00b4d8;
-      --teal-dim:  rgba(0,180,216,0.10);
-      --teal-glow: rgba(0,180,216,0.22);
-      --amber:     #e8a020;
-      --amber-dim: rgba(232,160,32,0.10);
-      --green:     #39d98a;
-      --red:       #ff4f6e;
-      --text:      #c8cfe8;
-      --text-2:    #7a82a0;
-      --text-3:    #444860;
-      --mono: 'Space Mono', 'Courier New', monospace;
-      --sans: 'Inter', system-ui, sans-serif;
+      --bg: #0a0a0f; --bg-2: #0f0f18; --bg-card: #111118; --bg-3: #16161f;
+      --border: #1e1e30; --border-2: #2a2a40;
+      --teal: #00b4d8; --teal-dim: rgba(0,180,216,0.10); --teal-glow: rgba(0,180,216,0.22);
+      --amber: #e8a020; --amber-dim: rgba(232,160,32,0.10);
+      --green: #39d98a; --text: #c8cfe8; --text-2: #7a82a0; --text-3: #444860;
+      --mono: 'Space Mono','Courier New',monospace; --sans: 'Inter',system-ui,sans-serif;
     }
-
     html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      font-size: 15px;
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* scanlines */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg, transparent, transparent 2px,
-        rgba(0,0,0,0.025) 2px, rgba(0,0,0,0.025) 4px
-      );
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    /* ─── LAYOUT ─────────────────────── */
-    .wrap {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-
-    /* ─── NAV ────────────────────────── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(10,10,15,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 2rem;
-      height: 52px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-
-    .nav-name {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: 0.05em;
-      text-decoration: none;
-    }
-
-    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
-    .nav-links a {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-3);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--teal); }
-
-    /* ─── HERO ───────────────────────── */
-    .hero {
-      padding: 5rem 0 3.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .hero-inner {
-      display: grid;
-      grid-template-columns: 1fr 220px;
-      gap: 3rem;
-      align-items: start;
-    }
-
-    .hero-photo {
-      position: relative;
-    }
-
-    .hero-photo img {
-      width: 100%;
-      aspect-ratio: 3/4;
-      object-fit: cover;
-      object-position: center top;
-      border-radius: 6px;
-      border: 1px solid var(--border-2);
-      display: block;
-      filter: grayscale(15%) contrast(1.05);
-    }
-
-    .hero-photo::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 6px;
-      box-shadow: inset 0 0 0 1px rgba(0,180,216,0.15);
-      pointer-events: none;
-    }
-
-    .hero-meta {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-3);
-      margin-bottom: 1.5rem;
-    }
-
-    .hero h1 {
-      font-family: var(--mono);
-      font-size: clamp(2.2rem, 5vw, 3.2rem);
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.02;
-      margin-bottom: 0.6rem;
-      text-shadow: 0 0 60px rgba(0,180,216,0.12);
-    }
-
-    .hero-role {
-      font-family: var(--mono);
-      font-size: 0.82rem;
-      color: var(--teal);
-      margin-bottom: 1.5rem;
-      letter-spacing: 0.03em;
-    }
-
-    .hero-bio {
-      font-size: 0.95rem;
-      color: var(--text-2);
-      max-width: 540px;
-      line-height: 1.75;
-      margin-bottom: 2.25rem;
-    }
-
-    .hero-stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-      margin-bottom: 2rem;
-    }
-
-    .hs {
-      background: var(--bg-card);
-      padding: 1.25rem 1rem;
-    }
-
-    .hs-val {
-      font-family: var(--mono);
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1;
-      margin-bottom: 0.4rem;
-    }
-
-    .hs-val.amber { color: var(--amber); }
-    .hs-val.teal  { color: var(--teal); }
-
-    .hs-label {
-      font-size: 0.7rem;
-      color: var(--text-3);
-      line-height: 1.35;
-    }
-
-    .hero-ctas { display: flex; gap: 0.75rem; }
-
-    .btn {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.6rem 1.2rem;
-      border-radius: 4px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: all 0.18s;
-    }
-
-    .btn-teal {
-      background: var(--teal);
-      color: var(--bg);
-      font-weight: 700;
-    }
-    .btn-teal:hover { background: #00ccf5; box-shadow: 0 0 20px var(--teal-glow); }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--text-2);
-      border: 1px solid var(--border-2);
-    }
-    .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
-
-    /* ─── SECTION SHARED ─────────────── */
-    .section {
-      padding: 3.5rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .section:last-child { border-bottom: none; }
-
-    .eyebrow {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--teal);
-      opacity: 0.75;
-      margin-bottom: 0.5rem;
-    }
-
-    .section-title {
-      font-family: var(--mono);
-      font-size: clamp(1.3rem, 2.5vw, 1.75rem);
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 2rem;
-      line-height: 1.1;
-    }
-
-    /* ─── CASE STUDIES ───────────────── */
-    .case {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      margin-bottom: 1.5rem;
-      background: var(--bg-card);
-      transition: border-color 0.2s;
-    }
-
-    .case:last-child { margin-bottom: 0; }
-    .case:hover { border-color: var(--border-2); }
-
-    .case-header {
-      padding: 1.75rem 2rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: start;
-      gap: 1rem;
-    }
-
-    .case-co {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--amber);
-      margin-bottom: 0.5rem;
-      opacity: 0.85;
-    }
-
-    .case-title {
-      font-family: var(--mono);
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.2;
-      margin-bottom: 0.4rem;
-    }
-
-    .case-tenure {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--text-3);
-      letter-spacing: 0.06em;
-    }
-
-    .case-metrics {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 0.35rem;
-    }
-
-    .metric-pill {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      padding: 0.3rem 0.7rem;
-      border-radius: 3px;
-      white-space: nowrap;
-    }
-
-    .pill-teal { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(0,180,216,0.2); }
-    .pill-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(232,160,32,0.2); }
-    .pill-green { background: rgba(57,217,138,0.08); color: var(--green); border: 1px solid rgba(57,217,138,0.2); }
-
-    .case-body {
-      padding: 1.75rem 2rem;
-    }
-
-    .case-body h4 {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-3);
-      margin-bottom: 0.75rem;
-      margin-top: 1.5rem;
-    }
-
-    .case-body h4:first-child { margin-top: 0; }
-
-    .case-body p {
-      font-size: 0.875rem;
-      color: var(--text-2);
-      line-height: 1.75;
-      margin-bottom: 0.75rem;
-    }
-
-    .case-body p:last-child { margin-bottom: 0; }
-
-    .case-body ul {
-      list-style: none;
-      padding: 0;
-      margin-bottom: 0.75rem;
-    }
-
-    .case-body ul li {
-      font-size: 0.875rem;
-      color: var(--text-2);
-      line-height: 1.7;
-      padding: 0.2rem 0 0.2rem 1.25rem;
-      position: relative;
-    }
-
-    .case-body ul li::before {
-      content: '▸';
-      position: absolute;
-      left: 0;
-      color: var(--teal);
-      font-size: 0.65rem;
-      top: 0.35rem;
-    }
-
-    .case-body ul li strong {
-      color: var(--text);
-      font-weight: 500;
-    }
-
-    .case-divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 1.5rem 0;
-    }
-
-    .name-drop {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 0.5rem;
-    }
-
-    .name-tag {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      color: var(--text-2);
-      background: var(--bg-3);
-      border: 1px solid var(--border-2);
-      padding: 0.2rem 0.6rem;
-      border-radius: 3px;
-    }
-
-    .press-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--teal);
-      text-decoration: none;
-      border: 1px solid rgba(0,180,216,0.2);
-      padding: 0.35rem 0.75rem;
-      border-radius: 3px;
-      background: var(--teal-dim);
-      transition: all 0.2s;
-      margin-top: 0.75rem;
-    }
-
-    .press-link:hover { background: rgba(0,180,216,0.18); }
-
-    /* ─── SKILLS ─────────────────────── */
-    .skill-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .skill-card {
-      background: var(--bg-card);
-      padding: 1.35rem 1.5rem;
-      transition: background 0.2s;
-    }
-    .skill-card:hover { background: var(--bg-3); }
-
-    .skill-card h3 {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 0.35rem;
-    }
-
-    .skill-card p {
-      font-size: 0.78rem;
-      color: var(--text-3);
-      line-height: 1.5;
-    }
-
-    /* ─── CONNECT ────────────────────── */
-    .connect-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      align-items: start;
-    }
-
-    .connect-cta h2 {
-      font-family: var(--mono);
-      font-size: clamp(1.3rem, 2.5vw, 1.75rem);
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.5rem;
-    }
-
-    .connect-cta p {
-      font-size: 0.85rem;
-      color: var(--text-3);
-      margin-bottom: 1.25rem;
-      line-height: 1.6;
-    }
-
-    .connect-links {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .connect-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.7rem 1rem;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      text-decoration: none;
-      transition: border-color 0.18s, background 0.18s;
-    }
-
-    .connect-row:hover {
-      border-color: var(--teal);
-      background: var(--teal-dim);
-    }
-
-    .connect-row-label {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-2);
-    }
-
-    .connect-row-val {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--text-3);
-    }
-
-    .connect-row:hover .connect-row-label { color: var(--teal); }
-
-    /* ─── FOOTER ─────────────────────── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 1.5rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      color: var(--text-3);
-    }
-
-    /* ─── RESPONSIVE ─────────────────── */
-    @media (max-width: 680px) {
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-photo { display: none; }
-      .hero-stats { grid-template-columns: repeat(2, 1fr); }
-      .skill-grid { grid-template-columns: 1fr; }
-      .connect-grid { grid-template-columns: 1fr; }
-      .case-header { grid-template-columns: 1fr; }
-      .case-metrics { flex-direction: row; align-items: flex-start; }
-      .nav-links { display: none; }
-      .wrap { padding: 0 1.25rem; }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    body::after { content:''; position:fixed; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px); pointer-events:none; z-index:9999; }
+
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 2rem; }
+
+    /* NAV */
+    nav { position:sticky; top:0; z-index:100; background:rgba(10,10,15,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:0 2rem; height:52px; display:flex; align-items:center; justify-content:space-between; }
+    .nav-name { font-family:var(--mono); font-size:0.75rem; font-weight:700; color:#fff; text-decoration:none; }
+    .nav-links { display:flex; gap:1.75rem; list-style:none; }
+    .nav-links a { font-family:var(--mono); font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-3); text-decoration:none; transition:color 0.2s; }
+    .nav-links a:hover { color:var(--teal); }
+
+    /* HERO */
+    .hero { padding:5rem 0 3.5rem; border-bottom:1px solid var(--border); }
+    .hero-inner { display:grid; grid-template-columns:1fr 200px; gap:3rem; align-items:start; }
+    .hero-photo img { width:100%; aspect-ratio:3/4; object-fit:cover; object-position:center top; border-radius:6px; border:1px solid var(--border-2); display:block; filter:grayscale(15%) contrast(1.05); }
+    .hero-meta { font-family:var(--mono); font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-3); margin-bottom:1.5rem; }
+    .hero h1 { font-family:var(--mono); font-size:clamp(2rem,5vw,3.2rem); font-weight:700; color:#fff; line-height:1.02; margin-bottom:0.5rem; }
+    .hero-role { font-family:var(--mono); font-size:0.8rem; color:var(--teal); margin-bottom:1.5rem; }
+    .hero-bio { font-size:0.925rem; color:var(--text-2); max-width:520px; line-height:1.75; margin-bottom:2rem; }
+    .hero-ctas { display:flex; gap:0.75rem; }
+
+    /* STATS */
+    .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:6px; overflow:hidden; margin:2.5rem 0 0; }
+    .hs { background:var(--bg-card); padding:1.25rem 1rem; }
+    .hs-val { font-family:var(--mono); font-size:1.4rem; font-weight:700; color:#fff; line-height:1; margin-bottom:0.4rem; }
+    .hs-val.amber { color:var(--amber); } .hs-val.teal { color:var(--teal); }
+    .hs-label { font-size:0.68rem; color:var(--text-3); line-height:1.35; }
+
+    /* BTN */
+    .btn { font-family:var(--mono); font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.6rem 1.2rem; border-radius:4px; text-decoration:none; border:none; cursor:pointer; transition:all 0.18s; }
+    .btn-teal { background:var(--teal); color:var(--bg); font-weight:700; }
+    .btn-teal:hover { background:#00ccf5; box-shadow:0 0 20px var(--teal-glow); }
+    .btn-ghost { background:transparent; color:var(--text-2); border:1px solid var(--border-2); }
+    .btn-ghost:hover { border-color:var(--teal); color:var(--teal); }
+
+    /* SECTIONS */
+    .section { padding:3.5rem 0; border-bottom:1px solid var(--border); }
+    .section:last-child { border-bottom:none; }
+    .eyebrow { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); opacity:0.75; margin-bottom:0.5rem; }
+    .section-title { font-family:var(--mono); font-size:clamp(1.3rem,2.5vw,1.75rem); font-weight:700; color:#fff; margin-bottom:2rem; line-height:1.1; }
+
+    /* CASE STUDIES */
+    .case { border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:1.5rem; background:var(--bg-card); }
+    .case:last-child { margin-bottom:0; }
+    .case:hover { border-color:var(--border-2); }
+    .case-header { padding:1.75rem 2rem 1.5rem; border-bottom:1px solid var(--border); display:grid; grid-template-columns:1fr auto; align-items:start; gap:1rem; }
+    .case-co { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--amber); margin-bottom:0.5rem; opacity:0.85; }
+    .case-title { font-family:var(--mono); font-size:1.05rem; font-weight:700; color:#fff; line-height:1.2; margin-bottom:0.4rem; }
+    .case-tenure { font-family:var(--mono); font-size:0.65rem; color:var(--text-3); }
+    .case-metrics { display:flex; flex-direction:column; align-items:flex-end; gap:0.35rem; }
+    .pill { font-family:var(--mono); font-size:0.62rem; font-weight:700; letter-spacing:0.05em; padding:0.28rem 0.65rem; border-radius:3px; white-space:nowrap; }
+    .pill-teal { background:var(--teal-dim); color:var(--teal); border:1px solid rgba(0,180,216,0.2); }
+    .pill-amber { background:var(--amber-dim); color:var(--amber); border:1px solid rgba(232,160,32,0.2); }
+    .pill-green { background:rgba(57,217,138,0.08); color:var(--green); border:1px solid rgba(57,217,138,0.2); }
+    .case-body { padding:1.75rem 2rem; }
+    .case-body h4 { font-family:var(--mono); font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-3); margin-bottom:0.75rem; margin-top:1.5rem; }
+    .case-body h4:first-child { margin-top:0; }
+    .case-body p { font-size:0.875rem; color:var(--text-2); line-height:1.75; margin-bottom:0.75rem; }
+    .case-body p:last-child { margin-bottom:0; }
+    .case-body ul { list-style:none; padding:0; margin-bottom:0.75rem; }
+    .case-body ul li { font-size:0.875rem; color:var(--text-2); line-height:1.7; padding:0.2rem 0 0.2rem 1.25rem; position:relative; }
+    .case-body ul li::before { content:'▸'; position:absolute; left:0; color:var(--teal); font-size:0.65rem; top:0.35rem; }
+    .case-body ul li strong { color:var(--text); font-weight:500; }
+    .case-divider { border:none; border-top:1px solid var(--border); margin:1.5rem 0; }
+    .name-drop { display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.5rem; }
+    .name-tag { font-family:var(--mono); font-size:0.62rem; color:var(--text-2); background:var(--bg-3); border:1px solid var(--border-2); padding:0.2rem 0.6rem; border-radius:3px; }
+    .press-link { display:inline-flex; align-items:center; gap:0.4rem; font-family:var(--mono); font-size:0.65rem; color:var(--teal); text-decoration:none; border:1px solid rgba(0,180,216,0.2); padding:0.35rem 0.75rem; border-radius:3px; background:var(--teal-dim); transition:all 0.2s; margin-top:0.75rem; }
+    .press-link:hover { background:rgba(0,180,216,0.18); }
+
+    /* SKILLS */
+    .skill-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+    .skill-card { background:var(--bg-card); padding:1.35rem 1.5rem; transition:background 0.2s; }
+    .skill-card:hover { background:var(--bg-3); }
+    .skill-card h3 { font-family:var(--mono); font-size:0.75rem; font-weight:700; color:var(--text); margin-bottom:0.35rem; }
+    .skill-card p { font-size:0.78rem; color:var(--text-3); line-height:1.5; }
+
+    /* CONNECT */
+    .connect-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; align-items:start; }
+    .connect-cta h2 { font-family:var(--mono); font-size:clamp(1.3rem,2.5vw,1.75rem); font-weight:700; color:#fff; margin-bottom:0.5rem; }
+    .connect-cta p { font-size:0.85rem; color:var(--text-3); margin-bottom:1.25rem; line-height:1.6; }
+    .connect-links { display:flex; flex-direction:column; gap:0.5rem; }
+    .connect-row { display:flex; align-items:center; justify-content:space-between; padding:0.7rem 1rem; background:var(--bg-card); border:1px solid var(--border); border-radius:5px; text-decoration:none; transition:border-color 0.18s,background 0.18s; }
+    .connect-row:hover { border-color:var(--teal); background:var(--teal-dim); }
+    .connect-row-label { font-family:var(--mono); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-2); }
+    .connect-row-val { font-family:var(--mono); font-size:0.65rem; color:var(--text-3); }
+    .connect-row:hover .connect-row-label { color:var(--teal); }
+
+    footer { border-top:1px solid var(--border); padding:1.5rem 2rem; display:flex; justify-content:space-between; font-family:var(--mono); font-size:0.6rem; letter-spacing:0.1em; color:var(--text-3); }
+
+    @media (max-width:680px) {
+      .hero-inner { grid-template-columns:1fr; }
+      .hero-photo { display:none; }
+      .stats-row { grid-template-columns:repeat(2,1fr); }
+      .case-header { grid-template-columns:1fr; }
+      .case-metrics { flex-direction:row; flex-wrap:wrap; }
+      .skill-grid { grid-template-columns:1fr; }
+      .connect-grid { grid-template-columns:1fr; }
+      .nav-links { display:none; }
+      .wrap { padding:0 1.25rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="#" class="nav-name">Anthony Orque</a>
   <ul class="nav-links">
@@ -557,38 +138,36 @@
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-text">
-        <div class="hero-meta">Las Vegas, NV &nbsp;·&nbsp; Available for Remote / Hybrid</div>
+        <div class="hero-meta">Las Vegas, NV &nbsp;·&nbsp; Open to Remote / Hybrid</div>
         <h1>Anthony Orque</h1>
-        <div class="hero-role">Senior Events Manager &amp; Revenue Systems Builder</div>
-        <p class="hero-bio">I build the infrastructure behind events that generate revenue — systems, upsell pipelines, vendor networks, and team playbooks. I've done it from scratch, multiple times, at scale.</p>
+        <div class="hero-role">Events Operations &amp; AI Systems Builder</div>
+        <p class="hero-bio">I build the infrastructure behind events that drive revenue — and the AI systems that make teams run at scale. Done it from scratch, multiple times, under real pressure.</p>
+        <div class="hero-ctas">
+          <a href="mailto:aorque@gmail.com" class="btn btn-teal">Get in Touch</a>
+          <a href="https://linkedin.com/in/anthony-orque" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
+        </div>
       </div>
       <div class="hero-photo">
         <img src="headshot.jpg" alt="Anthony Orque" />
       </div>
     </div>
-
-    <div class="hero-stats" style="margin-top: 2.5rem;">
+    <div class="stats-row">
       <div class="hs">
         <div class="hs-val amber">$3.3M</div>
         <div class="hs-label">events revenue in 6 months (F1 Arcade)</div>
       </div>
       <div class="hs">
-        <div class="hs-val">$177K</div>
-        <div class="hs-label">single client upsell expansion (PWC)</div>
+        <div class="hs-val">$1M+</div>
+        <div class="hs-label">upsell revenue at TAO Group (2024)</div>
       </div>
       <div class="hs">
-        <div class="hs-val teal">53%</div>
-        <div class="hs-label">of venue revenue driven through events</div>
+        <div class="hs-val teal">8</div>
+        <div class="hs-label">AI agents built + running in production</div>
       </div>
       <div class="hs">
-        <div class="hs-val amber">400+</div>
-        <div class="hs-label">grassroots events funded via Metafy</div>
+        <div class="hs-val amber">2.9M</div>
+        <div class="hs-label">books sold in 24 hrs — Hormozi Guinness Record</div>
       </div>
-    </div>
-
-    <div class="hero-ctas">
-      <a href="#connect" class="btn btn-teal">Get in Touch</a>
-      <a href="https://linkedin.com/in/anthony-orque" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
     </div>
   </section>
 
@@ -597,90 +176,76 @@
     <div class="eyebrow">Experience</div>
     <div class="section-title">Case Studies</div>
 
-    <!-- F1 ARCADE -->
+    <!-- MONKEYTILT AI STACK -->
     <div class="case">
       <div class="case-header">
         <div>
-          <div class="case-co">F1 Arcade · Las Vegas</div>
-          <div class="case-title">Built an entire events operation from zero</div>
-          <div class="case-tenure">Senior Events Manager &nbsp;·&nbsp; 2023–2024</div>
+          <div class="case-co">MonkeyTilt &nbsp;·&nbsp; Head of Event Marketing &nbsp;·&nbsp; 2026</div>
+          <div class="case-title">Built an 8-agent AI operating system from scratch</div>
+          <div class="case-tenure">Pre-launch consumer brand. Wide brief. Small human team. Hard timeline.</div>
         </div>
         <div class="case-metrics">
-          <span class="metric-pill pill-amber">$3.3M Revenue</span>
-          <span class="metric-pill pill-teal">53% of Venue Rev</span>
-          <span class="metric-pill pill-green">$270K Upsells</span>
+          <span class="pill pill-teal">8 Agents</span>
+          <span class="pill pill-amber">1,500+ Prompts</span>
+          <span class="pill pill-green">4,868 Lines of Rules</span>
         </div>
       </div>
       <div class="case-body">
-        <h4>The Starting Point</h4>
-        <p>When I joined F1 Arcade Las Vegas, the events function was essentially nonexistent. Two days of shadowing a manager in Boston. A brand guide. A few templates. That was it. No vendor relationships, no team comms infrastructure, no upsell tools, no playbooks, no events staff — just me.</p>
+        <h4>The Problem</h4>
+        <p>Joined a pre-launch brand with a marketing brief that required the throughput of a 4–5 person ops pod. No team to hire. No time to hire. Built the system instead.</p>
 
-        <h4>What I Built</h4>
+        <h4>The Stack</h4>
         <ul>
-          <li><strong>Full vendor repository from scratch</strong> — personally outreached to and onboarded ~15 vendors, all drawn from pre-existing relationships I'd built at Tag Group</li>
-          <li><strong>All team communications infrastructure</strong> — stood up every operational group chat: events, AV, ops, kitchen, and logistics (Teams + iMessage)</li>
-          <li><strong>Triple Seat system buildout</strong> — created custom templates and workflows that went significantly beyond the national standard, tailored to how Las Vegas operates</li>
-          <li><strong>Complete upsell pipeline</strong> — built every upsell tool from scratch using Canva and Adobe Illustrator (personal account for the first 5 months): menus, floor plans, add-on packages, F&amp;B packages, AV options, branded experiences</li>
-          <li><strong>Email and handoff playbooks</strong> — built all client onboarding templates for the sales-to-events handoff, including the pre-event planning and upsell sequence I owned</li>
-          <li><strong>Trained the ops team</strong> — solo for 2.5 months before getting support; eventually trained the full ops staff to execute events alongside me</li>
+          <li><strong>Mattermost layer (2 agents):</strong> Cadence (Marketing Coordinator) handles cross-workstream routing and the master marketing calendar. Rem (Events & Tour Ops) owns inbox triage, agent memory, and daily syncs. Human team interfaces here.</li>
+          <li><strong>Cursor execution layer (5 agents):</strong> Ram (Chief of Staff) runs daily ops and EOD ledgers. Sparx (Idea Engine) scores and pitches ideas. Norm (KB steward) governs canon and detects drift. Dexter (Deep Research) handles vendor recon and comp intel. Connie (Convention Chair) owns isolated convention planning.</li>
+          <li><strong>Adjacent agents:</strong> Eve (EOD synthesis), Scribe (KB ingestion). Plus Unit 0 — Hermes — for personal life operations.</li>
         </ul>
+
+        <h4>How It Runs</h4>
+        <p>Brain dump in. Agents structure. I call the shot. Ship. Write learnings back to the rules file. The system gets sharper every week because the canon gets tighter every week. Six weeks in: 69 active tasks running across 13 workstreams in Notion as source of truth.</p>
 
         <hr class="case-divider" />
 
         <h4>The Numbers</h4>
         <ul>
-          <li>Events consistently drove <strong>~53% of total venue revenue</strong> within 5–6 months of operation</li>
-          <li>Estimated <strong>$3.3M total events revenue</strong> generated across the active period</li>
-          <li><strong>$270K+ personally attributed to upsells</strong> I built and executed the pipeline for</li>
-          <li>Largest single client: <strong>PWC at $177K</strong> — the largest single-account expansion in my time there</li>
+          <li><strong>1,500+ production prompts</strong> authored and version-controlled</li>
+          <li><strong>4,868 lines of agent rules</strong> — living, updated canon</li>
+          <li><strong>6 weeks of production runtime</strong> replacing ~4–5 person ops pod throughput</li>
+          <li>Source of truth: Notion — owner dashboards, P0 blocker views, per-DRI routing</li>
         </ul>
-
-        <hr class="case-divider" />
-
-        <h4>Hired My Own Replacement</h4>
-        <p>By February, the system was solid enough that I brought on a junior events manager (Laxia) whose primary role was client comms and outreach — because I'd already built everything else. She stepped into a functioning machine.</p>
       </div>
     </div>
 
-    <!-- TAG GROUP -->
+    <!-- TAO GROUP -->
     <div class="case">
       <div class="case-header">
         <div>
-          <div class="case-co">Tag Group · Las Vegas</div>
-          <div class="case-title">~$1M in upsell revenue in one calendar year</div>
-          <div class="case-tenure">Senior Manager, Event Operations &nbsp;·&nbsp; 2022–2023</div>
+          <div class="case-co">TAO Group Hospitality &nbsp;·&nbsp; Las Vegas</div>
+          <div class="case-title">$1M+ in upsells across 15 properties. 84% client retention.</div>
+          <div class="case-tenure">Senior Manager, Event Operations &nbsp;·&nbsp; 2022–2024</div>
         </div>
         <div class="case-metrics">
-          <span class="metric-pill pill-amber">~$1M in Sales</span>
-          <span class="metric-pill pill-teal">$150K Single Upsell</span>
+          <span class="pill pill-amber">$1M+ Revenue</span>
+          <span class="pill pill-teal">84% Retention</span>
+          <span class="pill pill-green">15 Properties</span>
         </div>
       </div>
       <div class="case-body">
-        <h4>Role</h4>
-        <p>Hybrid sales-and-ops role. Once events sales closed the venue, everything transitioned to me: full client onboarding, pre-event planning, upsell execution, and day-of operations across Tag Group venues.</p>
+        <h4>Scope</h4>
+        <p>Owned event operations across TAO Group's full Las Vegas portfolio: TAO, LAVO, Beauty & Essex, Marquee, Jewel, Hakkasan, Omnia. Hybrid sales-and-ops role — once events sales closed the venue, everything passed to me: onboarding, pre-event planning, upsell execution, day-of ops.</p>
 
-        <h4>How I Operated</h4>
+        <h4>What I Built</h4>
         <ul>
-          <li>Built a complete <strong>client onboarding workflow</strong> — from introduction handoff to event-day execution — including custom RFPs and proposals for any client customizations</li>
-          <li>Developed the <strong>"How to Work With Us" guide</strong> — a client-facing document that set expectations, reduced back-and-forth, and primed clients for upsell conversations</li>
-          <li>Ran <strong>upsell conversations entirely from feel</strong> — no script, deep product knowledge. When I eventually brought in support I translated it into talking points</li>
-          <li>Upsell categories: F&amp;B enhancements, custom AV, entertainment, branding packages, experiential add-ons, and incentive program buildouts</li>
+          <li><strong>Full client onboarding workflow</strong> — introduction handoff through event-day execution, including custom RFPs and proposals for every client customization request</li>
+          <li><strong>"How to Work With Us" guide</strong> — client-facing document that set expectations, reduced back-and-forth, and primed clients for upsell conversations before the first call</li>
+          <li><strong>Upsell system</strong> — F&B enhancements, custom AV, entertainment, branding packages, experiential add-ons, incentive program buildouts. No script — deep product knowledge, translated to talking points when the team scaled</li>
+          <li><strong>Vendor relationships</strong> — built from existing networks across Las Vegas hospitality, formalized into repeatable ops</li>
         </ul>
 
         <hr class="case-divider" />
 
-        <h4>Results</h4>
-        <ul>
-          <li>Came in mid-2023; hit <strong>~$1M in sales by end of 2024</strong> calendar year</li>
-          <li>Largest single upsell: <strong>Snowflake at ~$150K</strong></li>
-          <li>Worked primarily with corporate receptions, networking events, incentive programs, and brand-sponsored after-parties</li>
-        </ul>
-
-        <hr class="case-divider" />
-
-        <h4>Flagship Project: Fanatics Super Bowl LVIII Party</h4>
-        <p>The biggest event I worked on at Tag Group. Six months of lead time. A partnership with MGM and the Cosmopolitan. 700 guests. Blue carpet. I owned day-of ops and vendor coordination — split venue liaison responsibilities with my Assistant Director of Event Operations.</p>
-
+        <h4>Notable: Fanatics Super Bowl LVIII Party</h4>
+        <p>Six months of lead time. Partnership with MGM and the Cosmopolitan. 700 guests. Blue carpet. Owned day-of operations and vendor coordination. The biggest single event of my time at TAO Group.</p>
         <div class="name-drop">
           <span class="name-tag">Travis Scott</span>
           <span class="name-tag">Meek Mill</span>
@@ -690,20 +255,63 @@
           <span class="name-tag">Joe Burrow</span>
           <span class="name-tag">Peyton Manning</span>
           <span class="name-tag">Shaquille O'Neal</span>
-          <span class="name-tag">Jelly Roll</span>
           <span class="name-tag">Lil Baby</span>
+          <span class="name-tag">Jelly Roll</span>
           <span class="name-tag">A'ja Wilson</span>
           <span class="name-tag">Gary Vaynerchuk</span>
-          <span class="name-tag">Guy Fieri</span>
           <span class="name-tag">Robert Kraft</span>
-          <span class="name-tag">Damar Hamlin</span>
-          <span class="name-tag">CeeDee Lamb</span>
           <span class="name-tag">Queen Latifah</span>
         </div>
+        <a href="https://www.reviewjournal.com/sports/football/super-bowl/fanatics-super-bowl-party-brings-big-stars-to-strip-photos-2998328/" target="_blank" rel="noopener" class="press-link">↗ Las Vegas Review-Journal Coverage</a>
 
-        <a href="https://www.reviewjournal.com/sports/football/super-bowl/fanatics-super-bowl-party-brings-big-stars-to-strip-photos-2998328/" target="_blank" rel="noopener" class="press-link">
-          ↗ Las Vegas Review-Journal Coverage
-        </a>
+        <hr class="case-divider" />
+
+        <h4>Notable: Hormozi $100M Money Models Book Launch</h4>
+        <p>Event operations for the launch of Alex Hormozi's <em>$100M Money Models</em> at Acquisition.com. Guinness World Record — 2.9 million copies sold in 24 hours. Owned the event ops layer wrapping the launch motion, including Investor Open House programming.</p>
+        <a href="https://people.com/jennifer-lopez-ben-affleck-glam-date-night-las-vegas-poker-tournament-photos-8404279" target="_blank" rel="noopener" class="press-link">↗ People Magazine Coverage</a>
+      </div>
+    </div>
+
+    <!-- F1 ARCADE -->
+    <div class="case">
+      <div class="case-header">
+        <div>
+          <div class="case-co">F1 Arcade &nbsp;·&nbsp; Las Vegas</div>
+          <div class="case-title">Built an entire events operation from zero. Solo.</div>
+          <div class="case-tenure">Senior Events Manager &nbsp;·&nbsp; 2023–2024</div>
+        </div>
+        <div class="case-metrics">
+          <span class="pill pill-amber">$3.3M Revenue</span>
+          <span class="pill pill-teal">53% of Venue Rev</span>
+          <span class="pill pill-green">$270K Upsells</span>
+        </div>
+      </div>
+      <div class="case-body">
+        <h4>Starting Point</h4>
+        <p>Two days of shadowing a manager in Boston. A brand guide. A few templates. No vendors. No team. No systems. Just me.</p>
+
+        <h4>What I Built</h4>
+        <ul>
+          <li><strong>Vendor repository from scratch</strong> — outreached and onboarded ~15 vendors using pre-existing TAO Group relationships. Zero handoff from anyone.</li>
+          <li><strong>All team comms infrastructure</strong> — stood up every ops group chat: events, AV, ops, kitchen, logistics (Teams + iMessage)</li>
+          <li><strong>Triple Seat buildout</strong> — custom templates and workflows built significantly beyond the national standard for how Las Vegas operates</li>
+          <li><strong>Full upsell pipeline</strong> — every upsell tool built from scratch in Canva and Adobe Illustrator (personal account, first 5 months): menus, floor plans, F&B packages, AV options, branded experience add-ons</li>
+          <li><strong>Client email templates and handoff playbooks</strong> — from sales handoff through pre-event planning through upsell sequence</li>
+          <li><strong>Ops team training</strong> — solo for 2.5 months before getting any support. Trained the full ops staff to execute events alongside me.</li>
+        </ul>
+
+        <hr class="case-divider" />
+
+        <h4>Results</h4>
+        <ul>
+          <li>Events drove <strong>~53% of total venue revenue</strong> within 5–6 months</li>
+          <li><strong>~$3.3M total events revenue</strong> across the active period</li>
+          <li><strong>$270K+ personally attributed to upsells</strong> built and executed from scratch</li>
+          <li>Largest single client: <strong>PWC at $177K</strong></li>
+        </ul>
+
+        <h4>Then Hired My Own Replacement</h4>
+        <p>System was solid enough by February that I brought on a junior events manager whose entire job was client comms and outreach — because everything else was already built. She stepped into a machine.</p>
       </div>
     </div>
 
@@ -711,34 +319,34 @@
     <div class="case">
       <div class="case-header">
         <div>
-          <div class="case-co">Metafy · Remote</div>
-          <div class="case-title">Managed a $1M grassroots esports fund end-to-end</div>
+          <div class="case-co">Metafy &nbsp;·&nbsp; Remote</div>
+          <div class="case-title">Managed a $1M grassroots esports fund. Solo. End-to-end.</div>
           <div class="case-tenure">Event Marketing Lead &nbsp;·&nbsp; ~8–9 months</div>
         </div>
         <div class="case-metrics">
-          <span class="metric-pill pill-teal">$1M Fund</span>
-          <span class="metric-pill pill-amber">400+ Events</span>
+          <span class="pill pill-teal">$1M Fund</span>
+          <span class="pill pill-amber">400+ Events Funded</span>
         </div>
       </div>
       <div class="case-body">
         <h4>The Program</h4>
-        <p>After Metafy's Series A ($26M raised), CEO created a $1M pledge to the grassroots gaming and esports community — micro-grants and sponsorships to local tournaments, content creators, and community-run events that major brands typically ignore. I was the program manager.</p>
+        <p>After Metafy's $26M Series A, the CEO pledged $1M to the grassroots gaming community — micro-grants and sponsorships to local tournaments, content creators, and community-run events that major brands ignore. I ran the program.</p>
 
         <h4>What I Owned</h4>
         <ul>
-          <li><strong>Full intake and evaluation system</strong> — built on Coda + Zapier + Google Workspace + Typeform, with cross-functional coordination across product, legal, and accounting</li>
-          <li><strong>Every funding decision</strong> — evaluated and approved all applications personally across the life of the program</li>
-          <li><strong>Refined the process continuously</strong> — started with an intern, went solo after month 2, and kept the pipeline running while also executing live IRL activations</li>
-          <li><strong>On-site activation operations</strong> — staffing, scheduling, logistics, and vendor coordination at live grassroots events</li>
+          <li><strong>Full intake and evaluation system</strong> — built on Coda + Zapier + Google Workspace + Typeform, coordinated across product, legal, and accounting</li>
+          <li><strong>Every funding decision</strong> — evaluated and approved all applications personally for the life of the program</li>
+          <li><strong>Live IRL activations</strong> — on-site staffing, scheduling, logistics, and vendor coordination at grassroots events alongside running the fund</li>
+          <li>Started with an intern. Went solo after month 2. Never stopped.</li>
         </ul>
 
         <hr class="case-divider" />
 
-        <h4>Scale</h4>
+        <h4>Results</h4>
         <ul>
-          <li>Funded <strong>400+ grassroots events</strong> over ~8–9 months</li>
-          <li>Sponsorships ranged from small community grants ($100 comedy show) to larger tournament sponsorships</li>
-          <li>Program built from scratch — no predecessor, no playbook</li>
+          <li><strong>400+ grassroots events funded</strong> over ~8–9 months</li>
+          <li>Sponsorships from $100 community grants to larger tournament packages</li>
+          <li>No playbook. Built it all from scratch.</li>
         </ul>
       </div>
     </div>
@@ -751,39 +359,39 @@
     <div class="section-title">What I Build</div>
     <div class="skill-grid">
       <div class="skill-card">
+        <h3>AI Agent Systems</h3>
+        <p>Multi-agent stacks in production. Cursor, Mattermost, Notion. Rules-based canon governance.</p>
+      </div>
+      <div class="skill-card">
         <h3>Revenue Systems</h3>
         <p>Upsell pipelines, sales assets, pricing frameworks, client handoff workflows.</p>
       </div>
       <div class="skill-card">
+        <h3>Event Operations</h3>
+        <p>Full-cycle execution: intake → planning → day-of → debrief. 400+ events. 15 venues.</p>
+      </div>
+      <div class="skill-card">
         <h3>Operations Playbooks</h3>
-        <p>SOPs, team comms infrastructure, vendor onboarding, staffing systems.</p>
-      </div>
-      <div class="skill-card">
-        <h3>Event Production</h3>
-        <p>Full-cycle execution: intake → planning → day-of → debrief. 400+ events.</p>
-      </div>
-      <div class="skill-card">
-        <h3>AI-Assisted Ops</h3>
-        <p>Automations, agent-based workflows, research pipelines, and coordination tools.</p>
+        <p>SOPs, team comms infrastructure, vendor onboarding, staffing systems. Built from zero.</p>
       </div>
       <div class="skill-card">
         <h3>Client Experience</h3>
-        <p>Onboarding guides, proposal design, communication systems, expectation-setting.</p>
+        <p>Onboarding guides, proposal design, expectation-setting. 84% retention at TAO Group.</p>
       </div>
       <div class="skill-card">
         <h3>Tools</h3>
-        <p>Triple Seat · Coda · Canva · Adobe Illustrator · Zapier · Google Workspace · HubSpot</p>
+        <p>Cursor · Notion · Coda · Mattermost · Triple Seat · Canva · Adobe Illustrator · Zapier · Google Workspace</p>
       </div>
     </div>
   </section>
 
   <!-- CONNECT -->
-  <section class="section" id="connect" style="border-bottom: none; padding-bottom: 4rem;">
+  <section class="section" id="connect" style="border-bottom:none; padding-bottom:4rem;">
     <div class="connect-grid">
       <div class="connect-cta">
         <div class="eyebrow">Contact</div>
         <h2>Let's connect.</h2>
-        <p>Open to full-time, consulting, and fractional work. Remote or Las Vegas.</p>
+        <p>Open to full-time, fractional, and consulting. Remote or Las Vegas.</p>
         <a href="mailto:aorque@gmail.com" class="btn btn-teal">Send an Email</a>
       </div>
       <div class="connect-links">
@@ -807,11 +415,11 @@
     </div>
   </section>
 
-</div><!-- /wrap -->
+</div>
 
 <footer>
   <span>© 2026 Anthony Orque · Las Vegas, NV</span>
-  <span>EVENTS &amp; REVENUE SYSTEMS</span>
+  <span>EVENTS &amp; AI SYSTEMS</span>
 </footer>
 
 </body>
