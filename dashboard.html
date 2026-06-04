@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UNIT-00 // Tony's AI Agent System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0f;
+      --bg2:       #0f0f18;
+      --bg3:       #14141f;
+      --border:    #1e1e30;
+      --teal:      #00b4d8;
+      --teal-dim:  #007fa0;
+      --teal-glow: rgba(0,180,216,.18);
+      --orange:    #e8a020;
+      --orange-dim:#a06c0e;
+      --orange-glow: rgba(232,160,32,.15);
+      --text:      #c8cfe8;
+      --text-muted:#5a6080;
+      --green:     #39d98a;
+      --red:       #ff4f6e;
+      --yellow:    #f5c518;
+      --font:      'Space Mono', 'Courier New', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 13px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── SCANLINE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,.06) 2px,
+        rgba(0,0,0,.06) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--bg2);
+      border-bottom: 2px solid var(--teal);
+      padding: 18px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 0 30px rgba(0,180,216,.12);
+    }
+
+    .header-left { display: flex; align-items: center; gap: 14px; }
+
+    .unit-logo {
+      width: 44px; height: 44px;
+      border: 2px solid var(--teal);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--teal-glow);
+      box-shadow: 0 0 12px var(--teal);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--teal);
+      letter-spacing: 1px;
+      text-align: center;
+      line-height: 1.2;
+      flex-shrink: 0;
+    }
+
+    .header-title h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--teal);
+      letter-spacing: 3px;
+      text-shadow: 0 0 14px var(--teal);
+    }
+
+    .header-title p {
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .status-pill {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .6; transform: scale(.85); }
+    }
+
+    .clock {
+      font-size: 11px;
+      color: var(--orange);
+      letter-spacing: 1px;
+    }
+
+    /* ── MAIN GRID ── */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .25s, box-shadow .25s;
+    }
+
+    .card:hover {
+      border-color: var(--teal-dim);
+      box-shadow: 0 0 20px var(--teal-glow);
+    }
+
+    /* corner accent */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 32px; height: 32px;
+      border-top: 2px solid var(--teal);
+      border-left: 2px solid var(--teal);
+      border-radius: 10px 0 0 0;
+      opacity: .6;
+    }
+
+    .card-teal  { border-top: 2px solid var(--teal); }
+    .card-orange{ border-top: 2px solid var(--orange); }
+    .card-orange::after { border-color: var(--orange); }
+
+    .card-header {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .card-icon {
+      font-size: 14px;
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--teal-glow);
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    .card-orange .card-icon { background: var(--orange-glow); }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .card-orange .card-title { color: var(--orange); }
+
+    .card-subtitle {
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      margin-left: auto;
+    }
+
+    /* ── COLUMN SPANS ── */
+    .col-4  { grid-column: span 4; }
+    .col-6  { grid-column: span 6; }
+    .col-8  { grid-column: span 8; }
+    .col-12 { grid-column: span 12; }
+
+    @media (max-width: 900px) {
+      .col-4, .col-6, .col-8 { grid-column: span 12; }
+    }
+    @media (min-width: 901px) and (max-width: 1100px) {
+      .col-4 { grid-column: span 6; }
+    }
+
+    /* ── CRON TABLE ── */
+    .cron-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .cron-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: background .2s;
+    }
+    .cron-row:hover { background: #161624; }
+
+    .cron-name {
+      font-size: 12px;
+      color: var(--text);
+      font-weight: 700;
+    }
+    .cron-schedule {
+      font-size: 10px;
+      color: var(--teal);
+      letter-spacing: .5px;
+      white-space: nowrap;
+      text-align: right;
+    }
+    .cron-badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .badge-ok     { background: rgba(57,217,138,.15); color: var(--green); border: 1px solid rgba(57,217,138,.3); }
+    .badge-warn   { background: rgba(245,197,24,.12); color: var(--yellow); border: 1px solid rgba(245,197,24,.3); }
+    .badge-idle   { background: rgba(90,96,128,.15);  color: var(--text-muted); border: 1px solid var(--border); }
+
+    /* ── TODO LIST ── */
+    .todo-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .todo-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: background .2s;
+    }
+    .todo-item:hover { background: #161624; }
+
+    .todo-check {
+      width: 16px; height: 16px;
+      border-radius: 4px;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px;
+    }
+    .todo-done   .todo-check { background: var(--green);  border-color: var(--green);  color: #000; }
+    .todo-active .todo-check { background: var(--orange); border-color: var(--orange); color: #000; }
+    .todo-pending .todo-check{ border-color: var(--text-muted); }
+
+    .todo-text { flex: 1; font-size: 12px; }
+    .todo-done .todo-text    { color: var(--text-muted); text-decoration: line-through; }
+    .todo-active .todo-text  { color: var(--text); }
+    .todo-pending .todo-text { color: var(--text); opacity: .75; }
+
+    .todo-tag {
+      font-size: 9px;
+      letter-spacing: 1px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+      align-self: flex-start;
+    }
+    .tag-done    { background: rgba(57,217,138,.12); color: var(--green);       border: 1px solid rgba(57,217,138,.25); }
+    .tag-active  { background: rgba(232,160,32,.12);  color: var(--orange);     border: 1px solid rgba(232,160,32,.25); }
+    .tag-pending { background: rgba(90,96,128,.12);   color: var(--text-muted); border: 1px solid var(--border); }
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrap { margin-top: 4px; }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .progress-label span:last-child { color: var(--teal); font-weight: 700; }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: var(--bg3);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--teal-dim), var(--teal));
+      box-shadow: 0 0 8px var(--teal);
+      transition: width 1s cubic-bezier(.4,0,.2,1);
+    }
+    .progress-fill.orange {
+      background: linear-gradient(90deg, var(--orange-dim), var(--orange));
+      box-shadow: 0 0 8px var(--orange);
+    }
+    .progress-fill.warn {
+      background: linear-gradient(90deg, #a06030, var(--yellow));
+      box-shadow: 0 0 8px var(--yellow);
+    }
+
+    /* memory-specific */
+    .memory-detail {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .mem-stat {
+      flex: 1;
+      min-width: 100px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      text-align: center;
+    }
+    .mem-stat-val {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--teal);
+      display: block;
+      text-shadow: 0 0 10px var(--teal);
+    }
+    .mem-stat-label {
+      font-size: 9px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* ── GOOGLE DRIVE LINKS ── */
+    .drive-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .drive-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all .2s;
+    }
+    .drive-link:hover {
+      border-color: var(--teal-dim);
+      background: #161624;
+      color: var(--teal);
+      box-shadow: 0 0 12px var(--teal-glow);
+      transform: translateX(3px);
+    }
+    .drive-link-icon {
+      font-size: 16px;
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--teal-glow);
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .drive-link-text { flex: 1; }
+    .drive-link-name { font-size: 12px; font-weight: 700; }
+    .drive-link-desc { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+    .drive-link-arrow { font-size: 12px; color: var(--text-muted); }
+    .drive-link:hover .drive-link-arrow { color: var(--teal); }
+
+    /* ── GIG TRACKER ── */
+    .gig-header-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .gig-amount {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--orange);
+      text-shadow: 0 0 12px var(--orange);
+    }
+    .gig-goal {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .gig-stats {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .gig-stat {
+      flex: 1; min-width: 80px;
+      padding: 8px 10px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-align: center;
+    }
+    .gig-stat-val { font-size: 14px; font-weight: 700; color: var(--orange); }
+    .gig-stat-label { font-size: 9px; color: var(--text-muted); letter-spacing: 1px; margin-top: 2px; }
+
+    /* ── QUICK STATS ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .stat-box {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 10px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all .2s;
+    }
+    .stat-box:hover {
+      border-color: var(--teal-dim);
+      box-shadow: 0 0 14px var(--teal-glow);
+    }
+    .stat-box::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--teal-dim), var(--teal));
+    }
+    .stat-box.orange::before {
+      background: linear-gradient(90deg, var(--orange-dim), var(--orange));
+    }
+    .stat-num {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--teal);
+      display: block;
+      text-shadow: 0 0 10px var(--teal);
+      line-height: 1;
+    }
+    .stat-box.orange .stat-num { color: var(--orange); text-shadow: 0 0 10px var(--orange); }
+    .stat-label {
+      font-size: 9px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 6px;
+      display: block;
+    }
+
+    /* ── SYSTEM LOG TICKER ── */
+    .ticker-wrap {
+      grid-column: span 12;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 16px;
+      overflow: hidden;
+      position: relative;
+    }
+    .ticker-label {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--teal);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .ticker-scroll {
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .ticker-text {
+      display: inline-block;
+      animation: scroll-left 40s linear infinite;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .ticker-text span { color: var(--teal); margin: 0 4px; }
+    .ticker-text em   { color: var(--orange); font-style: normal; }
+
+    @keyframes scroll-left {
+      0%   { transform: translateX(100vw); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── UTILITY ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 14px 0;
+    }
+
+    .tag-row {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px;
+    }
+    .chip {
+      font-size: 9px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════════════════ -->
+<header>
+  <div class="header-left">
+    <div class="unit-logo">UNIT<br/>00</div>
+    <div class="header-title">
+      <h1>UNIT-00</h1>
+      <p>Tony's AI Agent System // Operational</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="status-pill">
+      <div class="status-dot"></div>
+      SYSTEMS NOMINAL
+    </div>
+    <div class="clock" id="clock">--:-- -- PT</div>
+  </div>
+</header>
+
+<!-- ══ TICKER ══════════════════════════════════════════════════════════ -->
+<div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:6px 20px;overflow:hidden;">
+  <div class="ticker-scroll">
+    <span class="ticker-text">
+      <span>[SYS]</span> All cron jobs nominal &nbsp;|&nbsp;
+      <span>[MEM]</span> Memory at <em>69%</em> — monitor threshold approaching &nbsp;|&nbsp;
+      <span>[GIG]</span> Weekly earnings tracker active — goal: <em>$2,500</em> &nbsp;|&nbsp;
+      <span>[KB]</span> Google Drive knowledge base synced &nbsp;|&nbsp;
+      <span>[AI]</span> Next briefing: Morning AI News — 07:00 PT &nbsp;|&nbsp;
+      <span>[LOG]</span> Brain dump #1 recorded &nbsp;|&nbsp;
+      <span>[LOG]</span> Interview prep session #1 complete &nbsp;|&nbsp;
+      <span>[SYS]</span> UNIT-00 is active and watching. Stay sharp, Tony.
+    </span>
+  </div>
+</div>
+
+<!-- ══ MAIN ════════════════════════════════════════════════════════════ -->
+<main>
+
+  <!-- ── CRON JOBS (full width) ── -->
+  <div class="card card-teal col-12">
+    <div class="card-header">
+      <div class="card-icon">⏱</div>
+      <span class="card-title">Active Cron Jobs</span>
+      <span class="card-subtitle">4 scheduled / 4 active</span>
+    </div>
+    <div class="cron-list">
+
+      <div class="cron-row">
+        <div>
+          <div class="cron-name">☀️ &nbsp;Morning AI News Briefing</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Fetches top AI headlines → formats digest → sends to Telegram</div>
+        </div>
+        <div class="cron-schedule">Daily @ 07:00 PT</div>
+        <div class="cron-badge badge-ok">✓ OK</div>
+      </div>
+
+      <div class="cron-row">
+        <div>
+          <div class="cron-name">🧠 &nbsp;Hormozi Nightly Insight</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Generates business insight via Hormozi framework → sends to Telegram</div>
+        </div>
+        <div class="cron-schedule">Daily @ 23:00 PT</div>
+        <div class="cron-badge badge-ok">✓ OK</div>
+      </div>
+
+      <div class="cron-row">
+        <div>
+          <div class="cron-name">📋 &nbsp;Monday Priority Check-In</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Pulls weekly goals from KB → priority summary → Telegram nudge</div>
+        </div>
+        <div class="cron-schedule">Mondays @ 09:00 PT</div>
+        <div class="cron-badge badge-ok">✓ OK</div>
+      </div>
+
+      <div class="cron-row">
+        <div>
+          <div class="cron-name">📊 &nbsp;Friday Priority Review</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Week-in-review digest → wins logged → next week prep → Telegram</div>
+        </div>
+        <div class="cron-schedule">Fridays @ 17:00 PT</div>
+        <div class="cron-badge badge-ok">✓ OK</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── TODO ITEMS ── -->
+  <div class="card card-teal col-8">
+    <div class="card-header">
+      <div class="card-icon">✅</div>
+      <span class="card-title">Active Todo Items</span>
+      <span class="card-subtitle" id="todo-count"></span>
+    </div>
+    <div class="todo-list" id="todo-list">
+
+      <div class="todo-item todo-done">
+        <div class="todo-check">✓</div>
+        <div class="todo-text">Set up UNIT-00 AI agent system with cron jobs</div>
+        <span class="todo-tag tag-done">DONE</span>
+      </div>
+
+      <div class="todo-item todo-done">
+        <div class="todo-check">✓</div>
+        <div class="todo-text">Log first brain dump to Google Drive KB</div>
+        <span class="todo-tag tag-done">DONE</span>
+      </div>
+
+      <div class="todo-item todo-done">
+        <div class="todo-check">✓</div>
+        <div class="todo-text">Complete first interview prep session</div>
+        <span class="todo-tag tag-done">DONE</span>
+      </div>
+
+      <div class="todo-item todo-active">
+        <div class="todo-check">▶</div>
+        <div class="todo-text">Land first gig work client / project ($2,500 weekly goal)</div>
+        <span class="todo-tag tag-active">IN PROGRESS</span>
+      </div>
+
+      <div class="todo-item todo-active">
+        <div class="todo-check">▶</div>
+        <div class="todo-text">Build out interview preparation workflow in UNIT-00</div>
+        <span class="todo-tag tag-active">IN PROGRESS</span>
+      </div>
+
+      <div class="todo-item todo-pending">
+        <div class="todo-check"></div>
+        <div class="todo-text">Expand KB with additional brain dumps (target: 10 entries)</div>
+        <span class="todo-tag tag-pending">PENDING</span>
+      </div>
+
+      <div class="todo-item todo-pending">
+        <div class="todo-check"></div>
+        <div class="todo-text">Add weekly gig earnings auto-reporting to Telegram</div>
+        <span class="todo-tag tag-pending">PENDING</span>
+      </div>
+
+      <div class="todo-item todo-pending">
+        <div class="todo-check"></div>
+        <div class="todo-text">Create memory pruning / archival workflow when &gt; 80% used</div>
+        <span class="todo-tag tag-pending">PENDING</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── MEMORY + QUICK STATS (right column) ── -->
+  <div style="grid-column: span 4; display: flex; flex-direction: column; gap: 18px;">
+
+    <!-- Memory Usage -->
+    <div class="card card-teal">
+      <div class="card-header">
+        <div class="card-icon">💾</div>
+        <span class="card-title">Memory Usage</span>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Agent Memory</span>
+          <span>69%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill warn" style="width:69%"></div>
+        </div>
+      </div>
+      <div class="memory-detail">
+        <div class="mem-stat">
+          <span class="mem-stat-val">69%</span>
+          <div class="mem-stat-label">Used</div>
+        </div>
+        <div class="mem-stat">
+          <span class="mem-stat-val" style="color:var(--green);">31%</span>
+          <div class="mem-stat-label">Free</div>
+        </div>
+        <div class="mem-stat">
+          <span class="mem-stat-val" style="color:var(--yellow);">80%</span>
+          <div class="mem-stat-label">Threshold</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:10px;color:var(--yellow);">
+        ⚠ &nbsp;Approaching prune threshold. Plan archival at 80%.
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="card card-teal">
+      <div class="card-header">
+        <div class="card-icon">📈</div>
+        <span class="card-title">Quick Stats</span>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <span class="stat-num" id="session-count">—</span>
+          <span class="stat-label">Sessions</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">1</span>
+          <span class="stat-label">Brain<br/>Dumps</span>
+        </div>
+        <div class="stat-box orange">
+          <span class="stat-num" style="color:var(--orange);text-shadow:0 0 10px var(--orange);">1</span>
+          <span class="stat-label">Interview<br/>Preps</span>
+        </div>
+        <div class="stat-box" style="grid-column:span 3;">
+          <span class="stat-num" style="font-size:16px;">4</span>
+          <span class="stat-label">Active Cron Jobs</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── GOOGLE DRIVE KB ── -->
+  <div class="card card-orange col-4">
+    <div class="card-header">
+      <div class="card-icon" style="background:var(--orange-glow);">📂</div>
+      <span class="card-title" style="color:var(--orange);">Google Drive KB</span>
+      <span class="card-subtitle">3 docs linked</span>
+    </div>
+    <div class="drive-list">
+
+      <a class="drive-link" href="https://drive.google.com" target="_blank" rel="noopener">
+        <div class="drive-link-icon">🧠</div>
+        <div class="drive-link-text">
+          <div class="drive-link-name">Brain Dumps</div>
+          <div class="drive-link-desc">Raw thoughts, ideas & observations</div>
+        </div>
+        <span class="drive-link-arrow">↗</span>
+      </a>
+
+      <a class="drive-link" href="https://drive.google.com" target="_blank" rel="noopener">
+        <div class="drive-link-icon">✅</div>
+        <div class="drive-link-text">
+          <div class="drive-link-name">Action Items</div>
+          <div class="drive-link-desc">Prioritized tasks & next steps</div>
+        </div>
+        <span class="drive-link-arrow">↗</span>
+      </a>
+
+      <a class="drive-link" href="https://drive.google.com" target="_blank" rel="noopener">
+        <div class="drive-link-icon">📚</div>
+        <div class="drive-link-text">
+          <div class="drive-link-name">Knowledge Base</div>
+          <div class="drive-link-desc">Structured knowledge & references</div>
+        </div>
+        <span class="drive-link-arrow">↗</span>
+      </a>
+
+    </div>
+    <div class="tag-row">
+      <span class="chip">GDRIVE</span>
+      <span class="chip">SYNCED</span>
+      <span class="chip">3 DOCS</span>
+    </div>
+  </div>
+
+  <!-- ── GIG WORK TRACKER ── -->
+  <div class="card card-orange col-8">
+    <div class="card-header">
+      <div class="card-icon" style="background:var(--orange-glow);">💰</div>
+      <span class="card-title" style="color:var(--orange);">Gig Work Tracker</span>
+      <span class="card-subtitle">Week of <span id="week-label">—</span></span>
+    </div>
+
+    <div class="gig-header-row">
+      <div class="gig-amount">$0</div>
+      <div class="gig-goal">/ $2,500 weekly goal</div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Weekly Earnings Progress</span>
+        <span style="color:var(--orange);">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill orange" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="gig-stats">
+      <div class="gig-stat">
+        <div class="gig-stat-val">$0</div>
+        <div class="gig-stat-label">This Week</div>
+      </div>
+      <div class="gig-stat">
+        <div class="gig-stat-val">$0</div>
+        <div class="gig-stat-label">This Month</div>
+      </div>
+      <div class="gig-stat">
+        <div class="gig-stat-val">0</div>
+        <div class="gig-stat-label">Active Clients</div>
+      </div>
+      <div class="gig-stat">
+        <div class="gig-stat-val">$2,500</div>
+        <div class="gig-stat-label">Weekly Target</div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;font-size:10px;color:var(--text-muted);padding:8px 10px;background:var(--bg3);border-radius:6px;border:1px solid var(--border);">
+      💡 &nbsp;<span style="color:var(--orange);">ACTION:</span> &nbsp;Identify first gig client. Focus on high-value skills: AI consulting, automation, dev projects.
+    </div>
+  </div>
+
+</main>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════════════════ -->
+<footer>
+  UNIT-00 // TONY'S AI AGENT SYSTEM // ALL SYSTEMS OPERATIONAL // BUILD THE FUTURE
+</footer>
+
+<!-- ══ SCRIPTS ══════════════════════════════════════════════════════════ -->
+<script>
+  /* ── Live Clock (PT) ── */
+  function updateClock() {
+    const now = new Date();
+    const pt = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Los_Angeles',
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
+      hour12: true
+    }).format(now);
+    document.getElementById('clock').textContent = pt + ' PT';
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  /* ── Week label ── */
+  function getWeekRange() {
+    const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
+    const day  = now.getDay();
+    const mon  = new Date(now); mon.setDate(now.getDate() - ((day + 6) % 7));
+    const sun  = new Date(mon); sun.setDate(mon.getDate() + 6);
+    const fmt  = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return fmt(mon) + ' – ' + fmt(sun);
+  }
+  const wl = document.getElementById('week-label');
+  if (wl) wl.textContent = getWeekRange();
+
+  /* ── Session count (from sessionStorage) ── */
+  let sessions = parseInt(sessionStorage.getItem('unit00_sessions') || '0') + 1;
+  sessionStorage.setItem('unit00_sessions', sessions);
+  const sc = document.getElementById('session-count');
+  if (sc) sc.textContent = sessions;
+
+  /* ── Todo count badge ── */
+  const todos  = document.querySelectorAll('.todo-item');
+  const done   = document.querySelectorAll('.todo-done').length;
+  const active = document.querySelectorAll('.todo-active').length;
+  const tc = document.getElementById('todo-count');
+  if (tc) tc.textContent = done + '/' + todos.length + ' done · ' + active + ' active';
+
+  /* ── Animate progress bars on load ── */
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.progress-fill').forEach(bar => {
+      const target = bar.style.width;
+      bar.style.width = '0%';
+      setTimeout(() => { bar.style.width = target; }, 200);
+    });
+  });
+</script>
+
+</body>
+</html>
