@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UNIT-00</title>
+  <title>UNIT-00 // Command Center</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
@@ -12,78 +12,74 @@
       --teal:#00b4d8;--teal-dim:#007fa0;--teal-glow:rgba(0,180,216,.18);
       --orange:#e8a020;--orange-dim:#a06c0e;--orange-glow:rgba(232,160,32,.15);
       --text:#c8cfe8;--muted:#5a6080;--green:#39d98a;--red:#ff4f6e;--yellow:#f5c518;
-      --purple:#a855f7;--purple-glow:rgba(168,85,247,.15);
+      --purple:#a855f7;--purple-glow:rgba(168,85,247,.15);--pink:#ec4899;
       --font:'Space Mono',monospace;
     }
-    body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px;line-height:1.6}
+    body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px;line-height:1.6;padding-bottom:40px}
     body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px);pointer-events:none;z-index:9999}
 
+    /* HEADER */
     header{background:var(--bg2);border-bottom:2px solid var(--teal);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
     .hl{display:flex;align-items:center;gap:10px}
     .logo{width:38px;height:38px;border:2px solid var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;background:var(--teal-glow);font-size:8px;font-weight:700;color:var(--teal);text-align:center;line-height:1.2;flex-shrink:0}
     h1{font-size:16px;font-weight:700;color:var(--teal);letter-spacing:2px;text-shadow:0 0 12px var(--teal)}
     .sub{font-size:8px;color:var(--muted);letter-spacing:1px}
-    .hr{display:flex;align-items:center;gap:10px}
+    .hright{display:flex;align-items:center;gap:10px}
     .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-    .nom{font-size:8px;color:var(--muted)}
     .clock{font-size:11px;color:var(--orange);white-space:nowrap;font-weight:700}
 
+    /* NAV TABS */
+    .tabs{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 12px;display:flex;gap:4px;overflow-x:auto}
+    .tab{padding:8px 14px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+    .tab:hover{color:var(--text)}
+    .tab.active{color:var(--teal);border-bottom-color:var(--teal)}
+
+    /* TICKER */
     .ticker{background:var(--bg2);border-bottom:1px solid var(--border);padding:4px 0;overflow:hidden}
-    .tick-inner{white-space:nowrap;display:inline-block;animation:tick 40s linear infinite;font-size:10px;color:var(--muted)}
+    .tick-inner{white-space:nowrap;display:inline-block;animation:tick 45s linear infinite;font-size:10px;color:var(--muted)}
     .tick-inner b{color:var(--teal)}.tick-inner em{color:var(--orange);font-style:normal}
     @keyframes tick{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}
 
-    .page{padding:12px;display:flex;flex-direction:column;gap:12px;max-width:1100px;margin:0 auto}
-    @media(min-width:600px){
-      .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-      .two-r{display:grid;grid-template-columns:2fr 1fr;gap:12px}
-      .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-    }
+    /* PAGES */
+    .page{display:none;padding:12px;max-width:1100px;margin:0 auto;flex-direction:column;gap:12px}
+    .page.active{display:flex}
+    @media(min-width:600px){.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}.two-r{display:grid;grid-template-columns:2fr 1fr;gap:12px}}
 
+    /* CARDS */
     .card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;width:100%}
-    .card.teal{border-top:2px solid var(--teal)}
-    .card.orange{border-top:2px solid var(--orange)}
-    .card.red{border-top:2px solid var(--red)}
-    .card.purple{border-top:2px solid var(--purple)}
-    .card.green{border-top:2px solid var(--green)}
-    .card.yellow{border-top:2px solid var(--yellow)}
+    .card.teal{border-top:2px solid var(--teal)}.card.orange{border-top:2px solid var(--orange)}
+    .card.red{border-top:2px solid var(--red)}.card.purple{border-top:2px solid var(--purple)}
+    .card.green{border-top:2px solid var(--green)}.card.yellow{border-top:2px solid var(--yellow)}
+    .card.pink{border-top:2px solid var(--pink)}
     .ch{display:flex;align-items:center;gap:8px;margin-bottom:12px}
     .ci{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;background:var(--teal-glow);flex-shrink:0}
-    .orange .ci{background:var(--orange-glow)}
-    .red .ci{background:rgba(255,79,110,.15)}
-    .purple .ci{background:var(--purple-glow)}
-    .yellow .ci{background:rgba(245,197,24,.12)}
+    .orange .ci{background:var(--orange-glow)}.red .ci{background:rgba(255,79,110,.15)}
+    .purple .ci{background:var(--purple-glow)}.yellow .ci{background:rgba(245,197,24,.12)}
+    .pink .ci{background:rgba(236,72,153,.15)}.green .ci{background:rgba(57,217,138,.15)}
     .ct{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal)}
-    .orange .ct{color:var(--orange)}.red .ct{color:var(--red)}.purple .ct{color:var(--purple)}.yellow .ct{color:var(--yellow)}
+    .orange .ct{color:var(--orange)}.red .ct{color:var(--red)}.purple .ct{color:var(--purple)}
+    .yellow .ct{color:var(--yellow)}.pink .ct{color:var(--pink)}.green .ct{color:var(--green)}
     .cs{font-size:8px;color:var(--muted);margin-left:auto}
 
     /* QUICK ACTIONS */
     .qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
     @media(min-width:400px){.qa-grid{grid-template-columns:repeat(3,1fr)}}
-    .qa-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);text-align:center;transition:all .2s}
-    .qa-btn:hover{border-color:var(--teal);background:#161624;color:var(--teal);box-shadow:0 0 12px var(--teal-glow)}
-    .qa-btn.ob:hover{border-color:var(--orange);color:var(--orange);box-shadow:0 0 12px var(--orange-glow)}
-    .qa-icon{font-size:20px}.qa-label{font-size:9px;letter-spacing:1px;text-transform:uppercase;font-weight:700}
+    @media(min-width:700px){.qa-grid{grid-template-columns:repeat(6,1fr)}}
+    .qa-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:12px 6px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);text-align:center;transition:all .2s}
+    .qa-btn:hover{border-color:var(--teal);background:#161624;color:var(--teal)}
+    .qa-btn.ob:hover{border-color:var(--orange);color:var(--orange)}
+    .qa-icon{font-size:18px}.qa-label{font-size:8px;letter-spacing:1px;text-transform:uppercase;font-weight:700}
 
-    /* TOKEN CARD */
-    .token-hero{display:flex;align-items:baseline;gap:8px;margin-bottom:12px}
-    .token-cost{font-size:36px;font-weight:700;color:var(--yellow);text-shadow:0 0 16px var(--yellow);line-height:1}
-    .token-sub{font-size:10px;color:var(--muted)}
-    .token-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-    @media(min-width:400px){.token-grid{grid-template-columns:repeat(4,1fr)}}
-    .tk{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
-    .tkv{font-size:13px;font-weight:700;color:var(--yellow)}
-    .tkl{font-size:8px;color:var(--muted);margin-top:2px;letter-spacing:1px;text-transform:uppercase}
-    .day-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:6px}
-    .day-row:last-child{margin-bottom:0}
-    .day-label{font-size:10px;font-weight:700}
-    .day-cost{font-size:11px;color:var(--yellow);font-weight:700}
-    .day-detail{font-size:9px;color:var(--muted)}
-    .model-pill{display:inline-block;font-size:8px;padding:2px 8px;border-radius:4px;background:rgba(168,85,247,.15);color:var(--purple);border:1px solid rgba(168,85,247,.3);margin-top:8px}
-    .burn-rate{margin-top:10px;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;font-size:9px;color:var(--muted)}
-    .burn-rate em{color:var(--yellow);font-style:normal;font-weight:700}
-    .burn-rate strong{color:var(--green)}
+    /* PROGRESS */
+    .pl{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:4px}
+    .pl span:last-child{font-weight:700}
+    .pt{width:100%;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--border);margin-bottom:8px}
+    .pf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal-dim),var(--teal));box-shadow:0 0 6px var(--teal)}
+    .pf.o{background:linear-gradient(90deg,var(--orange-dim),var(--orange));box-shadow:0 0 6px var(--orange)}
+    .pf.r{background:linear-gradient(90deg,#800,var(--red));box-shadow:0 0 6px var(--red)}
+    .pf.p{background:linear-gradient(90deg,#7c3aed,var(--purple));box-shadow:0 0 6px var(--purple)}
+    .pf.g{background:linear-gradient(90deg,#059669,var(--green));box-shadow:0 0 6px var(--green)}
 
     /* STATS */
     .sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
@@ -91,82 +87,69 @@
     .sb{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:12px 8px;text-align:center;position:relative;overflow:hidden}
     .sb::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal-dim),var(--teal))}
     .sb.o::before{background:linear-gradient(90deg,var(--orange-dim),var(--orange))}
+    .sb.r::before{background:linear-gradient(90deg,#800,var(--red))}
+    .sb.p::before{background:linear-gradient(90deg,#7c3aed,var(--purple))}
     .sn{font-size:20px;font-weight:700;color:var(--teal);display:block;line-height:1;text-shadow:0 0 8px var(--teal)}
     .sb.o .sn{color:var(--orange);text-shadow:0 0 8px var(--orange)}
+    .sb.r .sn{color:var(--red);text-shadow:0 0 8px var(--red)}
+    .sb.p .sn{color:var(--purple);text-shadow:0 0 8px var(--purple)}
     .sl{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px;display:block}
 
-    /* MEMORY */
-    .pl{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:4px}
-    .pl span:last-child{font-weight:700}
-    .pt{width:100%;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--border);margin-bottom:8px}
-    .pf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal-dim),var(--teal));box-shadow:0 0 6px var(--teal)}
-    .pf.o{background:linear-gradient(90deg,var(--orange-dim),var(--orange));box-shadow:0 0 6px var(--orange)}
-    .pf.r{background:linear-gradient(90deg,#800,var(--red));box-shadow:0 0 6px var(--red)}
-    .mrow{display:flex;gap:8px;margin-top:10px}
-    .ms{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
-    .mv{font-size:15px;font-weight:700;color:var(--teal);display:block}
-    .mlb{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+    /* ROWS */
+    .row{display:flex;align-items:center;gap:8px;padding:9px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:7px}
+    .row:last-child{margin-bottom:0}
+    .row-main{flex:1;min-width:0}
+    .row-title{font-size:11px;font-weight:700}
+    .row-sub{font-size:9px;color:var(--muted);margin-top:1px}
 
-    /* RUNWAY */
-    .runway-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
-    .runway-num{font-size:36px;font-weight:700;color:var(--orange);text-shadow:0 0 16px var(--orange);line-height:1}
-    .runway-label{font-size:10px;color:var(--muted);line-height:1.6}
-    .runway-label strong{display:block;font-size:13px;color:var(--text)}
-    .runway-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-    .rs{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
-    .rsv{font-size:13px;font-weight:700;color:var(--orange)}
-    .rsl{font-size:8px;color:var(--muted);margin-top:2px;letter-spacing:1px;text-transform:uppercase}
-    .countdown-row{display:flex;gap:8px;margin-top:10px}
+    /* BADGES */
+    .badge{font-size:8px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+    .badge.ok{background:rgba(57,217,138,.15);color:var(--green);border:1px solid rgba(57,217,138,.3)}
+    .badge.warn{background:rgba(245,197,24,.12);color:var(--yellow);border:1px solid rgba(245,197,24,.3)}
+    .badge.act{background:rgba(232,160,32,.12);color:var(--orange);border:1px solid rgba(232,160,32,.25)}
+    .badge.hot{background:rgba(168,85,247,.15);color:var(--purple);border:1px solid rgba(168,85,247,.3)}
+    .badge.new{background:rgba(0,180,216,.15);color:var(--teal);border:1px solid rgba(0,180,216,.3)}
+    .badge.done{background:rgba(57,217,138,.12);color:var(--green);border:1px solid rgba(57,217,138,.25)}
+    .badge.off{background:rgba(90,96,128,.1);color:var(--muted);border:1px solid var(--border)}
+
+    /* RUNWAY COUNTDOWN */
+    .runway-big{font-size:42px;font-weight:700;color:var(--orange);text-shadow:0 0 16px var(--orange);line-height:1}
+    .cd-row{display:flex;gap:8px;margin-top:10px}
     .cd-box{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
     .cd-num{font-size:22px;font-weight:700;color:var(--orange);text-shadow:0 0 10px var(--orange);line-height:1}
     .cd-label{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+    .rstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+    .rs{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
+    .rsv{font-size:13px;font-weight:700;color:var(--orange)}
+    .rsl{font-size:8px;color:var(--muted);margin-top:2px;letter-spacing:1px;text-transform:uppercase}
 
-    /* PROJECT */
-    .phase-list{display:flex;flex-direction:column;gap:8px}
-    .phase{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:6px}
-    .phase-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px}
-    .phase-num.active{background:var(--purple);color:#000;box-shadow:0 0 8px var(--purple)}
-    .phase-num.pending{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
-    .phase-num.done{background:var(--green);color:#000}
-    .phase-content{flex:1}
-    .phase-title{font-size:11px;font-weight:700}
-    .phase-desc{font-size:9px;color:var(--muted);margin-top:2px}
-    .phase-tag{font-size:8px;padding:2px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;align-self:flex-start;margin-top:2px}
-    .pt-active{background:var(--purple-glow);color:var(--purple);border:1px solid rgba(168,85,247,.3)}
-    .pt-pending{background:rgba(90,96,128,.1);color:var(--muted);border:1px solid var(--border)}
-    .pt-done{background:rgba(57,217,138,.12);color:var(--green);border:1px solid rgba(57,217,138,.25)}
+    /* TOKEN CARD */
+    .tkgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+    @media(min-width:400px){.tkgrid{grid-template-columns:repeat(4,1fr)}}
+    .tk{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
+    .tkv{font-size:13px;font-weight:700;color:var(--yellow)}
+    .tkl{font-size:8px;color:var(--muted);margin-top:2px;letter-spacing:1px;text-transform:uppercase}
 
-    /* BEHAVIOR LOG */
-    .blog-list{display:flex;flex-direction:column;gap:7px}
-    .blog-item{padding:9px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;border-left:3px solid var(--teal)}
+    /* PHASE */
+    .phase{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:7px}
+    .phase:last-child{margin-bottom:0}
+    .pnum{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px}
+    .pnum.done{background:var(--green);color:#000}
+    .pnum.active{background:var(--purple);color:#000;box-shadow:0 0 8px var(--purple)}
+    .pnum.pending{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
+    .ptitle{font-size:11px;font-weight:700}
+    .pdesc{font-size:9px;color:var(--muted);margin-top:2px}
+
+    /* BLOG / LOG */
+    .blog{padding:9px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;border-left:3px solid var(--teal);margin-bottom:7px}
+    .blog:last-child{margin-bottom:0}
     .blog-time{font-size:8px;color:var(--teal);letter-spacing:1px;margin-bottom:3px}
-    .blog-why{font-size:10px;color:var(--text)}
+    .blog-text{font-size:10px;color:var(--text)}
     .blog-tag{font-size:8px;color:var(--muted);margin-top:2px}
 
-    /* CRON */
-    .cron-row{display:flex;align-items:center;gap:8px;padding:9px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:7px}
-    .cron-row:last-child{margin-bottom:0}
-    .cn{font-size:11px;font-weight:700;flex:1;min-width:0}
-    .cd2{font-size:9px;color:var(--muted);margin-top:1px}
-    .cs2{font-size:9px;color:var(--teal);white-space:nowrap;margin:0 6px}
-    .ok{font-size:8px;font-weight:700;padding:2px 7px;border-radius:4px;background:rgba(57,217,138,.15);color:var(--green);border:1px solid rgba(57,217,138,.3);white-space:nowrap}
-
-    /* TODO */
-    .ti{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:6px}
-    .ti:last-child{margin-bottom:0}
-    .tc{width:14px;height:14px;border-radius:3px;border:2px solid var(--border);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:8px}
-    .done .tc{background:var(--green);border-color:var(--green);color:#000}
-    .act .tc{background:var(--orange);border-color:var(--orange);color:#000}
-    .tt{flex:1;font-size:11px}
-    .done .tt{color:var(--muted);text-decoration:line-through}
-    .tag{font-size:8px;padding:2px 5px;border-radius:3px;white-space:nowrap;flex-shrink:0;align-self:flex-start}
-    .tag-d{background:rgba(57,217,138,.12);color:var(--green);border:1px solid rgba(57,217,138,.25)}
-    .tag-a{background:rgba(232,160,32,.12);color:var(--orange);border:1px solid rgba(232,160,32,.25)}
-    .tag-p{background:rgba(90,96,128,.1);color:var(--muted);border:1px solid var(--border)}
-
-    /* DRIVE */
-    .dl{display:flex;flex-direction:column;gap:7px}
-    .da{display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;text-decoration:none;color:var(--text)}
+    /* DRIVE LINKS */
+    .da{display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;text-decoration:none;color:var(--text);margin-bottom:7px;transition:all .2s}
+    .da:last-child{margin-bottom:0}
     .da:hover{border-color:var(--teal-dim);color:var(--teal)}
     .di{width:26px;height:26px;background:var(--teal-glow);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
     .dn{font-size:11px;font-weight:700}.dd{font-size:9px;color:var(--muted);margin-top:1px}
@@ -174,12 +157,20 @@
 
     /* GIG */
     .ga{font-size:26px;font-weight:700;color:var(--orange);text-shadow:0 0 10px var(--orange)}
-    .gg{font-size:10px;color:var(--muted);margin-bottom:10px}
     .gstats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
     @media(min-width:400px){.gstats{grid-template-columns:repeat(4,1fr)}}
     .gs{padding:7px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;text-align:center}
     .gsv{font-size:12px;font-weight:700;color:var(--orange)}
     .gsl{font-size:8px;color:var(--muted);margin-top:2px}
+
+    /* DREAM HOME */
+    .dream-text{font-size:11px;color:var(--text);line-height:1.8;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;border-left:3px solid var(--purple)}
+
+    /* MEM */
+    .mrow{display:flex;gap:8px;margin-top:10px}
+    .ms{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
+    .mv{font-size:15px;font-weight:700;color:var(--teal);display:block}
+    .mlb{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
 
     footer{text-align:center;padding:14px;font-size:8px;color:var(--muted);letter-spacing:2px;border-top:1px solid var(--border);margin-top:4px}
   </style>
@@ -191,84 +182,68 @@
     <div class="logo">UNIT<br/>00</div>
     <div>
       <h1>UNIT-00</h1>
-      <div class="sub">TONY'S AI AGENT SYSTEM // OPERATIONAL</div>
+      <div class="sub">COMMAND CENTER // TONY ORQUE // OPERATIONAL</div>
     </div>
   </div>
-  <div class="hr">
+  <div class="hright">
     <div class="dot"></div>
-    <span class="nom">NOMINAL</span>
     <div class="clock" id="clock">--:-- -- PT</div>
   </div>
 </header>
 
 <div class="ticker">
-  <span class="tick-inner">&nbsp;&nbsp;&nbsp;
-    <b>[TOKEN]</b> 2-day spend: <em>$52.36</em> — Jun 3: $46.62 · Jun 4: $5.74 &nbsp;|&nbsp;
-    <b>[MODEL]</b> claude-sonnet-4-6 &nbsp;|&nbsp;
-    <b>[RUNWAY]</b> <em id="ticker-days">97</em> days remaining &nbsp;|&nbsp;
-    <b>[PROJECT]</b> AI × Creator Distribution — Phase 1 active &nbsp;|&nbsp;
-    <b>[MEM]</b> Memory at <em>83%</em> — monitor &nbsp;|&nbsp;
-    <b>[SYS]</b> UNIT-00 watching. Stay sharp, Tony.
+  <span class="tick-inner">&nbsp;&nbsp;
+    <b>[RUNWAY]</b> <em id="td">97</em> days remaining &nbsp;|&nbsp;
+    <b>[TOKEN]</b> 2-day spend: <em>$52.36</em> — crons switched to Haiku &nbsp;|&nbsp;
+    <b>[TEAMWIRE]</b> Mark meeting tonight 8PM — Yard House &nbsp;|&nbsp;
+    <b>[MERCH]</b> 3AM Club store build @ 12:30PM today &nbsp;|&nbsp;
+    <b>[CONTENT]</b> GR86 Last Rides series — window closing &nbsp;|&nbsp;
+    <b>[BRAND]</b> Nightshift Syndicate / Late Hour Syndicate — fully clear &nbsp;|&nbsp;
+    <b>[DREAM]</b> Luxury Bahay Kubo Mansion — Ilocos Norte &nbsp;|&nbsp;
+    <b>[SYS]</b> Unit 0 watching. Stay sharp, Tony.
   </span>
 </div>
 
-<div class="page">
+<!-- NAV -->
+<div class="tabs">
+  <div class="tab active" onclick="showPage('overview')">📊 Overview</div>
+  <div class="tab" onclick="showPage('projects')">🚀 Projects</div>
+  <div class="tab" onclick="showPage('finance')">💰 Finance</div>
+  <div class="tab" onclick="showPage('content')">🎬 Content</div>
+  <div class="tab" onclick="showPage('teamwire')">🏢 TeamWire</div>
+  <div class="tab" onclick="showPage('dream')">🌴 Dream</div>
+  <div class="tab" onclick="showPage('system')">⚙️ System</div>
+</div>
+
+<!-- ═══════════ PAGE: OVERVIEW ═══════════ -->
+<div id="page-overview" class="page active">
 
   <!-- QUICK ACTIONS -->
   <div class="card teal">
     <div class="ch"><div class="ci">⚡</div><span class="ct">Quick Actions</span></div>
     <div class="qa-grid">
-      <a class="qa-btn" href="https://t.me/idiotshinjibot" target="_blank"><div class="qa-icon">🤖</div><div class="qa-label">Message Unit 0</div></a>
+      <a class="qa-btn" href="https://t.me/idiotshinjibot" target="_blank"><div class="qa-icon">🤖</div><div class="qa-label">Unit 0</div></a>
       <a class="qa-btn" href="https://docs.google.com/document/d/1E1_RFV3eN3LcuUUH_Wx8FbjQXGhJnZHAeH-jaKDxHUE" target="_blank"><div class="qa-icon">🧠</div><div class="qa-label">Brain Dump</div></a>
       <a class="qa-btn" href="https://docs.google.com/document/d/17-KfqbZpt90W-cfNYHYiFFoWdhghXkoZyWIjHW_Mr-o" target="_blank"><div class="qa-icon">✅</div><div class="qa-label">Action Items</div></a>
       <a class="qa-btn ob" href="https://docs.google.com/document/d/1OZSiims-ptaUl9cnMnrZskovBN3NrDZ6IQINKavbeQM" target="_blank"><div class="qa-icon">🛫</div><div class="qa-label">Runway Plan</div></a>
-      <a class="qa-btn" href="https://docs.google.com/document/d/1AkrZTpkiveuhSVCoiuar-waWyOg8T-6Wj0iN0AYL8jc" target="_blank"><div class="qa-icon">📚</div><div class="qa-label">Knowledge Base</div></a>
+      <a class="qa-btn" href="https://docs.google.com/document/d/1AkrZTpkiveuhSVCoiuar-waWyOg8T-6Wj0iN0AYL8jc" target="_blank"><div class="qa-icon">📚</div><div class="qa-label">KB</div></a>
       <a class="qa-btn" href="https://aorque.github.io" target="_blank"><div class="qa-icon">🌐</div><div class="qa-label">Portfolio</div></a>
     </div>
   </div>
 
-  <!-- TOKEN USAGE -->
-  <div class="card yellow">
-    <div class="ch"><div class="ci">💸</div><span class="ct">Token Usage</span><span class="cs">claude-sonnet-4-6</span></div>
-    <div class="token-hero">
-      <div class="token-cost">$52.36</div>
-      <div class="token-sub">total spend<br/>Jun 3–4, 2026</div>
-    </div>
-    <div class="token-grid">
-      <div class="tk"><div class="tkv">326K</div><div class="tkl">Total Tokens</div></div>
-      <div class="tk"><div class="tkv">28</div><div class="tkl">Sessions</div></div>
-      <div class="tk"><div class="tkv">185</div><div class="tkl">Tool Calls</div></div>
-      <div class="tk"><div class="tkv">$1.87</div><div class="tkl">Avg/Session</div></div>
-    </div>
-    <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px">
-      <div class="day-row">
-        <div><div class="day-label">📅 Jun 3 (setup day)</div><div class="day-detail">15 sessions · 81 tool calls · 230K tokens</div></div>
-        <div class="day-cost">$46.62</div>
-      </div>
-      <div class="day-row">
-        <div><div class="day-label">📅 Jun 4 (today)</div><div class="day-detail">13 sessions · 104 tool calls · 96K tokens</div></div>
-        <div class="day-cost">$5.74</div>
-      </div>
-    </div>
-    <div class="burn-rate">
-      <em>$46.62</em> on day 1 (setup/config — expected high). <em>$5.74</em> today and dropping. Projected daily run rate: <strong>~$3–6/day</strong> at current usage. Switch crons to Haiku = <strong>save ~80% on recurring jobs</strong>.
-    </div>
-    <div><span class="model-pill">🧠 claude-sonnet-4-6 — complex reasoning</span> <span class="model-pill" style="color:var(--green);background:rgba(57,217,138,.1);border-color:rgba(57,217,138,.3)">⚡ haiku available for crons</span></div>
-  </div>
-
-  <!-- STATS + MEMORY -->
+  <!-- STATS + MEM -->
   <div class="two">
     <div class="card teal">
       <div class="ch"><div class="ci">📈</div><span class="ct">Quick Stats</span></div>
       <div class="sgrid">
         <div class="sb"><span class="sn" id="sc">—</span><span class="sl">Sessions</span></div>
+        <div class="sb o"><span class="sn">5</span><span class="sl">Projects</span></div>
+        <div class="sb p"><span class="sn">4</span><span class="sl">Cron Jobs</span></div>
         <div class="sb"><span class="sn">2</span><span class="sl">Brain Dumps</span></div>
-        <div class="sb o"><span class="sn">1</span><span class="sl">Interviews</span></div>
-        <div class="sb"><span class="sn">4</span><span class="sl">Cron Jobs</span></div>
       </div>
     </div>
     <div class="card red">
-      <div class="ch"><div class="ci">💾</div><span class="ct">Memory</span><span class="cs" style="color:var(--yellow)">⚠ 83%</span></div>
+      <div class="ch"><div class="ci">💾</div><span class="ct">Memory</span><span class="cs" style="color:var(--yellow)">83%</span></div>
       <div class="pl"><span>Agent Memory</span><span style="color:var(--yellow)">83%</span></div>
       <div class="pt"><div class="pf r" style="width:83%"></div></div>
       <div class="mrow">
@@ -279,94 +254,138 @@
     </div>
   </div>
 
+  <!-- TODAY'S AGENDA -->
+  <div class="card orange">
+    <div class="ch"><div class="ci">📅</div><span class="ct">Today — Jun 4</span><span class="cs" id="wl">—</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">😴 Sleep</div><div class="row-sub">4:00 AM – 12:00 PM</div></div><div class="badge done">SCHEDULED</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">👕 Merch Store Build — Printify + Shopify</div><div class="row-sub">12:30 PM – 2:30 PM · 3AM Club launch</div></div><div class="badge act">TODAY</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">😴 Nap Before Mark Meeting</div><div class="row-sub">4:30 PM – 6:30 PM</div></div><div class="badge done">SCHEDULED</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🍔 Mark Meeting — TeamWire Pitch</div><div class="row-sub">8:00 PM – 10:00 PM · Yard House, Town Square LV</div></div><div class="badge hot">TONIGHT</div></div>
+  </div>
+
+  <!-- USAGE LOG -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">📊</div><span class="ct">Usage Log</span><span class="cs">behavior tracking</span></div>
+    <div class="blog">
+      <div class="blog-time">JUN 4, 2026 — 1:12AM–4AM PT</div>
+      <div class="blog-text">Marathon session: financial runway planning, CatGPT reverse engineering, brand naming (27 names), merch business plan, TeamWire org structure, GR86 content series concept, nostalgia product ideas (27), OfflineTV blueprint, dream home vision (Luxury Bahay Kubo Mansion — Ilocos Norte)</div>
+      <div class="blog-tag">📍 Late night drive · Deep work · Brain dump mode · 4+ hours</div>
+    </div>
+    <div class="blog" style="border-left-color:var(--muted);opacity:.5">
+      <div class="blog-time">— PREVIOUS SESSION — Jun 3</div>
+      <div class="blog-text">Setup day: gateway, Telegram, Google Drive, cron jobs, portfolio, interview prep</div>
+      <div class="blog-tag">📍 Infrastructure build · $46.62 token spend</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ PAGE: PROJECTS ═══════════ -->
+<div id="page-projects" class="page">
+
+  <!-- TEAMWIRE -->
+  <div class="card purple">
+    <div class="ch"><div class="ci">🏢</div><span class="ct">TeamWire.AI</span><span class="cs">Startup · Seed Stage</span></div>
+    <div class="phase"><div class="pnum done">✓</div><div><div class="ptitle">Founded — Tony + Thomas + Mike Calfin</div><div class="pdesc">Full-stack engineer + former CEO. Tony = Chief of Implementation. Site live at teamwire.ai</div></div></div>
+    <div class="phase"><div class="pnum active">1</div><div><div class="ptitle">Build 3 Case Studies → Proof of Concept</div><div class="pdesc">Sickies (Mark) · The Card Shop (Brian/Lance) · Mrs. Events / SMP Inc / SD Claw</div></div></div>
+    <div class="phase"><div class="pnum pending">2</div><div><div class="ptitle">Extract Data → Build Product</div><div class="pdesc">Map tech stacks, identify API integrations, define the agent platform</div></div></div>
+    <div class="phase"><div class="pnum pending">3</div><div><div class="ptitle">Seed Funding</div><div class="pdesc">3 case studies + data = investor pitch. SaaS + Consulting + Licensing model.</div></div></div>
+    <div style="margin-top:10px;font-size:9px;color:var(--muted);padding:8px 10px;background:var(--bg3);border-radius:6px;border:1px solid var(--border)">
+      ⚡ <span style="color:var(--orange)">TONIGHT:</span> Mark meeting 8PM · Pitch = Personal AI Chief of Staff for restaurant GMs · Ask: current tech stack + dream wishlist
+    </div>
+  </div>
+
+  <!-- MERCH -->
+  <div class="card orange">
+    <div class="ch"><div class="ci">👕</div><span class="ct">Merch — 3AM Club</span><span class="cs">$500 test budget</span></div>
+    <div class="phase"><div class="pnum done">✓</div><div><div class="ptitle">Business plan complete</div><div class="pdesc">Printify + Shopify · Bella+Canvas tees · $240 Meta ads · $160 TikTok ads</div></div></div>
+    <div class="phase"><div class="pnum active">1</div><div><div class="ptitle">Build store today @ 12:30PM</div><div class="pdesc">3AM Club → Monetize Your Sleep Paralysis → Monetize Your Pain (in that order)</div></div></div>
+    <div class="phase"><div class="pnum pending">2</div><div><div class="ptitle">Launch ads + claim TikTok credit ($100–150)</div><div class="pdesc">Target: insomniac millennial 24–36 · Kill any ad set at $25/0 purchases</div></div></div>
+    <div class="phase"><div class="pnum pending">3</div><div><div class="ptitle">2–3 week projection: $880–$1,200 revenue</div><div class="pdesc">Realistic ROAS 2.2–3.0x · Net profit $115–$485</div></div></div>
+    <div style="margin-top:10px"><a href="https://docs.google.com/document/d/1An2I2nHM7zxSETrVE_EauNyNGOpe1uncPgLMVJ8-FRw/edit" target="_blank" style="color:var(--orange);font-size:9px;text-decoration:none">📄 Business Plan →</a> &nbsp;&nbsp; <a href="https://docs.google.com/spreadsheets/d/1rBMnN43IDs9N95lNWdnsZZ6EbBMKm-Yi9uECSR66vak" target="_blank" style="color:var(--orange);font-size:9px;text-decoration:none">📊 Budget Tracker →</a></div>
+  </div>
+
+  <!-- CONTENT SERIES -->
+  <div class="card pink">
+    <div class="ch"><div class="ci">🚗</div><span class="ct">GR86 Last Rides</span><span class="cs">~10 days left</span></div>
+    <div class="phase"><div class="pnum done">✓</div><div><div class="ptitle">Concept locked</div><div class="pdesc">"Selling my dream car on my come-up" · Late night drive + brain dump series</div></div></div>
+    <div class="phase"><div class="pnum active">1</div><div><div class="ptitle">Get gear · Shoot Episode 1</div><div class="pdesc">DJI Osmo Pocket 3 ($519) + RØDE Wireless GO II ($299) · Check FB Marketplace first</div></div></div>
+    <div class="phase"><div class="pnum pending">2</div><div><div class="ptitle">Edit + publish Episode 1</div><div class="pdesc">Hook: "This is my last 10 days with this car. I never planned to sell it."</div></div></div>
+    <div class="phase"><div class="pnum pending">3</div><div><div class="ptitle">Full countdown series before Tesla arrives</div><div class="pdesc">Each drive = one episode. Exhaust mic + vocal mic + Osmo forward POV</div></div></div>
+  </div>
+
+  <!-- BRAND -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">🌙</div><span class="ct">Brand Identity</span><span class="cs">name TBD</span></div>
+    <div style="margin-bottom:10px;font-size:10px;color:var(--muted)">Top candidates — verify at namecheckr.com</div>
+    <div class="row"><div class="row-main"><div class="row-title">Nightshift Syndicate</div><div class="row-sub">.com ✅ · IG ✅ · TikTok ✅ · X ✅ · YouTube ✅</div></div><div class="badge hot">🌟 TOP</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Late Hour Syndicate</div><div class="row-sub">.com ✅ · IG ✅ · TikTok ✅ · X ✅ · YouTube ✅</div></div><div class="badge hot">🌟 TOP</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Monetize Your Pain</div><div class="row-sub">.com ✅ · Verify IG · TikTok ✅ · X ✅</div></div><div class="badge act">VERIFY</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Nightshift Alumni</div><div class="row-sub">.com ✅ · All platforms clear</div></div><div class="badge new">CLEAN</div></div>
+    <div style="margin-top:10px;font-size:9px;color:var(--muted)">📋 Full tracker: <a href="https://docs.google.com/spreadsheets/d/1X6riAtqU67AM7en6V1r0qz2eDBz_r0vD2vRhMoRPf_U/edit" target="_blank" style="color:var(--teal)">Brand Name Availability Sheet →</a></div>
+  </div>
+
+  <!-- NOSTALGIA PRODUCTS -->
+  <div class="card yellow">
+    <div class="ch"><div class="ci">🎵</div><span class="ct">Nostalgia Products</span><span class="cs">27 ideas researched</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">#1 Mix CD Bluetooth Speaker</div><div class="row-sub">Y2K + car culture · Alibaba OEM · $15–22 COGs → $54–64 retail · 60–65% margin</div></div><div class="badge hot">⭐ HERO</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">#2 AIM Away Message Neon Sign</div><div class="row-sub">Made-to-order · Zero inventory · $59–79 retail · Viral ceiling is massive</div></div><div class="badge hot">⭐ TOP</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">#3 Lola's Tupperware Candle</div><div class="row-sub">Filipino market · 1 viral TikTok = explosion · 60–70% margin</div></div><div class="badge act">🔥 PINOY</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">#4 Burned CD Art Print</div><div class="row-sub">Pure POD · Zero inventory · $0 upfront · Personalized playlist</div></div><div class="badge new">POD</div></div>
+    <div style="margin-top:8px;font-size:9px;color:var(--muted)">📄 <a href="https://docs.google.com/document/d/1PkEflzdq7OSWqXDAKD1W-qDHqdAbw22cpt6HYgZYq9s/edit" target="_blank" style="color:var(--yellow)">All 27 ideas in Drive →</a></div>
+  </div>
+
+</div>
+
+<!-- ═══════════ PAGE: FINANCE ═══════════ -->
+<div id="page-finance" class="page">
+
   <!-- RUNWAY -->
   <div class="card orange">
-    <div class="ch"><div class="ci">🛫</div><span class="ct">Financial Runway</span><span class="cs" id="runway-pct"></span></div>
-    <div class="runway-row">
-      <div class="runway-num" id="runway-months">—</div>
-      <div class="runway-label"><strong id="runway-date-label">Calculating…</strong>at $4,300/mo burn — zero income scenario</div>
+    <div class="ch"><div class="ci">🛫</div><span class="ct">Financial Runway</span><span class="cs" id="rpct">—</span></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+      <div class="runway-big" id="rmo">—</div>
+      <div style="font-size:10px;color:var(--muted);line-height:1.6"><strong id="rzero" style="display:block;font-size:13px;color:var(--text)">Calculating…</strong>at $4,300/mo burn — zero income</div>
     </div>
-    <div class="pl"><span>Runway consumed (from Jun 4)</span><span style="color:var(--orange)" id="runway-pct-label">—</span></div>
-    <div class="pt"><div class="pf o" id="runway-bar" style="width:0%"></div></div>
-    <div class="countdown-row">
-      <div class="cd-box"><div class="cd-num" id="cd-days">—</div><div class="cd-label">Days Left</div></div>
-      <div class="cd-box"><div class="cd-num" id="cd-weeks">—</div><div class="cd-label">Weeks Left</div></div>
-      <div class="cd-box"><div class="cd-num" id="cd-months">—</div><div class="cd-label">Months Left</div></div>
+    <div class="pl"><span>Runway consumed (from Jun 4)</span><span style="color:var(--orange)" id="rlab">—</span></div>
+    <div class="pt"><div class="pf o" id="rbar" style="width:0%"></div></div>
+    <div class="cd-row">
+      <div class="cd-box"><div class="cd-num" id="rdays">—</div><div class="cd-label">Days Left</div></div>
+      <div class="cd-box"><div class="cd-num" id="rwks">—</div><div class="cd-label">Weeks Left</div></div>
+      <div class="cd-box"><div class="cd-num" id="rmos">—</div><div class="cd-label">Months Left</div></div>
     </div>
-    <div class="runway-stats">
+    <div class="rstats">
       <div class="rs"><div class="rsv">$14,000</div><div class="rsl">Cash Reserve</div></div>
       <div class="rs"><div class="rsv">$4,300</div><div class="rsl">Monthly Burn</div></div>
       <div class="rs"><div class="rsv">$35,000</div><div class="rsl">Loan Balance</div></div>
     </div>
   </div>
 
-  <!-- PROJECT TRACKER -->
-  <div class="card purple">
-    <div class="ch"><div class="ci">🚀</div><span class="ct">Creative Project</span><span class="cs">AI × Creator Distribution</span></div>
-    <div class="phase-list">
-      <div class="phase"><div class="phase-num done">✓</div><div class="phase-content"><div class="phase-title">Phase 0 — Research & Positioning</div><div class="phase-desc">CatGPT reverse engineered. Intersection identified. Runway mapped.</div></div><span class="phase-tag pt-done">DONE</span></div>
-      <div class="phase"><div class="phase-num active">1</div><div class="phase-content"><div class="phase-title">Phase 1 — Pick Your Angle</div><div class="phase-desc">Choose: Events×AI · Meta content machine · LV lifestyle×AI · Experience Design×AI</div></div><span class="phase-tag pt-active">ACTIVE</span></div>
-      <div class="phase"><div class="phase-num pending">2</div><div class="phase-content"><div class="phase-title">Phase 2 — Build Content Machine</div><div class="phase-desc">AI-assisted pipeline. Platform stack. First 5 pieces.</div></div><span class="phase-tag pt-pending">PENDING</span></div>
-      <div class="phase"><div class="phase-num pending">3</div><div class="phase-content"><div class="phase-title">Phase 3 — Establish Authority</div><div class="phase-desc">30-day content sprint. Build audience. Find monetization signal.</div></div><span class="phase-tag pt-pending">PENDING</span></div>
-      <div class="phase"><div class="phase-num pending">4</div><div class="phase-content"><div class="phase-title">Phase 4 — Monetize</div><div class="phase-desc">Launch product/community/service aligned with content brand.</div></div><span class="phase-tag pt-pending">PENDING</span></div>
+  <!-- TOKEN USAGE -->
+  <div class="card yellow">
+    <div class="ch"><div class="ci">💸</div><span class="ct">Token Usage</span><span class="cs">claude-sonnet-4-6</span></div>
+    <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px">
+      <div style="font-size:36px;font-weight:700;color:var(--yellow);text-shadow:0 0 16px var(--yellow);line-height:1">$52.36</div>
+      <div style="font-size:10px;color:var(--muted)">total spend<br/>Jun 3–4, 2026</div>
     </div>
-  </div>
-
-  <!-- BEHAVIOR LOG -->
-  <div class="card teal">
-    <div class="ch"><div class="ci">📊</div><span class="ct">Usage Log</span><span class="cs">behavior tracking</span></div>
-    <div class="blog-list">
-      <div class="blog-item">
-        <div class="blog-time">JUN 4, 2026 — 1:12AM PT</div>
-        <div class="blog-why">Financial runway planning + CatGPT reverse engineering + creative project ideation</div>
-        <div class="blog-tag">📍 Woke up mid-night · Planning mode · AI × Creator Distribution</div>
-      </div>
-      <div class="blog-item" style="border-left-color:var(--muted);opacity:.5">
-        <div class="blog-time">— NEXT SESSION —</div>
-        <div class="blog-why">Unit 0 logs each check-in and why. Patterns build over time.</div>
-        <div class="blog-tag">Data → product insight</div>
-      </div>
+    <div class="tkgrid">
+      <div class="tk"><div class="tkv">326K</div><div class="tkl">Total Tokens</div></div>
+      <div class="tk"><div class="tkv">28</div><div class="tkl">Sessions</div></div>
+      <div class="tk"><div class="tkv">$1.87</div><div class="tkl">Avg/Session</div></div>
+      <div class="tk"><div class="tkv">~$3–6</div><div class="tkl">Daily Run Rate</div></div>
     </div>
-  </div>
-
-  <!-- CRON JOBS -->
-  <div class="card teal">
-    <div class="ch"><div class="ci">⏱</div><span class="ct">Cron Jobs</span><span class="cs">4 / 4 active</span></div>
-    <div class="cron-row"><div style="flex:1;min-width:0"><div class="cn">☀️ Morning AI News</div><div class="cd2">Top headlines → Telegram</div></div><div class="cs2">7AM PT</div><div class="ok">✓ OK</div></div>
-    <div class="cron-row"><div style="flex:1;min-width:0"><div class="cn">🧠 Hormozi Nightly</div><div class="cd2">Business insight → Telegram</div></div><div class="cs2">11PM PT</div><div class="ok">✓ OK</div></div>
-    <div class="cron-row"><div style="flex:1;min-width:0"><div class="cn">📋 Monday Check-In</div><div class="cd2">Weekly priorities → Telegram</div></div><div class="cs2">Mon 9AM</div><div class="ok">✓ OK</div></div>
-    <div class="cron-row"><div style="flex:1;min-width:0"><div class="cn">📊 Friday Review</div><div class="cd2">Week digest → Telegram</div></div><div class="cs2">Fri 5PM</div><div class="ok">✓ OK</div></div>
-  </div>
-
-  <!-- TODO + DRIVE -->
-  <div class="two-r">
-    <div class="card teal">
-      <div class="ch"><div class="ci">✅</div><span class="ct">Todo</span><span class="cs" id="tc"></span></div>
-      <div class="ti done"><div class="tc">✓</div><div class="tt">Set up UNIT-00 with cron jobs</div><span class="tag tag-d">DONE</span></div>
-      <div class="ti done"><div class="tc">✓</div><div class="tt">Log first brain dump to Drive KB</div><span class="tag tag-d">DONE</span></div>
-      <div class="ti done"><div class="tc">✓</div><div class="tt">Complete first interview prep</div><span class="tag tag-d">DONE</span></div>
-      <div class="ti act"><div class="tc">▶</div><div class="tt">Pick creative project angle</div><span class="tag tag-a">ACTIVE</span></div>
-      <div class="ti act"><div class="tc">▶</div><div class="tt">Land first gig client ($2,500 goal)</div><span class="tag tag-a">ACTIVE</span></div>
-      <div class="ti"><div class="tc"></div><div class="tt">Switch crons to Haiku (save 80%)</div><span class="tag tag-p">PENDING</span></div>
-      <div class="ti"><div class="tc"></div><div class="tt">Build content machine (Phase 2)</div><span class="tag tag-p">PENDING</span></div>
-      <div class="ti"><div class="tc"></div><div class="tt">Weekly gig earnings auto-report</div><span class="tag tag-p">PENDING</span></div>
-    </div>
-    <div class="card orange">
-      <div class="ch"><div class="ci">📂</div><span class="ct">Drive KB</span></div>
-      <div class="dl">
-        <a class="da" href="https://docs.google.com/document/d/1E1_RFV3eN3LcuUUH_Wx8FbjQXGhJnZHAeH-jaKDxHUE" target="_blank"><div class="di">🧠</div><div><div class="dn">Brain Dumps</div><div class="dd">Raw thoughts</div></div><span class="darr">↗</span></a>
-        <a class="da" href="https://docs.google.com/document/d/17-KfqbZpt90W-cfNYHYiFFoWdhghXkoZyWIjHW_Mr-o" target="_blank"><div class="di">✅</div><div><div class="dn">Action Items</div><div class="dd">Prioritized tasks</div></div><span class="darr">↗</span></a>
-        <a class="da" href="https://docs.google.com/document/d/1AkrZTpkiveuhSVCoiuar-waWyOg8T-6Wj0iN0AYL8jc" target="_blank"><div class="di">📚</div><div><div class="dn">Knowledge Base</div><div class="dd">References</div></div><span class="darr">↗</span></a>
-        <a class="da" href="https://docs.google.com/document/d/1OZSiims-ptaUl9cnMnrZskovBN3NrDZ6IQINKavbeQM" target="_blank"><div class="di">🛫</div><div><div class="dn">Runway Plan</div><div class="dd">CatGPT + finances</div></div><span class="darr">↗</span></a>
-      </div>
+    <div class="row" style="margin-top:10px"><div class="row-main"><div class="row-title">📅 Jun 3 — Setup Day</div><div class="row-sub">15 sessions · 81 tool calls · 230K tokens</div></div><div style="font-size:12px;font-weight:700;color:var(--yellow)">$46.62</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">📅 Jun 4 — Today</div><div class="row-sub">13 sessions · 104 tool calls · 96K tokens</div></div><div style="font-size:12px;font-weight:700;color:var(--yellow)">$5.74</div></div>
+    <div style="margin-top:10px;padding:8px 10px;background:var(--bg3);border-radius:6px;border:1px solid var(--border);font-size:9px;color:var(--muted)">
+      ✅ All 4 crons switched to <span style="color:var(--green)">claude-haiku-4-5</span> — saves ~80% on recurring jobs
     </div>
   </div>
 
   <!-- GIG TRACKER -->
   <div class="card orange">
-    <div class="ch"><div class="ci">💰</div><span class="ct">Gig Tracker</span><span class="cs" id="wl">—</span></div>
+    <div class="ch"><div class="ci">💰</div><span class="ct">Gig Tracker</span><span class="cs" id="wl2">—</span></div>
     <div class="ga">$0</div>
-    <div class="gg">/ $2,500 weekly goal</div>
+    <div style="font-size:10px;color:var(--muted);margin-bottom:10px">/ $2,500 weekly goal</div>
     <div class="pl"><span>Weekly Progress</span><span style="color:var(--orange)">0%</span></div>
     <div class="pt"><div class="pf o" style="width:0%"></div></div>
     <div class="gstats">
@@ -378,12 +397,201 @@
   </div>
 
 </div>
-<footer>UNIT-00 // ALL SYSTEMS OPERATIONAL // BUILD THE FUTURE</footer>
+
+<!-- ═══════════ PAGE: CONTENT ═══════════ -->
+<div id="page-content" class="page">
+
+  <div class="card pink">
+    <div class="ch"><div class="ci">🎬</div><span class="ct">Content Strategy</span><span class="cs">North Star: Nightshift Syndicate</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">🚗 GR86 Last Rides — Pilot Series</div><div class="row-sub">10 days left · Countdown format · Late night drive + brain dump</div></div><div class="badge hot">NOW</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">📝 Substack — Brain Dump Transcriptions</div><div class="row-sub">Pick name → create account → Unit 0 cleans up voice memos → publish</div></div><div class="badge act">SETUP</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🏠 Hide & Seek in Luxury Mansions</div><div class="row-sub">Gap: adult demo · international locations · cinematic production · no one owns this</div></div><div class="badge new">IDEA</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🌙 Late Night Collective (OfflineTV model)</div><div class="row-sub">LV-based · luxury aesthetic · adult 25–40 demo · $700K–1.3M Year 1</div></div><div class="badge off">FUTURE</div></div>
+  </div>
+
+  <div class="card teal">
+    <div class="ch"><div class="ci">📷</div><span class="ct">Gear List</span><span class="cs">GR86 setup</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">DJI Osmo Pocket 3 Creator Combo</div><div class="row-sub">~$499 · 1" sensor · built-in gimbal · best night footage</div></div><a href="https://www.amazon.com/dp/B0CHP9BGTW" target="_blank" class="badge new">Amazon ↗</a></div>
+    <div class="row"><div class="row-main"><div class="row-title">RØDE Wireless GO II</div><div class="row-sub">~$149 single · clip to visor · crystal clear over road noise</div></div><a href="https://www.amazon.com/dp/B08XFQ6KFV" target="_blank" class="badge new">Amazon ↗</a></div>
+    <div class="row"><div class="row-main"><div class="row-title">RAM Mount Suction + X-Grip</div><div class="row-sub">~$40 · dashboard center mount · hero forward shot</div></div><a href="https://www.amazon.com/dp/B007PNR9LY" target="_blank" class="badge new">Amazon ↗</a></div>
+    <div class="row"><div class="row-main"><div class="row-title">GorillaPod (passenger headrest)</div><div class="row-sub">~$30 · wraps around seat · wide driver angle</div></div><a href="https://www.amazon.com/dp/B001OU4BQG" target="_blank" class="badge new">Amazon ↗</a></div>
+    <div class="row"><div class="row-main"><div class="row-title">Ulanzi VL49 RGB Mini Light</div><div class="row-sub">~$30 · face fill · night drive aesthetic glow</div></div><div class="badge off">Optional</div></div>
+    <div style="margin-top:8px;font-size:9px;color:var(--muted)">💡 Check FB Marketplace first for Osmo Pocket 3 ($300–380 used) — save $150+</div>
+  </div>
+
+  <div class="card teal">
+    <div class="ch"><div class="ci">🎵</div><span class="ct">Reference Channels</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">@Ksunemoto — "It's 3am, come ride with me.."</div><div class="row-sub">Pure POV night drive · No narration · The aesthetic reference</div></div></div>
+    <div class="row"><div class="row-main"><div class="row-title">@JOYED (inJOYED) — Late Night Drive Songs</div><div class="row-sub">Billie Eilish + Cigarettes After Sex · Music-first · Playlist energy</div></div></div>
+    <div class="row"><div class="row-main"><div class="row-title">OfflineTV — Mansion Hide & Seek</div><div class="row-sub">Collective model · High production · Adult creator format</div></div></div>
+  </div>
+
+</div>
+
+<!-- ═══════════ PAGE: TEAMWIRE ═══════════ -->
+<div id="page-teamwire" class="page">
+
+  <div class="card purple">
+    <div class="ch"><div class="ci">👥</div><span class="ct">Team</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">Thomas</div><div class="row-sub">Co-founder · Full-stack engineer · Multi-millionaire · Your champion</div></div><div class="badge hot">FOUNDER</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Mike Calfin</div><div class="row-sub">Engineer + Former CEO · Builds agent platform + product packaging</div></div><div class="badge hot">ENGINEER</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Tony Orque</div><div class="row-sub">Chief of Implementation · Outreach · Customer Success · Gets shit done</div></div><div class="badge act">YOU</div></div>
+  </div>
+
+  <div class="card purple">
+    <div class="ch"><div class="ci">🏢</div><span class="ct">Prospects</span><span class="cs"><a href="https://docs.google.com/spreadsheets/d/1e1xjpruYvv1SBVVs4yYQNc6Ua8rkkGeXGWgW_p9KAZ0" target="_blank" style="color:var(--purple)">Tech Stack Sheet ↗</a></span></div>
+    <div style="font-size:9px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Tier 1 — Multi-million dollar</div>
+    <div class="row"><div class="row-main"><div class="row-title">Sickies Burgers (Mark)</div><div class="row-sub">Toast POS · 7shifts · MarketMan · QuickBooks · Multi-location</div></div><div class="badge hot">TONIGHT</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">SMP Inc (Tyler)</div><div class="row-sub">Likely promo staffing/events · Verify industry · Highest revenue</div></div><div class="badge warn">VERIFY</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">SD Claw</div><div class="row-sub">Likely claw machine/amusement · Nayax/Cantaloupe · Verify</div></div><div class="badge warn">VERIFY</div></div>
+    <div style="font-size:9px;color:var(--muted);margin:10px 0 8px;text-transform:uppercase;letter-spacing:1px">Tier 2 — Small brick & mortar ($100K+ net)</div>
+    <div class="row"><div class="row-main"><div class="row-title">The Card Shop (Brian/Lance)</div><div class="row-sub">Crystal Commerce · TCGplayer · Discord · Whatnot · Session data from Claude — GET MD FILE</div></div><div class="badge act">USE CASE #2</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Mrs. Events</div><div class="row-sub">HoneyBook · Asana · Eventbrite · DocuSign</div></div><div class="badge new">QUEUED</div></div>
+  </div>
+
+  <div class="card purple">
+    <div class="ch"><div class="ci">🎯</div><span class="ct">Mark Meeting Prep</span><span class="cs">Tonight 8PM</span></div>
+    <div style="font-size:9px;color:var(--muted);margin-bottom:8px">10-item GM wishlist — pitch as "Personal AI Chief of Staff"</div>
+    <div class="row"><div class="row-main"><div class="row-title">1. Morning briefing auto-delivered</div><div class="row-sub">Sales, labor, food cost, reviews — before he arrives</div></div></div>
+    <div class="row"><div class="row-main"><div class="row-title">2. Schedule auto-draft</div><div class="row-sub">He just approves</div></div></div>
+    <div class="row"><div class="row-main"><div class="row-title">3. Labor overtime alert</div><div class="row-sub">Before payroll closes, not after</div></div></div>
+    <div class="row"><div class="row-main"><div class="row-title">4. Daily P&L flash</div><div class="row-sub">Real-time food cost, labor, sales vs. targets</div></div></div>
+    <div class="row"><div class="row-main"><div class="row-title">5–10. Guest reviews · Server contests · Team recognition · Coaching trail · Weekly ops report · Training compliance</div><div class="row-sub">ROI: saves 15+ hrs/week = $1,500–2,000/mo in recovered GM capacity</div></div></div>
+    <div style="margin-top:8px;padding:8px 10px;background:var(--bg3);border-radius:6px;border:1px solid var(--border);font-size:9px;color:var(--muted)">
+      💡 ASK MARK: What tech stack does Sickies use? What's his dream wishlist if he had an AI Chief of Staff?
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ PAGE: DREAM ═══════════ -->
+<div id="page-dream" class="page">
+
+  <div class="card purple">
+    <div class="ch"><div class="ci">🌴</div><span class="ct">Luxury Bahay Kubo Mansion</span><span class="cs">Ilocos Norte, Philippines</span></div>
+    <div class="dream-text">
+      <strong style="color:var(--purple);display:block;margin-bottom:8px">North Star: "A Bali villa that grew up in the Philippines."</strong>
+      Three levels carved into the mountainside. Concrete and bamboo and dark teak. Built to survive a typhoon and look like it belongs to someone who's never apologized for having taste.<br/><br/>
+      <strong style="color:var(--text)">Level 1 — The Base:</strong> Garage + hangar. Two Jeeps. A truck. Tools on pegboards.<br/>
+      <strong style="color:var(--text)">Level 2 — The Private:</strong> Bedrooms. Dark wood. Always a breeze.<br/>
+      <strong style="color:var(--text)">Level 3 — The Life:</strong> Floor-to-ceiling glass. Jungle behind. Cloud-covered mountains in front. Long wood table. Morning tea. Your person across from you. Wind turbines spinning outside earning while you rest.<br/><br/>
+      <strong style="color:var(--purple)">This is what all of it is for.</strong>
+    </div>
+  </div>
+
+  <div class="two">
+    <div class="card teal">
+      <div class="ch"><div class="ci">🎨</div><span class="ct">Design Language</span></div>
+      <div class="row"><div class="row-main"><div class="row-title">Filipino Tropical Brutalist</div><div class="row-sub">Bahay kubo at mansion scale · Bali DNA · Fortified</div></div></div>
+      <div class="row"><div class="row-main"><div class="row-title">Materials</div><div class="row-sub">Bamboo · Dark hardwood · Rattan · Poured concrete · Floor-to-ceiling glass</div></div></div>
+      <div class="row"><div class="row-main"><div class="row-title">Off-grid · Wind-powered</div><div class="row-sub">Personal wind farm behind the house · Ilocos Norte wind is the feature</div></div></div>
+      <div class="row"><div class="row-main"><div class="row-title">Vehicles</div><div class="row-sub">Jeeps · Trucks · Off-road · Motorcycle</div></div></div>
+    </div>
+    <div class="card orange">
+      <div class="ch"><div class="ci">⚖️</div><span class="ct">Land & Legal</span></div>
+      <div class="row"><div class="row-main"><div class="row-title">Get deed / land map from dad</div><div class="row-sub">Start with this — everything else follows</div></div><div class="badge act">NOW</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">Special Power of Attorney (SPA)</div><div class="row-sub">Sign while elders are alive · US Notary → Apostille → Philippines</div></div><div class="badge warn">URGENT</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">Check Estate Tax Amnesty</div><div class="row-sub">RA 11956 — may still be active · Saves hundreds of thousands ₱</div></div><div class="badge warn">CHECK</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">Verify CARP coverage</div><div class="row-sub">DAR Ilocos Norte · If agricultural land — critical to check</div></div><div class="badge new">VERIFY</div></div>
+    </div>
+  </div>
+
+  <div class="card teal">
+    <div class="ch"><div class="ci">🎬</div><span class="ct">Video References</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">⭐ NORTH STAR: Landscape Architect's Home on a Hill</div><div class="row-sub">Design Will Save The World · youtu.be/uzu7SgV8zws</div></div><a href="https://youtu.be/uzu7SgV8zws" target="_blank" class="badge hot">Watch ↗</a></div>
+    <div class="row"><div class="row-main"><div class="row-title">$20M Bali Forest Villa</div><div class="row-sub">ONE EARTH · youtu.be/yUHrthaYr9o</div></div><a href="https://youtu.be/yUHrthaYr9o" target="_blank" class="badge new">Watch ↗</a></div>
+    <div class="row"><div class="row-main"><div class="row-title">Luxury Stilt House in the Jungle 4K</div><div class="row-sub">Wander Xplore · youtu.be/Lh-tCqNg0rQ</div></div><a href="https://youtu.be/Lh-tCqNg0rQ" target="_blank" class="badge new">Watch ↗</a></div>
+    <div class="row"><div class="row-main"><div class="row-title">Modern Tropical House + Indoor Waterfall</div><div class="row-sub">Balitecture · youtu.be/mrGfq-aLsmU</div></div><a href="https://youtu.be/mrGfq-aLsmU" target="_blank" class="badge new">Watch ↗</a></div>
+  </div>
+
+</div>
+
+<!-- ═══════════ PAGE: SYSTEM ═══════════ -->
+<div id="page-system" class="page">
+
+  <div class="card teal">
+    <div class="ch"><div class="ci">⏱</div><span class="ct">Cron Jobs</span><span class="cs">4 / 4 · All on Haiku</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">☀️ Morning AI News</div><div class="row-sub">Top headlines + brain dump callback reminder → Telegram · Haiku</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">7AM PT</div><div class="badge ok">✓ OK</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🧠 Hormozi Nightly</div><div class="row-sub">Business insight → Telegram · Haiku</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">11PM PT</div><div class="badge ok">✓ OK</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">📋 Monday Check-In</div><div class="row-sub">Weekly priorities → Telegram · Haiku</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">Mon 9AM</div><div class="badge ok">✓ OK</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">📊 Friday Review</div><div class="row-sub">Week digest → Telegram · Haiku</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">Fri 5PM</div><div class="badge ok">✓ OK</div></div>
+  </div>
+
+  <div class="card teal">
+    <div class="ch"><div class="ci">🗂️</div><span class="ct">Drive KB</span><span class="cs">All documents</span></div>
+    <a class="da" href="https://docs.google.com/document/d/1E1_RFV3eN3LcuUUH_Wx8FbjQXGhJnZHAeH-jaKDxHUE" target="_blank"><div class="di">🧠</div><div><div class="dn">Brain Dumps</div><div class="dd">All voice memos + late night sessions</div></div><span class="darr">↗</span></a>
+    <a class="da" href="https://docs.google.com/document/d/17-KfqbZpt90W-cfNYHYiFFoWdhghXkoZyWIjHW_Mr-o" target="_blank"><div class="di">✅</div><div><div class="dn">Action Items</div><div class="dd">Prioritized tasks</div></div><span class="darr">↗</span></a>
+    <a class="da" href="https://docs.google.com/document/d/1AkrZTpkiveuhSVCoiuar-waWyOg8T-6Wj0iN0AYL8jc" target="_blank"><div class="di">📚</div><div><div class="dn">Knowledge Base</div><div class="dd">Structured references</div></div><span class="darr">↗</span></a>
+    <a class="da" href="https://docs.google.com/document/d/1OZSiims-ptaUl9cnMnrZskovBN3NrDZ6IQINKavbeQM" target="_blank"><div class="di">🛫</div><div><div class="dn">Runway Plan + CatGPT Research</div><div class="dd">Financial planning + brand research</div></div><span class="darr">↗</span></a>
+    <a class="da" href="https://docs.google.com/document/d/1An2I2nHM7zxSETrVE_EauNyNGOpe1uncPgLMVJ8-FRw/edit" target="_blank"><div class="di">👕</div><div><div class="dn">Merch Business Plan</div><div class="dd">3AM Club · Printify + Shopify</div></div><span class="darr">↗</span></a>
+    <a class="da" href="https://docs.google.com/document/d/1PkEflzdq7OSWqXDAKD1W-qDHqdAbw22cpt6HYgZYq9s/edit" target="_blank"><div class="di">🎵</div><div><div class="dn">Nostalgia Products Research</div><div class="dd">27 product ideas with margins</div></div><span class="darr">↗</span></a>
+    <a class="da" href="https://docs.google.com/spreadsheets/d/1X6riAtqU67AM7en6V1r0qz2eDBz_r0vD2vRhMoRPf_U/edit" target="_blank"><div class="di">🌙</div><div><div class="dn">Brand Name Availability Tracker</div><div class="dd">25 names checked across all platforms</div></div><span class="darr">↗</span></a>
+    <a class="da" href="https://docs.google.com/spreadsheets/d/1e1xjpruYvv1SBVVs4yYQNc6Ua8rkkGeXGWgW_p9KAZ0" target="_blank"><div class="di">🏢</div><div><div class="dn">TeamWire Tech Stack Research</div><div class="dd">All 5 prospects · API priorities</div></div><span class="darr">↗</span></a>
+  </div>
+
+  <div class="two">
+    <div class="card teal">
+      <div class="ch"><div class="ci">🤖</div><span class="ct">Agent Roster</span></div>
+      <div class="row"><div class="row-main"><div class="row-title">Unit 0 (Hermes)</div><div class="row-sub">Consigliere · Strategy + Coordination · Sonnet</div></div><div class="badge ok">LIVE</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">Crons × 4</div><div class="row-sub">News · Hormozi · Monday · Friday · Haiku</div></div><div class="badge ok">LIVE</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">Merch Agent</div><div class="row-sub">3AM Club Shopify · Haiku</div></div><div class="badge act">BUILDING</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">Investor Agent</div><div class="row-sub">Freqtrade + Alpaca · Telegram P&L · Haiku</div></div><div class="badge new">PLANNED</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">Creative Director</div><div class="row-sub">Trend monitoring · Content calendar · Haiku</div></div><div class="badge new">PLANNED</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">Legal Agent</div><div class="row-sub">PH property law · Affairs · Sonnet</div></div><div class="badge off">FUTURE</div></div>
+    </div>
+    <div class="card red">
+      <div class="ch"><div class="ci">💾</div><span class="ct">Memory</span><span class="cs" style="color:var(--yellow)">83% — Monitor</span></div>
+      <div class="pl"><span>Agent Memory</span><span style="color:var(--yellow)">83%</span></div>
+      <div class="pt"><div class="pf r" style="width:83%"></div></div>
+      <div class="mrow">
+        <div class="ms"><span class="mv" style="color:var(--yellow)">83%</span><div class="mlb">Used</div></div>
+        <div class="ms"><span class="mv" style="color:var(--green);font-size:11px">17%</span><div class="mlb">Free</div></div>
+        <div class="ms"><span class="mv" style="color:var(--yellow);font-size:11px">80%</span><div class="mlb">Limit</div></div>
+      </div>
+      <div style="margin-top:8px;font-size:9px;color:var(--yellow)">⚠ Prune if hits 85%</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>UNIT-00 COMMAND CENTER // TONY ORQUE // BUILD THE FUTURE // <span id="fdate">—</span></footer>
 
 <script>
-  function tick(){document.getElementById('clock').textContent=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true}).format(new Date())+' PT'}
+  // Clock
+  function tick(){
+    var t=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true}).format(new Date());
+    document.getElementById('clock').textContent=t+' PT';
+  }
   tick();setInterval(tick,1000);
 
+  // Footer date
+  document.getElementById('fdate').textContent=new Date().toLocaleDateString('en-US',{timeZone:'America/Los_Angeles',weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+  // Tabs
+  function showPage(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('page-'+id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // Week label
+  (function(){
+    var n=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Los_Angeles'}));
+    var m=new Date(n);m.setDate(n.getDate()-((n.getDay()+6)%7));
+    var s=new Date(m);s.setDate(m.getDate()+6);
+    var f=function(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric'})};
+    var wstr=f(m)+' – '+f(s);
+    document.getElementById('wl').textContent=wstr;
+    if(document.getElementById('wl2'))document.getElementById('wl2').textContent=wstr;
+  })();
+
+  // Sessions
+  var ss=parseInt(sessionStorage.getItem('u00s')||0)+1;
+  sessionStorage.setItem('u00s',ss);
+  document.getElementById('sc').textContent=ss;
+
+  // Runway
   (function(){
     var start=new Date('2026-06-04T00:00:00-07:00');
     var total=97;
@@ -393,34 +601,18 @@
       var elapsed=Math.max(0,Math.floor((now-start)/86400000));
       var left=Math.max(0,total-elapsed);
       var pct=Math.min(100,Math.round(elapsed/total*100));
-      document.getElementById('cd-days').textContent=left;
-      document.getElementById('cd-weeks').textContent=Math.floor(left/7);
-      document.getElementById('cd-months').textContent=(left/30.44).toFixed(1);
-      document.getElementById('runway-months').innerHTML=(left/30.44).toFixed(1)+'<span style="font-size:18px;color:var(--muted)">mo</span>';
-      document.getElementById('runway-bar').style.width=pct+'%';
-      document.getElementById('runway-pct-label').textContent=pct+'% consumed';
-      document.getElementById('runway-date-label').textContent='Zero day: '+end.toLocaleDateString('en-US',{timeZone:'America/Los_Angeles',month:'long',day:'numeric',year:'numeric'});
-      var td=document.getElementById('ticker-days');if(td)td.textContent=left;
+      document.getElementById('rdays').textContent=left;
+      document.getElementById('rwks').textContent=Math.floor(left/7);
+      document.getElementById('rmos').textContent=(left/30.44).toFixed(1);
+      document.getElementById('rmo').innerHTML=(left/30.44).toFixed(1)+'<span style="font-size:18px;color:var(--muted)">mo</span>';
+      document.getElementById('rbar').style.width=pct+'%';
+      document.getElementById('rlab').textContent=pct+'% consumed';
+      document.getElementById('rpct').textContent=pct+'% used';
+      document.getElementById('rzero').textContent='Zero day: '+end.toLocaleDateString('en-US',{timeZone:'America/Los_Angeles',month:'long',day:'numeric',year:'numeric'});
+      var td=document.getElementById('td');if(td)td.textContent=left;
     }
     update();setInterval(update,60000);
   })();
-
-  (function(){
-    var n=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Los_Angeles'}));
-    var m=new Date(n);m.setDate(n.getDate()-((n.getDay()+6)%7));
-    var s=new Date(m);s.setDate(m.getDate()+6);
-    var f=function(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric'})};
-    document.getElementById('wl').textContent=f(m)+' – '+f(s);
-  })();
-
-  var ss=parseInt(sessionStorage.getItem('u00s')||0)+1;
-  sessionStorage.setItem('u00s',ss);
-  document.getElementById('sc').textContent=ss;
-
-  var all=document.querySelectorAll('.ti').length;
-  var done=document.querySelectorAll('.ti.done').length;
-  var act=document.querySelectorAll('.ti.act').length;
-  document.getElementById('tc').textContent=done+'/'+all+' done · '+act+' active';
 </script>
 </body>
 </html>
