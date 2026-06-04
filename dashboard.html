@@ -35,7 +35,7 @@
     .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
     .nom{font-size:8px;color:var(--muted)}
-    .clock{font-size:10px;color:var(--orange);white-space:nowrap}
+    .clock{font-size:11px;color:var(--orange);white-space:nowrap;font-weight:700}
 
     /* TICKER */
     .ticker{background:var(--bg2);border-bottom:1px solid var(--border);padding:4px 0;overflow:hidden}
@@ -45,30 +45,69 @@
 
     /* LAYOUT */
     .page{padding:12px;display:flex;flex-direction:column;gap:12px;max-width:1100px;margin:0 auto}
+    @media(min-width:600px){
+      .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+      .two-r{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+    }
 
     /* CARD */
     .card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;width:100%}
     .card.teal{border-top:2px solid var(--teal)}
     .card.orange{border-top:2px solid var(--orange)}
+    .card.red{border-top:2px solid var(--red)}
     .ch{display:flex;align-items:center;gap:8px;margin-bottom:12px}
     .ci{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;background:var(--teal-glow);flex-shrink:0}
-    .orange .ci{background:var(--orange-glow)}
+    .orange .ci,.red .ci{background:var(--orange-glow)}
     .ct{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal)}
     .orange .ct{color:var(--orange)}
+    .red .ct{color:var(--red)}
     .cs{font-size:8px;color:var(--muted);margin-left:auto}
 
-    /* TWO COL on tablet+ */
-    @media(min-width:600px){
-      .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-      .two-r{display:grid;grid-template-columns:2fr 1fr;gap:12px}
-      .two-l{display:grid;grid-template-columns:1fr 2fr;gap:12px}
+    /* RUNWAY HERO */
+    .runway-hero{
+      background:var(--bg2);border:1px solid var(--border);border-top:2px solid var(--orange);
+      border-radius:10px;padding:14px;
     }
+    .runway-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+    .runway-num{font-size:36px;font-weight:700;color:var(--orange);text-shadow:0 0 16px var(--orange);line-height:1}
+    .runway-label{font-size:10px;color:var(--muted);line-height:1.4}
+    .runway-label strong{display:block;font-size:13px;color:var(--text)}
+    .runway-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+    @media(min-width:400px){.runway-stats{grid-template-columns:repeat(3,1fr)}}
+    .rs{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
+    .rsv{font-size:14px;font-weight:700;color:var(--orange)}
+    .rsl{font-size:8px;color:var(--muted);margin-top:2px;letter-spacing:1px;text-transform:uppercase}
+
+    /* STATS ROW */
+    .sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    @media(min-width:400px){.sgrid{grid-template-columns:repeat(4,1fr)}}
+    .sb{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:12px 8px;text-align:center;position:relative;overflow:hidden}
+    .sb::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal-dim),var(--teal))}
+    .sb.o::before{background:linear-gradient(90deg,var(--orange-dim),var(--orange))}
+    .sn{font-size:20px;font-weight:700;color:var(--teal);display:block;line-height:1;text-shadow:0 0 8px var(--teal)}
+    .sb.o .sn{color:var(--orange);text-shadow:0 0 8px var(--orange)}
+    .sl{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px;display:block}
+
+    /* PROGRESS */
+    .pl{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:4px}
+    .pl span:last-child{font-weight:700}
+    .pt{width:100%;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--border)}
+    .pf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal-dim),var(--teal));box-shadow:0 0 6px var(--teal)}
+    .pf.o{background:linear-gradient(90deg,var(--orange-dim),var(--orange));box-shadow:0 0 6px var(--orange)}
+    .pf.w{background:linear-gradient(90deg,#a06030,var(--yellow));box-shadow:0 0 6px var(--yellow)}
+    .pf.r{background:linear-gradient(90deg,#800,var(--red));box-shadow:0 0 6px var(--red)}
+
+    /* MEM STATS */
+    .mrow{display:flex;gap:8px;margin-top:10px}
+    .ms{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
+    .mv{font-size:15px;font-weight:700;color:var(--teal);display:block;text-shadow:0 0 8px var(--teal)}
+    .mlb{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
 
     /* CRON */
     .cron-row{display:flex;align-items:center;gap:8px;padding:9px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:7px}
     .cron-row:last-child{margin-bottom:0}
     .cn{font-size:11px;font-weight:700;flex:1;min-width:0}
-    .cd{font-size:9px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .cd{font-size:9px;color:var(--muted);margin-top:1px}
     .cs2{font-size:9px;color:var(--teal);white-space:nowrap;margin:0 6px}
     .ok{font-size:8px;font-weight:700;padding:2px 7px;border-radius:4px;background:rgba(57,217,138,.15);color:var(--green);border:1px solid rgba(57,217,138,.3);white-space:nowrap}
 
@@ -84,31 +123,6 @@
     .tag-d{background:rgba(57,217,138,.12);color:var(--green);border:1px solid rgba(57,217,138,.25)}
     .tag-a{background:rgba(232,160,32,.12);color:var(--orange);border:1px solid rgba(232,160,32,.25)}
     .tag-p{background:rgba(90,96,128,.1);color:var(--muted);border:1px solid var(--border)}
-
-    /* PROGRESS */
-    .pl{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:4px}
-    .pl span:last-child{font-weight:700;color:var(--teal)}
-    .pt{width:100%;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--border)}
-    .pf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal-dim),var(--teal));box-shadow:0 0 6px var(--teal)}
-    .pf.o{background:linear-gradient(90deg,var(--orange-dim),var(--orange));box-shadow:0 0 6px var(--orange)}
-    .pf.w{background:linear-gradient(90deg,#a06030,var(--yellow));box-shadow:0 0 6px var(--yellow)}
-    .pf.r{background:linear-gradient(90deg,#800,var(--red));box-shadow:0 0 6px var(--red)}
-
-    /* MEM STATS */
-    .mrow{display:flex;gap:8px;margin-top:10px}
-    .ms{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
-    .mv{font-size:15px;font-weight:700;color:var(--teal);display:block;text-shadow:0 0 8px var(--teal)}
-    .ml{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
-
-    /* STAT BOXES */
-    .sgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    @media(min-width:400px){.sgrid{grid-template-columns:repeat(4,1fr)}}
-    .sb{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:12px 8px;text-align:center;position:relative;overflow:hidden}
-    .sb::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal-dim),var(--teal))}
-    .sb.o::before{background:linear-gradient(90deg,var(--orange-dim),var(--orange))}
-    .sn{font-size:20px;font-weight:700;color:var(--teal);display:block;line-height:1;text-shadow:0 0 8px var(--teal)}
-    .sb.o .sn{color:var(--orange);text-shadow:0 0 8px var(--orange)}
-    .sl{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px;display:block}
 
     /* DRIVE */
     .dl{display:flex;flex-direction:column;gap:7px}
@@ -152,14 +166,57 @@
   <span class="tick-inner">&nbsp;&nbsp;&nbsp;
     <b>[SYS]</b> All cron jobs nominal &nbsp;|&nbsp;
     <b>[MEM]</b> Memory at <em>96%</em> — prune needed &nbsp;|&nbsp;
+    <b>[RUNWAY]</b> <em>~3.2 months</em> at current burn &nbsp;|&nbsp;
     <b>[GIG]</b> Weekly goal: <em>$2,500</em> &nbsp;|&nbsp;
     <b>[KB]</b> Drive KB synced &nbsp;|&nbsp;
-    <b>[AI]</b> Next: Morning AI News 07:00 PT &nbsp;|&nbsp;
     <b>[SYS]</b> UNIT-00 watching. Stay sharp, Tony.
   </span>
 </div>
 
 <div class="page">
+
+  <!-- RUNWAY HERO -->
+  <div class="runway-hero">
+    <div class="ch"><div class="ci" style="background:var(--orange-glow)">🛫</div><span class="ct" style="color:var(--orange)">Financial Runway</span><span class="cs" id="runway-date">as of Jun 4, 2026</span></div>
+    <div class="runway-row">
+      <div class="runway-num">3.2<span style="font-size:18px;color:var(--muted)">mo</span></div>
+      <div class="runway-label">
+        <strong>~Mid-September 2026</strong>
+        at current burn rate — zero income scenario
+      </div>
+    </div>
+    <div class="pl"><span>Runway consumed</span><span style="color:var(--orange)">0% of 3.2mo</span></div>
+    <div class="pt"><div class="pf o" style="width:0%"></div></div>
+    <div class="runway-stats">
+      <div class="rs"><div class="rsv">$14,000</div><div class="rsl">Cash Reserve</div></div>
+      <div class="rs"><div class="rsv">$4,300</div><div class="rsl">Monthly Burn</div></div>
+      <div class="rs"><div class="rsv">$35,000</div><div class="rsl">Loan Balance</div></div>
+    </div>
+  </div>
+
+  <!-- STATS + MEMORY TOP ROW -->
+  <div class="two">
+    <div class="card teal">
+      <div class="ch"><div class="ci">📈</div><span class="ct">Quick Stats</span></div>
+      <div class="sgrid">
+        <div class="sb"><span class="sn" id="sc">—</span><span class="sl">Sessions</span></div>
+        <div class="sb"><span class="sn">2</span><span class="sl">Brain Dumps</span></div>
+        <div class="sb o"><span class="sn">1</span><span class="sl">Interviews</span></div>
+        <div class="sb"><span class="sn">4</span><span class="sl">Cron Jobs</span></div>
+      </div>
+    </div>
+
+    <div class="card red">
+      <div class="ch"><div class="ci">💾</div><span class="ct">Memory</span><span class="cs" style="color:var(--red)">⚠ CRITICAL</span></div>
+      <div class="pl"><span>Agent Memory</span><span style="color:var(--red)">96%</span></div>
+      <div class="pt"><div class="pf r" style="width:96%"></div></div>
+      <div class="mrow">
+        <div class="ms"><span class="mv" style="color:var(--red)">96%</span><div class="mlb">Used</div></div>
+        <div class="ms"><span class="mv" style="color:var(--red);font-size:12px">4%</span><div class="mlb">Free</div></div>
+        <div class="ms"><span class="mv" style="color:var(--yellow);font-size:12px">80%</span><div class="mlb">Limit</div></div>
+      </div>
+    </div>
+  </div>
 
   <!-- CRON JOBS -->
   <div class="card teal">
@@ -196,34 +253,6 @@
       <div class="ti"><div class="tc"></div><div class="tt">Memory pruning workflow at 80%</div><span class="tag tag-p">PENDING</span></div>
     </div>
 
-    <div style="display:flex;flex-direction:column;gap:12px">
-      <!-- Memory -->
-      <div class="card teal">
-        <div class="ch"><div class="ci">💾</div><span class="ct">Memory</span></div>
-        <div class="pl"><span>Agent Memory</span><span style="color:var(--red)">96%</span></div>
-        <div class="pt"><div class="pf r" style="width:96%"></div></div>
-        <div class="mrow">
-          <div class="ms"><span class="mv" style="color:var(--red)">96%</span><div class="ml">Used</div></div>
-          <div class="ms"><span class="mv" style="color:var(--red);font-size:12px">4%</span><div class="ml">Free</div></div>
-          <div class="ms"><span class="mv" style="color:var(--yellow);font-size:12px">80%</span><div class="ml">Limit</div></div>
-        </div>
-        <div style="margin-top:8px;font-size:9px;color:var(--red)">⚠ Critical — prune now.</div>
-      </div>
-      <!-- Stats -->
-      <div class="card teal">
-        <div class="ch"><div class="ci">📈</div><span class="ct">Stats</span></div>
-        <div class="sgrid">
-          <div class="sb"><span class="sn" id="sc">—</span><span class="sl">Sessions</span></div>
-          <div class="sb"><span class="sn">2</span><span class="sl">Brain Dumps</span></div>
-          <div class="sb o"><span class="sn">1</span><span class="sl">Interviews</span></div>
-          <div class="sb"><span class="sn">4</span><span class="sl">Cron Jobs</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- DRIVE + GIG -->
-  <div class="two">
     <div class="card orange">
       <div class="ch"><div class="ci">📂</div><span class="ct">Drive KB</span><span class="cs">3 docs</span></div>
       <div class="dl">
@@ -238,19 +267,20 @@
         </a>
       </div>
     </div>
+  </div>
 
-    <div class="card orange">
-      <div class="ch"><div class="ci">💰</div><span class="ct">Gig Tracker</span><span class="cs" id="wl">—</span></div>
-      <div class="ga">$0</div>
-      <div class="gg">/ $2,500 weekly goal</div>
-      <div class="pl"><span>Weekly Progress</span><span style="color:var(--orange)">0%</span></div>
-      <div class="pt"><div class="pf o" style="width:0%"></div></div>
-      <div class="gstats">
-        <div class="gs"><div class="gsv">$0</div><div class="gsl">This Week</div></div>
-        <div class="gs"><div class="gsv">$0</div><div class="gsl">This Month</div></div>
-        <div class="gs"><div class="gsv">0</div><div class="gsl">Clients</div></div>
-        <div class="gs"><div class="gsv">$2,500</div><div class="gsl">Target</div></div>
-      </div>
+  <!-- GIG TRACKER -->
+  <div class="card orange">
+    <div class="ch"><div class="ci">💰</div><span class="ct">Gig Tracker</span><span class="cs" id="wl">—</span></div>
+    <div class="ga">$0</div>
+    <div class="gg">/ $2,500 weekly goal</div>
+    <div class="pl"><span>Weekly Progress</span><span style="color:var(--orange)">0%</span></div>
+    <div class="pt"><div class="pf o" style="width:0%"></div></div>
+    <div class="gstats">
+      <div class="gs"><div class="gsv">$0</div><div class="gsl">This Week</div></div>
+      <div class="gs"><div class="gsv">$0</div><div class="gsl">This Month</div></div>
+      <div class="gs"><div class="gsv">0</div><div class="gsl">Clients</div></div>
+      <div class="gs"><div class="gsv">$2,500</div><div class="gsl">Target</div></div>
     </div>
   </div>
 
@@ -259,14 +289,12 @@
 <footer>UNIT-00 // ALL SYSTEMS OPERATIONAL // BUILD THE FUTURE</footer>
 
 <script>
-  // Clock
   function tick(){
     document.getElementById('clock').textContent =
       new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true}).format(new Date())+' PT';
   }
   tick(); setInterval(tick,1000);
 
-  // Week label
   (function(){
     const n=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Los_Angeles'}));
     const m=new Date(n); m.setDate(n.getDate()-((n.getDay()+6)%7));
@@ -275,12 +303,10 @@
     document.getElementById('wl').textContent=f(m)+' – '+f(s);
   })();
 
-  // Sessions
   var ss=parseInt(sessionStorage.getItem('u00s')||0)+1;
   sessionStorage.setItem('u00s',ss);
   document.getElementById('sc').textContent=ss;
 
-  // Todo count
   var all=document.querySelectorAll('.ti').length;
   var done=document.querySelectorAll('.ti.done').length;
   var act=document.querySelectorAll('.ti.act').length;
