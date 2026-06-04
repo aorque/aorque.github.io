@@ -243,12 +243,14 @@
       </div>
     </div>
     <div class="card red">
-      <div class="ch"><div class="ci">💾</div><span class="ct">Memory</span><span class="cs" style="color:var(--yellow)">83%</span></div>
-      <div class="pl"><span>Agent Memory</span><span style="color:var(--yellow)">83%</span></div>
-      <div class="pt"><div class="pf r" style="width:83%"></div></div>
+      <div class="ch"><div class="ci">💾</div><span class="ct">Memory</span><span class="cs" id="mem-badge" style="color:var(--yellow)">—</span></div>
+      <div class="pl"><span>Notes Memory</span><span id="mem-pct-label" style="font-weight:700">—</span></div>
+      <div class="pt"><div class="pf r" id="mem-bar" style="width:0%"></div></div>
+      <div class="pl" style="margin-top:6px"><span>User Profile</span><span id="user-pct-label" style="font-weight:700">—</span></div>
+      <div class="pt"><div class="pf r" id="user-bar" style="width:0%"></div></div>
       <div class="mrow">
-        <div class="ms"><span class="mv" style="color:var(--yellow)">83%</span><div class="mlb">Used</div></div>
-        <div class="ms"><span class="mv" style="color:var(--green);font-size:11px">17%</span><div class="mlb">Free</div></div>
+        <div class="ms"><span class="mv" id="mem-used" style="color:var(--yellow)">—</span><div class="mlb">Notes</div></div>
+        <div class="ms"><span class="mv" id="user-used" style="color:var(--yellow)">—</span><div class="mlb">Profile</div></div>
         <div class="ms"><span class="mv" style="color:var(--yellow);font-size:11px">80%</span><div class="mlb">Limit</div></div>
       </div>
     </div>
@@ -365,17 +367,15 @@
   <div class="card yellow">
     <div class="ch"><div class="ci">💸</div><span class="ct">Token Usage</span><span class="cs">claude-sonnet-4-6</span></div>
     <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px">
-      <div style="font-size:36px;font-weight:700;color:var(--yellow);text-shadow:0 0 16px var(--yellow);line-height:1">$52.36</div>
-      <div style="font-size:10px;color:var(--muted)">total spend<br/>Jun 3–4, 2026</div>
+      <div id="tk-total-cost" style="font-size:36px;font-weight:700;color:var(--yellow);text-shadow:0 0 16px var(--yellow);line-height:1">—</div>
+      <div style="font-size:10px;color:var(--muted)">total spend<br/>all sessions</div>
     </div>
     <div class="tkgrid">
-      <div class="tk"><div class="tkv">326K</div><div class="tkl">Total Tokens</div></div>
-      <div class="tk"><div class="tkv">28</div><div class="tkl">Sessions</div></div>
-      <div class="tk"><div class="tkv">$1.87</div><div class="tkl">Avg/Session</div></div>
-      <div class="tk"><div class="tkv">~$3–6</div><div class="tkl">Daily Run Rate</div></div>
+      <div class="tk"><div class="tkv" id="tk-tokens">—</div><div class="tkl">Total Tokens</div></div>
+      <div class="tk"><div class="tkv" id="tk-sessions">—</div><div class="tkl">Sessions</div></div>
+      <div class="tk"><div class="tkv" id="tk-avg">—</div><div class="tkl">Avg/Session</div></div>
+      <div class="tk"><div class="tkv" id="tk-today">—</div><div class="tkl">Today</div></div>
     </div>
-    <div class="row" style="margin-top:10px"><div class="row-main"><div class="row-title">📅 Jun 3 — Setup Day</div><div class="row-sub">15 sessions · 81 tool calls · 230K tokens</div></div><div style="font-size:12px;font-weight:700;color:var(--yellow)">$46.62</div></div>
-    <div class="row"><div class="row-main"><div class="row-title">📅 Jun 4 — Today</div><div class="row-sub">13 sessions · 104 tool calls · 96K tokens</div></div><div style="font-size:12px;font-weight:700;color:var(--yellow)">$5.74</div></div>
     <div style="margin-top:10px;padding:8px 10px;background:var(--bg3);border-radius:6px;border:1px solid var(--border);font-size:9px;color:var(--muted)">
       ✅ All 4 crons switched to <span style="color:var(--green)">claude-haiku-4-5</span> — saves ~80% on recurring jobs
     </div>
@@ -557,6 +557,30 @@
 <footer>UNIT-00 COMMAND CENTER // TONY ORQUE // BUILD THE FUTURE // <span id="fdate">—</span></footer>
 
 <script>
+  // Live data — injected by nightly cron
+  var LIVE = {"total_cost":72.86,"total_tokens":487715,"total_sessions":47,"today_cost":26.24,"memory_pct":75,"user_pct":95};
+
+  function applyLive(d){
+    // Token card
+    var el=document.getElementById('tk-total-cost');if(el)el.textContent='$'+d.total_cost;
+    el=document.getElementById('tk-tokens');if(el)el.textContent=Math.round(d.total_tokens/1000)+'K';
+    el=document.getElementById('tk-sessions');if(el)el.textContent=d.total_sessions;
+    el=document.getElementById('tk-avg');if(el)el.textContent='$'+Math.round(d.total_cost/d.total_sessions*100)/100;
+    el=document.getElementById('tk-today');if(el)el.textContent='$'+d.today_cost;
+    // Memory bars — all instances
+    var mp=d.memory_pct, up=d.user_pct;
+    var mcolor=mp>85?'var(--red)':mp>70?'var(--yellow)':'var(--green)';
+    var ucolor=up>85?'var(--red)':up>70?'var(--yellow)':'var(--green)';
+    ['mem-bar','mem-bar2'].forEach(function(id){var e=document.getElementById(id);if(e)e.style.width=mp+'%'});
+    ['user-bar','user-bar2'].forEach(function(id){var e=document.getElementById(id);if(e)e.style.width=up+'%'});
+    ['mem-pct-label','mem-pct-label2'].forEach(function(id){var e=document.getElementById(id);if(e){e.textContent=mp+'%';e.style.color=mcolor}});
+    ['user-pct-label','user-pct-label2'].forEach(function(id){var e=document.getElementById(id);if(e){e.textContent=up+'%';e.style.color=ucolor}});
+    ['mem-used','mem-used2'].forEach(function(id){var e=document.getElementById(id);if(e){e.textContent=mp+'%';e.style.color=mcolor}});
+    ['user-used','user-used2'].forEach(function(id){var e=document.getElementById(id);if(e){e.textContent=up+'%';e.style.color=ucolor}});
+    ['mem-badge','mem-badge2'].forEach(function(id){var e=document.getElementById(id);if(e){e.textContent='Notes '+mp+'% · Profile '+up+'%';e.style.color=mcolor}});
+  }
+  applyLive(LIVE);
+
   // Clock
   function tick(){
     var t=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true}).format(new Date());
