@@ -18,7 +18,6 @@
     body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px;line-height:1.6}
     body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px);pointer-events:none;z-index:9999}
 
-    /* HEADER */
     header{background:var(--bg2);border-bottom:2px solid var(--teal);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
     .hl{display:flex;align-items:center;gap:10px}
     .logo{width:38px;height:38px;border:2px solid var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;background:var(--teal-glow);font-size:8px;font-weight:700;color:var(--teal);text-align:center;line-height:1.2;flex-shrink:0}
@@ -30,13 +29,11 @@
     .nom{font-size:8px;color:var(--muted)}
     .clock{font-size:11px;color:var(--orange);white-space:nowrap;font-weight:700}
 
-    /* TICKER */
     .ticker{background:var(--bg2);border-bottom:1px solid var(--border);padding:4px 0;overflow:hidden}
     .tick-inner{white-space:nowrap;display:inline-block;animation:tick 40s linear infinite;font-size:10px;color:var(--muted)}
     .tick-inner b{color:var(--teal)}.tick-inner em{color:var(--orange);font-style:normal}
     @keyframes tick{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}
 
-    /* LAYOUT */
     .page{padding:12px;display:flex;flex-direction:column;gap:12px;max-width:1100px;margin:0 auto}
     @media(min-width:600px){
       .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -44,38 +41,49 @@
       .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
     }
 
-    /* CARD */
     .card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;width:100%}
     .card.teal{border-top:2px solid var(--teal)}
     .card.orange{border-top:2px solid var(--orange)}
     .card.red{border-top:2px solid var(--red)}
     .card.purple{border-top:2px solid var(--purple)}
     .card.green{border-top:2px solid var(--green)}
+    .card.yellow{border-top:2px solid var(--yellow)}
     .ch{display:flex;align-items:center;gap:8px;margin-bottom:12px}
     .ci{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;background:var(--teal-glow);flex-shrink:0}
     .orange .ci{background:var(--orange-glow)}
     .red .ci{background:rgba(255,79,110,.15)}
     .purple .ci{background:var(--purple-glow)}
-    .green .ci{background:rgba(57,217,138,.15)}
+    .yellow .ci{background:rgba(245,197,24,.12)}
     .ct{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal)}
-    .orange .ct{color:var(--orange)}
-    .red .ct{color:var(--red)}
-    .purple .ct{color:var(--purple)}
-    .green .ct{color:var(--green)}
+    .orange .ct{color:var(--orange)}.red .ct{color:var(--red)}.purple .ct{color:var(--purple)}.yellow .ct{color:var(--yellow)}
     .cs{font-size:8px;color:var(--muted);margin-left:auto}
 
     /* QUICK ACTIONS */
     .qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
     @media(min-width:400px){.qa-grid{grid-template-columns:repeat(3,1fr)}}
-    .qa-btn{
-      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-      padding:14px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;
-      text-decoration:none;color:var(--text);cursor:pointer;transition:all .2s;text-align:center;
-    }
-    .qa-btn:hover,.qa-btn:active{border-color:var(--teal);background:#161624;color:var(--teal);box-shadow:0 0 12px var(--teal-glow)}
-    .qa-btn.orange-btn:hover,.qa-btn.orange-btn:active{border-color:var(--orange);color:var(--orange);box-shadow:0 0 12px var(--orange-glow)}
-    .qa-icon{font-size:20px}
-    .qa-label{font-size:9px;letter-spacing:1px;text-transform:uppercase;font-weight:700}
+    .qa-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);text-align:center;transition:all .2s}
+    .qa-btn:hover{border-color:var(--teal);background:#161624;color:var(--teal);box-shadow:0 0 12px var(--teal-glow)}
+    .qa-btn.ob:hover{border-color:var(--orange);color:var(--orange);box-shadow:0 0 12px var(--orange-glow)}
+    .qa-icon{font-size:20px}.qa-label{font-size:9px;letter-spacing:1px;text-transform:uppercase;font-weight:700}
+
+    /* TOKEN CARD */
+    .token-hero{display:flex;align-items:baseline;gap:8px;margin-bottom:12px}
+    .token-cost{font-size:36px;font-weight:700;color:var(--yellow);text-shadow:0 0 16px var(--yellow);line-height:1}
+    .token-sub{font-size:10px;color:var(--muted)}
+    .token-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    @media(min-width:400px){.token-grid{grid-template-columns:repeat(4,1fr)}}
+    .tk{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
+    .tkv{font-size:13px;font-weight:700;color:var(--yellow)}
+    .tkl{font-size:8px;color:var(--muted);margin-top:2px;letter-spacing:1px;text-transform:uppercase}
+    .day-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:6px}
+    .day-row:last-child{margin-bottom:0}
+    .day-label{font-size:10px;font-weight:700}
+    .day-cost{font-size:11px;color:var(--yellow);font-weight:700}
+    .day-detail{font-size:9px;color:var(--muted)}
+    .model-pill{display:inline-block;font-size:8px;padding:2px 8px;border-radius:4px;background:rgba(168,85,247,.15);color:var(--purple);border:1px solid rgba(168,85,247,.3);margin-top:8px}
+    .burn-rate{margin-top:10px;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;font-size:9px;color:var(--muted)}
+    .burn-rate em{color:var(--yellow);font-style:normal;font-weight:700}
+    .burn-rate strong{color:var(--green)}
 
     /* STATS */
     .sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
@@ -90,7 +98,7 @@
     /* MEMORY */
     .pl{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:4px}
     .pl span:last-child{font-weight:700}
-    .pt{width:100%;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--border)}
+    .pt{width:100%;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--border);margin-bottom:8px}
     .pf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal-dim),var(--teal));box-shadow:0 0 6px var(--teal)}
     .pf.o{background:linear-gradient(90deg,var(--orange-dim),var(--orange));box-shadow:0 0 6px var(--orange)}
     .pf.r{background:linear-gradient(90deg,#800,var(--red));box-shadow:0 0 6px var(--red)}
@@ -101,7 +109,7 @@
 
     /* RUNWAY */
     .runway-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
-    .runway-num{font-size:42px;font-weight:700;color:var(--orange);text-shadow:0 0 16px var(--orange);line-height:1}
+    .runway-num{font-size:36px;font-weight:700;color:var(--orange);text-shadow:0 0 16px var(--orange);line-height:1}
     .runway-label{font-size:10px;color:var(--muted);line-height:1.6}
     .runway-label strong{display:block;font-size:13px;color:var(--text)}
     .runway-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
@@ -113,7 +121,7 @@
     .cd-num{font-size:22px;font-weight:700;color:var(--orange);text-shadow:0 0 10px var(--orange);line-height:1}
     .cd-label{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
 
-    /* PROJECT TRACKER */
+    /* PROJECT */
     .phase-list{display:flex;flex-direction:column;gap:8px}
     .phase{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:6px}
     .phase-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px}
@@ -161,8 +169,7 @@
     .da{display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;text-decoration:none;color:var(--text)}
     .da:hover{border-color:var(--teal-dim);color:var(--teal)}
     .di{width:26px;height:26px;background:var(--teal-glow);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-    .dn{font-size:11px;font-weight:700}
-    .dd{font-size:9px;color:var(--muted);margin-top:1px}
+    .dn{font-size:11px;font-weight:700}.dd{font-size:9px;color:var(--muted);margin-top:1px}
     .darr{font-size:10px;color:var(--muted);margin-left:auto}
 
     /* GIG */
@@ -196,11 +203,11 @@
 
 <div class="ticker">
   <span class="tick-inner">&nbsp;&nbsp;&nbsp;
-    <b>[SYS]</b> All cron jobs nominal &nbsp;|&nbsp;
+    <b>[TOKEN]</b> 2-day spend: <em>$52.36</em> — Jun 3: $46.62 · Jun 4: $5.74 &nbsp;|&nbsp;
+    <b>[MODEL]</b> claude-sonnet-4-6 &nbsp;|&nbsp;
     <b>[RUNWAY]</b> <em id="ticker-days">97</em> days remaining &nbsp;|&nbsp;
     <b>[PROJECT]</b> AI × Creator Distribution — Phase 1 active &nbsp;|&nbsp;
-    <b>[GIG]</b> Weekly goal: <em>$2,500</em> &nbsp;|&nbsp;
-    <b>[MEM]</b> Memory at <em>96%</em> — prune needed &nbsp;|&nbsp;
+    <b>[MEM]</b> Memory at <em>83%</em> — monitor &nbsp;|&nbsp;
     <b>[SYS]</b> UNIT-00 watching. Stay sharp, Tony.
   </span>
 </div>
@@ -211,31 +218,42 @@
   <div class="card teal">
     <div class="ch"><div class="ci">⚡</div><span class="ct">Quick Actions</span></div>
     <div class="qa-grid">
-      <a class="qa-btn" href="https://t.me/idiotshinjibot" target="_blank">
-        <div class="qa-icon">🤖</div>
-        <div class="qa-label">Message Unit 0</div>
-      </a>
-      <a class="qa-btn" href="https://docs.google.com/document/d/1E1_RFV3eN3LcuUUH_Wx8FbjQXGhJnZHAeH-jaKDxHUE" target="_blank">
-        <div class="qa-icon">🧠</div>
-        <div class="qa-label">Brain Dump</div>
-      </a>
-      <a class="qa-btn" href="https://docs.google.com/document/d/17-KfqbZpt90W-cfNYHYiFFoWdhghXkoZyWIjHW_Mr-o" target="_blank">
-        <div class="qa-icon">✅</div>
-        <div class="qa-label">Action Items</div>
-      </a>
-      <a class="qa-btn orange-btn" href="https://docs.google.com/document/d/1OZSiims-ptaUl9cnMnrZskovBN3NrDZ6IQINKavbeQM" target="_blank">
-        <div class="qa-icon">🛫</div>
-        <div class="qa-label">Runway Plan</div>
-      </a>
-      <a class="qa-btn" href="https://docs.google.com/document/d/1AkrZTpkiveuhSVCoiuar-waWyOg8T-6Wj0iN0AYL8jc" target="_blank">
-        <div class="qa-icon">📚</div>
-        <div class="qa-label">Knowledge Base</div>
-      </a>
-      <a class="qa-btn" href="https://aorque.github.io" target="_blank">
-        <div class="qa-icon">🌐</div>
-        <div class="qa-label">Portfolio</div>
-      </a>
+      <a class="qa-btn" href="https://t.me/idiotshinjibot" target="_blank"><div class="qa-icon">🤖</div><div class="qa-label">Message Unit 0</div></a>
+      <a class="qa-btn" href="https://docs.google.com/document/d/1E1_RFV3eN3LcuUUH_Wx8FbjQXGhJnZHAeH-jaKDxHUE" target="_blank"><div class="qa-icon">🧠</div><div class="qa-label">Brain Dump</div></a>
+      <a class="qa-btn" href="https://docs.google.com/document/d/17-KfqbZpt90W-cfNYHYiFFoWdhghXkoZyWIjHW_Mr-o" target="_blank"><div class="qa-icon">✅</div><div class="qa-label">Action Items</div></a>
+      <a class="qa-btn ob" href="https://docs.google.com/document/d/1OZSiims-ptaUl9cnMnrZskovBN3NrDZ6IQINKavbeQM" target="_blank"><div class="qa-icon">🛫</div><div class="qa-label">Runway Plan</div></a>
+      <a class="qa-btn" href="https://docs.google.com/document/d/1AkrZTpkiveuhSVCoiuar-waWyOg8T-6Wj0iN0AYL8jc" target="_blank"><div class="qa-icon">📚</div><div class="qa-label">Knowledge Base</div></a>
+      <a class="qa-btn" href="https://aorque.github.io" target="_blank"><div class="qa-icon">🌐</div><div class="qa-label">Portfolio</div></a>
     </div>
+  </div>
+
+  <!-- TOKEN USAGE -->
+  <div class="card yellow">
+    <div class="ch"><div class="ci">💸</div><span class="ct">Token Usage</span><span class="cs">claude-sonnet-4-6</span></div>
+    <div class="token-hero">
+      <div class="token-cost">$52.36</div>
+      <div class="token-sub">total spend<br/>Jun 3–4, 2026</div>
+    </div>
+    <div class="token-grid">
+      <div class="tk"><div class="tkv">326K</div><div class="tkl">Total Tokens</div></div>
+      <div class="tk"><div class="tkv">28</div><div class="tkl">Sessions</div></div>
+      <div class="tk"><div class="tkv">185</div><div class="tkl">Tool Calls</div></div>
+      <div class="tk"><div class="tkv">$1.87</div><div class="tkl">Avg/Session</div></div>
+    </div>
+    <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px">
+      <div class="day-row">
+        <div><div class="day-label">📅 Jun 3 (setup day)</div><div class="day-detail">15 sessions · 81 tool calls · 230K tokens</div></div>
+        <div class="day-cost">$46.62</div>
+      </div>
+      <div class="day-row">
+        <div><div class="day-label">📅 Jun 4 (today)</div><div class="day-detail">13 sessions · 104 tool calls · 96K tokens</div></div>
+        <div class="day-cost">$5.74</div>
+      </div>
+    </div>
+    <div class="burn-rate">
+      <em>$46.62</em> on day 1 (setup/config — expected high). <em>$5.74</em> today and dropping. Projected daily run rate: <strong>~$3–6/day</strong> at current usage. Switch crons to Haiku = <strong>save ~80% on recurring jobs</strong>.
+    </div>
+    <div><span class="model-pill">🧠 claude-sonnet-4-6 — complex reasoning</span> <span class="model-pill" style="color:var(--green);background:rgba(57,217,138,.1);border-color:rgba(57,217,138,.3)">⚡ haiku available for crons</span></div>
   </div>
 
   <!-- STATS + MEMORY -->
@@ -250,12 +268,12 @@
       </div>
     </div>
     <div class="card red">
-      <div class="ch"><div class="ci">💾</div><span class="ct">Memory</span><span class="cs" style="color:var(--red)">⚠ CRITICAL</span></div>
-      <div class="pl"><span>Agent Memory</span><span style="color:var(--red)">96%</span></div>
-      <div class="pt"><div class="pf r" style="width:96%"></div></div>
+      <div class="ch"><div class="ci">💾</div><span class="ct">Memory</span><span class="cs" style="color:var(--yellow)">⚠ 83%</span></div>
+      <div class="pl"><span>Agent Memory</span><span style="color:var(--yellow)">83%</span></div>
+      <div class="pt"><div class="pf r" style="width:83%"></div></div>
       <div class="mrow">
-        <div class="ms"><span class="mv" style="color:var(--red)">96%</span><div class="mlb">Used</div></div>
-        <div class="ms"><span class="mv" style="color:var(--red);font-size:11px">4%</span><div class="mlb">Free</div></div>
+        <div class="ms"><span class="mv" style="color:var(--yellow)">83%</span><div class="mlb">Used</div></div>
+        <div class="ms"><span class="mv" style="color:var(--green);font-size:11px">17%</span><div class="mlb">Free</div></div>
         <div class="ms"><span class="mv" style="color:var(--yellow);font-size:11px">80%</span><div class="mlb">Limit</div></div>
       </div>
     </div>
@@ -266,10 +284,7 @@
     <div class="ch"><div class="ci">🛫</div><span class="ct">Financial Runway</span><span class="cs" id="runway-pct"></span></div>
     <div class="runway-row">
       <div class="runway-num" id="runway-months">—</div>
-      <div class="runway-label">
-        <strong id="runway-date-label">Calculating…</strong>
-        at $4,300/mo burn — zero income scenario
-      </div>
+      <div class="runway-label"><strong id="runway-date-label">Calculating…</strong>at $4,300/mo burn — zero income scenario</div>
     </div>
     <div class="pl"><span>Runway consumed (from Jun 4)</span><span style="color:var(--orange)" id="runway-pct-label">—</span></div>
     <div class="pt"><div class="pf o" id="runway-bar" style="width:0%"></div></div>
@@ -289,46 +304,11 @@
   <div class="card purple">
     <div class="ch"><div class="ci">🚀</div><span class="ct">Creative Project</span><span class="cs">AI × Creator Distribution</span></div>
     <div class="phase-list">
-      <div class="phase">
-        <div class="phase-num done">✓</div>
-        <div class="phase-content">
-          <div class="phase-title">Phase 0 — Research & Positioning</div>
-          <div class="phase-desc">CatGPT reverse engineered. Intersection identified. Runway mapped.</div>
-        </div>
-        <span class="phase-tag pt-done">DONE</span>
-      </div>
-      <div class="phase">
-        <div class="phase-num active">1</div>
-        <div class="phase-content">
-          <div class="phase-title">Phase 1 — Pick Your Angle</div>
-          <div class="phase-desc">Choose intersection: Events×AI, Meta content machine, LV lifestyle×AI, or Experience Design×AI</div>
-        </div>
-        <span class="phase-tag pt-active">ACTIVE</span>
-      </div>
-      <div class="phase">
-        <div class="phase-num pending">2</div>
-        <div class="phase-content">
-          <div class="phase-title">Phase 2 — Build Content Machine</div>
-          <div class="phase-desc">Set up AI-assisted pipeline. Define platform stack. Create first 5 pieces.</div>
-        </div>
-        <span class="phase-tag pt-pending">PENDING</span>
-      </div>
-      <div class="phase">
-        <div class="phase-num pending">3</div>
-        <div class="phase-content">
-          <div class="phase-title">Phase 3 — Establish Authority</div>
-          <div class="phase-desc">30-day content sprint. Build audience. Identify monetization signal.</div>
-        </div>
-        <span class="phase-tag pt-pending">PENDING</span>
-      </div>
-      <div class="phase">
-        <div class="phase-num pending">4</div>
-        <div class="phase-content">
-          <div class="phase-title">Phase 4 — Monetize</div>
-          <div class="phase-desc">Launch product, community, or service aligned with content brand.</div>
-        </div>
-        <span class="phase-tag pt-pending">PENDING</span>
-      </div>
+      <div class="phase"><div class="phase-num done">✓</div><div class="phase-content"><div class="phase-title">Phase 0 — Research & Positioning</div><div class="phase-desc">CatGPT reverse engineered. Intersection identified. Runway mapped.</div></div><span class="phase-tag pt-done">DONE</span></div>
+      <div class="phase"><div class="phase-num active">1</div><div class="phase-content"><div class="phase-title">Phase 1 — Pick Your Angle</div><div class="phase-desc">Choose: Events×AI · Meta content machine · LV lifestyle×AI · Experience Design×AI</div></div><span class="phase-tag pt-active">ACTIVE</span></div>
+      <div class="phase"><div class="phase-num pending">2</div><div class="phase-content"><div class="phase-title">Phase 2 — Build Content Machine</div><div class="phase-desc">AI-assisted pipeline. Platform stack. First 5 pieces.</div></div><span class="phase-tag pt-pending">PENDING</span></div>
+      <div class="phase"><div class="phase-num pending">3</div><div class="phase-content"><div class="phase-title">Phase 3 — Establish Authority</div><div class="phase-desc">30-day content sprint. Build audience. Find monetization signal.</div></div><span class="phase-tag pt-pending">PENDING</span></div>
+      <div class="phase"><div class="phase-num pending">4</div><div class="phase-content"><div class="phase-title">Phase 4 — Monetize</div><div class="phase-desc">Launch product/community/service aligned with content brand.</div></div><span class="phase-tag pt-pending">PENDING</span></div>
     </div>
   </div>
 
@@ -343,8 +323,8 @@
       </div>
       <div class="blog-item" style="border-left-color:var(--muted);opacity:.5">
         <div class="blog-time">— NEXT SESSION —</div>
-        <div class="blog-why">Unit 0 will log each time you check in and why</div>
-        <div class="blog-tag">Pattern recognition builds over time</div>
+        <div class="blog-why">Unit 0 logs each check-in and why. Patterns build over time.</div>
+        <div class="blog-tag">Data → product insight</div>
       </div>
     </div>
   </div>
@@ -352,22 +332,10 @@
   <!-- CRON JOBS -->
   <div class="card teal">
     <div class="ch"><div class="ci">⏱</div><span class="ct">Cron Jobs</span><span class="cs">4 / 4 active</span></div>
-    <div class="cron-row">
-      <div style="flex:1;min-width:0"><div class="cn">☀️ Morning AI News</div><div class="cd2">Top headlines → Telegram</div></div>
-      <div class="cs2">7AM PT</div><div class="ok">✓ OK</div>
-    </div>
-    <div class="cron-row">
-      <div style="flex:1;min-width:0"><div class="cn">🧠 Hormozi Nightly</div><div class="cd2">Business insight → Telegram</div></div>
-      <div class="cs2">11PM PT</div><div class="ok">✓ OK</div>
-    </div>
-    <div class="cron-row">
-      <div style="flex:1;min-width:0"><div class="cn">📋 Monday Check-In</div><div class="cd2">Weekly priorities → Telegram</div></div>
-      <div class="cs2">Mon 9AM</div><div class="ok">✓ OK</div>
-    </div>
-    <div class="cron-row">
-      <div style="flex:1;min-width:0"><div class="cn">📊 Friday Review</div><div class="cd2">Week digest → Telegram</div></div>
-      <div class="cs2">Fri 5PM</div><div class="ok">✓ OK</div>
-    </div>
+    <div class="cron-row"><div style="flex:1;min-width:0"><div class="cn">☀️ Morning AI News</div><div class="cd2">Top headlines → Telegram</div></div><div class="cs2">7AM PT</div><div class="ok">✓ OK</div></div>
+    <div class="cron-row"><div style="flex:1;min-width:0"><div class="cn">🧠 Hormozi Nightly</div><div class="cd2">Business insight → Telegram</div></div><div class="cs2">11PM PT</div><div class="ok">✓ OK</div></div>
+    <div class="cron-row"><div style="flex:1;min-width:0"><div class="cn">📋 Monday Check-In</div><div class="cd2">Weekly priorities → Telegram</div></div><div class="cs2">Mon 9AM</div><div class="ok">✓ OK</div></div>
+    <div class="cron-row"><div style="flex:1;min-width:0"><div class="cn">📊 Friday Review</div><div class="cd2">Week digest → Telegram</div></div><div class="cs2">Fri 5PM</div><div class="ok">✓ OK</div></div>
   </div>
 
   <!-- TODO + DRIVE -->
@@ -379,25 +347,17 @@
       <div class="ti done"><div class="tc">✓</div><div class="tt">Complete first interview prep</div><span class="tag tag-d">DONE</span></div>
       <div class="ti act"><div class="tc">▶</div><div class="tt">Pick creative project angle</div><span class="tag tag-a">ACTIVE</span></div>
       <div class="ti act"><div class="tc">▶</div><div class="tt">Land first gig client ($2,500 goal)</div><span class="tag tag-a">ACTIVE</span></div>
+      <div class="ti"><div class="tc"></div><div class="tt">Switch crons to Haiku (save 80%)</div><span class="tag tag-p">PENDING</span></div>
       <div class="ti"><div class="tc"></div><div class="tt">Build content machine (Phase 2)</div><span class="tag tag-p">PENDING</span></div>
       <div class="ti"><div class="tc"></div><div class="tt">Weekly gig earnings auto-report</div><span class="tag tag-p">PENDING</span></div>
-      <div class="ti"><div class="tc"></div><div class="tt">Memory pruning workflow</div><span class="tag tag-p">PENDING</span></div>
     </div>
     <div class="card orange">
       <div class="ch"><div class="ci">📂</div><span class="ct">Drive KB</span></div>
       <div class="dl">
-        <a class="da" href="https://docs.google.com/document/d/1E1_RFV3eN3LcuUUH_Wx8FbjQXGhJnZHAeH-jaKDxHUE" target="_blank">
-          <div class="di">🧠</div><div><div class="dn">Brain Dumps</div><div class="dd">Raw thoughts</div></div><span class="darr">↗</span>
-        </a>
-        <a class="da" href="https://docs.google.com/document/d/17-KfqbZpt90W-cfNYHYiFFoWdhghXkoZyWIjHW_Mr-o" target="_blank">
-          <div class="di">✅</div><div><div class="dn">Action Items</div><div class="dd">Prioritized tasks</div></div><span class="darr">↗</span>
-        </a>
-        <a class="da" href="https://docs.google.com/document/d/1AkrZTpkiveuhSVCoiuar-waWyOg8T-6Wj0iN0AYL8jc" target="_blank">
-          <div class="di">📚</div><div><div class="dn">Knowledge Base</div><div class="dd">References</div></div><span class="darr">↗</span>
-        </a>
-        <a class="da" href="https://docs.google.com/document/d/1OZSiims-ptaUl9cnMnrZskovBN3NrDZ6IQINKavbeQM" target="_blank">
-          <div class="di">🛫</div><div><div class="dn">Runway Plan</div><div class="dd">CatGPT + finances</div></div><span class="darr">↗</span>
-        </a>
+        <a class="da" href="https://docs.google.com/document/d/1E1_RFV3eN3LcuUUH_Wx8FbjQXGhJnZHAeH-jaKDxHUE" target="_blank"><div class="di">🧠</div><div><div class="dn">Brain Dumps</div><div class="dd">Raw thoughts</div></div><span class="darr">↗</span></a>
+        <a class="da" href="https://docs.google.com/document/d/17-KfqbZpt90W-cfNYHYiFFoWdhghXkoZyWIjHW_Mr-o" target="_blank"><div class="di">✅</div><div><div class="dn">Action Items</div><div class="dd">Prioritized tasks</div></div><span class="darr">↗</span></a>
+        <a class="da" href="https://docs.google.com/document/d/1AkrZTpkiveuhSVCoiuar-waWyOg8T-6Wj0iN0AYL8jc" target="_blank"><div class="di">📚</div><div><div class="dn">Knowledge Base</div><div class="dd">References</div></div><span class="darr">↗</span></a>
+        <a class="da" href="https://docs.google.com/document/d/1OZSiims-ptaUl9cnMnrZskovBN3NrDZ6IQINKavbeQM" target="_blank"><div class="di">🛫</div><div><div class="dn">Runway Plan</div><div class="dd">CatGPT + finances</div></div><span class="darr">↗</span></a>
       </div>
     </div>
   </div>
@@ -421,59 +381,42 @@
 <footer>UNIT-00 // ALL SYSTEMS OPERATIONAL // BUILD THE FUTURE</footer>
 
 <script>
-  // Clock
-  function tick(){
-    document.getElementById('clock').textContent=
-      new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true}).format(new Date())+' PT';
-  }
-  tick(); setInterval(tick,1000);
+  function tick(){document.getElementById('clock').textContent=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true}).format(new Date())+' PT'}
+  tick();setInterval(tick,1000);
 
-  // Runway countdown — start date Jun 4 2026, $14K @ $4300/mo
   (function(){
-    var startDate = new Date('2026-06-04T00:00:00-07:00');
-    var totalDays = Math.round(14000/4300*30.44); // ~97 days
-    var endDate   = new Date(startDate.getTime() + totalDays*86400000);
-
-    function updateRunway(){
-      var now  = new Date();
-      var elapsed = Math.max(0, Math.floor((now-startDate)/86400000));
-      var left    = Math.max(0, totalDays - elapsed);
-      var pct     = Math.min(100, Math.round(elapsed/totalDays*100));
-
-      document.getElementById('cd-days').textContent   = left;
-      document.getElementById('cd-weeks').textContent  = Math.floor(left/7);
-      document.getElementById('cd-months').textContent = (left/30.44).toFixed(1);
-      document.getElementById('runway-months').innerHTML= (left/30.44).toFixed(1)+'<span style="font-size:18px;color:var(--muted)">mo</span>';
-      document.getElementById('runway-bar').style.width = pct+'%';
-      document.getElementById('runway-pct-label').textContent = pct+'% consumed';
-
-      var opts={timeZone:'America/Los_Angeles',month:'long',day:'numeric',year:'numeric'};
-      document.getElementById('runway-date-label').textContent=
-        'Zero day: '+endDate.toLocaleDateString('en-US',opts);
-
-      // ticker
-      var td=document.getElementById('ticker-days');
-      if(td) td.textContent=left;
+    var start=new Date('2026-06-04T00:00:00-07:00');
+    var total=97;
+    var end=new Date(start.getTime()+total*86400000);
+    function update(){
+      var now=new Date();
+      var elapsed=Math.max(0,Math.floor((now-start)/86400000));
+      var left=Math.max(0,total-elapsed);
+      var pct=Math.min(100,Math.round(elapsed/total*100));
+      document.getElementById('cd-days').textContent=left;
+      document.getElementById('cd-weeks').textContent=Math.floor(left/7);
+      document.getElementById('cd-months').textContent=(left/30.44).toFixed(1);
+      document.getElementById('runway-months').innerHTML=(left/30.44).toFixed(1)+'<span style="font-size:18px;color:var(--muted)">mo</span>';
+      document.getElementById('runway-bar').style.width=pct+'%';
+      document.getElementById('runway-pct-label').textContent=pct+'% consumed';
+      document.getElementById('runway-date-label').textContent='Zero day: '+end.toLocaleDateString('en-US',{timeZone:'America/Los_Angeles',month:'long',day:'numeric',year:'numeric'});
+      var td=document.getElementById('ticker-days');if(td)td.textContent=left;
     }
-    updateRunway();
-    setInterval(updateRunway, 60000);
+    update();setInterval(update,60000);
   })();
 
-  // Week label
   (function(){
     var n=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Los_Angeles'}));
-    var m=new Date(n); m.setDate(n.getDate()-((n.getDay()+6)%7));
-    var s=new Date(m); s.setDate(m.getDate()+6);
+    var m=new Date(n);m.setDate(n.getDate()-((n.getDay()+6)%7));
+    var s=new Date(m);s.setDate(m.getDate()+6);
     var f=function(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric'})};
     document.getElementById('wl').textContent=f(m)+' – '+f(s);
   })();
 
-  // Sessions
   var ss=parseInt(sessionStorage.getItem('u00s')||0)+1;
   sessionStorage.setItem('u00s',ss);
   document.getElementById('sc').textContent=ss;
 
-  // Todo count
   var all=document.querySelectorAll('.ti').length;
   var done=document.querySelectorAll('.ti.done').length;
   var act=document.querySelectorAll('.ti.act').length;
