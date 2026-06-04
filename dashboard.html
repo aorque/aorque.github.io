@@ -12,23 +12,16 @@
       --teal:#00b4d8;--teal-dim:#007fa0;--teal-glow:rgba(0,180,216,.18);
       --orange:#e8a020;--orange-dim:#a06c0e;--orange-glow:rgba(232,160,32,.15);
       --text:#c8cfe8;--muted:#5a6080;--green:#39d98a;--red:#ff4f6e;--yellow:#f5c518;
+      --purple:#a855f7;--purple-glow:rgba(168,85,247,.15);
       --font:'Space Mono',monospace;
     }
     body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px;line-height:1.6}
+    body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px);pointer-events:none;z-index:9999}
 
     /* HEADER */
-    header{
-      background:var(--bg2);border-bottom:2px solid var(--teal);
-      padding:12px 16px;display:flex;align-items:center;
-      justify-content:space-between;position:sticky;top:0;z-index:100;
-    }
+    header{background:var(--bg2);border-bottom:2px solid var(--teal);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
     .hl{display:flex;align-items:center;gap:10px}
-    .logo{
-      width:38px;height:38px;border:2px solid var(--teal);border-radius:6px;
-      display:flex;align-items:center;justify-content:center;
-      background:var(--teal-glow);font-size:8px;font-weight:700;
-      color:var(--teal);text-align:center;line-height:1.2;flex-shrink:0;
-    }
+    .logo{width:38px;height:38px;border:2px solid var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;background:var(--teal-glow);font-size:8px;font-weight:700;color:var(--teal);text-align:center;line-height:1.2;flex-shrink:0}
     h1{font-size:16px;font-weight:700;color:var(--teal);letter-spacing:2px;text-shadow:0 0 12px var(--teal)}
     .sub{font-size:8px;color:var(--muted);letter-spacing:1px}
     .hr{display:flex;align-items:center;gap:10px}
@@ -39,8 +32,8 @@
 
     /* TICKER */
     .ticker{background:var(--bg2);border-bottom:1px solid var(--border);padding:4px 0;overflow:hidden}
-    .tick-inner{white-space:nowrap;display:inline-block;animation:tick 35s linear infinite;font-size:10px;color:var(--muted)}
-    .tick-inner b{color:var(--teal)} .tick-inner em{color:var(--orange);font-style:normal}
+    .tick-inner{white-space:nowrap;display:inline-block;animation:tick 40s linear infinite;font-size:10px;color:var(--muted)}
+    .tick-inner b{color:var(--teal)}.tick-inner em{color:var(--orange);font-style:normal}
     @keyframes tick{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}
 
     /* LAYOUT */
@@ -48,6 +41,7 @@
     @media(min-width:600px){
       .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
       .two-r{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+      .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
     }
 
     /* CARD */
@@ -55,30 +49,35 @@
     .card.teal{border-top:2px solid var(--teal)}
     .card.orange{border-top:2px solid var(--orange)}
     .card.red{border-top:2px solid var(--red)}
+    .card.purple{border-top:2px solid var(--purple)}
+    .card.green{border-top:2px solid var(--green)}
     .ch{display:flex;align-items:center;gap:8px;margin-bottom:12px}
     .ci{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;background:var(--teal-glow);flex-shrink:0}
-    .orange .ci,.red .ci{background:var(--orange-glow)}
+    .orange .ci{background:var(--orange-glow)}
+    .red .ci{background:rgba(255,79,110,.15)}
+    .purple .ci{background:var(--purple-glow)}
+    .green .ci{background:rgba(57,217,138,.15)}
     .ct{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal)}
     .orange .ct{color:var(--orange)}
     .red .ct{color:var(--red)}
+    .purple .ct{color:var(--purple)}
+    .green .ct{color:var(--green)}
     .cs{font-size:8px;color:var(--muted);margin-left:auto}
 
-    /* RUNWAY HERO */
-    .runway-hero{
-      background:var(--bg2);border:1px solid var(--border);border-top:2px solid var(--orange);
-      border-radius:10px;padding:14px;
+    /* QUICK ACTIONS */
+    .qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    @media(min-width:400px){.qa-grid{grid-template-columns:repeat(3,1fr)}}
+    .qa-btn{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+      padding:14px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;
+      text-decoration:none;color:var(--text);cursor:pointer;transition:all .2s;text-align:center;
     }
-    .runway-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
-    .runway-num{font-size:36px;font-weight:700;color:var(--orange);text-shadow:0 0 16px var(--orange);line-height:1}
-    .runway-label{font-size:10px;color:var(--muted);line-height:1.4}
-    .runway-label strong{display:block;font-size:13px;color:var(--text)}
-    .runway-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-    @media(min-width:400px){.runway-stats{grid-template-columns:repeat(3,1fr)}}
-    .rs{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
-    .rsv{font-size:14px;font-weight:700;color:var(--orange)}
-    .rsl{font-size:8px;color:var(--muted);margin-top:2px;letter-spacing:1px;text-transform:uppercase}
+    .qa-btn:hover,.qa-btn:active{border-color:var(--teal);background:#161624;color:var(--teal);box-shadow:0 0 12px var(--teal-glow)}
+    .qa-btn.orange-btn:hover,.qa-btn.orange-btn:active{border-color:var(--orange);color:var(--orange);box-shadow:0 0 12px var(--orange-glow)}
+    .qa-icon{font-size:20px}
+    .qa-label{font-size:9px;letter-spacing:1px;text-transform:uppercase;font-weight:700}
 
-    /* STATS ROW */
+    /* STATS */
     .sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
     @media(min-width:400px){.sgrid{grid-template-columns:repeat(4,1fr)}}
     .sb{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:12px 8px;text-align:center;position:relative;overflow:hidden}
@@ -88,26 +87,59 @@
     .sb.o .sn{color:var(--orange);text-shadow:0 0 8px var(--orange)}
     .sl{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px;display:block}
 
-    /* PROGRESS */
+    /* MEMORY */
     .pl{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:4px}
     .pl span:last-child{font-weight:700}
     .pt{width:100%;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--border)}
     .pf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal-dim),var(--teal));box-shadow:0 0 6px var(--teal)}
     .pf.o{background:linear-gradient(90deg,var(--orange-dim),var(--orange));box-shadow:0 0 6px var(--orange)}
-    .pf.w{background:linear-gradient(90deg,#a06030,var(--yellow));box-shadow:0 0 6px var(--yellow)}
     .pf.r{background:linear-gradient(90deg,#800,var(--red));box-shadow:0 0 6px var(--red)}
-
-    /* MEM STATS */
     .mrow{display:flex;gap:8px;margin-top:10px}
     .ms{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
-    .mv{font-size:15px;font-weight:700;color:var(--teal);display:block;text-shadow:0 0 8px var(--teal)}
+    .mv{font-size:15px;font-weight:700;color:var(--teal);display:block}
     .mlb{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+
+    /* RUNWAY */
+    .runway-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+    .runway-num{font-size:42px;font-weight:700;color:var(--orange);text-shadow:0 0 16px var(--orange);line-height:1}
+    .runway-label{font-size:10px;color:var(--muted);line-height:1.6}
+    .runway-label strong{display:block;font-size:13px;color:var(--text)}
+    .runway-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+    .rs{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
+    .rsv{font-size:13px;font-weight:700;color:var(--orange)}
+    .rsl{font-size:8px;color:var(--muted);margin-top:2px;letter-spacing:1px;text-transform:uppercase}
+    .countdown-row{display:flex;gap:8px;margin-top:10px}
+    .cd-box{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
+    .cd-num{font-size:22px;font-weight:700;color:var(--orange);text-shadow:0 0 10px var(--orange);line-height:1}
+    .cd-label{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+
+    /* PROJECT TRACKER */
+    .phase-list{display:flex;flex-direction:column;gap:8px}
+    .phase{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:6px}
+    .phase-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px}
+    .phase-num.active{background:var(--purple);color:#000;box-shadow:0 0 8px var(--purple)}
+    .phase-num.pending{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
+    .phase-num.done{background:var(--green);color:#000}
+    .phase-content{flex:1}
+    .phase-title{font-size:11px;font-weight:700}
+    .phase-desc{font-size:9px;color:var(--muted);margin-top:2px}
+    .phase-tag{font-size:8px;padding:2px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0;align-self:flex-start;margin-top:2px}
+    .pt-active{background:var(--purple-glow);color:var(--purple);border:1px solid rgba(168,85,247,.3)}
+    .pt-pending{background:rgba(90,96,128,.1);color:var(--muted);border:1px solid var(--border)}
+    .pt-done{background:rgba(57,217,138,.12);color:var(--green);border:1px solid rgba(57,217,138,.25)}
+
+    /* BEHAVIOR LOG */
+    .blog-list{display:flex;flex-direction:column;gap:7px}
+    .blog-item{padding:9px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;border-left:3px solid var(--teal)}
+    .blog-time{font-size:8px;color:var(--teal);letter-spacing:1px;margin-bottom:3px}
+    .blog-why{font-size:10px;color:var(--text)}
+    .blog-tag{font-size:8px;color:var(--muted);margin-top:2px}
 
     /* CRON */
     .cron-row{display:flex;align-items:center;gap:8px;padding:9px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:7px}
     .cron-row:last-child{margin-bottom:0}
     .cn{font-size:11px;font-weight:700;flex:1;min-width:0}
-    .cd{font-size:9px;color:var(--muted);margin-top:1px}
+    .cd2{font-size:9px;color:var(--muted);margin-top:1px}
     .cs2{font-size:9px;color:var(--teal);white-space:nowrap;margin:0 6px}
     .ok{font-size:8px;font-weight:700;padding:2px 7px;border-radius:4px;background:rgba(57,217,138,.15);color:var(--green);border:1px solid rgba(57,217,138,.3);white-space:nowrap}
 
@@ -116,7 +148,7 @@
     .ti:last-child{margin-bottom:0}
     .tc{width:14px;height:14px;border-radius:3px;border:2px solid var(--border);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:8px}
     .done .tc{background:var(--green);border-color:var(--green);color:#000}
-    .act  .tc{background:var(--orange);border-color:var(--orange);color:#000}
+    .act .tc{background:var(--orange);border-color:var(--orange);color:#000}
     .tt{flex:1;font-size:11px}
     .done .tt{color:var(--muted);text-decoration:line-through}
     .tag{font-size:8px;padding:2px 5px;border-radius:3px;white-space:nowrap;flex-shrink:0;align-self:flex-start}
@@ -165,36 +197,48 @@
 <div class="ticker">
   <span class="tick-inner">&nbsp;&nbsp;&nbsp;
     <b>[SYS]</b> All cron jobs nominal &nbsp;|&nbsp;
-    <b>[MEM]</b> Memory at <em>96%</em> — prune needed &nbsp;|&nbsp;
-    <b>[RUNWAY]</b> <em>~3.2 months</em> at current burn &nbsp;|&nbsp;
+    <b>[RUNWAY]</b> <em id="ticker-days">97</em> days remaining &nbsp;|&nbsp;
+    <b>[PROJECT]</b> AI × Creator Distribution — Phase 1 active &nbsp;|&nbsp;
     <b>[GIG]</b> Weekly goal: <em>$2,500</em> &nbsp;|&nbsp;
-    <b>[KB]</b> Drive KB synced &nbsp;|&nbsp;
+    <b>[MEM]</b> Memory at <em>96%</em> — prune needed &nbsp;|&nbsp;
     <b>[SYS]</b> UNIT-00 watching. Stay sharp, Tony.
   </span>
 </div>
 
 <div class="page">
 
-  <!-- RUNWAY HERO -->
-  <div class="runway-hero">
-    <div class="ch"><div class="ci" style="background:var(--orange-glow)">🛫</div><span class="ct" style="color:var(--orange)">Financial Runway</span><span class="cs" id="runway-date">as of Jun 4, 2026</span></div>
-    <div class="runway-row">
-      <div class="runway-num">3.2<span style="font-size:18px;color:var(--muted)">mo</span></div>
-      <div class="runway-label">
-        <strong>~Mid-September 2026</strong>
-        at current burn rate — zero income scenario
-      </div>
-    </div>
-    <div class="pl"><span>Runway consumed</span><span style="color:var(--orange)">0% of 3.2mo</span></div>
-    <div class="pt"><div class="pf o" style="width:0%"></div></div>
-    <div class="runway-stats">
-      <div class="rs"><div class="rsv">$14,000</div><div class="rsl">Cash Reserve</div></div>
-      <div class="rs"><div class="rsv">$4,300</div><div class="rsl">Monthly Burn</div></div>
-      <div class="rs"><div class="rsv">$35,000</div><div class="rsl">Loan Balance</div></div>
+  <!-- QUICK ACTIONS -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">⚡</div><span class="ct">Quick Actions</span></div>
+    <div class="qa-grid">
+      <a class="qa-btn" href="https://t.me/idiotshinjibot" target="_blank">
+        <div class="qa-icon">🤖</div>
+        <div class="qa-label">Message Unit 0</div>
+      </a>
+      <a class="qa-btn" href="https://docs.google.com/document/d/1E1_RFV3eN3LcuUUH_Wx8FbjQXGhJnZHAeH-jaKDxHUE" target="_blank">
+        <div class="qa-icon">🧠</div>
+        <div class="qa-label">Brain Dump</div>
+      </a>
+      <a class="qa-btn" href="https://docs.google.com/document/d/17-KfqbZpt90W-cfNYHYiFFoWdhghXkoZyWIjHW_Mr-o" target="_blank">
+        <div class="qa-icon">✅</div>
+        <div class="qa-label">Action Items</div>
+      </a>
+      <a class="qa-btn orange-btn" href="https://docs.google.com/document/d/1OZSiims-ptaUl9cnMnrZskovBN3NrDZ6IQINKavbeQM" target="_blank">
+        <div class="qa-icon">🛫</div>
+        <div class="qa-label">Runway Plan</div>
+      </a>
+      <a class="qa-btn" href="https://docs.google.com/document/d/1AkrZTpkiveuhSVCoiuar-waWyOg8T-6Wj0iN0AYL8jc" target="_blank">
+        <div class="qa-icon">📚</div>
+        <div class="qa-label">Knowledge Base</div>
+      </a>
+      <a class="qa-btn" href="https://aorque.github.io" target="_blank">
+        <div class="qa-icon">🌐</div>
+        <div class="qa-label">Portfolio</div>
+      </a>
     </div>
   </div>
 
-  <!-- STATS + MEMORY TOP ROW -->
+  <!-- STATS + MEMORY -->
   <div class="two">
     <div class="card teal">
       <div class="ch"><div class="ci">📈</div><span class="ct">Quick Stats</span></div>
@@ -205,15 +249,102 @@
         <div class="sb"><span class="sn">4</span><span class="sl">Cron Jobs</span></div>
       </div>
     </div>
-
     <div class="card red">
       <div class="ch"><div class="ci">💾</div><span class="ct">Memory</span><span class="cs" style="color:var(--red)">⚠ CRITICAL</span></div>
       <div class="pl"><span>Agent Memory</span><span style="color:var(--red)">96%</span></div>
       <div class="pt"><div class="pf r" style="width:96%"></div></div>
       <div class="mrow">
         <div class="ms"><span class="mv" style="color:var(--red)">96%</span><div class="mlb">Used</div></div>
-        <div class="ms"><span class="mv" style="color:var(--red);font-size:12px">4%</span><div class="mlb">Free</div></div>
-        <div class="ms"><span class="mv" style="color:var(--yellow);font-size:12px">80%</span><div class="mlb">Limit</div></div>
+        <div class="ms"><span class="mv" style="color:var(--red);font-size:11px">4%</span><div class="mlb">Free</div></div>
+        <div class="ms"><span class="mv" style="color:var(--yellow);font-size:11px">80%</span><div class="mlb">Limit</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RUNWAY -->
+  <div class="card orange">
+    <div class="ch"><div class="ci">🛫</div><span class="ct">Financial Runway</span><span class="cs" id="runway-pct"></span></div>
+    <div class="runway-row">
+      <div class="runway-num" id="runway-months">—</div>
+      <div class="runway-label">
+        <strong id="runway-date-label">Calculating…</strong>
+        at $4,300/mo burn — zero income scenario
+      </div>
+    </div>
+    <div class="pl"><span>Runway consumed (from Jun 4)</span><span style="color:var(--orange)" id="runway-pct-label">—</span></div>
+    <div class="pt"><div class="pf o" id="runway-bar" style="width:0%"></div></div>
+    <div class="countdown-row">
+      <div class="cd-box"><div class="cd-num" id="cd-days">—</div><div class="cd-label">Days Left</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-weeks">—</div><div class="cd-label">Weeks Left</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-months">—</div><div class="cd-label">Months Left</div></div>
+    </div>
+    <div class="runway-stats">
+      <div class="rs"><div class="rsv">$14,000</div><div class="rsl">Cash Reserve</div></div>
+      <div class="rs"><div class="rsv">$4,300</div><div class="rsl">Monthly Burn</div></div>
+      <div class="rs"><div class="rsv">$35,000</div><div class="rsl">Loan Balance</div></div>
+    </div>
+  </div>
+
+  <!-- PROJECT TRACKER -->
+  <div class="card purple">
+    <div class="ch"><div class="ci">🚀</div><span class="ct">Creative Project</span><span class="cs">AI × Creator Distribution</span></div>
+    <div class="phase-list">
+      <div class="phase">
+        <div class="phase-num done">✓</div>
+        <div class="phase-content">
+          <div class="phase-title">Phase 0 — Research & Positioning</div>
+          <div class="phase-desc">CatGPT reverse engineered. Intersection identified. Runway mapped.</div>
+        </div>
+        <span class="phase-tag pt-done">DONE</span>
+      </div>
+      <div class="phase">
+        <div class="phase-num active">1</div>
+        <div class="phase-content">
+          <div class="phase-title">Phase 1 — Pick Your Angle</div>
+          <div class="phase-desc">Choose intersection: Events×AI, Meta content machine, LV lifestyle×AI, or Experience Design×AI</div>
+        </div>
+        <span class="phase-tag pt-active">ACTIVE</span>
+      </div>
+      <div class="phase">
+        <div class="phase-num pending">2</div>
+        <div class="phase-content">
+          <div class="phase-title">Phase 2 — Build Content Machine</div>
+          <div class="phase-desc">Set up AI-assisted pipeline. Define platform stack. Create first 5 pieces.</div>
+        </div>
+        <span class="phase-tag pt-pending">PENDING</span>
+      </div>
+      <div class="phase">
+        <div class="phase-num pending">3</div>
+        <div class="phase-content">
+          <div class="phase-title">Phase 3 — Establish Authority</div>
+          <div class="phase-desc">30-day content sprint. Build audience. Identify monetization signal.</div>
+        </div>
+        <span class="phase-tag pt-pending">PENDING</span>
+      </div>
+      <div class="phase">
+        <div class="phase-num pending">4</div>
+        <div class="phase-content">
+          <div class="phase-title">Phase 4 — Monetize</div>
+          <div class="phase-desc">Launch product, community, or service aligned with content brand.</div>
+        </div>
+        <span class="phase-tag pt-pending">PENDING</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BEHAVIOR LOG -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">📊</div><span class="ct">Usage Log</span><span class="cs">behavior tracking</span></div>
+    <div class="blog-list">
+      <div class="blog-item">
+        <div class="blog-time">JUN 4, 2026 — 1:12AM PT</div>
+        <div class="blog-why">Financial runway planning + CatGPT reverse engineering + creative project ideation</div>
+        <div class="blog-tag">📍 Woke up mid-night · Planning mode · AI × Creator Distribution</div>
+      </div>
+      <div class="blog-item" style="border-left-color:var(--muted);opacity:.5">
+        <div class="blog-time">— NEXT SESSION —</div>
+        <div class="blog-why">Unit 0 will log each time you check in and why</div>
+        <div class="blog-tag">Pattern recognition builds over time</div>
       </div>
     </div>
   </div>
@@ -222,48 +353,50 @@
   <div class="card teal">
     <div class="ch"><div class="ci">⏱</div><span class="ct">Cron Jobs</span><span class="cs">4 / 4 active</span></div>
     <div class="cron-row">
-      <div style="flex:1;min-width:0"><div class="cn">☀️ Morning AI News</div><div class="cd">Top headlines → Telegram</div></div>
+      <div style="flex:1;min-width:0"><div class="cn">☀️ Morning AI News</div><div class="cd2">Top headlines → Telegram</div></div>
       <div class="cs2">7AM PT</div><div class="ok">✓ OK</div>
     </div>
     <div class="cron-row">
-      <div style="flex:1;min-width:0"><div class="cn">🧠 Hormozi Nightly</div><div class="cd">Business insight → Telegram</div></div>
+      <div style="flex:1;min-width:0"><div class="cn">🧠 Hormozi Nightly</div><div class="cd2">Business insight → Telegram</div></div>
       <div class="cs2">11PM PT</div><div class="ok">✓ OK</div>
     </div>
     <div class="cron-row">
-      <div style="flex:1;min-width:0"><div class="cn">📋 Monday Check-In</div><div class="cd">Weekly priorities → Telegram</div></div>
+      <div style="flex:1;min-width:0"><div class="cn">📋 Monday Check-In</div><div class="cd2">Weekly priorities → Telegram</div></div>
       <div class="cs2">Mon 9AM</div><div class="ok">✓ OK</div>
     </div>
     <div class="cron-row">
-      <div style="flex:1;min-width:0"><div class="cn">📊 Friday Review</div><div class="cd">Week digest → Telegram</div></div>
+      <div style="flex:1;min-width:0"><div class="cn">📊 Friday Review</div><div class="cd2">Week digest → Telegram</div></div>
       <div class="cs2">Fri 5PM</div><div class="ok">✓ OK</div>
     </div>
   </div>
 
-  <!-- TODO + RIGHT COL -->
+  <!-- TODO + DRIVE -->
   <div class="two-r">
     <div class="card teal">
       <div class="ch"><div class="ci">✅</div><span class="ct">Todo</span><span class="cs" id="tc"></span></div>
       <div class="ti done"><div class="tc">✓</div><div class="tt">Set up UNIT-00 with cron jobs</div><span class="tag tag-d">DONE</span></div>
       <div class="ti done"><div class="tc">✓</div><div class="tt">Log first brain dump to Drive KB</div><span class="tag tag-d">DONE</span></div>
       <div class="ti done"><div class="tc">✓</div><div class="tt">Complete first interview prep</div><span class="tag tag-d">DONE</span></div>
+      <div class="ti act"><div class="tc">▶</div><div class="tt">Pick creative project angle</div><span class="tag tag-a">ACTIVE</span></div>
       <div class="ti act"><div class="tc">▶</div><div class="tt">Land first gig client ($2,500 goal)</div><span class="tag tag-a">ACTIVE</span></div>
-      <div class="ti act"><div class="tc">▶</div><div class="tt">Build interview workflow in UNIT-00</div><span class="tag tag-a">ACTIVE</span></div>
-      <div class="ti"><div class="tc"></div><div class="tt">Expand KB — brain dumps (target: 10)</div><span class="tag tag-p">PENDING</span></div>
+      <div class="ti"><div class="tc"></div><div class="tt">Build content machine (Phase 2)</div><span class="tag tag-p">PENDING</span></div>
       <div class="ti"><div class="tc"></div><div class="tt">Weekly gig earnings auto-report</div><span class="tag tag-p">PENDING</span></div>
-      <div class="ti"><div class="tc"></div><div class="tt">Memory pruning workflow at 80%</div><span class="tag tag-p">PENDING</span></div>
+      <div class="ti"><div class="tc"></div><div class="tt">Memory pruning workflow</div><span class="tag tag-p">PENDING</span></div>
     </div>
-
     <div class="card orange">
-      <div class="ch"><div class="ci">📂</div><span class="ct">Drive KB</span><span class="cs">3 docs</span></div>
+      <div class="ch"><div class="ci">📂</div><span class="ct">Drive KB</span></div>
       <div class="dl">
         <a class="da" href="https://docs.google.com/document/d/1E1_RFV3eN3LcuUUH_Wx8FbjQXGhJnZHAeH-jaKDxHUE" target="_blank">
-          <div class="di">🧠</div><div><div class="dn">Brain Dumps</div><div class="dd">Raw thoughts & ideas</div></div><span class="darr">↗</span>
+          <div class="di">🧠</div><div><div class="dn">Brain Dumps</div><div class="dd">Raw thoughts</div></div><span class="darr">↗</span>
         </a>
         <a class="da" href="https://docs.google.com/document/d/17-KfqbZpt90W-cfNYHYiFFoWdhghXkoZyWIjHW_Mr-o" target="_blank">
           <div class="di">✅</div><div><div class="dn">Action Items</div><div class="dd">Prioritized tasks</div></div><span class="darr">↗</span>
         </a>
         <a class="da" href="https://docs.google.com/document/d/1AkrZTpkiveuhSVCoiuar-waWyOg8T-6Wj0iN0AYL8jc" target="_blank">
-          <div class="di">📚</div><div><div class="dn">Knowledge Base</div><div class="dd">Structured references</div></div><span class="darr">↗</span>
+          <div class="di">📚</div><div><div class="dn">Knowledge Base</div><div class="dd">References</div></div><span class="darr">↗</span>
+        </a>
+        <a class="da" href="https://docs.google.com/document/d/1OZSiims-ptaUl9cnMnrZskovBN3NrDZ6IQINKavbeQM" target="_blank">
+          <div class="di">🛫</div><div><div class="dn">Runway Plan</div><div class="dd">CatGPT + finances</div></div><span class="darr">↗</span>
         </a>
       </div>
     </div>
@@ -285,28 +418,62 @@
   </div>
 
 </div>
-
 <footer>UNIT-00 // ALL SYSTEMS OPERATIONAL // BUILD THE FUTURE</footer>
 
 <script>
+  // Clock
   function tick(){
-    document.getElementById('clock').textContent =
+    document.getElementById('clock').textContent=
       new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true}).format(new Date())+' PT';
   }
   tick(); setInterval(tick,1000);
 
+  // Runway countdown — start date Jun 4 2026, $14K @ $4300/mo
   (function(){
-    const n=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Los_Angeles'}));
-    const m=new Date(n); m.setDate(n.getDate()-((n.getDay()+6)%7));
-    const s=new Date(m); s.setDate(m.getDate()+6);
-    const f=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    var startDate = new Date('2026-06-04T00:00:00-07:00');
+    var totalDays = Math.round(14000/4300*30.44); // ~97 days
+    var endDate   = new Date(startDate.getTime() + totalDays*86400000);
+
+    function updateRunway(){
+      var now  = new Date();
+      var elapsed = Math.max(0, Math.floor((now-startDate)/86400000));
+      var left    = Math.max(0, totalDays - elapsed);
+      var pct     = Math.min(100, Math.round(elapsed/totalDays*100));
+
+      document.getElementById('cd-days').textContent   = left;
+      document.getElementById('cd-weeks').textContent  = Math.floor(left/7);
+      document.getElementById('cd-months').textContent = (left/30.44).toFixed(1);
+      document.getElementById('runway-months').innerHTML= (left/30.44).toFixed(1)+'<span style="font-size:18px;color:var(--muted)">mo</span>';
+      document.getElementById('runway-bar').style.width = pct+'%';
+      document.getElementById('runway-pct-label').textContent = pct+'% consumed';
+
+      var opts={timeZone:'America/Los_Angeles',month:'long',day:'numeric',year:'numeric'};
+      document.getElementById('runway-date-label').textContent=
+        'Zero day: '+endDate.toLocaleDateString('en-US',opts);
+
+      // ticker
+      var td=document.getElementById('ticker-days');
+      if(td) td.textContent=left;
+    }
+    updateRunway();
+    setInterval(updateRunway, 60000);
+  })();
+
+  // Week label
+  (function(){
+    var n=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Los_Angeles'}));
+    var m=new Date(n); m.setDate(n.getDate()-((n.getDay()+6)%7));
+    var s=new Date(m); s.setDate(m.getDate()+6);
+    var f=function(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric'})};
     document.getElementById('wl').textContent=f(m)+' – '+f(s);
   })();
 
+  // Sessions
   var ss=parseInt(sessionStorage.getItem('u00s')||0)+1;
   sessionStorage.setItem('u00s',ss);
   document.getElementById('sc').textContent=ss;
 
+  // Todo count
   var all=document.querySelectorAll('.ti').length;
   var done=document.querySelectorAll('.ti.done').length;
   var act=document.querySelectorAll('.ti.act').length;
