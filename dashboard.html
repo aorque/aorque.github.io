@@ -651,10 +651,8 @@ function checkPw(){
     if(document.getElementById('wl2'))document.getElementById('wl2').textContent=wstr;
   })();
 
-  // Sessions
-  var ss=parseInt(sessionStorage.getItem('u00s')||0)+1;
-  sessionStorage.setItem('u00s',ss);
-  document.getElementById('sc').textContent=ss;
+  // Sessions — hardcoded from DB (updated by Unit 0 on each deploy)
+  document.getElementById('sc').textContent='72';
 
   // Runway
   (function(){
