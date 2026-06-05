@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TEAMWIRE // INTERNAL OPS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0a0a0f;--bg2:#0f0f18;--bg3:#14141f;--border:#1e1e30;
+      --teal:#00b4d8;--teal-dim:#007fa0;--teal-glow:rgba(0,180,216,.18);
+      --orange:#e8a020;--orange-dim:#a06c0e;--orange-glow:rgba(232,160,32,.15);
+      --text:#c8cfe8;--muted:#5a6080;--green:#39d98a;--red:#ff4f6e;--yellow:#f5c518;
+      --purple:#a855f7;--purple-glow:rgba(168,85,247,.15);--pink:#ec4899;
+      --font:'Space Mono',monospace;
+    }
+    body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px;line-height:1.6;padding-bottom:60px}
+    body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px);pointer-events:none;z-index:9999}
+
+    /* HEADER */
+    header{background:var(--bg2);border-bottom:2px solid var(--teal);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .hl{display:flex;align-items:center;gap:10px}
+    .logo{width:38px;height:38px;border:2px solid var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;background:var(--teal-glow);font-size:9px;font-weight:700;color:var(--teal);text-align:center;line-height:1.2;flex-shrink:0}
+    h1{font-size:15px;font-weight:700;color:var(--teal);letter-spacing:2px;text-shadow:0 0 12px var(--teal)}
+    .sub{font-size:8px;color:var(--muted);letter-spacing:1px}
+    .hright{display:flex;align-items:center;gap:10px}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+    .clock{font-size:11px;color:var(--orange);white-space:nowrap;font-weight:700}
+    .stage-pill{font-size:8px;font-weight:700;padding:3px 8px;border-radius:4px;background:var(--purple-glow);color:var(--purple);border:1px solid rgba(168,85,247,.4);letter-spacing:1px}
+
+    /* TICKER */
+    .ticker{background:var(--bg2);border-bottom:1px solid var(--border);padding:4px 0;overflow:hidden}
+    .tick-inner{white-space:nowrap;display:inline-block;animation:tick 50s linear infinite;font-size:10px;color:var(--muted)}
+    .tick-inner b{color:var(--teal)}.tick-inner em{color:var(--orange);font-style:normal}
+    @keyframes tick{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}
+
+    /* TABS */
+    .tabs{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 12px;display:flex;gap:4px;overflow-x:auto}
+    .tab{padding:8px 14px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+    .tab:hover{color:var(--text)}
+    .tab.active{color:var(--teal);border-bottom-color:var(--teal)}
+
+    /* PAGES */
+    .page{display:none;padding:12px;max-width:1200px;margin:0 auto;flex-direction:column;gap:12px}
+    .page.active{display:flex}
+    @media(min-width:600px){.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}.two-r{display:grid;grid-template-columns:2fr 1fr;gap:12px}}
+
+    /* CARDS */
+    .card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;width:100%}
+    .card.teal{border-top:2px solid var(--teal)}.card.orange{border-top:2px solid var(--orange)}
+    .card.red{border-top:2px solid var(--red)}.card.purple{border-top:2px solid var(--purple)}
+    .card.green{border-top:2px solid var(--green)}.card.yellow{border-top:2px solid var(--yellow)}
+    .card.pink{border-top:2px solid var(--pink)}
+    .ch{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+    .ci{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;background:var(--teal-glow);flex-shrink:0}
+    .orange .ci{background:var(--orange-glow)}.red .ci{background:rgba(255,79,110,.15)}
+    .purple .ci{background:var(--purple-glow)}.yellow .ci{background:rgba(245,197,24,.12)}
+    .green .ci{background:rgba(57,217,138,.15)}
+    .ct{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal)}
+    .orange .ct{color:var(--orange)}.red .ct{color:var(--red)}.purple .ct{color:var(--purple)}
+    .yellow .ct{color:var(--yellow)}.green .ct{color:var(--green)}
+    .cs{font-size:8px;color:var(--muted);margin-left:auto}
+
+    /* ROWS */
+    .row{display:flex;align-items:center;gap:8px;padding:9px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:7px}
+    .row:last-child{margin-bottom:0}
+    .row-main{flex:1;min-width:0}
+    .row-title{font-size:11px;font-weight:700}
+    .row-sub{font-size:9px;color:var(--muted);margin-top:1px}
+
+    /* BADGES */
+    .badge{font-size:8px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0;letter-spacing:.5px}
+    .badge.ok{background:rgba(57,217,138,.15);color:var(--green);border:1px solid rgba(57,217,138,.3)}
+    .badge.warn{background:rgba(245,197,24,.12);color:var(--yellow);border:1px solid rgba(245,197,24,.3)}
+    .badge.act{background:rgba(232,160,32,.12);color:var(--orange);border:1px solid rgba(232,160,32,.25)}
+    .badge.hot{background:rgba(168,85,247,.15);color:var(--purple);border:1px solid rgba(168,85,247,.3)}
+    .badge.new{background:rgba(0,180,216,.15);color:var(--teal);border:1px solid rgba(0,180,216,.3)}
+    .badge.done{background:rgba(57,217,138,.12);color:var(--green);border:1px solid rgba(57,217,138,.25)}
+    .badge.off{background:rgba(90,96,128,.1);color:var(--muted);border:1px solid var(--border)}
+    .badge.red{background:rgba(255,79,110,.15);color:var(--red);border:1px solid rgba(255,79,110,.3)}
+
+    /* STATS */
+    .sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    @media(min-width:400px){.sgrid{grid-template-columns:repeat(4,1fr)}}
+    .sb{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:12px 8px;text-align:center;position:relative;overflow:hidden}
+    .sb::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal-dim),var(--teal))}
+    .sb.o::before{background:linear-gradient(90deg,var(--orange-dim),var(--orange))}
+    .sb.r::before{background:linear-gradient(90deg,#800,var(--red))}
+    .sb.p::before{background:linear-gradient(90deg,#7c3aed,var(--purple))}
+    .sb.g::before{background:linear-gradient(90deg,#059669,var(--green))}
+    .sn{font-size:22px;font-weight:700;color:var(--teal);display:block;line-height:1;text-shadow:0 0 8px var(--teal)}
+    .sb.o .sn{color:var(--orange);text-shadow:0 0 8px var(--orange)}
+    .sb.r .sn{color:var(--red);text-shadow:0 0 8px var(--red)}
+    .sb.p .sn{color:var(--purple);text-shadow:0 0 8px var(--purple)}
+    .sb.g .sn{color:var(--green);text-shadow:0 0 8px var(--green)}
+    .sl{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px;display:block}
+
+    /* PROGRESS */
+    .pl{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:4px}
+    .pt{width:100%;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--border);margin-bottom:10px}
+    .pf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal-dim),var(--teal));box-shadow:0 0 6px var(--teal)}
+    .pf.o{background:linear-gradient(90deg,var(--orange-dim),var(--orange));box-shadow:0 0 6px var(--orange)}
+    .pf.p{background:linear-gradient(90deg,#7c3aed,var(--purple));box-shadow:0 0 6px var(--purple)}
+    .pf.g{background:linear-gradient(90deg,#059669,var(--green));box-shadow:0 0 6px var(--green)}
+    .pf.r{background:linear-gradient(90deg,#800,var(--red));box-shadow:0 0 6px var(--red)}
+
+    /* PHASE */
+    .phase{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:7px}
+    .phase:last-child{margin-bottom:0}
+    .pnum{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px}
+    .pnum.done{background:var(--green);color:#000}
+    .pnum.active{background:var(--purple);color:#fff;box-shadow:0 0 8px var(--purple)}
+    .pnum.pending{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
+    .ptitle{font-size:11px;font-weight:700}
+    .pdesc{font-size:9px;color:var(--muted);margin-top:2px}
+
+    /* FOUNDER CARDS */
+    .founder-grid{display:grid;grid-template-columns:1fr;gap:8px}
+    @media(min-width:600px){.founder-grid{grid-template-columns:repeat(3,1fr)}}
+    .founder-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px}
+    .founder-card.active-border{border-top:2px solid var(--teal)}
+    .f-name{font-size:12px;font-weight:700;color:var(--text)}
+    .f-title{font-size:8px;color:var(--teal);letter-spacing:1px;text-transform:uppercase;margin:2px 0 8px}
+    .f-status{font-size:10px;color:var(--muted);line-height:1.6;padding:6px 8px;background:var(--bg2);border-radius:4px;border-left:2px solid var(--teal)}
+    .f-next{font-size:9px;color:var(--orange);margin-top:6px}
+
+    /* PROSPECT TABLE */
+    .prospect-table{width:100%;border-collapse:separate;border-spacing:0 4px}
+    .prospect-table th{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;padding:4px 8px;text-align:left}
+    .prospect-table td{padding:8px;background:var(--bg3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);font-size:10px;vertical-align:middle}
+    .prospect-table td:first-child{border-left:1px solid var(--border);border-radius:6px 0 0 6px;padding-left:10px}
+    .prospect-table td:last-child{border-right:1px solid var(--border);border-radius:0 6px 6px 0;padding-right:10px}
+    .p-name{font-weight:700;font-size:11px}
+    .p-sub{font-size:8px;color:var(--muted);margin-top:1px}
+    .p-stack{font-size:8px;color:var(--teal)}
+    .p-wedge{font-size:8px;color:var(--orange)}
+    .p-next{font-size:8px;color:var(--text)}
+    .p-owner{font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;background:var(--bg2);border:1px solid var(--border)}
+
+    /* DECISION LOG */
+    .decision{padding:9px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;border-left:3px solid var(--teal);margin-bottom:7px}
+    .decision:last-child{margin-bottom:0}
+    .decision.open{border-left-color:var(--orange)}
+    .decision.resolved{border-left-color:var(--green)}
+    .d-label{font-size:8px;color:var(--muted);letter-spacing:1px;margin-bottom:3px}
+    .d-text{font-size:10px;color:var(--text)}
+    .d-meta{font-size:8px;color:var(--muted);margin-top:3px}
+
+    /* BLOCKER */
+    .blocker{padding:10px 12px;background:rgba(255,79,110,.06);border:1px solid rgba(255,79,110,.25);border-radius:6px;margin-bottom:7px}
+    .b-label{font-size:8px;color:var(--red);letter-spacing:1px;margin-bottom:3px;font-weight:700}
+    .b-text{font-size:10px;color:var(--text)}
+    .b-owner{font-size:8px;color:var(--muted);margin-top:3px}
+
+    /* INTEGRATION QUEUE */
+    .int-row{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:5px}
+    .int-sys{font-size:10px;font-weight:700;min-width:120px}
+    .int-prospect{font-size:8px;color:var(--muted);flex:1}
+    .int-status{font-size:8px;font-weight:700}
+    .int-status.confirmed{color:var(--green)}
+    .int-status.pending{color:var(--yellow)}
+    .int-status.unknown{color:var(--red)}
+
+    footer{text-align:center;padding:16px;font-size:8px;color:var(--muted);letter-spacing:2px;border-top:1px solid var(--border);margin-top:8px}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="hl">
+    <div class="logo">TW</div>
+    <div>
+      <h1>TEAMWIRE</h1>
+      <div class="sub">INTERNAL OPS // FOUNDERS ONLY // CONFIDENTIAL</div>
+    </div>
+  </div>
+  <div class="hright">
+    <div class="stage-pill">PRE-SEED</div>
+    <div class="dot"></div>
+    <div class="clock" id="clock">--:-- -- PT</div>
+  </div>
+</header>
+
+<div class="ticker">
+  <span class="tick-inner">&nbsp;&nbsp;
+    <b>[PIPELINE]</b> 7 prospects profiled · 2 confirmed · 5 theoretical &nbsp;|&nbsp;
+    <b>[NEXT]</b> Sickies: John onboarding call · Card Shop: confirm POS with Lance &nbsp;|&nbsp;
+    <b>[GOAL]</b> 3 case studies → seed round &nbsp;|&nbsp;
+    <b>[PRIORITY]</b> Mrs. Events → SD Claw → Nerdy Tags → Empire Security (easiest pilots) &nbsp;|&nbsp;
+    <b>[FLAG]</b> SMP Inc identity UNCONFIRMED — verify with Tyler before pitching &nbsp;|&nbsp;
+    <b>[TOOLS]</b> Spencer + Unit 0 aligned · business-discovery-artifacts skill live on both agents
+  </span>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showPage('overview')">📊 Overview</div>
+  <div class="tab" onclick="showPage('pipeline')">🏢 Pilot Pipeline</div>
+  <div class="tab" onclick="showPage('product')">⚙️ Product & Eng</div>
+  <div class="tab" onclick="showPage('seed')">🎯 Seed Milestones</div>
+  <div class="tab" onclick="showPage('decisions')">💬 Decisions</div>
+</div>
+
+<!-- ═══════════ OVERVIEW ═══════════ -->
+<div id="page-overview" class="page active">
+
+  <!-- STATS -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">📈</div><span class="ct">Company Snapshot</span><span class="cs">Jun 5, 2026</span></div>
+    <div class="sgrid">
+      <div class="sb"><span class="sn">7</span><span class="sl">Prospects</span></div>
+      <div class="sb g"><span class="sn">2</span><span class="sl">Confirmed</span></div>
+      <div class="sb o"><span class="sn">0</span><span class="sl">Active Pilots</span></div>
+      <div class="sb p"><span class="sn">3</span><span class="sl">Case Studies Needed</span></div>
+    </div>
+  </div>
+
+  <!-- FOUNDER STATUS -->
+  <div class="card purple">
+    <div class="ch"><div class="ci">👥</div><span class="ct">Founders</span><span class="cs">what each is working on</span></div>
+    <div class="founder-grid">
+      <div class="founder-card active-border">
+        <div class="f-name">Thomas Yu</div>
+        <div class="f-title">CEO · Product & Engineering</div>
+        <div class="f-status">Building product architecture + agent platform. Spencer running prospect research and business discovery in parallel.</div>
+        <div class="f-next">▸ Review Sickies + Card Shop Thomas syntheses</div>
+      </div>
+      <div class="founder-card active-border" style="border-top-color:var(--orange)">
+        <div class="f-name">Mike Calfin</div>
+        <div class="f-title" style="color:var(--orange)">CTO · Engineering & Platform</div>
+        <div class="f-status">Engineering + agent platform. Integration research queue needs attention — R365, Bev Check, Focus POS, TCGPlayer APIs.</div>
+        <div class="f-next" style="color:var(--yellow)">▸ Confirm API access for R365 + TCGPlayer</div>
+      </div>
+      <div class="founder-card active-border" style="border-top-color:var(--green)">
+        <div class="f-name">Anthony Orque</div>
+        <div class="f-title" style="color:var(--green)">CBO · Head of AI Implementation</div>
+        <div class="f-status">Prospect pipeline built (7 profiles). Sickies discovery done. Card Shop insider-sourced via Lance. Scheduling John onboarding call.</div>
+        <div class="f-next" style="color:var(--green)">▸ Get John to call back · Confirm Card Shop POS</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP 3 PRIORITIES -->
+  <div class="card orange">
+    <div class="ch"><div class="ci">🎯</div><span class="ct">Top 3 Priorities</span><span class="cs">company-wide</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">1. Land first active pilot</div><div class="row-sub">Sickies is closest — John onboarding call unlocks it. Card Shop is next once POS confirmed. Either one = proof.</div></div><div class="badge hot">P1</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">2. Build Thomas syntheses for Sickies + Card Shop</div><div class="row-sub">Anthony has discovery done. Thomas needs structured technical handoffs to start integration research.</div></div><div class="badge act">P2</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">3. Verify SMP Inc identity before approaching Tyler</div><div class="row-sub">Highest revenue prospect but identity unconfirmed. One casual question to Tyler closes this gap.</div></div><div class="badge warn">P3</div></div>
+  </div>
+
+  <!-- RECENT ACTIVITY -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">📋</div><span class="ct">Recent Activity</span></div>
+    <div class="decision resolved">
+      <div class="d-label">JUN 5, 2026 — DISCOVERY COMPLETE</div>
+      <div class="d-text">Sickies Burgers: R365 + Bev Check + Focus POS→Toast confirmed. 13 locations. Labor + P&L wedge. Scott (owner) + John (onboarding contact).</div>
+      <div class="d-meta">Owner: Anthony · Next: Schedule John onboarding call (5–6 hrs)</div>
+    </div>
+    <div class="decision resolved">
+      <div class="d-label">JUN 5, 2026 — INSIDER-SOURCED</div>
+      <div class="d-text">People's Card Shop: Lance interview complete. TCGPlayer + Challonge/Start.gg confirmed. POS = same as Allegiant Stadium (likely Appetize — verify). Daily Briefing wedge.</div>
+      <div class="d-meta">Owner: Anthony · Next: Confirm POS with Lance before Thomas touches anything</div>
+    </div>
+    <div class="decision resolved">
+      <div class="d-label">JUN 5, 2026 — SKILL TRANSFER</div>
+      <div class="d-text">Spencer's business-discovery-artifacts skill ingested by Unit 0. Both agents now running identical discovery framework. 7 prospect profiles built. Parallel research pattern operational.</div>
+      <div class="d-meta">Owner: Anthony / Spencer · All profiles in /teamwire-prospects/</div>
+    </div>
+    <div class="decision resolved">
+      <div class="d-label">JUN 5, 2026 — ORG</div>
+      <div class="d-text">Founder titles confirmed: Thomas Yu (CEO), Mike Calfin (CTO), Anthony Orque (CBO · Head of AI Implementation). Spencer's AI Implementation dept framework adopted.</div>
+      <div class="d-meta">Owner: All founders</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ PILOT PIPELINE ═══════════ -->
+<div id="page-pipeline" class="page">
+
+  <!-- STATS -->
+  <div class="two">
+    <div class="card green">
+      <div class="ch"><div class="ci">📊</div><span class="ct">Pipeline Stats</span></div>
+      <div class="sgrid">
+        <div class="sb g"><span class="sn">2</span><span class="sl">Confirmed</span></div>
+        <div class="sb o"><span class="sn">5</span><span class="sl">Theoretical</span></div>
+        <div class="sb r"><span class="sn">0</span><span class="sl">Active Pilots</span></div>
+        <div class="sb p"><span class="sn">1</span><span class="sl">Flagged ⚠️</span></div>
+      </div>
+    </div>
+    <div class="card teal">
+      <div class="ch"><div class="ci">🎯</div><span class="ct">Seed Target</span></div>
+      <div class="pl"><span>Case Studies Built</span><span style="color:var(--orange)">0 / 3</span></div>
+      <div class="pt"><div class="pf o" style="width:0%"></div></div>
+      <div class="pl"><span>Active Pilots</span><span style="color:var(--orange)">0 / 3</span></div>
+      <div class="pt"><div class="pf o" style="width:0%"></div></div>
+      <div style="font-size:9px;color:var(--muted);padding:6px 8px;background:var(--bg3);border-radius:4px;border-left:2px solid var(--teal)">
+        3 case studies = proof of concept = seed pitch. Priority: Sickies → Card Shop → Mrs. Events or Empire Security.
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRMED PROSPECTS -->
+  <div class="card green">
+    <div class="ch"><div class="ci">✅</div><span class="ct">Confirmed Discovery</span><span class="cs">post-meeting / insider-sourced</span></div>
+
+    <div class="row">
+      <div class="row-main">
+        <div class="row-title">Sickies Burgers</div>
+        <div class="row-sub">Scott (owner) · Mark (ops) · 13 locations · LV restaurant chain</div>
+        <div class="p-stack" style="margin-top:3px">R365 · Bev Check · Focus POS → Toast · Pen & pad inventory</div>
+        <div class="p-wedge">Wedge: Labor monitoring + P&L/AVT automation · Next: John onboarding call (5–6 hrs)</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+        <div class="badge done">DISCOVERY ✓</div>
+        <div class="p-owner">Anthony</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row-main">
+        <div class="row-title">People's Card Shop</div>
+        <div class="row-sub">Brian (owner) · Lance (insider source) · Single location · LV card shop / collectibles</div>
+        <div class="p-stack" style="margin-top:3px">TCGPlayer · Challonge · Start.gg · KTS · Discord/FB/IG · POS: ⚠️ UNCONFIRMED (Allegiant Stadium ref → likely Appetize)</div>
+        <div class="p-wedge">Wedge: Daily Shop Command Briefing · Next: Confirm POS name with Lance before Thomas starts</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+        <div class="badge new">INSIDER-SOURCED</div>
+        <div class="p-owner">Anthony</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THEORETICAL PROSPECTS -->
+  <div class="card purple">
+    <div class="ch"><div class="ci">🔬</div><span class="ct">Theoretical</span><span class="cs">Spencer research · pre-discovery</span></div>
+
+    <div class="row">
+      <div class="row-main">
+        <div class="row-title">Mrs. Events / MRS-Events</div>
+        <div class="row-sub">Carla · Stevie · LV talent agency / event entertainment · Tradeshows, galas, weddings, corporate</div>
+        <div class="p-stack" style="margin-top:3px">WordPress · Contact forms · HoneyBook/Dubsado (likely) · Spreadsheet talent DB · Google Calendar</div>
+        <div class="p-wedge">Wedge: Event Inquiry + Talent Match Assistant · <span style="color:var(--green)">⭐ EASIEST FIRST PILOT</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+        <div class="badge off">THEORETICAL</div>
+        <div class="p-owner">Anthony</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row-main">
+        <div class="row-title">SD Claw</div>
+        <div class="row-sub">Andy Nguyen · ~100 claw machines · Rentals + events + branded activations · sdclaw.org confirmed</div>
+        <div class="p-stack" style="margin-top:3px">Website forms · Google Calendar (likely) · Venmo/Zelle/card · Spreadsheet inventory</div>
+        <div class="p-wedge">Wedge: Rental Ops Briefing + Quote Assistant</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+        <div class="badge off">THEORETICAL</div>
+        <div class="p-owner">Anthony</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row-main">
+        <div class="row-title">Nerdy Tags / David</div>
+        <div class="row-sub">David · 4 businesses: Nerdy Tags + 76 Graphics + Modia Works + Express Skins · NFC/graphics/display/e-comm</div>
+        <div class="p-stack" style="margin-top:3px">Shopify (Nerdy Tags + Modia confirmed) · Website forms · Google Drive/Dropbox · Adobe/Canva</div>
+        <div class="p-wedge">Wedge: Cross-Business Command Briefing + Quote Follow-Up</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+        <div class="badge off">THEORETICAL</div>
+        <div class="p-owner">Anthony</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row-main">
+        <div class="row-title">Empire Security</div>
+        <div class="row-sub">Dallas Alexander · Tyler Davis · Private security / guard operations · Shifts + incident reports + credentialing</div>
+        <div class="p-stack" style="margin-top:3px">Deputy/When I Work (likely) · ADP/Gusto (likely) · PDF/Google Forms incident reports · Spreadsheet compliance</div>
+        <div class="p-wedge">Wedge: Daily Security Ops Briefing + Exception Tracker</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+        <div class="badge off">THEORETICAL</div>
+        <div class="p-owner">Anthony</div>
+      </div>
+    </div>
+
+    <div class="row" style="border-color:rgba(245,197,24,.3)">
+      <div class="row-main">
+        <div class="row-title">SMP Inc</div>
+        <div class="row-sub">Tyler · Highest revenue prospect · Identity UNCONFIRMED · Likely promo staffing / event services (LV)</div>
+        <div class="p-stack" style="margin-top:3px;color:var(--red)">⚠️ Stack unknown until identity confirmed. Assumed: When I Work + ADP + GroupMe/Slack (the gap)</div>
+        <div class="p-wedge" style="color:var(--yellow)">Ask Tyler: "What does SMP do exactly?" before pitching anything</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+        <div class="badge warn">VERIFY ⚠️</div>
+        <div class="p-owner">Anthony</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRIORITY ORDER -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">📋</div><span class="ct">Spencer's Recommended Priority</span></div>
+    <div class="two">
+      <div>
+        <div style="font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">Easiest Small Pilot</div>
+        <div class="row"><div class="row-main"><div class="row-title">1. Mrs. Events</div><div class="row-sub">Event inquiry/proposal — easiest to demo</div></div><div class="badge done">⭐ START</div></div>
+        <div class="row"><div class="row-main"><div class="row-title">2. SD Claw</div><div class="row-sub">Rental quote/checklist — concrete + fast</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">3. Nerdy Tags</div><div class="row-sub">Shopify + quote — strong but can sprawl</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">4. Empire Security</div><div class="row-sub">High value, needs more trust + data access</div></div></div>
+      </div>
+      <div>
+        <div style="font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">Investor Story Diversity</div>
+        <div class="row"><div class="row-main"><div class="row-title">Sickies</div><div class="row-sub">Multi-location restaurant ops</div></div><div class="badge ok">CONFIRMED</div></div>
+        <div class="row"><div class="row-main"><div class="row-title">Empire Security</div><div class="row-sub">Workforce / field operations</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">Nerdy Tags</div><div class="row-sub">E-comm / multi-business operator</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">Mrs. Events or SD Claw</div><div class="row-sub">Event / rental / proposal workflow</div></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ PRODUCT & ENG ═══════════ -->
+<div id="page-product" class="page">
+
+  <!-- PRODUCT STAGE -->
+  <div class="card purple">
+    <div class="ch"><div class="ci">🔧</div><span class="ct">Product Stage</span><span class="cs">Pre-seed</span></div>
+    <div class="phase"><div class="pnum active">NOW</div><div><div class="ptitle">Building proof via pilots</div><div class="pdesc">Concierge/manual approach first. Prove value before automating. Discovery profiles → Thomas synthesis → integration research → pilot proposal.</div></div></div>
+    <div class="phase"><div class="pnum pending">NEXT</div><div><div class="ptitle">First live pilot deployment</div><div class="pdesc">Sickies or Card Shop. Start with daily briefing from CSV/export — no full API required for Week 1.</div></div></div>
+    <div class="phase"><div class="pnum pending">POST-SEED</div><div><div class="ptitle">Repeatable onboarding motion</div><div class="pdesc">Playbook by vertical. Onboarding specialist hire. 10–25 live deployments. Activation metrics. Case study pipeline.</div></div></div>
+  </div>
+
+  <!-- INTEGRATION RESEARCH QUEUE -->
+  <div class="card orange">
+    <div class="ch"><div class="ci">🔌</div><span class="ct">Integration Research Queue</span><span class="cs">Thomas + Calfin</span></div>
+    <div style="font-size:9px;color:var(--muted);margin-bottom:8px">Systems Thomas needs to investigate before pilots can start</div>
+
+    <div class="int-row">
+      <div class="int-sys">Restaurant365 (R365)</div>
+      <div class="int-prospect">Sickies Burgers · P&L, labor, AVT, historical data across 13 locations</div>
+      <div class="int-status pending">API: UNKNOWN</div>
+    </div>
+    <div class="int-row">
+      <div class="int-sys">Bev Check</div>
+      <div class="int-prospect">Sickies Burgers · Beer pour tracking, waste log, variance</div>
+      <div class="int-status pending">API: UNKNOWN</div>
+    </div>
+    <div class="int-row">
+      <div class="int-sys">Focus POS</div>
+      <div class="int-prospect">Sickies Burgers · Current POS, migrating to Toast</div>
+      <div class="int-status pending">API: UNKNOWN</div>
+    </div>
+    <div class="int-row">
+      <div class="int-sys">Toast POS</div>
+      <div class="int-prospect">Sickies Burgers · Future POS state · Build integrations Toast-ready</div>
+      <div class="int-status confirmed">API: HAS API</div>
+    </div>
+    <div class="int-row">
+      <div class="int-sys">TCGPlayer</div>
+      <div class="int-prospect">People's Card Shop · Inventory, listings, orders, pricing, mismatch workflow</div>
+      <div class="int-status pending">API: UNKNOWN</div>
+    </div>
+    <div class="int-row">
+      <div class="int-sys">POS (Card Shop)</div>
+      <div class="int-prospect">People's Card Shop · Lance said "same as Allegiant Stadium" → likely Appetize but VERIFY</div>
+      <div class="int-status unknown">⚠️ VERIFY FIRST</div>
+    </div>
+    <div class="int-row">
+      <div class="int-sys">Challonge / Start.gg / KTS</div>
+      <div class="int-prospect">People's Card Shop · Tournament management, calendar, attendance</div>
+      <div class="int-status pending">API: CHECK</div>
+    </div>
+    <div class="int-row">
+      <div class="int-sys">Shopify</div>
+      <div class="int-prospect">Nerdy Tags + Modia Works · Orders, inventory, customers, abandoned carts</div>
+      <div class="int-status confirmed">API: HAS API</div>
+    </div>
+    <div class="int-row">
+      <div class="int-sys">When I Work / Deputy</div>
+      <div class="int-prospect">Empire Security (likely) + SMP Inc (likely) · Scheduling, shift assignments</div>
+      <div class="int-status confirmed">API: HAS API</div>
+    </div>
+    <div class="int-row">
+      <div class="int-sys">ADP Workforce Now</div>
+      <div class="int-prospect">Empire Security + SMP Inc (likely) · Payroll, time tracking, contractor mix</div>
+      <div class="int-status pending">API: CHECK</div>
+    </div>
+  </div>
+
+  <!-- AGENT CONCEPTS FROM DISCOVERY -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">🤖</div><span class="ct">Agent Concepts from Discovery</span><span class="cs">spec'd from real pain</span></div>
+    <div class="two">
+      <div>
+        <div style="font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">Sickies (Restaurant Ops)</div>
+        <div class="row"><div class="row-main"><div class="row-title">Labor Variance Agent</div><div class="row-sub">Real-time alerts on threshold breaches · Daily digest per location · R365 data</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">P&L / AVT Report Agent</div><div class="row-sub">Auto-generate P&L flash + AVT from R365 · Eliminate manual admin</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">Inventory Variance Agent</div><div class="row-sub">Replace pen-and-pad · R365 theoretical vs Bev Check actual</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">Server Coaching Agent</div><div class="row-sub">Flag bad reviews · Trigger manager coaching workflow</div></div></div>
+      </div>
+      <div>
+        <div style="font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">Card Shop (Retail Ops)</div>
+        <div class="row"><div class="row-main"><div class="row-title">Daily Shop Command Briefing</div><div class="row-sub">Inventory + buying + events + staffing + social + Brian approvals · Phase 1 wedge</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">Inventory Exception Agent</div><div class="row-sub">TCGPlayer mismatches · Stale sealed product · Fast-mover alerts · Reorder flags</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">Buying Assistant</div><div class="row-sub">Upcoming release risk · Distributor minimums · Demand vs margin · Bad buy warning</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">Tournament Ops Agent</div><div class="row-sub">Prep checklist · Staffing rec · Social drafts · Post-event recap + sales lift</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PILOT APPROACH -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">📐</div><span class="ct">Recommended Pilot Approach</span></div>
+    <div style="font-size:10px;color:var(--text);padding:8px 10px;background:var(--bg3);border-radius:6px;border-left:3px solid var(--teal);margin-bottom:8px;line-height:1.8">
+      <strong style="color:var(--teal)">Phase 0:</strong> Start with CSV exports / manual uploads. No API required.<br>
+      <strong style="color:var(--teal)">Phase 1:</strong> Concierge briefing — build it manually first, validate what the owner actually reads.<br>
+      <strong style="color:var(--teal)">Phase 2:</strong> Semi-automate ingestion once we know what matters.<br>
+      <strong style="color:var(--teal)">Phase 3:</strong> Full API integrations for confirmed high-value data sources only.
+    </div>
+    <div class="row"><div class="row-main"><div class="row-title">Minimum viable pilot input</div><div class="row-sub">POS export + one other system export (TCGPlayer, R365, scheduling) + manual calendar — that's enough for Week 1</div></div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Definition of "working"</div><div class="row-sub">Owner checks TeamWire daily OR says "this caught something I would have missed" — whichever comes first</div></div></div>
+  </div>
+
+</div>
+
+<!-- ═══════════ SEED MILESTONES ═══════════ -->
+<div id="page-seed" class="page">
+
+  <!-- GOAL -->
+  <div class="card orange">
+    <div class="ch"><div class="ci">🎯</div><span class="ct">Seed Goal</span></div>
+    <div style="font-size:13px;font-weight:700;color:var(--orange);padding:10px;text-align:center;letter-spacing:1px">
+      3 CASE STUDIES → DATA → INVESTOR PITCH
+    </div>
+    <div style="font-size:9px;color:var(--muted);text-align:center;margin-bottom:12px">Each case study proves TeamWire works in a real business. Together they prove the horizontal pattern.</div>
+    <div class="pl"><span>Overall seed readiness</span><span style="color:var(--orange)">12%</span></div>
+    <div class="pt"><div class="pf o" style="width:12%"></div></div>
+  </div>
+
+  <!-- THREE CASE STUDIES -->
+  <div class="three">
+
+    <div class="card green">
+      <div class="ch"><div class="ci">🍔</div><span class="ct">Case Study #1</span><span class="cs">Sickies Burgers</span></div>
+      <div class="phase"><div class="pnum done">✓</div><div><div class="ptitle">Discovery complete</div><div class="pdesc">R365 + Bev Check + Focus POS confirmed. Pain mapped. Wedge selected.</div></div></div>
+      <div class="phase"><div class="pnum active">→</div><div><div class="ptitle">John onboarding call</div><div class="pdesc">5–6 hr session. Anthony to schedule. Head of Systems = implementation champion.</div></div></div>
+      <div class="phase"><div class="pnum pending">2</div><div><div class="ptitle">Thomas synthesis + API research</div><div class="pdesc">Anthony → Thomas handoff. Calfin confirms R365 + Bev Check APIs.</div></div></div>
+      <div class="phase"><div class="pnum pending">3</div><div><div class="ptitle">Pilot proposal + agreement</div><div class="pdesc">Labor + P&L agents. 1–2 locations. 30-day POC.</div></div></div>
+      <div class="phase"><div class="pnum pending">4</div><div><div class="ptitle">Pilot live → case study</div><div class="pdesc">Before: manual P&L + labor chase. After: daily flash + alert. Get Scott/Mark quote.</div></div></div>
+    </div>
+
+    <div class="card teal">
+      <div class="ch"><div class="ci">🃏</div><span class="ct">Case Study #2</span><span class="cs">People's Card Shop</span></div>
+      <div class="phase"><div class="pnum done">✓</div><div><div class="ptitle">Insider intel complete</div><div class="pdesc">Lance interview done. TCGPlayer, Challonge, Start.gg confirmed. Pain fully mapped.</div></div></div>
+      <div class="phase"><div class="pnum active">→</div><div><div class="ptitle">Confirm POS with Lance</div><div class="pdesc">"Same as Allegiant Stadium" — likely Appetize. Verify before Thomas starts. One question closes this.</div></div></div>
+      <div class="phase"><div class="pnum pending">2</div><div><div class="ptitle">Warm intro to Brian via Lance</div><div class="pdesc">Not a hard pitch. "We mapped some recurring ops Lance remembered." Daily Briefing wedge.</div></div></div>
+      <div class="phase"><div class="pnum pending">3</div><div><div class="ptitle">Week 0–1 manual pilot</div><div class="pdesc">Build daily briefing from exports. Validate what Brian actually reads before automating.</div></div></div>
+      <div class="phase"><div class="pnum pending">4</div><div><div class="ptitle">Pilot live → case study</div><div class="pdesc">Proves: TeamWire on top of lightweight SMB systems, value before full API.</div></div></div>
+    </div>
+
+    <div class="card purple">
+      <div class="ch"><div class="ci">❓</div><span class="ct">Case Study #3</span><span class="cs">TBD</span></div>
+      <div style="font-size:9px;color:var(--muted);margin-bottom:8px">Recommended candidates for investor story diversity:</div>
+      <div class="phase"><div class="pnum pending">A</div><div><div class="ptitle">Mrs. Events (Carla/Stevie)</div><div class="pdesc">Event inquiry + talent match. Easiest to demo. Strong for services vertical.</div></div></div>
+      <div class="phase"><div class="pnum pending">B</div><div><div class="ptitle">Empire Security (Dallas/Tyler)</div><div class="pdesc">Workforce/field ops. High ROI story. Needs more trust to get access.</div></div></div>
+      <div class="phase"><div class="pnum pending">C</div><div><div class="ptitle">SMP Inc (Tyler)</div><div class="pdesc">Highest revenue. Likely promo staffing. ⚠️ Identity must be confirmed first.</div></div></div>
+      <div style="margin-top:8px;font-size:9px;color:var(--muted);padding:6px 8px;background:var(--bg3);border-radius:4px;border-left:2px solid var(--purple)">
+        Pick whichever unlocks fastest. Case study #3 + Sickies + Card Shop = horizontal proof across 3 verticals.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CASE STUDY STRUCTURE -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">📄</div><span class="ct">Case Study Template</span><span class="cs">what each needs to contain</span></div>
+    <div class="two">
+      <div>
+        <div class="row"><div class="row-main"><div class="row-title">1. Business context</div><div class="row-sub">Who they are, scale, industry, how we found them</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">2. Pain before TeamWire</div><div class="row-sub">In operator's own words where possible</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">3. Systems involved</div><div class="row-sub">What we connected, what data we used</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">4. First workflow launched</div><div class="row-sub">Narrow, specific, measurable</div></div></div>
+      </div>
+      <div>
+        <div class="row"><div class="row-main"><div class="row-title">5. Result / early signal</div><div class="row-sub">Hours saved, errors caught, decisions made</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">6. Operator quote</div><div class="row-sub">One real quote from owner or manager</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">7. What this proves</div><div class="row-sub">TeamWire thesis: horizontal, real SMB, works before full API</div></div></div>
+        <div class="row"><div class="row-main"><div class="row-title">8. Expansion path</div><div class="row-sub">What comes next after the wedge</div></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ DECISIONS ═══════════ -->
+<div id="page-decisions" class="page">
+
+  <!-- OPEN DECISIONS -->
+  <div class="card red">
+    <div class="ch"><div class="ci">🔴</div><span class="ct">Open Decisions</span><span class="cs">needs founder input</span></div>
+
+    <div class="blocker">
+      <div class="b-label">⚠️ BLOCKER — CARD SHOP</div>
+      <div class="b-text">POS identity unconfirmed. Lance said "same as Allegiant Stadium" — likely Appetize. Thomas cannot start integration research until confirmed. One question to Lance closes this.</div>
+      <div class="b-owner">Owner: Anthony · Action: Ask Lance — "What POS do they use? Was it Appetize or something like Square/Clover?"</div>
+    </div>
+
+    <div class="blocker">
+      <div class="b-label">⚠️ FLAG — SMP INC</div>
+      <div class="b-text">Identity unconfirmed. Highest revenue prospect but can't pitch without knowing what the business does. Don't approach Tyler until verified.</div>
+      <div class="b-owner">Owner: Anthony · Action: Ask Tyler casually — "What does SMP do exactly? I want to make sure I'm thinking about this right."</div>
+    </div>
+
+    <div class="decision open">
+      <div class="d-label">OPEN — PILOT #3 SELECTION</div>
+      <div class="d-text">Which prospect becomes Case Study #3? Spencer recommends Mrs. Events (easiest to demo). Investor story diversity favors Empire Security. Thomas/Calfin should weigh in on which vertical is easiest to integrate.</div>
+      <div class="d-meta">Needs: Thomas + Calfin input on integration complexity per vertical</div>
+    </div>
+
+    <div class="decision open">
+      <div class="d-label">OPEN — PRICING FRAMEWORK</div>
+      <div class="d-text">Spencer's framework: $1.5K–2.5K/mo pilot (friends-and-family), $2.5K–5K/mo real commercial, $1.5K–10K setup. Raw AI cost: $25–100/mo. Thomas to confirm if this aligns with product cost structure.</div>
+      <div class="d-meta">Needs: Thomas confirmation · Reference: peoples-card-shop.md Section 11</div>
+    </div>
+  </div>
+
+  <!-- RESOLVED DECISIONS -->
+  <div class="card green">
+    <div class="ch"><div class="ci">✅</div><span class="ct">Resolved</span></div>
+
+    <div class="decision resolved">
+      <div class="d-label">RESOLVED — JUN 5, 2026</div>
+      <div class="d-text">Founder titles confirmed. Thomas Yu = CEO. Mike Calfin = CTO. Anthony Orque = CBO / Head of AI Implementation.</div>
+      <div class="d-meta">Decided by: All founders · Spencer's AI Implementation dept framework adopted</div>
+    </div>
+
+    <div class="decision resolved">
+      <div class="d-label">RESOLVED — JUN 5, 2026</div>
+      <div class="d-text">Discovery framework standardized. Spencer's business-discovery-artifacts skill shared with Unit 0. Both agents now run identical workflow. All 7 prospect profiles built to Spencer's format.</div>
+      <div class="d-meta">Decided by: Anthony + Spencer · Parallel research pattern operational</div>
+    </div>
+
+    <div class="decision resolved">
+      <div class="d-label">RESOLVED — JUN 5, 2026</div>
+      <div class="d-text">Sickies Burgers stack confirmed: R365 + Bev Check + Focus POS (migrating to Toast). Labor + P&L = wedge. John = onboarding contact. Head of Systems = implementation champion.</div>
+      <div class="d-meta">Decided by: Anthony (Mark meeting + voice memo confirmation)</div>
+    </div>
+  </div>
+
+  <!-- KEY CONTEXT -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">📚</div><span class="ct">Key Context</span><span class="cs">things all founders need to know</span></div>
+
+    <div class="decision">
+      <div class="d-label">DISCOVERY FRAMEWORK</div>
+      <div class="d-text">Spencer's intake format is the standard. Every prospect gets: Company Profile → People Map → Tech Stack (confirmed vs theoretical) → Pain Points → Wishlist → Wedge → Pilot Scope → Tony next steps → Thomas next steps.</div>
+      <div class="d-meta">Files: /opt/data/home/teamwire-prospects/ on Anthony's Hermes instance</div>
+    </div>
+
+    <div class="decision">
+      <div class="d-label">ALLEGIANT STADIUM POS NOTE</div>
+      <div class="d-text">Lance (Card Shop insider) said POS is "same as Allegiant Stadium." Research suggests Appetize Technologies (enterprise NFL stadium POS). Unusual for a local card shop — may be a misremembering. Verify with Lance before Thomas builds anything.</div>
+      <div class="d-meta">Impact: Blocks Card Shop technical discovery until resolved</div>
+    </div>
+
+    <div class="decision">
+      <div class="d-label">AGENT STACK</div>
+      <div class="d-text">Spencer runs on Thomas's Hermes instance. Unit 0 runs on Anthony's. Both share the same business-discovery-artifacts skill as of Jun 5. Spencer files live at /Users/thomas/Downloads/ and /Users/thomas/TeamWire/wiki/. Unit 0 files at /opt/data/home/teamwire-prospects/.</div>
+      <div class="d-meta">When Spencer creates files, forward to Anthony → Unit 0 ingests and syncs</div>
+    </div>
+
+    <div class="decision">
+      <div class="d-label">TEAMWIRE PITCH LANGUAGE THAT WORKS</div>
+      <div class="d-text">"TeamWire is the follow-through layer for operators: it watches the systems, messages, forms, schedules, reports, and open loops that already exist, then turns them into reminders, summaries, proposals, alerts, and next actions." — Do NOT pitch "AI broadly." Pitch 2–3 small workflow ideas, ask which one matters.</div>
+      <div class="d-meta">Source: Spencer's business-discovery-artifacts skill · Validated through Mark (Sickies) meeting</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>TEAMWIRE // INTERNAL OPS // FOUNDERS ONLY // CONFIDENTIAL // <span id="fdate">—</span></footer>
+
+<script>
+  function showPage(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('page-'+id).classList.add('active');
+    event.target.classList.add('active');
+  }
+  function tick(){
+    var t=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true}).format(new Date());
+    document.getElementById('clock').textContent=t+' PT';
+  }
+  tick();setInterval(tick,1000);
+  document.getElementById('fdate').textContent=new Date().toLocaleDateString('en-US',{timeZone:'America/Los_Angeles',weekday:'long',year:'numeric',month:'long',day:'numeric'});
+</script>
+</body>
+</html>
