@@ -80,6 +80,7 @@
     .pf.r{background:linear-gradient(90deg,#800,var(--red));box-shadow:0 0 6px var(--red)}
     .pf.p{background:linear-gradient(90deg,#7c3aed,var(--purple));box-shadow:0 0 6px var(--purple)}
     .pf.g{background:linear-gradient(90deg,#059669,var(--green));box-shadow:0 0 6px var(--green)}
+    .pf.y{background:linear-gradient(90deg,#a07000,var(--yellow));box-shadow:0 0 6px var(--yellow)}
 
     /* STATS */
     .sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
@@ -245,6 +246,7 @@ function checkPw(){
   <div class="tab" onclick="showPage('content')">🎬 Content</div>
   <div class="tab" onclick="showPage('teamwire')">🏢 TeamWire</div>
   <div class="tab" onclick="showPage('dream')">🌴 Dream</div>
+  <div class="tab" onclick="showPage('behavior')">📈 Behavior</div>
   <div class="tab" onclick="showPage('system')">⚙️ System</div>
 </div>
 
@@ -270,8 +272,8 @@ function checkPw(){
       <div class="ch"><div class="ci">📈</div><span class="ct">Quick Stats</span></div>
       <div class="sgrid">
         <div class="sb"><span class="sn" id="sc">72</span><span class="sl">Sessions</span></div>
-        <div class="sb o"><span class="sn">5</span><span class="sl">Projects</span></div>
-        <div class="sb p"><span class="sn">8</span><span class="sl">Cron Jobs</span></div>
+        <div class="sb o" onclick="showPage('projects')" style="cursor:pointer"><span class="sn">7</span><span class="sl">Projects</span></div>
+        <div class="sb p" onclick="showPage('system')" style="cursor:pointer"><span class="sn">8</span><span class="sl">Cron Jobs</span></div>
         <div class="sb"><span class="sn">3</span><span class="sl">Brain Dumps</span></div>
         <div class="sb y"><span class="sn">121.9M</span><span class="sl">Tokens Used</span></div>
         <div class="sb g"><span class="sn">31,707</span><span class="sl">Lines of Rules</span></div>
@@ -546,16 +548,93 @@ function checkPw(){
 
 </div>
 
+<!-- ═══════════ PAGE: BEHAVIOR ═══════════ -->
+<div id="page-behavior" class="page">
+
+  <!-- USAGE STATS -->
+  <div class="card yellow">
+    <div class="ch"><div class="ci">📊</div><span class="ct">Usage by Day</span><span class="cs">Jun 2026 · from DB</span></div>
+    <div class="row">
+      <div class="row-main">
+        <div class="row-title">Jun 3 — Setup Day</div>
+        <div class="row-sub">15 sessions · 81 tool calls · $46.62 · First deploy, infra build, Telegram setup, KB structure</div>
+      </div><div class="badge warn">$46.62</div>
+    </div>
+    <div class="row">
+      <div class="row-main">
+        <div class="row-title">Jun 4 — Marathon Session</div>
+        <div class="row-sub">41 sessions · 167 tool calls · $40.00 · Runway planning, brand naming, merch plan, TeamWire org, GR86 series, nostalgia products, dream home</div>
+      </div><div class="badge warn">$40.00</div>
+    </div>
+    <div class="row">
+      <div class="row-main">
+        <div class="row-title">Jun 5 — Build Day</div>
+        <div class="row-sub">17 sessions · 215 tool calls · $15.43 · R365 research, interview prep, dashboard builds, cron setup, agent roster</div>
+      </div><div class="badge ok">$15.43</div>
+    </div>
+    <div style="margin-top:10px;padding:8px 10px;background:var(--bg3);border-radius:6px;border:1px solid var(--border)">
+      <div class="pl"><span>Cost trend</span><span style="color:var(--green)">↓ 66% Day 2→3</span></div>
+      <div class="pt"><div class="pf y" style="width:100%"></div></div>
+      <div style="font-size:9px;color:var(--muted);margin-top:4px">Day 1: $46 (setup) → Day 2: $40 (marathon) → Day 3: $15 (efficient) · Target: $3–6/day</div>
+    </div>
+  </div>
+
+  <!-- BEHAVIOR PATTERNS -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">🧠</div><span class="ct">Behavior Patterns</span><span class="cs">how Tony uses Unit 0</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">🌙 Night Owl Sessions</div><div class="row-sub">Primary usage window: 10PM–4AM PT · Longest sessions run 2–4hrs · High-output ideation mode</div></div><div class="badge hot">PATTERN</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🔀 Context Switching</div><div class="row-sub">Avg 3–5 topic pivots per session · Voice memo → action → build → next idea · Low friction, high volume</div></div><div class="badge hot">PATTERN</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🏗️ Build-First Instinct</div><div class="row-sub">Skips planning docs — goes straight to artifacts (HTML, crons, Drive docs) · Validates by shipping</div></div><div class="badge act">INSIGHT</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">📱 Mobile-First Interaction</div><div class="row-sub">All sessions via Telegram · Short prompts, expects long autonomous execution · Min steps back</div></div><div class="badge act">INSIGHT</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🔁 Delegation Pattern</div><div class="row-sub">"Deal with this" = full takeover. "Add X to Y" = surgical patch. Rarely micromanages execution.</div></div><div class="badge new">INSIGHT</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">💡 Ideation Bursts</div><div class="row-sub">Jun 4 session: 27 nostalgia products, 27 brand names, merch plan, content series, org model — all in one session</div></div><div class="badge new">INSIGHT</div></div>
+  </div>
+
+  <!-- TASK TYPE BREAKDOWN -->
+  <div class="card purple">
+    <div class="ch"><div class="ci">📂</div><span class="ct">Task Type Breakdown</span><span class="cs">3-day sample</span></div>
+    <div class="pl"><span>Build / Ship (dashboards, HTML, crons, deploys)</span><span style="color:var(--purple)">34%</span></div>
+    <div class="pt"><div class="pf p" style="width:34%"></div></div>
+    <div class="pl"><span>Research / Discovery (prospects, products, brands)</span><span style="color:var(--teal)">28%</span></div>
+    <div class="pt"><div class="pf" style="width:28%"></div></div>
+    <div class="pl"><span>Strategy / Planning (TeamWire, merch, runway)</span><span style="color:var(--orange)">18%</span></div>
+    <div class="pt"><div class="pf o" style="width:18%"></div></div>
+    <div class="pl"><span>Ops / Admin (calendar, memory, file org)</span><span style="color:var(--green)">12%</span></div>
+    <div class="pt"><div class="pf g" style="width:12%"></div></div>
+    <div class="pl"><span>Content / Creative (brand, GR86, writing)</span><span style="color:var(--yellow)">8%</span></div>
+    <div class="pt"><div class="pf y" style="width:8%"></div></div>
+  </div>
+
+  <!-- TEAMWIRE CASE STUDY SEED -->
+  <div class="card green">
+    <div class="ch"><div class="ci">🏢</div><span class="ct">TeamWire Case Study — Unit 0 Internal</span><span class="cs">data in progress</span></div>
+    <div style="font-size:9px;color:var(--muted);margin-bottom:10px">Tony Orque · CBO · AI Implementation · Personal OS built on Hermes</div>
+    <div class="row"><div class="row-main"><div class="row-title">Business Context</div><div class="row-sub">Solo operator, 15+ yrs events/ops, scaling into AI. Needed a system that could hold context, ship artifacts, run background ops, and learn his workflows.</div></div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Pain Before TeamWire</div><div class="row-sub">Scattered notes, missed follow-ups, no system for his brain dumps, manual research for every prospect, no ops infrastructure outside of work.</div></div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Workflows Deployed (3 days)</div><div class="row-sub">8 agents live · 109 skills built · Morning briefing · Weekly accountability · KB sync · Nightly memory compression · Dashboard auto-deploy · Prospect research pipeline</div></div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Early Signal</div><div class="row-sub">72 sessions · 461 tool calls · 121.9M tokens · $102 total spend · Daily cost dropped 66% from setup day to Day 3</div></div></div>
+    <div class="row"><div class="row-main"><div class="row-title">What This Proves</div><div class="row-sub">A non-technical SMB operator can deploy a 8-agent AI system in 3 days. Zero engineering. The wedge: ops automation for time-starved founders.</div></div></div>
+    <div style="margin-top:10px;padding:8px 10px;background:var(--bg3);border-radius:6px;border-left:2px solid var(--green);font-size:9px;color:var(--muted)">
+      📌 This page feeds the TeamWire investor case study. Every session = more data. Unit 0 auto-logs behavior patterns after each major session.
+    </div>
+  </div>
+
+</div>
+
 <!-- ═══════════ PAGE: SYSTEM ═══════════ -->
 <div id="page-system" class="page">
 
   <div class="card teal">
-    <div class="ch"><div class="ci">⏱</div><span class="ct">Cron Jobs</span><span class="cs">5 active · kb-sync added</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">🔄 KB Sync</div><div class="row-sub">Drive KB → Memory sync · Every 2hrs 7AM–11PM · Cowork session pickup</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">2hr</div><div class="badge ok">✓ OK</div></div>
-    <div class="row"><div class="row-main"><div class="row-title">☀️ Morning AI News</div><div class="row-sub">Top headlines + brain dump callback reminder → Telegram · Haiku</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">7AM PT</div><div class="badge ok">✓ OK</div></div>
-    <div class="row"><div class="row-main"><div class="row-title">🧠 Hormozi Nightly</div><div class="row-sub">Business insight → Telegram · Haiku</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">11PM PT</div><div class="badge ok">✓ OK</div></div>
-    <div class="row"><div class="row-main"><div class="row-title">📋 Monday Check-In</div><div class="row-sub">Weekly priorities → Telegram · Haiku</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">Mon 9AM</div><div class="badge ok">✓ OK</div></div>
-    <div class="row"><div class="row-main"><div class="row-title">📊 Friday Review</div><div class="row-sub">Week digest → Telegram · Haiku</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">Fri 5PM</div><div class="badge ok">✓ OK</div></div>
+    <div class="ch"><div class="ci">⏱</div><span class="ct">Cron Jobs</span><span class="cs">8 active</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">🤖 Unit 0 — Consigliere</div><div class="row-sub">LIVE · Always-on · Strategy, build, ops · claude-sonnet-4-6 · 72 sessions · 461 tool calls</div></div><div style="font-size:9px;color:var(--green);margin:0 8px">LIVE</div><div class="badge ok">✓ ON</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">☀️ Morning AI News</div><div class="row-sub">CRON · 7AM PT daily · Top AI/tech headlines → Telegram · Haiku · Category: Information</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">7AM PT</div><div class="badge ok">✓ OK</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">📊 Daily Review</div><div class="row-sub">CRON · 7:30AM PT daily · Pulls Action Items from Drive → daily briefing → Telegram · Haiku · Category: Ops</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">7:30AM PT</div><div class="badge ok">✓ OK</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🏗️ Dashboard Rebuild</div><div class="row-sub">CRON · 7AM PT daily · Pulls live system stats → rebuilds dashboard.html → deploys to GitHub Pages · Haiku · Category: DevOps</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">7AM PT</div><div class="badge ok">✓ OK</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🧠 Hormozi Nightly</div><div class="row-sub">CRON · 11PM PT daily · Business insight → Telegram · Haiku · Category: Learning</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">11PM PT</div><div class="badge ok">✓ OK</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">📋 Monday Check-In</div><div class="row-sub">CRON · Mon 9AM PT · Weekly priorities prompt → Telegram · Haiku · Category: Accountability</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">Mon 9AM</div><div class="badge ok">✓ OK</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">📊 Friday Review</div><div class="row-sub">CRON · Fri 5PM PT · Week digest → Telegram · Haiku · Category: Accountability</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">Fri 5PM</div><div class="badge ok">✓ OK</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🔄 KB Sync</div><div class="row-sub">CRON · Every 2hrs · Drive KB → Memory sync · Cowork session pickup · Category: Memory</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">2hr</div><div class="badge ok">✓ OK</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🗜️ Nightly Compression</div><div class="row-sub">CRON · 3AM PT · Prunes stale memory · Reports daily cost + token spend → Telegram · Haiku · Category: Maintenance</div></div><div style="font-size:9px;color:var(--teal);margin:0 8px">3AM PT</div><div class="badge ok">✓ OK</div></div>
   </div>
 
   <div class="card teal">
@@ -572,13 +651,24 @@ function checkPw(){
 
   <div class="two">
     <div class="card teal">
-      <div class="ch"><div class="ci">🤖</div><span class="ct">Agent Roster</span></div>
-      <div class="row"><div class="row-main"><div class="row-title">Unit 0 (Hermes)</div><div class="row-sub">Consigliere · Strategy + Coordination · Sonnet · business-discovery-artifacts skill loaded</div></div><div class="badge ok">LIVE</div></div>
-      <div class="row"><div class="row-main"><div class="row-title">Crons × 4</div><div class="row-sub">News · Hormozi · Monday · Friday · Haiku</div></div><div class="badge ok">LIVE</div></div>
-      <div class="row"><div class="row-main"><div class="row-title">Merch Agent</div><div class="row-sub">3AM Club Shopify · Haiku</div></div><div class="badge act">BUILDING</div></div>
-      <div class="row"><div class="row-main"><div class="row-title">Investor Agent</div><div class="row-sub">Freqtrade + Alpaca · Telegram P&L · Haiku</div></div><div class="badge new">PLANNED</div></div>
-      <div class="row"><div class="row-main"><div class="row-title">Creative Director</div><div class="row-sub">Trend monitoring · Content calendar · Haiku</div></div><div class="badge new">PLANNED</div></div>
-      <div class="row"><div class="row-main"><div class="row-title">Legal Agent</div><div class="row-sub">PH property law · Affairs · Sonnet</div></div><div class="badge off">FUTURE</div></div>
+      <div class="ch"><div class="ci">🤖</div><span class="ct">Agent Roster</span><span class="cs">8 deployed</span></div>
+
+      <div style="font-size:8px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;padding:0 2px">LIVE — Always On</div>
+      <div class="row"><div class="row-main"><div class="row-title">Unit 0 — Consigliere</div><div class="row-sub">Type: Interactive · Sonnet · Strategy, build, ops, research, content · 72 sessions · 461 tool calls · $102 spent</div></div><div class="badge ok">LIVE</div></div>
+
+      <div style="font-size:8px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin:10px 0 6px;padding:0 2px">SCHEDULED CRONS — Autonomous</div>
+      <div class="row"><div class="row-main"><div class="row-title">☀️ Morning AI News</div><div class="row-sub">Type: Information · Daily 7AM · Scrapes AI/tech news → Telegram digest · Haiku</div></div><div class="badge ok">LIVE</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">📊 Daily Review</div><div class="row-sub">Type: Ops · Daily 7:30AM · Reads Drive Action Items → daily briefing → Telegram · Haiku</div></div><div class="badge ok">LIVE</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">🏗️ Dashboard Rebuild</div><div class="row-sub">Type: DevOps · Daily 7AM · Pulls live stats → rebuilds + deploys dashboard.html · Haiku</div></div><div class="badge ok">LIVE</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">🧠 Hormozi Nightly</div><div class="row-sub">Type: Learning · 11PM PT · Business insight → Telegram · Haiku</div></div><div class="badge ok">LIVE</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">📋 Monday / 📊 Friday</div><div class="row-sub">Type: Accountability · Weekly cadence · Priority prompt + week digest → Telegram · Haiku</div></div><div class="badge ok">LIVE</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">🔄 KB Sync</div><div class="row-sub">Type: Memory · Every 2hrs · Drive KB → agent memory sync · Haiku</div></div><div class="badge ok">LIVE</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">🗜️ Nightly Compression</div><div class="row-sub">Type: Maintenance · 3AM PT · Prunes memory · Cost report → Telegram · Haiku</div></div><div class="badge ok">LIVE</div></div>
+
+      <div style="font-size:8px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin:10px 0 6px;padding:0 2px">PLANNED</div>
+      <div class="row"><div class="row-main"><div class="row-title">📈 Investor Agent</div><div class="row-sub">Type: Finance · Freqtrade + Alpaca · Telegram P&L notifications · Haiku</div></div><div class="badge new">PLANNED</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">🎬 Creative Director</div><div class="row-sub">Type: Content · Trend monitoring + content calendar · Haiku</div></div><div class="badge new">PLANNED</div></div>
+      <div class="row"><div class="row-main"><div class="row-title">⚖️ Legal Agent</div><div class="row-sub">Type: Legal · PH property law + IP · Sonnet</div></div><div class="badge off">FUTURE</div></div>
     </div>
     <div class="card red">
       <div class="ch"><div class="ci">💾</div><span class="ct">Memory</span><span class="cs" style="color:var(--yellow)">83% — Monitor</span></div>
