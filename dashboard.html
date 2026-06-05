@@ -176,6 +176,35 @@
   </style>
 </head>
 <body>
+<div id="pw-gate" style="position:fixed;inset:0;background:#0a0a0f;z-index:99999;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace">
+  <div style="text-align:center;padding:32px;border:1px solid #1e1e30;border-radius:12px;background:#0f0f18;min-width:300px">
+    <div style="font-size:11px;color:#00b4d8;letter-spacing:3px;font-weight:700;margin-bottom:6px">UNIT-00</div>
+    <div style="font-size:9px;color:#5a6080;letter-spacing:2px;margin-bottom:24px">ACCESS RESTRICTED</div>
+    <input id="pw-input" type="password" placeholder="enter password" autofocus
+      style="width:100%;background:#14141f;border:1px solid #1e1e30;border-radius:6px;padding:10px 14px;color:#c8cfe8;font-family:'Space Mono',monospace;font-size:13px;outline:none;text-align:center;letter-spacing:2px"
+      onkeydown="if(event.key==='Enter')checkPw()" />
+    <div id="pw-err" style="margin-top:10px;font-size:9px;color:#ff4f6e;letter-spacing:1px;min-height:14px"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var k='spencerwire';
+  if(sessionStorage.getItem('u0auth')===k){
+    document.getElementById('pw-gate').style.display='none';
+  }
+})();
+function checkPw(){
+  var v=document.getElementById('pw-input').value;
+  if(v==='spencerwire'){
+    sessionStorage.setItem('u0auth','spencerwire');
+    document.getElementById('pw-gate').style.display='none';
+  } else {
+    document.getElementById('pw-err').textContent='ACCESS DENIED';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+  }
+}
+</script>
 
 <header>
   <div class="hl">
