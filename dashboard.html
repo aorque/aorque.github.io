@@ -249,6 +249,7 @@ function checkPw(){
   <div class="tab" onclick="showPage('behavior')">📈 Behavior</div>
   <div class="tab" onclick="showPage('spend')">💸 Spend</div>
   <div class="tab" onclick="showPage('kanban')">📋 Kanban</div>
+  <div class="tab" onclick="showPage('sleep')">😴 Sleep</div>
   <div class="tab" onclick="showPage('system')">⚙️ System</div>
 </div>
 
@@ -759,6 +760,76 @@ function checkPw(){
 
 </div>
 
+<!-- ═══════════ PAGE: SLEEP ═══════════ -->
+<div id="page-sleep" class="page">
+
+  <!-- LAST NIGHT -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">🌙</div><span class="ct">Last Night</span><span class="cs" id="sleep-date">Jun 4–5 2026</span></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:12px">
+      <div style="background:var(--bg2);padding:14px;text-align:center">
+        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--teal)" id="sleep-hours">~7h</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">SLEPT</div>
+      </div>
+      <div style="background:var(--bg2);padding:14px;text-align:center">
+        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--green)" id="sleep-cycles">4.7</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">90-MIN CYCLES</div>
+      </div>
+      <div style="background:var(--bg2);padding:14px;text-align:center">
+        <div style="font-family:var(--mono);font-size:28px;font-weight:700" id="sleep-status-icon">⚠️</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--muted)" id="sleep-status-label">BELOW TARGET</div>
+      </div>
+    </div>
+
+    <!-- CYCLE PROGRESS BAR -->
+    <div style="margin-bottom:6px;font-family:var(--mono);font-size:9px;color:var(--muted)">90-MIN CYCLES — TARGET: 5 (7.5hrs) · IDEAL: 6 (9hrs)</div>
+    <div style="display:flex;gap:4px;margin-bottom:12px" id="sleep-cycle-bars">
+      <!-- filled by JS -->
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div style="background:var(--bg3);padding:8px 10px;border:1px solid var(--border)">
+        <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">BED TIME</div>
+        <div style="font-family:var(--mono);font-size:13px;color:var(--ink)" id="sleep-bedtime">~8:30AM (woke)</div>
+      </div>
+      <div style="background:var(--bg3);padding:8px 10px;border:1px solid var(--border)">
+        <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">WAKE TIME</div>
+        <div style="font-family:var(--mono);font-size:13px;color:var(--ink)" id="sleep-wake">~3:39PM woke</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TONIGHT TARGET -->
+  <div class="card yellow">
+    <div class="ch"><div class="ci">🎯</div><span class="ct">Tonight's Target</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">Target Bedtime</div><div class="row-sub">11:30PM → wake 7:00AM = 7.5hrs / 5 cycles ✓</div></div><div class="badge ok">11:30PM</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Ideal Bedtime</div><div class="row-sub">10:00PM → wake 7:00AM = 9hrs / 6 cycles ✓✓</div></div><div class="badge new">10:00PM</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">90-Min Cycle Windows (from 11:30PM)</div><div class="row-sub">7:00AM (5 cycles) · 8:30AM (6 cycles) · Don't wake mid-cycle</div></div><div class="badge act">TARGETS</div></div>
+  </div>
+
+  <!-- SLEEP LOG -->
+  <div class="card purple">
+    <div class="ch"><div class="ci">📓</div><span class="ct">Sleep Log</span><span class="cs">Tony tells Unit 0 bed/wake times</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">Jun 5 2026</div><div class="row-sub">Woke ~8:30AM · ~7hrs sleep · Heart/chest feeling better · Eating cleaner (avocado toast, honey)</div></div><div class="badge warn">~7h</div></div>
+    <div style="margin-top:8px;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-left:2px solid var(--teal)">
+      <div style="font-family:var(--mono);font-size:9px;color:var(--muted);line-height:1.8">
+        <div>📌 Tell Unit 0 <strong style="color:var(--ink)">"going to bed"</strong> + time → logged automatically</div>
+        <div>📌 Tell Unit 0 <strong style="color:var(--ink)">"just woke up"</strong> + time → cycle calculated + logged</div>
+        <div>📌 Target: <strong style="color:var(--green)">7.5hrs minimum</strong> · Ideal: <strong style="color:var(--teal)">9hrs</strong> · Always in 90-min increments</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEALTH NOTES -->
+  <div class="card green">
+    <div class="ch"><div class="ci">❤️</div><span class="ct">Health Notes</span><span class="cs">Jun 2026</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">Cardiologist Appointment</div><div class="row-sub">Jun 16 · Dr. Tariq Marroush · 5380 S Rainbow Blvd Suite 308, Las Vegas</div></div><div class="badge warn">JUN 16</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Current Diet</div><div class="row-sub">Avocado toast + honey · Helping heart/chest · Add: canned salmon (Costco 6-pack) for omega-3s</div></div><div class="badge ok">CLEAN</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Heart/Chest Status</div><div class="row-sub">Feeling better after rest + clean eating · Monitoring · Flag any flare-ups to Unit 0</div></div><div class="badge ok">IMPROVING</div></div>
+  </div>
+
+</div>
+
 <!-- ═══════════ PAGE: SYSTEM ═══════════ -->
 <div id="page-system" class="page">
 
@@ -879,7 +950,32 @@ function checkPw(){
     if(document.getElementById('wl2'))document.getElementById('wl2').textContent=wstr;
   })();
 
-  // ── SPEND PAGE ──────────────────────────────────────────
+  // ── SLEEP PAGE ──────────────────────────────────────────
+  (function sleepPage(){
+    var hoursSlept = 7.0;
+    var cycles = hoursSlept / 1.5;
+    var totalCycles = 6; // max shown
+    var bars = document.getElementById('sleep-cycle-bars');
+    if(bars){
+      bars.innerHTML = '';
+      for(var i=0;i<totalCycles;i++){
+        var filled = i < Math.floor(cycles);
+        var partial = !filled && i < cycles;
+        var color = filled ? 'var(--teal)' : partial ? 'var(--yellow)' : 'var(--bg3)';
+        var border = filled||partial ? 'var(--teal)' : 'var(--border)';
+        bars.innerHTML += '<div style="flex:1;height:20px;background:'+color+';border:1px solid '+border+';border-radius:2px;position:relative">' +
+          '<div style="position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:7px;color:var(--muted)">'+(i+1)+'</div></div>';
+      }
+    }
+    var statusIcon = document.getElementById('sleep-status-icon');
+    var statusLabel = document.getElementById('sleep-status-label');
+    if(cycles >= 6){ if(statusIcon)statusIcon.textContent='✅'; if(statusLabel){statusLabel.textContent='IDEAL';statusLabel.style.color='var(--green)';} }
+    else if(cycles >= 5){ if(statusIcon)statusIcon.textContent='✅'; if(statusLabel){statusLabel.textContent='ON TARGET';statusLabel.style.color='var(--green)';} }
+    else { if(statusIcon)statusIcon.textContent='⚠️'; if(statusLabel){statusLabel.textContent='BELOW TARGET';statusLabel.style.color='var(--yellow)';} }
+  })();
+
+  // Sessions — hardcoded from DB (updated by Unit 0 on each deploy)
+  document.getElementById('sc').textContent='72';
   (function spendPage(){
     // Hardcoded from last DB pull — updated by dashboard rebuild cron
     var data = {
