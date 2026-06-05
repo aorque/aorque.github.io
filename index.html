@@ -3,185 +3,275 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anthony Orque — Event Ops & AI Systems Builder</title>
+  <title>Anthony Orque — Events & AI Systems</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0a0a0f; --bg-2: #0f0f18; --bg-card: #111118; --bg-3: #16161f;
-      --border: #1e1e30; --border-2: #2a2a40;
-      --teal: #00b4d8; --teal-dim: rgba(0,180,216,0.10); --teal-glow: rgba(0,180,216,0.22);
-      --amber: #e8a020; --amber-dim: rgba(232,160,32,0.10);
-      --green: #39d98a; --text: #c8cfe8; --text-2: #7a82a0; --text-3: #444860;
-      --mono: 'Space Mono','Courier New',monospace; --sans: 'Inter',system-ui,sans-serif;
+      --bg: #0d0d0d;
+      --bg2: #111111;
+      --bg3: #161616;
+      --ink: #e8e4dc;
+      --ink-soft: #9a9485;
+      --ink-muted: #4a4540;
+      --border: #222222;
+      --border2: #2e2e2e;
+      --amber: #e8a020;
+      --teal: #00b4d8;
+      --green: #39d98a;
+      --shadow: #000000;
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Inter', system-ui, sans-serif;
+      --mono: 'Space Mono', monospace;
     }
     html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
-    body::after { content:''; position:fixed; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px); pointer-events:none; z-index:9999; }
-
-    .wrap { max-width: 760px; margin: 0 auto; padding: 0 2rem; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
 
     /* NAV */
-    nav { position:sticky; top:0; z-index:100; background:rgba(10,10,15,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:0 2rem; height:52px; display:flex; align-items:center; justify-content:space-between; }
-    .nav-name { font-family:var(--mono); font-size:0.75rem; font-weight:700; color:#fff; text-decoration:none; }
-    .nav-links { display:flex; gap:1.75rem; list-style:none; }
-    .nav-links a { font-family:var(--mono); font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-3); text-decoration:none; transition:color 0.2s; }
-    .nav-links a:hover { color:var(--teal); }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(13,13,13,0.95); backdrop-filter: blur(12px); border-bottom: 2px solid var(--ink); padding: 0 2rem; height: 54px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-mark { width: 32px; height: 32px; background: var(--amber); display: grid; place-items: center; font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--bg); }
+    .nav-name { font-family: var(--serif); font-size: 1.1rem; color: var(--ink); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--amber); }
+    .nav-cta { font-family: var(--mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.45rem 1rem; background: var(--amber); color: var(--bg); text-decoration: none; transition: transform 0.15s; }
+    .nav-cta:hover { transform: translateY(-1px); }
 
     /* HERO */
-    .hero { padding:5rem 0 3.5rem; border-bottom:1px solid var(--border); }
-    .hero-inner { display:grid; grid-template-columns:1fr 200px; gap:3rem; align-items:start; }
-    .hero-photo img { width:100%; aspect-ratio:3/4; object-fit:cover; object-position:center top; border-radius:6px; border:1px solid var(--border-2); display:block; filter:grayscale(15%) contrast(1.05); }
-    .hero-meta { font-family:var(--mono); font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-3); margin-bottom:1.5rem; }
-    .hero h1 { font-family:var(--mono); font-size:clamp(2rem,5vw,3.2rem); font-weight:700; color:#fff; line-height:1.02; margin-bottom:0.5rem; }
-    .hero-role { font-family:var(--mono); font-size:0.8rem; color:var(--teal); margin-bottom:1.5rem; }
-    .hero-bio { font-size:0.925rem; color:var(--text-2); max-width:520px; line-height:1.75; margin-bottom:2rem; }
-    .hero-ctas { display:flex; gap:0.75rem; }
+    .hero { padding: 5rem 2rem 0; max-width: 1100px; margin: 0 auto; }
+    .hero-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+    .hero-eyebrow-mark { color: var(--amber); font-size: 1rem; }
+    .hero-eyebrow-text { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--ink-muted); }
+    .hero-eyebrow-line { flex: 1; height: 1px; background: var(--border2); }
+    .hero-split { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: start; }
+    .hero-headline { font-family: var(--serif); font-size: clamp(2.8rem, 6vw, 4.5rem); font-weight: 800; color: var(--ink); line-height: 1.0; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+    .hero-headline em { font-style: italic; color: var(--amber); }
+    .hero-bio { font-size: 1rem; color: var(--ink-soft); max-width: 520px; line-height: 1.8; margin-bottom: 2rem; }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 3rem; }
+    .btn-primary { font-family: var(--mono); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.75rem 1.5rem; background: var(--amber); color: var(--bg); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: transform 0.15s; }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-secondary { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.75rem 1.5rem; background: transparent; color: var(--ink-soft); border: 2px solid var(--border2); text-decoration: none; transition: all 0.15s; }
+    .btn-secondary:hover { border-color: var(--ink); color: var(--ink); }
 
-    /* STATS */
-    .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:6px; overflow:hidden; margin:2.5rem 0 0; }
-    .hs { background:var(--bg-card); padding:1.25rem 1rem; }
-    .hs-val { font-family:var(--mono); font-size:1.4rem; font-weight:700; color:#fff; line-height:1; margin-bottom:0.4rem; }
-    .hs-val.amber { color:var(--amber); } .hs-val.teal { color:var(--teal); }
-    .hs-label { font-size:0.68rem; color:var(--text-3); line-height:1.35; }
+    /* HERO PHOTO */
+    .hero-photo-wrap { position: relative; }
+    .hero-photo-frame { border: 2px solid var(--ink); box-shadow: 10px 10px 0 0 var(--amber); background: var(--bg3); }
+    .hero-photo-frame img { width: 100%; display: block; filter: grayscale(20%) contrast(1.05); }
+    .hero-photo-caption { display: flex; align-items: center; justify-content: space-between; border-top: 2px solid var(--ink); padding: 0.6rem 0.9rem; background: var(--bg2); }
+    .hero-photo-name { font-family: var(--serif); font-size: 1rem; color: var(--ink); }
+    .hero-photo-role { font-family: var(--mono); font-size: 0.6rem; font-style: italic; color: var(--ink-soft); }
+    .hero-badge { position: absolute; top: -20px; right: -20px; width: 72px; height: 72px; background: var(--teal); display: grid; place-items: center; border: 2px solid var(--ink); box-shadow: 4px 4px 0 0 var(--ink); }
+    .hero-badge-inner { font-family: var(--mono); font-size: 8px; font-weight: 700; color: var(--bg); text-align: center; line-height: 1.4; letter-spacing: 0.05em; text-transform: uppercase; }
 
-    /* BTN */
-    .btn { font-family:var(--mono); font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.6rem 1.2rem; border-radius:4px; text-decoration:none; border:none; cursor:pointer; transition:all 0.18s; }
-    .btn-teal { background:var(--teal); color:var(--bg); font-weight:700; }
-    .btn-teal:hover { background:#00ccf5; box-shadow:0 0 20px var(--teal-glow); }
-    .btn-ghost { background:transparent; color:var(--text-2); border:1px solid var(--border-2); }
-    .btn-ghost:hover { border-color:var(--teal); color:var(--teal); }
+    /* STATS BAR */
+    .stats-bar { border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 4rem; }
+    .stat { padding: 1.25rem 1.5rem; border-right: 2px solid var(--ink); }
+    .stat:last-child { border-right: none; }
+    .stat-num { font-family: var(--serif); font-size: 2.2rem; font-weight: 800; color: var(--amber); line-height: 1; margin-bottom: 0.3rem; }
+    .stat-num.teal { color: var(--teal); }
+    .stat-label { font-family: var(--mono); font-size: 0.6rem; color: var(--ink-soft); line-height: 1.4; letter-spacing: 0.05em; }
 
-    /* SECTIONS */
-    .section { padding:3.5rem 0; border-bottom:1px solid var(--border); }
-    .section:last-child { border-bottom:none; }
-    .eyebrow { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); opacity:0.75; margin-bottom:0.5rem; }
-    .section-title { font-family:var(--mono); font-size:clamp(1.3rem,2.5vw,1.75rem); font-weight:700; color:#fff; margin-bottom:2rem; line-height:1.1; }
+    /* MARQUEE */
+    .marquee-wrap { overflow: hidden; background: var(--ink); border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); padding: 1rem 0; margin-top: 0; }
+    .marquee-track { display: flex; width: max-content; animation: marquee 35s linear infinite; gap: 2rem; }
+    .marquee-item { display: flex; align-items: center; gap: 2rem; white-space: nowrap; font-family: var(--serif); font-size: 1.3rem; color: var(--bg); }
+    .marquee-dot { color: var(--amber); font-size: 1.2rem; }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* MAIN */
+    .main { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+    /* SECTION */
+    .section { padding: 5rem 0; border-bottom: 2px solid var(--border2); }
+    .section:last-child { border-bottom: none; }
+    .section-eyebrow { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.75rem; }
+    .section-title { font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; color: var(--ink); margin-bottom: 3rem; line-height: 1.1; }
 
     /* CASE STUDIES */
-    .case { border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:1.5rem; background:var(--bg-card); }
-    .case:last-child { margin-bottom:0; }
-    .case:hover { border-color:var(--border-2); }
-    .case-header { padding:1.75rem 2rem 1.5rem; border-bottom:1px solid var(--border); display:grid; grid-template-columns:1fr auto; align-items:start; gap:1rem; }
-    .case-co { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--amber); margin-bottom:0.5rem; opacity:0.85; }
-    .case-title { font-family:var(--mono); font-size:1.05rem; font-weight:700; color:#fff; line-height:1.2; margin-bottom:0.4rem; }
-    .case-tenure { font-family:var(--mono); font-size:0.65rem; color:var(--text-3); }
-    .case-metrics { display:flex; flex-direction:column; align-items:flex-end; gap:0.35rem; }
-    .pill { font-family:var(--mono); font-size:0.62rem; font-weight:700; letter-spacing:0.05em; padding:0.28rem 0.65rem; border-radius:3px; white-space:nowrap; }
-    .pill-teal { background:var(--teal-dim); color:var(--teal); border:1px solid rgba(0,180,216,0.2); }
-    .pill-amber { background:var(--amber-dim); color:var(--amber); border:1px solid rgba(232,160,32,0.2); }
-    .pill-green { background:rgba(57,217,138,0.08); color:var(--green); border:1px solid rgba(57,217,138,0.2); }
-    .case-body { padding:1.75rem 2rem; }
-    .case-body h4 { font-family:var(--mono); font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-3); margin-bottom:0.75rem; margin-top:1.5rem; }
-    .case-body h4:first-child { margin-top:0; }
-    .case-body p { font-size:0.875rem; color:var(--text-2); line-height:1.75; margin-bottom:0.75rem; }
-    .case-body p:last-child { margin-bottom:0; }
-    .case-body ul { list-style:none; padding:0; margin-bottom:0.75rem; }
-    .case-body ul li { font-size:0.875rem; color:var(--text-2); line-height:1.7; padding:0.2rem 0 0.2rem 1.25rem; position:relative; }
-    .case-body ul li::before { content:'▸'; position:absolute; left:0; color:var(--teal); font-size:0.65rem; top:0.35rem; }
-    .case-body ul li strong { color:var(--text); font-weight:500; }
-    .case-divider { border:none; border-top:1px solid var(--border); margin:1.5rem 0; }
-    .name-drop { display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.5rem; }
-    .name-tag { font-family:var(--mono); font-size:0.62rem; color:var(--text-2); background:var(--bg-3); border:1px solid var(--border-2); padding:0.2rem 0.6rem; border-radius:3px; }
-    .press-link { display:inline-flex; align-items:center; gap:0.4rem; font-family:var(--mono); font-size:0.65rem; color:var(--teal); text-decoration:none; border:1px solid rgba(0,180,216,0.2); padding:0.35rem 0.75rem; border-radius:3px; background:var(--teal-dim); transition:all 0.2s; margin-top:0.75rem; }
-    .press-link:hover { background:rgba(0,180,216,0.18); }
+    .case { border: 2px solid var(--border2); background: var(--bg2); margin-bottom: 1.5rem; box-shadow: 6px 6px 0 0 var(--border); transition: box-shadow 0.2s, border-color 0.2s; }
+    .case:hover { border-color: var(--ink-muted); box-shadow: 6px 6px 0 0 var(--amber); }
+    .case:last-child { margin-bottom: 0; }
+    .case-header { padding: 1.75rem 2rem; border-bottom: 2px solid var(--border2); display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 1.5rem; }
+    .case-co { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.5rem; }
+    .case-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; color: var(--ink); line-height: 1.25; margin-bottom: 0.4rem; }
+    .case-tenure { font-family: var(--mono); font-size: 0.62rem; color: var(--ink-muted); }
+    .case-metrics { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; }
+    .pill { font-family: var(--mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.3rem 0.7rem; white-space: nowrap; border: 1px solid; }
+    .pill-amber { background: rgba(232,160,32,0.1); color: var(--amber); border-color: rgba(232,160,32,0.3); }
+    .pill-teal { background: rgba(0,180,216,0.1); color: var(--teal); border-color: rgba(0,180,216,0.3); }
+    .pill-green { background: rgba(57,217,138,0.1); color: var(--green); border-color: rgba(57,217,138,0.3); }
+    .case-body { padding: 1.75rem 2rem; }
+    .case-body h4 { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.65rem; margin-top: 1.5rem; }
+    .case-body h4:first-child { margin-top: 0; }
+    .case-body p { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.8; margin-bottom: 0.75rem; }
+    .case-body p:last-child { margin-bottom: 0; }
+    .case-body ul { list-style: none; padding: 0; margin-bottom: 0.75rem; }
+    .case-body ul li { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.75; padding: 0.2rem 0 0.2rem 1.25rem; position: relative; }
+    .case-body ul li::before { content: '→'; position: absolute; left: 0; color: var(--amber); font-size: 0.7rem; top: 0.3rem; }
+    .case-body ul li strong { color: var(--ink); font-weight: 500; }
+    .case-divider { border: none; border-top: 1px solid var(--border2); margin: 1.5rem 0; }
+    .name-drop { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+    .name-tag { font-family: var(--mono); font-size: 0.6rem; color: var(--ink-muted); background: var(--bg3); border: 1px solid var(--border2); padding: 0.2rem 0.6rem; }
+    .press-link { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.62rem; color: var(--teal); text-decoration: none; border: 1px solid rgba(0,180,216,0.25); padding: 0.35rem 0.75rem; background: rgba(0,180,216,0.06); transition: all 0.2s; margin-top: 0.75rem; }
+    .press-link:hover { background: rgba(0,180,216,0.15); }
 
     /* SKILLS */
-    .skill-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
-    .skill-card { background:var(--bg-card); padding:1.35rem 1.5rem; transition:background 0.2s; }
-    .skill-card:hover { background:var(--bg-3); }
-    .skill-card h3 { font-family:var(--mono); font-size:0.75rem; font-weight:700; color:var(--text); margin-bottom:0.35rem; }
-    .skill-card p { font-size:0.78rem; color:var(--text-3); line-height:1.5; }
+    .skill-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--border2); }
+    .skill-card { padding: 1.5rem; border-right: 2px solid var(--border2); border-bottom: 2px solid var(--border2); transition: background 0.2s; }
+    .skill-card:hover { background: var(--bg3); }
+    .skill-card:nth-child(3n) { border-right: none; }
+    .skill-card:nth-child(n+4) { border-bottom: none; }
+    .skill-num { font-family: var(--serif); font-size: 1.5rem; color: var(--amber); font-weight: 800; margin-bottom: 0.5rem; }
+    .skill-card h3 { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; color: var(--ink); margin-bottom: 0.35rem; letter-spacing: 0.05em; }
+    .skill-card p { font-size: 0.78rem; color: var(--ink-muted); line-height: 1.55; }
 
     /* CONNECT */
-    .connect-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; align-items:start; }
-    .connect-cta h2 { font-family:var(--mono); font-size:clamp(1.3rem,2.5vw,1.75rem); font-weight:700; color:#fff; margin-bottom:0.5rem; }
-    .connect-cta p { font-size:0.85rem; color:var(--text-3); margin-bottom:1.25rem; line-height:1.6; }
-    .connect-links { display:flex; flex-direction:column; gap:0.5rem; }
-    .connect-row { display:flex; align-items:center; justify-content:space-between; padding:0.7rem 1rem; background:var(--bg-card); border:1px solid var(--border); border-radius:5px; text-decoration:none; transition:border-color 0.18s,background 0.18s; }
-    .connect-row:hover { border-color:var(--teal); background:var(--teal-dim); }
-    .connect-row-label { font-family:var(--mono); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-2); }
-    .connect-row-val { font-family:var(--mono); font-size:0.65rem; color:var(--text-3); }
-    .connect-row:hover .connect-row-label { color:var(--teal); }
+    .connect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .connect-headline { font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; color: var(--ink); line-height: 1.1; margin-bottom: 0.75rem; }
+    .connect-sub { font-size: 0.88rem; color: var(--ink-soft); margin-bottom: 2rem; line-height: 1.7; }
+    .connect-links { display: flex; flex-direction: column; gap: 0; border: 2px solid var(--border2); }
+    .connect-row { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1.25rem; border-bottom: 2px solid var(--border2); text-decoration: none; transition: background 0.15s; }
+    .connect-row:last-child { border-bottom: none; }
+    .connect-row:hover { background: var(--bg3); }
+    .connect-row-label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+    .connect-row-val { font-family: var(--mono); font-size: 0.65rem; color: var(--amber); }
+    .connect-arrow { font-size: 1rem; color: var(--ink-muted); transition: transform 0.15s; }
+    .connect-row:hover .connect-arrow { transform: translateX(3px); color: var(--amber); }
 
-    footer { border-top:1px solid var(--border); padding:1.5rem 2rem; display:flex; justify-content:space-between; font-family:var(--mono); font-size:0.6rem; letter-spacing:0.1em; color:var(--text-3); }
+    /* FOOTER */
+    footer { border-top: 2px solid var(--ink); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; }
+    .footer-name { font-family: var(--serif); font-size: 0.9rem; color: var(--ink-soft); }
+    .footer-right { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-muted); }
 
-    @media (max-width:680px) {
-      .hero-inner { grid-template-columns:1fr; }
-      .hero-photo { display:none; }
-      .stats-row { grid-template-columns:repeat(2,1fr); }
-      .case-header { grid-template-columns:1fr; }
-      .case-metrics { flex-direction:row; flex-wrap:wrap; }
-      .skill-grid { grid-template-columns:1fr; }
-      .connect-grid { grid-template-columns:1fr; }
-      .nav-links { display:none; }
-      .wrap { padding:0 1.25rem; }
+    /* MOBILE */
+    @media (max-width: 720px) {
+      nav { padding: 0 1.25rem; }
+      .nav-links { display: none; }
+      .hero { padding: 3rem 1.25rem 0; }
+      .hero-split { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-photo-wrap { max-width: 280px; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .stat { border-bottom: 2px solid var(--ink); }
+      .stat:nth-child(even) { border-right: none; }
+      .main { padding: 0 1.25rem; }
+      .case-header { grid-template-columns: 1fr; }
+      .case-metrics { flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
+      .skill-grid { grid-template-columns: 1fr 1fr; }
+      .skill-card:nth-child(3n) { border-right: 2px solid var(--border2); }
+      .skill-card:nth-child(2n) { border-right: none; }
+      .connect-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .hero-badge { top: -14px; right: -14px; width: 56px; height: 56px; }
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="#" class="nav-name">Anthony Orque</a>
+  <a href="#" class="nav-logo">
+    <div class="nav-mark">AO</div>
+    <span class="nav-name">Anthony Orque</span>
+  </a>
   <ul class="nav-links">
     <li><a href="#work">Work</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#connect">Connect</a></li>
   </ul>
+  <a href="mailto:aorque@gmail.com" class="nav-cta">Get in Touch →</a>
 </nav>
 
-<div class="wrap">
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">
+    <span class="hero-eyebrow-mark">✦</span>
+    <span class="hero-eyebrow-text">Events Operator · AI Systems Builder · Las Vegas</span>
+    <span class="hero-eyebrow-line"></span>
+  </div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-text">
-        <div class="hero-meta">Las Vegas, NV &nbsp;·&nbsp; Open to Remote / Hybrid</div>
-        <h1>Anthony Orque</h1>
-        <div class="hero-role">Event Ops &amp; AI Systems Builder</div>
-        <p class="hero-bio">Built revenue-generating event operations from scratch at three companies. Then did it again with AI — 8 agents, 1,500+ prompts, running in production. Not experimenting. Operating.</p>
-        <div class="hero-ctas">
-          <a href="mailto:aorque@gmail.com" class="btn btn-teal">Get in Touch</a>
-          <a href="https://linkedin.com/in/anthony-orque" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
+  <div class="hero-split">
+    <div class="hero-text">
+      <h1 class="hero-headline">I build the<br/>systems that<br/>make <em>revenue</em><br/>happen.</h1>
+      <p class="hero-bio">Built event operations from scratch at three different companies. Then rebuilt my entire workflow with AI — 8 agents, 1,500+ prompts, running in production. Not experimenting. Operating.</p>
+      <div class="hero-ctas">
+        <a href="mailto:aorque@gmail.com" class="btn-primary">Get in Touch →</a>
+        <a href="https://linkedin.com/in/anthony-orque" target="_blank" rel="noopener" class="btn-secondary">LinkedIn ↗</a>
+      </div>
+    </div>
+
+    <div class="hero-photo-wrap">
+      <div class="hero-photo-frame">
+        <img src="headshot.jpg" alt="Anthony Orque" />
+        <div class="hero-photo-caption">
+          <span class="hero-photo-name">Anthony Orque</span>
+          <span class="hero-photo-role">Events &amp; AI Systems</span>
         </div>
       </div>
-      <div class="hero-photo">
-        <img src="headshot.jpg" alt="Anthony Orque" />
+      <div class="hero-badge">
+        <div class="hero-badge-inner">LAS<br/>VEGAS<br/>NV</div>
       </div>
     </div>
-    <div class="stats-row">
-      <div class="hs">
-        <div class="hs-val amber">$3.3M</div>
-        <div class="hs-label">revenue in 6 months — F1 Arcade LV</div>
-      </div>
-      <div class="hs">
-        <div class="hs-val">$1M+</div>
-        <div class="hs-label">upsell revenue across 15 TAO properties</div>
-      </div>
-      <div class="hs">
-        <div class="hs-val teal">8</div>
-        <div class="hs-label">AI agents in production — replaces a 5-person team</div>
-      </div>
-      <div class="hs">
-        <div class="hs-val amber">2.9M</div>
-        <div class="hs-label">books sold in 24 hrs — Hormozi Guinness Record</div>
-      </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-num">$3.3M</div>
+      <div class="stat-label">revenue in 6 months<br/>F1 Arcade Las Vegas</div>
     </div>
-  </section>
+    <div class="stat">
+      <div class="stat-num">$1M+</div>
+      <div class="stat-label">upsells across<br/>15 TAO properties</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num teal">8</div>
+      <div class="stat-label">AI agents in production<br/>replaces a 5-person team</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2.9M</div>
+      <div class="stat-label">books sold in 24hrs<br/>Hormozi Guinness Record</div>
+    </div>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Revenue Systems <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Event Operations <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">AI Agent Stacks <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Build from Zero <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">15 Venues <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">400+ Events Funded <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">1,500+ Prompts <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Las Vegas <span class="marquee-dot">✦</span></div>
+    <!-- duplicate for seamless loop -->
+    <div class="marquee-item">Revenue Systems <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Event Operations <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">AI Agent Stacks <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Build from Zero <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">15 Venues <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">400+ Events Funded <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">1,500+ Prompts <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Las Vegas <span class="marquee-dot">✦</span></div>
+  </div>
+</div>
+
+<div class="main">
 
   <!-- WORK -->
   <section class="section" id="work">
-    <div class="eyebrow">Experience</div>
+    <div class="section-eyebrow">Experience</div>
     <div class="section-title">Case Studies</div>
 
-    <!-- MONKEYTILT AI STACK -->
+    <!-- MONKEYTILT -->
     <div class="case">
       <div class="case-header">
         <div>
-          <div class="case-co">MonkeyTilt &nbsp;·&nbsp; Head of Event Marketing &nbsp;·&nbsp; 2026</div>
-          <div class="case-title">Built an 8-agent AI operating system from scratch</div>
+          <div class="case-co">MonkeyTilt · Head of Event Marketing · 2026</div>
+          <div class="case-title">Built an 8-agent AI operating system from scratch in 6 weeks.</div>
           <div class="case-tenure">Pre-launch consumer brand. Wide brief. Small human team. Hard timeline.</div>
         </div>
         <div class="case-metrics">
@@ -193,25 +283,20 @@
       <div class="case-body">
         <h4>The Problem</h4>
         <p>Joined a pre-launch brand with a marketing brief that required the throughput of a 4–5 person ops pod. No team to hire. No time to hire. Built the system instead.</p>
-
         <h4>The Stack</h4>
         <ul>
-          <li><strong>Mattermost layer (2 agents):</strong> Cadence (Marketing Coordinator) handles cross-workstream routing and the master marketing calendar. Rem (Events & Tour Ops) owns inbox triage, agent memory, and daily syncs. Human team interfaces here.</li>
-          <li><strong>Cursor execution layer (5 agents):</strong> Ram (Chief of Staff) runs daily ops and EOD ledgers. Sparx (Idea Engine) scores and pitches ideas. Norm (KB steward) governs canon and detects drift. Dexter (Deep Research) handles vendor recon and comp intel. Connie (Convention Chair) owns isolated convention planning.</li>
-          <li><strong>Adjacent agents:</strong> Eve (EOD synthesis), Scribe (KB ingestion). Plus Unit 0 — Hermes — for personal life operations.</li>
+          <li><strong>Mattermost layer (2 agents):</strong> Cadence handles cross-workstream routing and the master marketing calendar. Rem owns inbox triage, agent memory, and daily syncs. Human team interfaces here.</li>
+          <li><strong>Cursor execution layer (5 agents):</strong> Ram (Chief of Staff) runs daily ops. Sparx scores and pitches ideas. Norm governs the knowledge base. Dexter handles vendor recon and comp intel. Connie owns convention planning.</li>
+          <li><strong>Adjacent agents:</strong> Eve (EOD synthesis), Scribe (KB ingestion). Plus Unit 0 — personal life operations.</li>
         </ul>
-
         <h4>How It Runs</h4>
-        <p>Brain dump in. Agents structure. I call the shot. Ship. Write learnings back to the rules file. The system gets sharper every week because the canon gets tighter every week. Six weeks in: 69 active tasks running across 13 workstreams in Notion as source of truth.</p>
-
+        <p>Brain dump in. Agents structure. I call the shot. Ship. Write learnings back to the rules file. Six weeks in: 69 active tasks running across 13 workstreams in Notion.</p>
         <hr class="case-divider" />
-
         <h4>The Numbers</h4>
         <ul>
           <li><strong>1,500+ production prompts</strong> authored and version-controlled</li>
           <li><strong>4,868 lines of agent rules</strong> — living, updated canon</li>
           <li><strong>6 weeks of production runtime</strong> replacing ~4–5 person ops pod throughput</li>
-          <li>Source of truth: Notion — owner dashboards, P0 blocker views, per-DRI routing</li>
         </ul>
       </div>
     </div>
@@ -220,9 +305,9 @@
     <div class="case">
       <div class="case-header">
         <div>
-          <div class="case-co">TAO Group Hospitality &nbsp;·&nbsp; Las Vegas</div>
+          <div class="case-co">TAO Group Hospitality · Las Vegas · 2022–2024</div>
           <div class="case-title">$1M+ in upsells across 15 properties. 84% client retention.</div>
-          <div class="case-tenure">Senior Manager, Event Operations &nbsp;·&nbsp; 2022–2024</div>
+          <div class="case-tenure">Senior Manager, Event Operations</div>
         </div>
         <div class="case-metrics">
           <span class="pill pill-amber">$1M+ Revenue</span>
@@ -232,42 +317,27 @@
       </div>
       <div class="case-body">
         <h4>Scope</h4>
-        <p>Owned event operations across TAO Group's full Las Vegas portfolio: TAO, LAVO, Beauty & Essex, Marquee, Jewel, Hakkasan, Omnia. Hybrid sales-and-ops role — once events sales closed the venue, everything passed to me: onboarding, pre-event planning, upsell execution, day-of ops.</p>
-
+        <p>Owned event operations across TAO Group's full Las Vegas portfolio — TAO, LAVO, Beauty & Essex, Marquee, Jewel, Hakkasan, Omnia. Hybrid sales-and-ops: once events sales closed, everything passed to me.</p>
         <h4>What I Built</h4>
         <ul>
-          <li><strong>Full client onboarding workflow</strong> — introduction handoff through event-day execution, including custom RFPs and proposals for every client customization request</li>
-          <li><strong>"How to Work With Us" guide</strong> — client-facing document that set expectations, reduced back-and-forth, and primed clients for upsell conversations before the first call</li>
-          <li><strong>Upsell system</strong> — F&B enhancements, custom AV, entertainment, branding packages, experiential add-ons, incentive program buildouts. No script — deep product knowledge, translated to talking points when the team scaled</li>
-          <li><strong>Vendor relationships</strong> — built from existing networks across Las Vegas hospitality, formalized into repeatable ops</li>
+          <li><strong>Full client onboarding workflow</strong> — introduction through execution, custom RFPs for every customization request</li>
+          <li><strong>"How to Work With Us" guide</strong> — reduced back-and-forth, primed clients for upsell conversations before the first call</li>
+          <li><strong>Upsell system</strong> — F&B, AV, entertainment, branding, experiential add-ons. No script — deep product knowledge translated to talking points as the team scaled</li>
         </ul>
-
         <hr class="case-divider" />
-
         <h4>Notable: Fanatics Super Bowl LVIII Party</h4>
-        <p>Six months of lead time. Partnership with MGM and the Cosmopolitan. 700 guests. Blue carpet. Owned day-of operations and vendor coordination. The biggest single event of my time at TAO Group.</p>
+        <p>Six months of lead time. MGM + Cosmopolitan partnership. 700 guests. Blue carpet. Owned day-of operations end-to-end.</p>
         <div class="name-drop">
-          <span class="name-tag">Travis Scott</span>
-          <span class="name-tag">Meek Mill</span>
-          <span class="name-tag">Ice Spice</span>
-          <span class="name-tag">The Chainsmokers</span>
-          <span class="name-tag">Tom Brady</span>
-          <span class="name-tag">Joe Burrow</span>
-          <span class="name-tag">Peyton Manning</span>
-          <span class="name-tag">Shaquille O'Neal</span>
-          <span class="name-tag">Lil Baby</span>
-          <span class="name-tag">Jelly Roll</span>
-          <span class="name-tag">A'ja Wilson</span>
-          <span class="name-tag">Gary Vaynerchuk</span>
-          <span class="name-tag">Robert Kraft</span>
-          <span class="name-tag">Queen Latifah</span>
+          <span class="name-tag">Travis Scott</span><span class="name-tag">Meek Mill</span><span class="name-tag">Ice Spice</span>
+          <span class="name-tag">The Chainsmokers</span><span class="name-tag">Tom Brady</span><span class="name-tag">Joe Burrow</span>
+          <span class="name-tag">Peyton Manning</span><span class="name-tag">Shaquille O'Neal</span><span class="name-tag">Lil Baby</span>
+          <span class="name-tag">Jelly Roll</span><span class="name-tag">Gary Vaynerchuk</span><span class="name-tag">Robert Kraft</span>
+          <span class="name-tag">Queen Latifah</span><span class="name-tag">CeeDee Lamb</span>
         </div>
         <a href="https://www.reviewjournal.com/sports/football/super-bowl/fanatics-super-bowl-party-brings-big-stars-to-strip-photos-2998328/" target="_blank" rel="noopener" class="press-link">↗ Las Vegas Review-Journal Coverage</a>
-
         <hr class="case-divider" />
-
         <h4>Notable: Hormozi $100M Money Models Book Launch</h4>
-        <p>Event operations for the launch of Alex Hormozi's <em>$100M Money Models</em> at Acquisition.com. Guinness World Record — 2.9 million copies sold in 24 hours. Owned the event ops layer wrapping the launch motion, including Investor Open House programming.</p>
+        <p>Event ops for Alex Hormozi's launch at Acquisition.com. Guinness World Record — 2.9 million copies in 24 hours. Owned the event ops layer including Investor Open House programming.</p>
         <a href="https://people.com/jennifer-lopez-ben-affleck-glam-date-night-las-vegas-poker-tournament-photos-8404279" target="_blank" rel="noopener" class="press-link">↗ People Magazine Coverage</a>
       </div>
     </div>
@@ -276,9 +346,9 @@
     <div class="case">
       <div class="case-header">
         <div>
-          <div class="case-co">F1 Arcade &nbsp;·&nbsp; Las Vegas</div>
+          <div class="case-co">F1 Arcade · Las Vegas · 2023–2024</div>
           <div class="case-title">Built an entire events operation from zero. Solo.</div>
-          <div class="case-tenure">Senior Events Manager &nbsp;·&nbsp; 2023–2024</div>
+          <div class="case-tenure">Senior Events Manager</div>
         </div>
         <div class="case-metrics">
           <span class="pill pill-amber">$3.3M Revenue</span>
@@ -289,19 +359,15 @@
       <div class="case-body">
         <h4>Starting Point</h4>
         <p>Two days of shadowing a manager in Boston. A brand guide. A few templates. No vendors. No team. No systems. Just me.</p>
-
         <h4>What I Built</h4>
         <ul>
-          <li><strong>Vendor repository from scratch</strong> — outreached and onboarded ~15 vendors using pre-existing TAO Group relationships. Zero handoff from anyone.</li>
-          <li><strong>All team comms infrastructure</strong> — stood up every ops group chat: events, AV, ops, kitchen, logistics (Teams + iMessage)</li>
-          <li><strong>Triple Seat buildout</strong> — custom templates and workflows built significantly beyond the national standard for how Las Vegas operates</li>
-          <li><strong>Full upsell pipeline</strong> — every upsell tool built from scratch in Canva and Adobe Illustrator (personal account, first 5 months): menus, floor plans, F&B packages, AV options, branded experience add-ons</li>
-          <li><strong>Client email templates and handoff playbooks</strong> — from sales handoff through pre-event planning through upsell sequence</li>
-          <li><strong>Ops team training</strong> — solo for 2.5 months before getting any support. Trained the full ops staff to execute events alongside me.</li>
+          <li><strong>Vendor repository from scratch</strong> — outreached and onboarded ~15 vendors using pre-existing TAO Group relationships</li>
+          <li><strong>All team comms infrastructure</strong> — every ops group chat: events, AV, ops, kitchen, logistics</li>
+          <li><strong>Triple Seat buildout</strong> — custom templates built beyond the national LV standard</li>
+          <li><strong>Full upsell pipeline</strong> — every tool built in Canva and Adobe Illustrator: menus, floor plans, F&B packages, branded add-ons</li>
+          <li><strong>Hired my own replacement</strong> — system was solid enough by February that I brought on a junior manager whose job was client comms. Everything else was already built.</li>
         </ul>
-
         <hr class="case-divider" />
-
         <h4>Results</h4>
         <ul>
           <li>Events drove <strong>~53% of total venue revenue</strong> within 5–6 months</li>
@@ -309,9 +375,6 @@
           <li><strong>$270K+ personally attributed to upsells</strong> built and executed from scratch</li>
           <li>Largest single client: <strong>PWC at $177K</strong></li>
         </ul>
-
-        <h4>Then Hired My Own Replacement</h4>
-        <p>System was solid enough by February that I brought on a junior events manager whose entire job was client comms and outreach — because everything else was already built. She stepped into a machine.</p>
       </div>
     </div>
 
@@ -319,9 +382,9 @@
     <div class="case">
       <div class="case-header">
         <div>
-          <div class="case-co">Metafy &nbsp;·&nbsp; Remote</div>
+          <div class="case-co">Metafy · Remote · ~8–9 months</div>
           <div class="case-title">Managed a $1M grassroots esports fund. Solo. End-to-end.</div>
-          <div class="case-tenure">Event Marketing Lead &nbsp;·&nbsp; ~8–9 months</div>
+          <div class="case-tenure">Event Marketing Lead</div>
         </div>
         <div class="case-metrics">
           <span class="pill pill-teal">$1M Fund</span>
@@ -330,86 +393,86 @@
       </div>
       <div class="case-body">
         <h4>The Program</h4>
-        <p>After Metafy's $26M Series A, the CEO pledged $1M to the grassroots gaming community — micro-grants and sponsorships to local tournaments, content creators, and community-run events that major brands ignore. I ran the program.</p>
-
+        <p>After Metafy's $26M Series A, the CEO pledged $1M to the grassroots gaming community. Micro-grants and sponsorships to local tournaments, content creators, and community-run events. I ran the program — every decision, every dollar.</p>
         <h4>What I Owned</h4>
         <ul>
-          <li><strong>Full intake and evaluation system</strong> — built on Coda + Zapier + Google Workspace + Typeform, coordinated across product, legal, and accounting</li>
+          <li><strong>Full intake and evaluation system</strong> — Coda + Zapier + Google Workspace + Typeform, across product, legal, and accounting</li>
           <li><strong>Every funding decision</strong> — evaluated and approved all applications personally for the life of the program</li>
-          <li><strong>Live IRL activations</strong> — on-site staffing, scheduling, logistics, and vendor coordination at grassroots events alongside running the fund</li>
-          <li>Started with an intern. Went solo after month 2. Never stopped.</li>
+          <li><strong>Live IRL activations</strong> — on-site staffing, scheduling, logistics at grassroots events</li>
         </ul>
-
         <hr class="case-divider" />
-
         <h4>Results</h4>
         <ul>
           <li><strong>400+ grassroots events funded</strong> over ~8–9 months</li>
-          <li>Sponsorships from $100 community grants to larger tournament packages</li>
           <li>No playbook. Built it all from scratch.</li>
         </ul>
       </div>
     </div>
-
   </section>
 
   <!-- SKILLS -->
   <section class="section" id="skills">
-    <div class="eyebrow">Capabilities</div>
+    <div class="section-eyebrow">Capabilities</div>
     <div class="section-title">What I Build</div>
     <div class="skill-grid">
       <div class="skill-card">
+        <div class="skill-num">01</div>
         <h3>AI Agent Systems</h3>
-        <p>Multi-agent stacks in production. Cursor, Mattermost, Notion. Rules-based canon governance.</p>
+        <p>Multi-agent stacks in production. Cursor, Mattermost, Notion. Rules-based canon governance that gets sharper every week.</p>
       </div>
       <div class="skill-card">
+        <div class="skill-num">02</div>
         <h3>Revenue Systems</h3>
-        <p>Upsell pipelines, sales assets, pricing frameworks, client handoff workflows.</p>
+        <p>Upsell pipelines, sales assets, pricing frameworks, client handoff workflows. Built from scratch, not templates.</p>
       </div>
       <div class="skill-card">
+        <div class="skill-num">03</div>
         <h3>Event Operations</h3>
-        <p>Full-cycle execution: intake → planning → day-of → debrief. 400+ events. 15 venues.</p>
+        <p>Full-cycle execution: intake → planning → day-of → debrief. 400+ events. 15 venues. Always solo at the start.</p>
       </div>
       <div class="skill-card">
+        <div class="skill-num">04</div>
         <h3>Operations Playbooks</h3>
-        <p>SOPs, team comms infrastructure, vendor onboarding, staffing systems. Built from zero.</p>
+        <p>SOPs, team comms infrastructure, vendor onboarding, staffing systems. If it didn't exist, I built it.</p>
       </div>
       <div class="skill-card">
+        <div class="skill-num">05</div>
         <h3>Client Experience</h3>
-        <p>Onboarding guides, proposal design, expectation-setting. 84% retention at TAO Group.</p>
+        <p>Onboarding guides, proposal design, expectation-setting docs. 84% retention at TAO Group isn't an accident.</p>
       </div>
       <div class="skill-card">
+        <div class="skill-num">06</div>
         <h3>Tools</h3>
-        <p>Cursor · Notion · Coda · Mattermost · Triple Seat · Canva · Adobe Illustrator · Zapier · Google Workspace</p>
+        <p>Cursor · Notion · Coda · Mattermost · Triple Seat · Canva · Adobe Illustrator · Zapier · Google Workspace · Hermes</p>
       </div>
     </div>
   </section>
 
   <!-- CONNECT -->
-  <section class="section" id="connect" style="border-bottom:none; padding-bottom:4rem;">
+  <section class="section" id="connect">
     <div class="connect-grid">
       <div class="connect-cta">
-        <div class="eyebrow">Contact</div>
-        <h2>Let's connect.</h2>
-        <p>Open to full-time, fractional, and consulting. Remote or Las Vegas.</p>
-        <a href="mailto:aorque@gmail.com" class="btn btn-teal">Send an Email</a>
+        <div class="section-eyebrow">Contact</div>
+        <h2 class="connect-headline">Let's build<br/>something.</h2>
+        <p class="connect-sub">Open to full-time, fractional, and consulting. Remote or Las Vegas. If you need someone who builds the system and runs it — that's the job.</p>
+        <a href="mailto:aorque@gmail.com" class="btn-primary">Send an Email →</a>
       </div>
       <div class="connect-links">
         <a href="https://linkedin.com/in/anthony-orque" target="_blank" rel="noopener" class="connect-row">
           <span class="connect-row-label">LinkedIn</span>
-          <span class="connect-row-val">anthony-orque</span>
+          <span style="display:flex;align-items:center;gap:0.75rem"><span class="connect-row-val">anthony-orque</span><span class="connect-arrow">→</span></span>
         </a>
         <a href="https://x.com/anthony_orque" target="_blank" rel="noopener" class="connect-row">
           <span class="connect-row-label">X / Twitter</span>
-          <span class="connect-row-val">@anthony_orque</span>
+          <span style="display:flex;align-items:center;gap:0.75rem"><span class="connect-row-val">@anthony_orque</span><span class="connect-arrow">→</span></span>
         </a>
         <a href="https://linktr.ee/aorque" target="_blank" rel="noopener" class="connect-row">
           <span class="connect-row-label">Linktree</span>
-          <span class="connect-row-val">linktr.ee/aorque</span>
+          <span style="display:flex;align-items:center;gap:0.75rem"><span class="connect-row-val">linktr.ee/aorque</span><span class="connect-arrow">→</span></span>
         </a>
         <a href="mailto:aorque@gmail.com" class="connect-row">
           <span class="connect-row-label">Email</span>
-          <span class="connect-row-val">aorque@gmail.com</span>
+          <span style="display:flex;align-items:center;gap:0.75rem"><span class="connect-row-val">aorque@gmail.com</span><span class="connect-arrow">→</span></span>
         </a>
       </div>
     </div>
@@ -418,8 +481,8 @@
 </div>
 
 <footer>
-  <span>© 2026 Anthony Orque · Las Vegas, NV</span>
-  <span>EVENTS &amp; AI SYSTEMS</span>
+  <span class="footer-name">© 2026 Anthony Orque</span>
+  <span class="footer-right">Events &amp; AI Systems · Las Vegas, NV</span>
 </footer>
 
 </body>
