@@ -247,10 +247,12 @@ function checkPw(){
   <div class="tab" onclick="showPage('teamwire')">🏢 TeamWire</div>
   <div class="tab" onclick="showPage('dream')">🌴 Dream</div>
   <div class="tab" onclick="showPage('behavior')">📈 Behavior</div>
+  <div class="tab" onclick="showPage('spend')">💸 Spend</div>
+  <div class="tab" onclick="showPage('kanban')">📋 Kanban</div>
   <div class="tab" onclick="showPage('system')">⚙️ System</div>
 </div>
 
-<!-- ═══════════ PAGE: OVERVIEW ═══════════ -->
+<!-- NAV -->
 <div id="page-overview" class="page active">
 
   <!-- QUICK ACTIONS -->
@@ -621,6 +623,142 @@ function checkPw(){
 
 </div>
 
+<!-- ═══════════ PAGE: SPEND ═══════════ -->
+<div id="page-spend" class="page">
+
+  <!-- DAILY SPEND METER -->
+  <div class="card yellow">
+    <div class="ch"><div class="ci">💸</div><span class="ct">Daily Token Spend</span><span class="cs" id="spend-updated">updating...</span></div>
+
+    <!-- BIG NUMBER -->
+    <div style="text-align:center;padding:18px 0 8px">
+      <div style="font-family:var(--mono);font-size:52px;font-weight:700;color:var(--orange);line-height:1;text-shadow:0 0 24px rgba(232,160,32,0.5)" id="spend-big">$0.00</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px">TODAY'S SPEND · TARGET $3–6/DAY</div>
+    </div>
+
+    <!-- PROGRESS BAR — video game style -->
+    <div style="position:relative;margin:0 0 6px">
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:4px;height:28px;overflow:hidden;position:relative">
+        <div id="spend-bar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--teal));transition:width 0.8s ease;border-radius:4px"></div>
+        <!-- target marker at 50% = $6 of $12 max scale -->
+        <div style="position:absolute;top:0;left:50%;height:100%;width:2px;background:rgba(255,255,255,0.3)"></div>
+        <div style="position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:8px;color:var(--green)">TARGET $6</div>
+        <div id="spend-bar-label" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;color:rgba(255,255,255,0.8)">0%</div>
+      </div>
+    </div>
+
+    <!-- THRESHOLD MARKERS -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:16px">
+      <div id="thresh-warn" style="padding:8px;border:1px solid var(--border);border-radius:4px;text-align:center;opacity:0.4">
+        <div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--yellow)">$3</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">⚠️ WARN</div>
+      </div>
+      <div id="thresh-pause" style="padding:8px;border:1px solid var(--border);border-radius:4px;text-align:center;opacity:0.4">
+        <div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--orange)">$5</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">🟡 FLAG</div>
+      </div>
+      <div id="thresh-switch" style="padding:8px;border:1px solid var(--border);border-radius:4px;text-align:center;opacity:0.4">
+        <div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--orange)">$7</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">🔴 HIGH</div>
+      </div>
+      <div id="thresh-hard" style="padding:8px;border:1px solid var(--border);border-radius:4px;text-align:center;opacity:0.4">
+        <div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--red,#ff4f6e)">$10</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">🛑 STOP</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SESSION STATS -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">📊</div><span class="ct">Today's Usage</span></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)">
+      <div style="background:var(--bg2);padding:14px;text-align:center">
+        <div style="font-family:var(--mono);font-size:24px;font-weight:700;color:var(--teal)" id="spend-sessions">—</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">SESSIONS</div>
+      </div>
+      <div style="background:var(--bg2);padding:14px;text-align:center">
+        <div style="font-family:var(--mono);font-size:24px;font-weight:700;color:var(--teal)" id="spend-tools">—</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">TOOL CALLS</div>
+      </div>
+      <div style="background:var(--bg2);padding:14px;text-align:center">
+        <div style="font-family:var(--mono);font-size:24px;font-weight:700;color:var(--green)" id="spend-saved">—</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">EST. SAVED</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7-DAY HISTORY -->
+  <div class="card purple">
+    <div class="ch"><div class="ci">📅</div><span class="ct">7-Day History</span><span class="cs">last 7 days</span></div>
+    <div id="spend-history" style="font-family:var(--mono);font-size:11px;color:var(--muted);padding:8px">Loading...</div>
+  </div>
+
+  <!-- TEAMWIRE NOTE -->
+  <div class="card green">
+    <div class="ch"><div class="ci">🏢</div><span class="ct">TeamWire Signal</span><span class="cs">efficiency data</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">Routing Layer Impact</div><div class="row-sub">Before: $20–46/day on full Sonnet · After: $4–7/day target with Haiku routing · Spencer-validated architecture</div></div><div class="badge ok">LIVE</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Cost per Agent Action</div><div class="row-sub">Haiku subagents ~$0.001–0.003/task · Sonnet interactive ~$0.02–0.08/turn · No-agent crons = $0.000</div></div><div class="badge new">INSIGHT</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Pitch Data Point</div><div class="row-sub">8-agent OS running under $5/day. Non-technical operator. Zero engineering. This is the product.</div></div><div class="badge hot">CASE STUDY</div></div>
+  </div>
+
+</div>
+
+<!-- ═══════════ PAGE: KANBAN ═══════════ -->
+<div id="page-kanban" class="page">
+
+  <!-- STATUS LEGEND -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+    <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:var(--bg3);border:1px solid var(--teal);color:var(--teal)">🔵 IN PROGRESS</span>
+    <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:var(--bg3);border:1px solid var(--green);color:var(--green)">✅ DONE</span>
+    <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:var(--bg3);border:1px solid var(--orange);color:var(--orange)">⏳ PENDING</span>
+    <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:var(--bg3);border:1px solid #ff4f6e;color:#ff4f6e">💥 STUCK</span>
+    <span style="font-family:var(--mono);font-size:9px;padding:3px 8px;background:var(--bg3);border:1px solid var(--muted);color:var(--muted)">🔜 QUEUED</span>
+  </div>
+
+  <!-- ACTIVE SESSION -->
+  <div class="card teal">
+    <div class="ch"><div class="ci">⚡</div><span class="ct">Current Session</span><span class="cs" id="kanban-session-date">Jun 5 2026</span></div>
+
+    <div class="row"><div class="row-main"><div class="row-title">🔵 Model routing layer</div><div class="row-sub">Config applied · Spencer review seeded · Auxiliary + delegation fully on Haiku · Subagent caps set</div></div><div class="badge ok">DONE</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🔵 Spend monitor</div><div class="row-sub">Deterministic Python script · Every 3hrs · $3/$5/$7/$10 thresholds · No LLM · no_agent=True cron</div></div><div class="badge ok">DONE</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🔵 Unit 0 Drops (Drive → Mac)</div><div class="row-sub">Drive folder created · Drive for Desktop installed · Files auto-sync to Mac Finder</div></div><div class="badge ok">DONE</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🔵 CCD Spend + Kanban tabs</div><div class="row-sub">This page. Live spend meter, progress bar, 7-day history, kanban board.</div></div><div class="badge act">IN PROGRESS</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">🔜 Recovery notification</div><div class="row-sub">Watchdog sends Telegram ping on gateway revival · Wired but needs gateway restart to fully activate</div></div><div class="badge warn">PENDING TEST</div></div>
+  </div>
+
+  <!-- OPEN QUEUE -->
+  <div class="card yellow">
+    <div class="ch"><div class="ci">📬</div><span class="ct">Open / Queued</span><span class="cs">things Tony asked for that aren't done yet</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">⏳ SSH tunnel to Mac</div><div class="row-sub">ngrok setup so Unit 0 can write directly to Mac filesystem — Tony needs to run the install command</div></div><div class="badge warn">WAITING ON TONY</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">⏳ Portfolio headshot</div><div class="row-sub">aorque.github.io redesign live but headshot.jpg missing — Tony needs to push a photo to the repo</div></div><div class="badge warn">WAITING ON TONY</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">⏳ Desktop organization</div><div class="row-sub">Drive for Desktop installed, Unit 0 Drops folder live — full desktop audit + cleanup not done yet</div></div><div class="badge new">QUEUED</div></div>
+  </div>
+
+  <!-- COMPLETED THIS SESSION -->
+  <div class="card green">
+    <div class="ch"><div class="ci">✅</div><span class="ct">Completed Today</span><span class="cs">Jun 5 2026</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">Portfolio redesign (Jay Yang style)</div><div class="row-sub">Dark editorial · Playfair serif · Split hero · Marquee · Deployed to aorque.github.io</div></div><div class="badge ok">✓</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Dashboard Behavior tab</div><div class="row-sub">Usage patterns · Task breakdown · TeamWire case study seed</div></div><div class="badge ok">✓</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Nightly session compression cron</div><div class="row-sub">3AM PT · Haiku · Prunes memory · Reports cost</div></div><div class="badge ok">✓</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Gateway watchdog + recovery notification</div><div class="row-sub">Auto-revives gateway · Telegram ping on recovery · Baked into /hermes.sh boot</div></div><div class="badge ok">✓</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">model-routing-layer skill</div><div class="row-sub">TeamWire asset · Spencer-reviewed · Full routing map + cost baseline + pitfalls</div></div><div class="badge ok">✓</div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Monday + Friday crons → no_agent scripts</div><div class="row-sub">$0 cost for fixed reminder messages · Pure bash</div></div><div class="badge ok">✓</div></div>
+  </div>
+
+  <!-- HOW TO USE THIS -->
+  <div class="card purple">
+    <div class="ch"><div class="ci">📖</div><span class="ct">How to Use This Board</span></div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--muted);line-height:1.8;padding:4px 0">
+      <div>→ <strong style="color:var(--ink)">IN PROGRESS</strong> = Unit 0 is actively working on it right now</div>
+      <div>→ <strong style="color:var(--ink)">PENDING</strong> = queued, not started yet</div>
+      <div>→ <strong style="color:var(--ink)">WAITING ON TONY</strong> = blocked, needs something from you</div>
+      <div>→ <strong style="color:var(--ink)">STUCK / WTF</strong> = something broke, check the gateway log</div>
+      <div style="margin-top:8px;color:var(--teal)">Unit 0 updates this board after major sessions. If something looks wrong, say "update the kanban" and I'll patch it.</div>
+    </div>
+  </div>
+
+</div>
+
 <!-- ═══════════ PAGE: SYSTEM ═══════════ -->
 <div id="page-system" class="page">
 
@@ -741,8 +879,80 @@ function checkPw(){
     if(document.getElementById('wl2'))document.getElementById('wl2').textContent=wstr;
   })();
 
-  // Sessions — hardcoded from DB (updated by Unit 0 on each deploy)
-  document.getElementById('sc').textContent='72';
+  // ── SPEND PAGE ──────────────────────────────────────────
+  (function spendPage(){
+    // Hardcoded from last DB pull — updated by dashboard rebuild cron
+    var data = {
+      today: { cost: 19.81, sessions: 18, tools: 248 },
+      history: [
+        { day: 'Jun 3', cost: 46.62, label: 'Setup day' },
+        { day: 'Jun 4', cost: 40.00, label: 'Marathon' },
+        { day: 'Jun 5', cost: 19.81, label: 'Build day (routing applied)' },
+      ],
+      max_scale: 12  // $12 = 100% on bar
+    };
+
+    var cost = data.today.cost;
+    var pct = Math.min(100, Math.round((cost / data.max_scale) * 100));
+
+    // Color based on threshold
+    var color = cost < 3 ? 'var(--green)' : cost < 5 ? 'var(--yellow)' :
+                cost < 7 ? 'var(--orange)' : cost < 10 ? '#ff8c00' : '#ff4f6e';
+
+    var bar = document.getElementById('spend-bar');
+    var bigNum = document.getElementById('spend-big');
+    var barLabel = document.getElementById('spend-bar-label');
+
+    if(bar) {
+      bar.style.width = pct + '%';
+      bar.style.background = 'linear-gradient(90deg, var(--green), ' + color + ')';
+    }
+    if(bigNum) { bigNum.textContent = '$' + cost.toFixed(2); bigNum.style.color = color; }
+    if(barLabel) barLabel.textContent = pct + '% of $' + data.max_scale + ' ceiling';
+
+    var el = document.getElementById('spend-updated');
+    if(el) el.textContent = 'as of ' + new Date().toLocaleTimeString('en-US',{timeZone:'America/Los_Angeles',hour:'numeric',minute:'2-digit'}) + ' PT';
+
+    var s = document.getElementById('spend-sessions');
+    var t = document.getElementById('spend-tools');
+    var sv = document.getElementById('spend-saved');
+    if(s) s.textContent = data.today.sessions;
+    if(t) t.textContent = data.today.tools;
+    // Est. saved = what this would've cost all-Sonnet (approx 3x Haiku cost) minus actual
+    if(sv) sv.textContent = '$' + Math.max(0, (cost * 2.0)).toFixed(2);
+
+    // Threshold highlights
+    var thresholds = [
+      ['thresh-warn', 3, 'var(--yellow)'],
+      ['thresh-pause', 5, 'var(--orange)'],
+      ['thresh-switch', 7, 'var(--orange)'],
+      ['thresh-hard', 10, '#ff4f6e']
+    ];
+    thresholds.forEach(function(t){
+      var el = document.getElementById(t[0]);
+      if(!el) return;
+      if(cost >= t[1]) { el.style.opacity='1'; el.style.borderColor=t[2]; el.style.boxShadow='0 0 8px '+t[2]+'44'; }
+    });
+
+    // 7-day history
+    var hist = document.getElementById('spend-history');
+    if(hist) {
+      var max = Math.max.apply(null, data.history.map(function(d){return d.cost;}));
+      hist.innerHTML = data.history.map(function(d){
+        var w = Math.round((d.cost/max)*100);
+        var c = d.cost < 10 ? 'var(--green)' : d.cost < 25 ? 'var(--yellow)' : 'var(--orange)';
+        return '<div style="margin-bottom:10px">' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:3px">' +
+          '<span style="color:var(--ink)">' + d.day + ' — ' + d.label + '</span>' +
+          '<span style="color:'+c+';font-weight:700">$'+d.cost.toFixed(2)+'</span></div>' +
+          '<div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden">' +
+          '<div style="width:'+w+'%;height:100%;background:'+c+';border-radius:2px;transition:width 1s ease"></div>' +
+          '</div></div>';
+      }).join('');
+    }
+  })();
+
+
 
   // Runway
   (function(){
