@@ -84,8 +84,10 @@
       background: var(--red); color: var(--white); border: none;
       font-family: var(--sans); font-size: 12px; font-weight: 700;
       letter-spacing: 0.2em; text-transform: uppercase;
-      padding: 10px 32px; cursor: pointer; width: 100%; max-width: 280px;
+      padding: 14px 32px; cursor: pointer; width: 100%; max-width: 280px;
       transition: background 0.15s;
+      -webkit-appearance: none;
+      touch-action: manipulation;
     }
     #gate-btn:hover { background: var(--red-dark); }
     #gate-err { font-size: 9px; color: var(--orange); display: none; letter-spacing: 0.15em; }
@@ -260,7 +262,7 @@
   <div id="gate-label">// ENTER ACCESS CODE //</div>
   <input id="gate-input" type="password" placeholder="_ _ _ _ _ _ _ _" autocomplete="off" />
   <div id="gate-err">⚠ ACCESS DENIED — INVALID CODE</div>
-  <button id="gate-btn">AUTHORIZE →</button>
+  <button id="gate-btn" onclick="checkPw()" ontouchend="checkPw()">AUTHORIZE →</button>
 </div>
 
 <!-- MAIN -->
