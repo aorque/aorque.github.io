@@ -135,7 +135,20 @@
       text-transform: uppercase; margin-bottom: 16px;
       border-left: 2px solid var(--red); padding-left: 10px;
     }
-    .hero-tagline { font-size: 9px; color: #444; letter-spacing: 0.15em; font-style: italic; }
+    .hero-tagline {
+      font-family: var(--sans);
+      font-size: clamp(1rem, 4vw, 1.4rem);
+      font-weight: 700;
+      color: var(--red);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      line-height: 1.4;
+      margin-top: 12px;
+      padding: 10px 0;
+      border-top: 1px solid var(--red-dark);
+      border-bottom: 1px solid var(--red-dark);
+      text-shadow: 0 0 20px rgba(204,0,0,0.5);
+    }
 
     /* COUNTDOWN */
     .countdown {
@@ -283,7 +296,7 @@
     <div class="hero-meta">
       JUNE 18–21 2026 // ANAHEIM → BEACH // DESIGNATION: #SEAFARINGPEOPLESUMMER
     </div>
-    <div class="hero-tagline">"ASTRID IS THE PILOT. WE ARE ALL JUST THE SUPPORT CREW."</div>
+    <div class="hero-tagline">ASTRID IS THE PILOT. WE ARE ALL JUST THE SUPPORT CREW.</div>
   </div>
 
   <!-- COUNTDOWN -->
