@@ -3,301 +3,448 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Astrid's Birthday Week 🎂 — The Barangay</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <title>ASTRID BIRTHDAY WEEK // CLASSIFIED</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Oswald:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0a0f1e; --bg2: #0f1729; --bg3: #141f35;
-      --ink: #e8f0fe; --ink-soft: #8fa3c8; --ink-muted: #3a4a6b;
-      --border: #1a2540; --border2: #243050;
-      --gold: #f5c842; --teal: #00d4d4; --pink: #ff6b9d;
-      --green: #39d98a; --purple: #a78bfa; --orange: #fb923c;
-      --mono: 'Space Mono', monospace;
-      --serif: 'Playfair Display', Georgia, serif;
-      --sans: 'Inter', system-ui, sans-serif;
+      --black: #000000;
+      --red: #CC0000;
+      --red-dark: #8B0000;
+      --orange: #FF6600;
+      --amber: #FF8C00;
+      --white: #F0EDE8;
+      --muted: #666;
+      --border: #1a1a1a;
+      --mono: 'Share Tech Mono', monospace;
+      --sans: 'Oswald', sans-serif;
     }
     html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--mono);
+      font-size: 13px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* HEX GRID BACKGROUND */
     body::before {
-      content: ''; position: fixed; inset: 0; z-index: 0;
-      background-image:
-        radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 100%),
-        radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.1) 0%, transparent 100%),
-        radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,0.12) 0%, transparent 100%),
-        radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,0.08) 0%, transparent 100%),
-        radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,0.1) 0%, transparent 100%);
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 0 L56 16 L56 48 L28 64 L0 48 L0 16 Z' fill='none' stroke='%23CC000011' stroke-width='1'/%3E%3Cpath d='M28 36 L56 52 L56 84 L28 100 L0 84 L0 52 Z' fill='none' stroke='%23CC000011' stroke-width='1'/%3E%3C/svg%3E");
       pointer-events: none;
     }
+
+    /* SCAN LINES */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+      pointer-events: none;
+    }
+
+    .wrap { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; padding: 0 16px 60px; }
 
     /* PASSWORD GATE */
     #gate {
       position: fixed; inset: 0; z-index: 9999;
-      background: #0a0f1e;
+      background: #000;
       display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 20px; padding: 24px;
+      flex-direction: column; gap: 24px; padding: 32px;
     }
-    #gate-title { font-family: var(--serif); font-size: 2rem; font-weight: 800; color: var(--gold); text-align: center; }
-    #gate-sub { font-family: var(--mono); font-size: 10px; color: var(--ink-muted); letter-spacing: 0.2em; text-align: center; text-transform: uppercase; }
+    .gate-logo {
+      width: 80px; height: 80px;
+      border: 2px solid var(--red);
+      display: grid; place-items: center;
+      position: relative; overflow: hidden;
+    }
+    .gate-logo::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, var(--black) 50%, var(--red-dark) 50%);
+    }
+    .gate-logo-leaf {
+      position: relative; z-index: 1;
+      font-size: 2rem; filter: brightness(10);
+    }
+    #gate-org { font-family: var(--sans); font-size: 1.8rem; font-weight: 700; letter-spacing: 0.4em; color: var(--red); text-transform: uppercase; }
+    #gate-tagline { font-size: 9px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; text-align: center; line-height: 1.8; }
+    #gate-label { font-size: 9px; letter-spacing: 0.3em; color: var(--orange); text-transform: uppercase; }
     #gate-input {
-      background: #0f1729; border: 2px solid #243050; border-radius: 8px;
-      color: var(--ink); font-family: var(--mono); font-size: 1.1rem;
-      padding: 12px 20px; text-align: center; width: 100%; max-width: 280px;
-      letter-spacing: 0.15em; outline: none; transition: border-color 0.2s;
+      background: #000; border: 1px solid var(--red);
+      color: var(--orange); font-family: var(--mono); font-size: 1rem;
+      padding: 10px 20px; text-align: center; width: 100%; max-width: 280px;
+      letter-spacing: 0.2em; outline: none;
+      text-transform: lowercase;
     }
-    #gate-input:focus { border-color: var(--gold); }
+    #gate-input:focus { border-color: var(--orange); box-shadow: 0 0 12px rgba(255,102,0,0.3); }
     #gate-btn {
-      background: var(--gold); color: #0a0f1e; border: none; border-radius: 8px;
-      font-family: var(--mono); font-size: 11px; font-weight: 700;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 12px 32px; cursor: pointer; width: 100%; max-width: 280px;
-      transition: opacity 0.15s;
+      background: var(--red); color: var(--white); border: none;
+      font-family: var(--sans); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 10px 32px; cursor: pointer; width: 100%; max-width: 280px;
+      transition: background 0.15s;
     }
-    #gate-btn:hover { opacity: 0.85; }
-    #gate-err { font-family: var(--mono); font-size: 10px; color: var(--pink); display: none; }
+    #gate-btn:hover { background: var(--red-dark); }
+    #gate-err { font-size: 9px; color: var(--orange); display: none; letter-spacing: 0.15em; }
     #main { display: none; }
 
-    /* LAYOUT */
-    .wrap { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 0 16px 40px; }
+    /* TOP BAR */
+    .topbar {
+      border-bottom: 2px solid var(--red);
+      padding: 8px 0;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 0;
+    }
+    .topbar-left { font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: 0.4em; color: var(--red); }
+    .topbar-right { font-size: 9px; color: var(--muted); letter-spacing: 0.1em; }
+    .topbar-dot { display: inline-block; width: 6px; height: 6px; background: var(--red); border-radius: 50%; margin-right: 6px; animation: blink 1.2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
     /* HERO */
-    .hero { text-align: center; padding: 40px 20px 32px; border-bottom: 1px solid var(--border2); margin-bottom: 24px; }
-    .hero-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--pink); margin-bottom: 12px; }
-    .hero-title { font-family: var(--serif); font-size: clamp(2.2rem, 8vw, 3.2rem); font-weight: 800; color: var(--ink); line-height: 1.05; margin-bottom: 8px; }
-    .hero-title span { color: var(--gold); }
-    .hero-sub { font-family: var(--mono); font-size: 10px; color: var(--ink-muted); letter-spacing: 0.2em; margin-bottom: 20px; }
-    .hero-badges { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
-    .hb { font-family: var(--mono); font-size: 9px; padding: 4px 10px; border: 1px solid; border-radius: 20px; }
-    .hb-gold { color: var(--gold); border-color: rgba(245,200,66,0.3); background: rgba(245,200,66,0.08); }
-    .hb-pink { color: var(--pink); border-color: rgba(255,107,157,0.3); background: rgba(255,107,157,0.08); }
-    .hb-teal { color: var(--teal); border-color: rgba(0,212,212,0.3); background: rgba(0,212,212,0.08); }
+    .hero {
+      padding: 32px 0 24px;
+      border-bottom: 1px solid #1a1a1a;
+      margin-bottom: 0;
+      position: relative;
+    }
+    .hero-classified {
+      display: inline-block;
+      font-family: var(--sans); font-size: 10px; font-weight: 700;
+      letter-spacing: 0.3em; color: var(--red);
+      border: 2px solid var(--red); padding: 3px 12px;
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-family: var(--sans);
+      font-size: clamp(2.4rem, 9vw, 4rem);
+      font-weight: 700;
+      line-height: 0.95;
+      color: var(--white);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .hero-title .red { color: var(--red); }
+    .hero-title .orange { color: var(--orange); }
+    .hero-meta {
+      font-size: 9px; color: var(--muted); letter-spacing: 0.2em;
+      text-transform: uppercase; margin-bottom: 16px;
+      border-left: 2px solid var(--red); padding-left: 10px;
+    }
+    .hero-tagline { font-size: 9px; color: #444; letter-spacing: 0.15em; font-style: italic; }
 
     /* COUNTDOWN */
-    .countdown-card {
-      background: linear-gradient(135deg, rgba(245,200,66,0.08), rgba(255,107,157,0.06));
-      border: 1px solid rgba(245,200,66,0.2); border-radius: 12px;
-      padding: 20px; text-align: center; margin-bottom: 20px;
+    .countdown {
+      background: #0a0000;
+      border: 1px solid var(--red-dark);
+      border-left: 3px solid var(--red);
+      padding: 16px 20px;
+      margin: 16px 0;
+      display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
     }
-    .cd-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 12px; }
-    .cd-nums { display: flex; justify-content: center; gap: 16px; }
+    .cd-label { font-size: 8px; letter-spacing: 0.2em; color: var(--red); text-transform: uppercase; margin-bottom: 4px; }
+    .cd-nums { display: flex; gap: 12px; }
     .cd-unit { text-align: center; }
-    .cd-num { font-family: var(--serif); font-size: 2.5rem; font-weight: 800; color: var(--gold); line-height: 1; }
-    .cd-unit-label { font-family: var(--mono); font-size: 8px; color: var(--ink-muted); margin-top: 2px; letter-spacing: 0.1em; }
-    .cd-sep { font-family: var(--serif); font-size: 2rem; color: var(--ink-muted); align-self: center; padding-bottom: 8px; }
+    .cd-num { font-family: var(--sans); font-size: 2rem; font-weight: 700; color: var(--orange); line-height: 1; }
+    .cd-unit-label { font-size: 7px; color: var(--muted); letter-spacing: 0.1em; }
+    .cd-sep { font-family: var(--sans); font-size: 1.5rem; color: var(--red-dark); align-self: center; padding-bottom: 10px; }
 
     /* SECTION HEADER */
-    .sh { display: flex; align-items: center; gap: 10px; margin: 24px 0 12px; }
-    .sh-line { flex: 1; height: 1px; background: var(--border2); }
-    .sh-text { font-family: var(--mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--ink-muted); white-space: nowrap; }
+    .sh {
+      display: flex; align-items: center; gap: 10px;
+      margin: 24px 0 10px;
+      border-top: 1px solid #1a1a1a; padding-top: 16px;
+    }
+    .sh-label {
+      font-family: var(--sans); font-size: 9px; font-weight: 700;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--red); white-space: nowrap;
+    }
+    .sh-num { font-size: 8px; color: #333; }
+    .sh-line { flex: 1; height: 1px; background: #1a1a1a; }
 
     /* DAY CARDS */
-    .day-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; }
-    .day-card:hover { border-color: var(--border); box-shadow: 0 4px 24px rgba(0,0,0,0.3); }
-    .day-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
-    .day-emoji { font-size: 1.4rem; }
-    .day-info { flex: 1; }
-    .day-date { font-family: var(--mono); font-size: 9px; color: var(--ink-muted); letter-spacing: 0.1em; margin-bottom: 2px; }
-    .day-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 700; color: var(--ink); }
-    .day-badge { font-family: var(--mono); font-size: 8px; font-weight: 700; padding: 3px 8px; border-radius: 4px; white-space: nowrap; }
-    .db-go { background: rgba(57,217,138,0.15); color: var(--green); border: 1px solid rgba(57,217,138,0.3); }
-    .db-hype { background: rgba(245,200,66,0.15); color: var(--gold); border: 1px solid rgba(245,200,66,0.3); }
-    .db-party { background: rgba(255,107,157,0.15); color: var(--pink); border: 1px solid rgba(255,107,157,0.3); }
-    .db-chill { background: rgba(167,139,250,0.15); color: var(--purple); border: 1px solid rgba(167,139,250,0.3); }
-    .day-body { padding: 12px 16px; }
-    .day-activities { list-style: none; padding: 0; margin-bottom: 10px; }
-    .day-activities li { font-size: 12px; color: var(--ink-soft); padding: 3px 0 3px 16px; position: relative; }
-    .day-activities li::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-size: 10px; top: 4px; }
-    .day-note { font-family: var(--mono); font-size: 9px; color: var(--teal); padding: 6px 10px; background: rgba(0,212,212,0.05); border-left: 2px solid var(--teal); border-radius: 0 4px 4px 0; }
+    .day {
+      border: 1px solid #1a1a1a;
+      border-left: 3px solid var(--red-dark);
+      margin-bottom: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .day:hover { border-left-color: var(--red); }
+    .day-header {
+      display: flex; align-items: stretch;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .day-num {
+      background: var(--red-dark);
+      color: var(--white);
+      font-family: var(--sans); font-size: 1.4rem; font-weight: 700;
+      padding: 10px 14px;
+      display: grid; place-items: center;
+      min-width: 52px;
+      border-right: 1px solid var(--red);
+    }
+    .day-info { padding: 10px 14px; flex: 1; }
+    .day-date { font-size: 8px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-bottom: 3px; }
+    .day-title { font-family: var(--sans); font-size: 1rem; font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: 0.05em; }
+    .day-status {
+      font-family: var(--sans); font-size: 8px; font-weight: 700;
+      padding: 4px 10px; border: 1px solid; letter-spacing: 0.1em;
+      align-self: center; margin-right: 12px; white-space: nowrap;
+    }
+    .ds-deploy { color: var(--orange); border-color: var(--orange); }
+    .ds-active { color: var(--red); border-color: var(--red); box-shadow: 0 0 8px rgba(204,0,0,0.3); }
+    .ds-op { color: #39d98a; border-color: #39d98a; }
+    .ds-debrief { color: #a78bfa; border-color: #a78bfa; }
+    .day-body { padding: 10px 14px; }
+    .day-ops { list-style: none; padding: 0; }
+    .day-ops li {
+      font-size: 11px; color: #888;
+      padding: 3px 0 3px 14px; position: relative;
+      border-bottom: 1px solid #0d0d0d;
+    }
+    .day-ops li:last-child { border-bottom: none; }
+    .day-ops li::before { content: '//'; position: absolute; left: 0; color: var(--red-dark); font-size: 9px; top: 4px; }
+    .day-ops li strong { color: var(--white); }
+    .day-intel {
+      margin-top: 8px;
+      font-size: 8px; color: var(--orange);
+      letter-spacing: 0.1em; padding: 4px 8px;
+      border-left: 2px solid var(--orange);
+      background: rgba(255,102,0,0.04);
+    }
 
     /* CREW */
-    .crew-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
-    .crew-grid { display: flex; flex-direction: column; gap: 8px; }
-    .crew-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: var(--bg3); border-radius: 6px; border: 1px solid var(--border); }
-    .crew-name { font-size: 12px; color: var(--ink); font-weight: 500; }
-    .crew-days { font-family: var(--mono); font-size: 9px; color: var(--ink-muted); }
-    .crew-status { font-family: var(--mono); font-size: 8px; padding: 2px 7px; border-radius: 10px; }
-    .cs-in { background: rgba(57,217,138,0.15); color: var(--green); }
-    .cs-pending { background: rgba(251,146,60,0.15); color: var(--orange); }
-    .cs-maybe { background: rgba(167,139,250,0.15); color: var(--purple); }
-
-    /* VIBES */
-    .vibes-card { background: linear-gradient(135deg, rgba(0,212,212,0.05), rgba(255,107,157,0.05)); border: 1px solid var(--border2); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
-    .vibes-title { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 10px; }
-    .vibe-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .vt { font-family: var(--mono); font-size: 9px; padding: 4px 10px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 20px; color: var(--ink-soft); }
+    .crew { border: 1px solid #1a1a1a; margin-bottom: 8px; }
+    .crew-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 14px;
+      border-bottom: 1px solid #0d0d0d;
+    }
+    .crew-row:last-child { border-bottom: none; }
+    .crew-id { font-size: 11px; color: var(--white); }
+    .crew-days { font-size: 9px; color: var(--muted); }
+    .crew-clearance {
+      font-family: var(--sans); font-size: 8px; font-weight: 700;
+      padding: 2px 8px; border: 1px solid; letter-spacing: 0.1em;
+    }
+    .cc-alpha { color: var(--orange); border-color: var(--orange); }
+    .cc-confirmed { color: #39d98a; border-color: #39d98a; }
+    .cc-pending { color: #f5c842; border-color: #f5c842; }
+    .cc-likely { color: #a78bfa; border-color: #a78bfa; }
 
     /* FOOTER */
-    footer { text-align: center; padding: 20px 0 8px; font-family: var(--mono); font-size: 9px; color: var(--ink-muted); letter-spacing: 0.1em; }
-    .footer-heart { color: var(--pink); }
+    .foot {
+      border-top: 1px solid #1a1a1a; margin-top: 32px;
+      padding-top: 12px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 8px;
+    }
+    .foot-left { font-size: 8px; color: #333; letter-spacing: 0.15em; }
+    .foot-right { font-size: 8px; color: var(--red-dark); letter-spacing: 0.1em; }
   </style>
 </head>
 <body>
 
 <!-- PASSWORD GATE -->
 <div id="gate">
-  <div style="font-size:3rem">🎂</div>
-  <div id="gate-title">The Barangay</div>
-  <div id="gate-sub">Enter password to view Astrid's birthday plans</div>
-  <input id="gate-input" type="password" placeholder="password" autocomplete="off" />
-  <div id="gate-err">wrong password — try again 🙈</div>
-  <button id="gate-btn" onclick="checkPw()">Enter →</button>
+  <div class="gate-logo">
+    <div class="gate-logo-leaf">🍀</div>
+  </div>
+  <div id="gate-org">NERV</div>
+  <div id="gate-tagline">SPECIAL OPERATIONS DIVISION<br/>CLASSIFIED — AUTHORIZED PERSONNEL ONLY</div>
+  <div id="gate-label">// ENTER ACCESS CODE //</div>
+  <input id="gate-input" type="password" placeholder="_ _ _ _ _ _ _ _" autocomplete="off" />
+  <div id="gate-err">⚠ ACCESS DENIED — INVALID CODE</div>
+  <button id="gate-btn">AUTHORIZE →</button>
 </div>
 
 <!-- MAIN -->
 <div id="main">
 <div class="wrap">
 
+  <div class="topbar">
+    <div class="topbar-left"><span class="topbar-dot"></span>NERV // SPECIAL OPS</div>
+    <div class="topbar-right">OPERATION: ASTRID BIRTHDAY // JUN 18-21 2026</div>
+  </div>
+
   <div class="hero">
-    <div class="hero-tag">The Barangay Presents</div>
-    <h1 class="hero-title">Astrid's<br/><span>Birthday Week</span> 🎂</h1>
-    <div class="hero-sub">Jun 18 – 21, 2026 · Anaheim → Beach · #SeafaringPeopleSummer</div>
-    <div class="hero-badges">
-      <span class="hb hb-gold">🏨 Anaheim Hotel</span>
-      <span class="hb hb-pink">🎢 Disneyland</span>
-      <span class="hb hb-teal">🏖️ Beach + Dinner</span>
+    <div class="hero-classified">TOP SECRET // BARANGAY EYES ONLY</div>
+    <h1 class="hero-title">
+      <span class="red">OPERATION</span><br/>
+      <span class="orange">ASTRID</span><br/>
+      BIRTHDAY WEEK
+    </h1>
+    <div class="hero-meta">
+      JUNE 18–21 2026 // ANAHEIM → BEACH // DESIGNATION: #SEAFARINGPEOPLESUMMER
     </div>
+    <div class="hero-tagline">"GOD'S IN HIS HEAVEN — ALL'S RIGHT WITH THE WORLD"</div>
   </div>
 
-  <div class="countdown-card">
-    <div class="cd-label">⏳ Countdown to Astrid's Birthday Week</div>
-    <div class="cd-nums">
-      <div class="cd-unit"><div class="cd-num" id="cd-days">--</div><div class="cd-unit-label">DAYS</div></div>
-      <div class="cd-sep">:</div>
-      <div class="cd-unit"><div class="cd-num" id="cd-hrs">--</div><div class="cd-unit-label">HRS</div></div>
-      <div class="cd-sep">:</div>
-      <div class="cd-unit"><div class="cd-num" id="cd-min">--</div><div class="cd-unit-label">MIN</div></div>
-    </div>
-  </div>
-
-  <div class="sh"><div class="sh-line"></div><div class="sh-text">📅 The Plan</div><div class="sh-line"></div></div>
-
-  <div class="day-card">
-    <div class="day-header">
-      <div class="day-emoji">🚗</div>
-      <div class="day-info">
-        <div class="day-date">THURSDAY · JUNE 18</div>
-        <div class="day-title">Arrive Anaheim</div>
+  <!-- COUNTDOWN -->
+  <div class="countdown">
+    <div>
+      <div class="cd-label">⏱ T-MINUS // MISSION LAUNCH</div>
+      <div class="cd-nums">
+        <div class="cd-unit"><div class="cd-num" id="cd-days">--</div><div class="cd-unit-label">DAYS</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit"><div class="cd-num" id="cd-hrs">--</div><div class="cd-unit-label">HRS</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit"><div class="cd-num" id="cd-min">--</div><div class="cd-unit-label">MIN</div></div>
       </div>
-      <div class="day-badge db-go">TRAVEL DAY</div>
+    </div>
+    <div style="font-size:8px;color:#333;line-height:2;letter-spacing:0.1em">
+      TARGET: JUN 18 0000HRS<br/>
+      STATUS: ACTIVE DEPLOYMENT<br/>
+      PRIORITY: ALPHA
+    </div>
+  </div>
+
+  <!-- MISSION TIMELINE -->
+  <div class="sh">
+    <div class="sh-label">// Mission Timeline</div>
+    <div class="sh-line"></div>
+    <div class="sh-num">4 OPS</div>
+  </div>
+
+  <div class="day">
+    <div class="day-header">
+      <div class="day-num">D1</div>
+      <div class="day-info">
+        <div class="day-date">THURSDAY 18 JUN 2026 // PHASE 1</div>
+        <div class="day-title">Insertion — Arrive Anaheim</div>
+      </div>
+      <div class="day-status ds-deploy">DEPLOY</div>
     </div>
     <div class="day-body">
-      <ul class="day-activities">
-        <li>Drive from Las Vegas → Anaheim (~4hrs)</li>
-        <li>Hotel check-in</li>
-        <li>Settle in, get hype for tomorrow</li>
-        <li>Dinner near Anaheim / Downtown Disney</li>
+      <ul class="day-ops">
+        <li>Depart Las Vegas — <strong>~0900HRS</strong></li>
+        <li>Transit LV → Anaheim — <strong>~4hr drive</strong></li>
+        <li>Hotel insertion — <strong>request early check-in</strong></li>
+        <li>Recon: Downtown Disney, dinner options, Disneyland ingress routes</li>
+        <li>Pre-mission briefing — rest, fuel up, get hype</li>
       </ul>
-      <div class="day-note">Early check-in if possible · Hotel TBD</div>
+      <div class="day-intel">⚡ INTEL: ~4hr drive · Hotel TBD · Request early check-in to maximize D1 time</div>
     </div>
   </div>
 
-  <div class="day-card">
+  <div class="day">
     <div class="day-header">
-      <div class="day-emoji">🎢</div>
+      <div class="day-num" style="background:var(--red)">D2</div>
       <div class="day-info">
-        <div class="day-date">FRIDAY · JUNE 19 — ASTRID'S BIRTHDAY 🎂</div>
-        <div class="day-title">Disneyland 🏰</div>
+        <div class="day-date">FRIDAY 19 JUN 2026 // PHASE 2 — ASTRID'S BIRTHDAY 🎂</div>
+        <div class="day-title">Primary Objective — DISNEYLAND</div>
       </div>
-      <div class="day-badge db-hype">MAIN EVENT</div>
+      <div class="day-status ds-active">⬛ LIVE</div>
     </div>
     <div class="day-body">
-      <ul class="day-activities">
-        <li>Full day at Disneyland — Astrid picks the agenda</li>
-        <li>Hit rides early before crowds (Matterhorn, Space Mountain, Pirates)</li>
-        <li>All the food, all the photos, all the magic</li>
-        <li>Dinner in the park or Downtown Disney</li>
+      <ul class="day-ops">
+        <li>Early ingress — <strong>park open, beat the crowds</strong></li>
+        <li>Matterhorn · Space Mountain · Pirates of the Caribbean</li>
+        <li>Full day protocol — <strong>Astrid selects all objectives</strong></li>
+        <li>All food, all photos, all magic — no compromises</li>
+        <li>Evening: Dinner in park or Downtown Disney</li>
       </ul>
-      <div class="day-note">It's her day. Whatever she wants. 🎉</div>
+      <div class="day-intel" style="border-color:var(--red);color:var(--red)">🎯 MISSION CRITICAL: It's her day. Whatever she wants. Full Barangay support. No exceptions.</div>
     </div>
   </div>
 
-  <div class="day-card">
+  <div class="day">
     <div class="day-header">
-      <div class="day-emoji">🏖️</div>
+      <div class="day-num">D3</div>
       <div class="day-info">
-        <div class="day-date">SATURDAY · JUNE 20</div>
-        <div class="day-title">Beach + Birthday Dinner</div>
+        <div class="day-date">SATURDAY 20 JUN 2026 // PHASE 3</div>
+        <div class="day-title">Beach Ops + Birthday Dinner</div>
       </div>
-      <div class="day-badge db-party">PARTY DAY</div>
+      <div class="day-status ds-op">OP: ACTIVE</div>
     </div>
     <div class="day-body">
-      <ul class="day-activities">
-        <li>Morning at the beach — SoCal summer vibes 🌊</li>
-        <li>Possible: Lake Poway — picnic, ice cream, pedal boats</li>
-        <li>Evening: Full birthday dinner celebration 🥂</li>
-        <li>Kathleen + Jordyn confirmed ✅</li>
-        <li>Hannah joining if schedule works 🤙</li>
-        <li>Alyssa + Joe — pending concert tickets ⏳</li>
+      <ul class="day-ops">
+        <li>Morning beach deployment — <strong>SoCal summer 🌊</strong></li>
+        <li>Alt target: Lake Poway — picnic · ice cream · pedal boats</li>
+        <li>Afternoon: Barangay link-up — <strong>FULL ASSEMBLY</strong></li>
+        <li>Evening: Birthday dinner — <strong>full celebration protocol 🥂</strong></li>
+        <li>Confirmed: Kathleen Orque + Jordyn // Hannah (likely) // Alyssa + Joe (pending)</li>
       </ul>
-      <div class="day-note">Most of The Barangay links up today 🙌</div>
+      <div class="day-intel">⚡ Most Barangay members converge today — largest assembly of the operation</div>
     </div>
   </div>
 
-  <div class="day-card">
+  <div class="day">
     <div class="day-header">
-      <div class="day-emoji">🌅</div>
+      <div class="day-num">D4</div>
       <div class="day-info">
-        <div class="day-date">SUNDAY · JUNE 21</div>
-        <div class="day-title">Checkout + Free Day</div>
+        <div class="day-date">SUNDAY 21 JUN 2026 // PHASE 4</div>
+        <div class="day-title">Debrief + Extraction</div>
       </div>
-      <div class="day-badge db-chill">CHILL DAY</div>
+      <div class="day-status ds-debrief">DEBRIEF</div>
     </div>
     <div class="day-body">
-      <ul class="day-activities">
-        <li>Hotel checkout morning</li>
-        <li>Free morning to afternoon — no agenda</li>
-        <li>Possible: Lake Poway (picnic, pedal boats, ice cream 🍦)</li>
-        <li>Hannah's idea: outrigger canoe 🛶 (#SeafaringPeopleSummer)</li>
-        <li>Head home eveningish</li>
+      <ul class="day-ops">
+        <li>Hotel checkout — <strong>morning</strong></li>
+        <li>Free ops window — morning to afternoon (no fixed agenda)</li>
+        <li>Alt mission: Lake Poway — picnic · pedal boats · ice cream 🍦</li>
+        <li>Hannah proposed: <strong>outrigger canoe</strong> 🛶 (#SeafaringPeopleSummer energy)</li>
+        <li>Extraction: head home <strong>eveningish</strong></li>
       </ul>
-      <div class="day-note">Best window for SD / lake day if not Saturday</div>
+      <div class="day-intel">⚡ Open window — best slot for SD / Lake Poway if not Saturday</div>
     </div>
   </div>
 
-  <div class="sh"><div class="sh-line"></div><div class="sh-text">👥 The Barangay — Who's In</div><div class="sh-line"></div></div>
+  <!-- PERSONNEL -->
+  <div class="sh">
+    <div class="sh-label">// Personnel Manifest</div>
+    <div class="sh-line"></div>
+    <div class="sh-num">5 UNITS</div>
+  </div>
 
-  <div class="crew-card">
-    <div class="crew-grid">
-      <div class="crew-row">
-        <div><div class="crew-name">🎂 Astrid (Birthday Girl)</div><div class="crew-days">Jun 18–21 · All days</div></div>
-        <div class="crew-status cs-in">⭐ VIP</div>
+  <div class="crew">
+    <div class="crew-row">
+      <div>
+        <div class="crew-id">🎂 ASTRID — Birthday Subject</div>
+        <div class="crew-days">D1–D4 // Full operation</div>
       </div>
-      <div class="crew-row">
-        <div><div class="crew-name">Anthony (Kuya Tony)</div><div class="crew-days">Jun 18–21 · All days</div></div>
-        <div class="crew-status cs-in">✅ IN</div>
+      <div class="crew-clearance cc-alpha">⭐ ALPHA</div>
+    </div>
+    <div class="crew-row">
+      <div>
+        <div class="crew-id">ANTHONY ORQUE — Kuya Tony</div>
+        <div class="crew-days">D1–D4 // Full operation</div>
       </div>
-      <div class="crew-row">
-        <div><div class="crew-name">Kathleen Orque + Jordyn</div><div class="crew-days">Jun 20 confirmed · Jun 21 possible</div></div>
-        <div class="crew-status cs-in">✅ IN (Jun 20)</div>
+      <div class="crew-clearance cc-confirmed">✓ CONFIRMED</div>
+    </div>
+    <div class="crew-row">
+      <div>
+        <div class="crew-id">KATHLEEN ORQUE + JORDYN</div>
+        <div class="crew-days">D3 confirmed // D4 possible</div>
       </div>
-      <div class="crew-row">
-        <div><div class="crew-name">Hannah</div><div class="crew-days">Jun 20 beach/dinner · Jun 21 flexible</div></div>
-        <div class="crew-status cs-maybe">🤙 LIKELY</div>
+      <div class="crew-clearance cc-confirmed">✓ CONFIRMED</div>
+    </div>
+    <div class="crew-row">
+      <div>
+        <div class="crew-id">HANNAH</div>
+        <div class="crew-days">D3 beach/dinner // D4 flexible</div>
       </div>
-      <div class="crew-row">
-        <div><div class="crew-name">Alyssa Marie Yabut + Joe</div><div class="crew-days">Jun 20 dinner/beach</div></div>
-        <div class="crew-status cs-pending">⏳ PENDING</div>
+      <div class="crew-clearance cc-likely">◈ LIKELY</div>
+    </div>
+    <div class="crew-row">
+      <div>
+        <div class="crew-id">ALYSSA MARIE YABUT + JOE</div>
+        <div class="crew-days">D3 dinner/beach // pending concert tickets</div>
       </div>
+      <div class="crew-clearance cc-pending">⏳ PENDING</div>
     </div>
   </div>
 
-  <div class="sh"><div class="sh-line"></div><div class="sh-text">✨ The Vibe</div><div class="sh-line"></div></div>
-  <div class="vibes-card">
-    <div class="vibes-title">This Week's Energy</div>
-    <div class="vibe-tags">
-      <span class="vt">#SeafaringPeopleSummer</span>
-      <span class="vt">🏰 Disneyland first timer</span>
-      <span class="vt">🌊 Beach day</span>
-      <span class="vt">🛶 Outrigger energy</span>
-      <span class="vt">🍦 Pedal boats + ice cream</span>
-      <span class="vt">🥳 Birthday dinner</span>
-      <span class="vt">🇵🇭 Filipino family link-up</span>
-      <span class="vt">😭 When the Barangay reunites</span>
-    </div>
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="foot-left">NERV SPECIAL OPS DIVISION // UNIT 0 GENERATED // BARANGAY CLEARANCE ONLY</div>
+    <div class="foot-right">⚠ CLASSIFIED // DO NOT DISTRIBUTE</div>
   </div>
-
-  <footer>Made with <span class="footer-heart">♥</span> by Unit 0 · For The Barangay · Astrid's Birthday Week 2026</footer>
 
 </div>
 </div><!-- /main -->
@@ -318,10 +465,9 @@
 
   function updateCountdown() {
     var target = new Date('2026-06-18T00:00:00-07:00');
-    var now = new Date();
-    var diff = target - now;
+    var diff = target - new Date();
     if (diff <= 0) {
-      document.getElementById('cd-days').textContent = '🎉';
+      document.getElementById('cd-days').textContent = '00';
       document.getElementById('cd-hrs').textContent = '00';
       document.getElementById('cd-min').textContent = '00';
       return;
