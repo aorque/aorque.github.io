@@ -14,7 +14,21 @@
       --border: #1a2540; --border2: #243050;
       --gold: #f5c842; --teal: #00d4d4; --pink: #ff6b9d;
       --green: #39d98a; --purple: #a78bfa; --orange: #fb923c;
-      --mono: 'Space Mono', monospace; --serif: 'Playfair Display', Georgia, serif; --sans: 'Inter', system-ui, sans-serif;
+      --mono: 'Space Mono', monospace;
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Inter', system-ui, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0;
+      background-image:
+        radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.1) 0%, transparent 100%),
+        radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,0.12) 0%, transparent 100%),
+        radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,0.08) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,0.1) 0%, transparent 100%);
+      pointer-events: none;
     }
 
     /* PASSWORD GATE */
@@ -22,22 +36,19 @@
       position: fixed; inset: 0; z-index: 9999;
       background: #0a0f1e;
       display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 20px;
-      padding: 24px;
+      flex-direction: column; gap: 20px; padding: 24px;
     }
     #gate-title { font-family: var(--serif); font-size: 2rem; font-weight: 800; color: var(--gold); text-align: center; }
-    #gate-sub { font-family: var(--mono); font-size: 10px; color: var(--ink-muted); letter-spacing: 0.2em; text-align: center; }
+    #gate-sub { font-family: var(--mono); font-size: 10px; color: var(--ink-muted); letter-spacing: 0.2em; text-align: center; text-transform: uppercase; }
     #gate-input {
       background: #0f1729; border: 2px solid #243050; border-radius: 8px;
       color: var(--ink); font-family: var(--mono); font-size: 1.1rem;
       padding: 12px 20px; text-align: center; width: 100%; max-width: 280px;
-      letter-spacing: 0.15em; outline: none;
-      transition: border-color 0.2s;
+      letter-spacing: 0.15em; outline: none; transition: border-color 0.2s;
     }
     #gate-input:focus { border-color: var(--gold); }
     #gate-btn {
-      background: var(--gold); color: #0a0f1e;
-      border: none; border-radius: 8px;
+      background: var(--gold); color: #0a0f1e; border: none; border-radius: 8px;
       font-family: var(--mono); font-size: 11px; font-weight: 700;
       letter-spacing: 0.1em; text-transform: uppercase;
       padding: 12px 32px; cursor: pointer; width: 100%; max-width: 280px;
@@ -46,50 +57,12 @@
     #gate-btn:hover { opacity: 0.85; }
     #gate-err { font-family: var(--mono); font-size: 10px; color: var(--pink); display: none; }
     #main { display: none; }
-  </style>
-    :root {
-      --bg: #0a0f1e;
-      --bg2: #0f1729;
-      --bg3: #141f35;
-      --ink: #e8f0fe;
-      --ink-soft: #8fa3c8;
-      --ink-muted: #3a4a6b;
-      --border: #1a2540;
-      --border2: #243050;
-      --gold: #f5c842;
-      --teal: #00d4d4;
-      --pink: #ff6b9d;
-      --green: #39d98a;
-      --purple: #a78bfa;
-      --orange: #fb923c;
-      --mono: 'Space Mono', monospace;
-      --serif: 'Playfair Display', Georgia, serif;
-      --sans: 'Inter', system-ui, sans-serif;
-    }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
 
-    /* STARS background */
-    body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 0;
-      background-image: radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 100%),
-        radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.1) 0%, transparent 100%),
-        radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,0.12) 0%, transparent 100%),
-        radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,0.08) 0%, transparent 100%),
-        radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,0.1) 0%, transparent 100%);
-      pointer-events: none;
-    }
-
+    /* LAYOUT */
     .wrap { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 0 16px 40px; }
 
     /* HERO */
-    .hero {
-      text-align: center;
-      padding: 40px 20px 32px;
-      border-bottom: 1px solid var(--border2);
-      margin-bottom: 24px;
-    }
+    .hero { text-align: center; padding: 40px 20px 32px; border-bottom: 1px solid var(--border2); margin-bottom: 24px; }
     .hero-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--pink); margin-bottom: 12px; }
     .hero-title { font-family: var(--serif); font-size: clamp(2.2rem, 8vw, 3.2rem); font-weight: 800; color: var(--ink); line-height: 1.05; margin-bottom: 8px; }
     .hero-title span { color: var(--gold); }
@@ -103,11 +76,8 @@
     /* COUNTDOWN */
     .countdown-card {
       background: linear-gradient(135deg, rgba(245,200,66,0.08), rgba(255,107,157,0.06));
-      border: 1px solid rgba(245,200,66,0.2);
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      margin-bottom: 20px;
+      border: 1px solid rgba(245,200,66,0.2); border-radius: 12px;
+      padding: 20px; text-align: center; margin-bottom: 20px;
     }
     .cd-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 12px; }
     .cd-nums { display: flex; justify-content: center; gap: 16px; }
@@ -122,20 +92,9 @@
     .sh-text { font-family: var(--mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--ink-muted); white-space: nowrap; }
 
     /* DAY CARDS */
-    .day-card {
-      background: var(--bg2);
-      border: 1px solid var(--border2);
-      border-radius: 12px;
-      margin-bottom: 12px;
-      overflow: hidden;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
+    .day-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; }
     .day-card:hover { border-color: var(--border); box-shadow: 0 4px 24px rgba(0,0,0,0.3); }
-    .day-header {
-      display: flex; align-items: center; gap: 12px;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-    }
+    .day-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
     .day-emoji { font-size: 1.4rem; }
     .day-info { flex: 1; }
     .day-date { font-family: var(--mono); font-size: 9px; color: var(--ink-muted); letter-spacing: 0.1em; margin-bottom: 2px; }
@@ -151,16 +110,8 @@
     .day-activities li::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-size: 10px; top: 4px; }
     .day-note { font-family: var(--mono); font-size: 9px; color: var(--teal); padding: 6px 10px; background: rgba(0,212,212,0.05); border-left: 2px solid var(--teal); border-radius: 0 4px 4px 0; }
 
-    /* WHO'S COMING */
-    .crew-card {
-      background: var(--bg2);
-      border: 1px solid var(--border2);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 12px;
-    }
-    .crew-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-    .crew-title { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--ink); letter-spacing: 0.05em; }
+    /* CREW */
+    .crew-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
     .crew-grid { display: flex; flex-direction: column; gap: 8px; }
     .crew-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: var(--bg3); border-radius: 6px; border: 1px solid var(--border); }
     .crew-name { font-size: 12px; color: var(--ink); font-weight: 500; }
@@ -171,13 +122,7 @@
     .cs-maybe { background: rgba(167,139,250,0.15); color: var(--purple); }
 
     /* VIBES */
-    .vibes-card {
-      background: linear-gradient(135deg, rgba(0,212,212,0.05), rgba(255,107,157,0.05));
-      border: 1px solid var(--border2);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 12px;
-    }
+    .vibes-card { background: linear-gradient(135deg, rgba(0,212,212,0.05), rgba(255,107,157,0.05)); border: 1px solid var(--border2); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
     .vibes-title { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 10px; }
     .vibe-tags { display: flex; flex-wrap: wrap; gap: 6px; }
     .vt { font-family: var(--mono); font-size: 9px; padding: 4px 10px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 20px; color: var(--ink-soft); }
@@ -193,17 +138,16 @@
 <div id="gate">
   <div style="font-size:3rem">🎂</div>
   <div id="gate-title">The Barangay</div>
-  <div id="gate-sub">ENTER PASSWORD TO VIEW ASTRID'S BIRTHDAY PLANS</div>
+  <div id="gate-sub">Enter password to view Astrid's birthday plans</div>
   <input id="gate-input" type="password" placeholder="password" autocomplete="off" />
   <div id="gate-err">wrong password — try again 🙈</div>
   <button id="gate-btn" onclick="checkPw()">Enter →</button>
 </div>
 
-<!-- MAIN CONTENT (hidden until unlocked) -->
+<!-- MAIN -->
 <div id="main">
 <div class="wrap">
 
-  <!-- HERO -->
   <div class="hero">
     <div class="hero-tag">The Barangay Presents</div>
     <h1 class="hero-title">Astrid's<br/><span>Birthday Week</span> 🎂</h1>
@@ -215,7 +159,6 @@
     </div>
   </div>
 
-  <!-- COUNTDOWN -->
   <div class="countdown-card">
     <div class="cd-label">⏳ Countdown to Astrid's Birthday Week</div>
     <div class="cd-nums">
@@ -227,10 +170,8 @@
     </div>
   </div>
 
-  <!-- SCHEDULE -->
   <div class="sh"><div class="sh-line"></div><div class="sh-text">📅 The Plan</div><div class="sh-line"></div></div>
 
-  <!-- JUN 18 -->
   <div class="day-card">
     <div class="day-header">
       <div class="day-emoji">🚗</div>
@@ -242,61 +183,57 @@
     </div>
     <div class="day-body">
       <ul class="day-activities">
-        <li>Drive from Las Vegas → Anaheim</li>
-        <li>Check in to hotel</li>
+        <li>Drive from Las Vegas → Anaheim (~4hrs)</li>
+        <li>Hotel check-in</li>
         <li>Settle in, get hype for tomorrow</li>
-        <li>Dinner near Anaheim / Downtown Disney area</li>
+        <li>Dinner near Anaheim / Downtown Disney</li>
       </ul>
-      <div class="day-note">~4hr drive from LV · Hotel TBD · Early check-in if possible</div>
+      <div class="day-note">Early check-in if possible · Hotel TBD</div>
     </div>
   </div>
 
-  <!-- JUN 19 -->
   <div class="day-card">
     <div class="day-header">
       <div class="day-emoji">🎢</div>
       <div class="day-info">
-        <div class="day-date">FRIDAY · JUNE 19</div>
+        <div class="day-date">FRIDAY · JUNE 19 — ASTRID'S BIRTHDAY 🎂</div>
         <div class="day-title">Disneyland 🏰</div>
       </div>
       <div class="day-badge db-hype">MAIN EVENT</div>
     </div>
     <div class="day-body">
       <ul class="day-activities">
-        <li>Full day at Disneyland with Astrid 🎉</li>
-        <li>Early entry if hotel has it — hit the rides before crowds</li>
-        <li>All the classic rides — Matterhorn, Space Mountain, Pirates</li>
-        <li>Astrid picks the agenda — it's her day</li>
+        <li>Full day at Disneyland — Astrid picks the agenda</li>
+        <li>Hit rides early before crowds (Matterhorn, Space Mountain, Pirates)</li>
+        <li>All the food, all the photos, all the magic</li>
         <li>Dinner in the park or Downtown Disney</li>
       </ul>
-      <div class="day-note">Astrid's actual birthday is Jun 19 🎂 Make it count</div>
+      <div class="day-note">It's her day. Whatever she wants. 🎉</div>
     </div>
   </div>
 
-  <!-- JUN 20 -->
   <div class="day-card">
     <div class="day-header">
       <div class="day-emoji">🏖️</div>
       <div class="day-info">
         <div class="day-date">SATURDAY · JUNE 20</div>
-        <div class="day-title">Beach + Dinner Celebration</div>
+        <div class="day-title">Beach + Birthday Dinner</div>
       </div>
       <div class="day-badge db-party">PARTY DAY</div>
     </div>
     <div class="day-body">
       <ul class="day-activities">
-        <li>Morning at the beach — SoCal vibes 🌊</li>
-        <li>Possible: Lake Poway picnic + ice cream + pedal boats (Hannah's idea)</li>
-        <li>Evening: Full birthday dinner celebration</li>
-        <li>Kathleen + Jordyn confirmed for beach & dinner 🎉</li>
-        <li>Hannah joining if schedule works out</li>
-        <li>Alyssa + Joe — pending concert tickets, might join dinner/beach</li>
+        <li>Morning at the beach — SoCal summer vibes 🌊</li>
+        <li>Possible: Lake Poway — picnic, ice cream, pedal boats</li>
+        <li>Evening: Full birthday dinner celebration 🥂</li>
+        <li>Kathleen + Jordyn confirmed ✅</li>
+        <li>Hannah joining if schedule works 🤙</li>
+        <li>Alyssa + Joe — pending concert tickets ⏳</li>
       </ul>
-      <div class="day-note">Most Barangay members join today — the big link-up 🙌</div>
+      <div class="day-note">Most of The Barangay links up today 🙌</div>
     </div>
   </div>
 
-  <!-- JUN 21 -->
   <div class="day-card">
     <div class="day-header">
       <div class="day-emoji">🌅</div>
@@ -309,68 +246,50 @@
     <div class="day-body">
       <ul class="day-activities">
         <li>Hotel checkout morning</li>
-        <li>Free from morning to afternoon — no agenda</li>
-        <li>Possible: Lake Poway (if not Sat) — picnic, pedal boats, ice cream 🍦</li>
-        <li>Hannah mentioned outrigger canoe vibes 🛶 (#SeafaringPeopleSummer)</li>
-        <li>Kathleen wants to meet up if still in the area</li>
+        <li>Free morning to afternoon — no agenda</li>
+        <li>Possible: Lake Poway (picnic, pedal boats, ice cream 🍦)</li>
+        <li>Hannah's idea: outrigger canoe 🛶 (#SeafaringPeopleSummer)</li>
         <li>Head home eveningish</li>
       </ul>
-      <div class="day-note">Open day — best window to add SD/Lake Poway activities</div>
+      <div class="day-note">Best window for SD / lake day if not Saturday</div>
     </div>
   </div>
 
-  <!-- WHO'S COMING -->
   <div class="sh"><div class="sh-line"></div><div class="sh-text">👥 The Barangay — Who's In</div><div class="sh-line"></div></div>
 
   <div class="crew-card">
     <div class="crew-grid">
       <div class="crew-row">
-        <div>
-          <div class="crew-name">🎂 Astrid (Birthday Girl)</div>
-          <div class="crew-days">Jun 18–21 · All days</div>
-        </div>
+        <div><div class="crew-name">🎂 Astrid (Birthday Girl)</div><div class="crew-days">Jun 18–21 · All days</div></div>
         <div class="crew-status cs-in">⭐ VIP</div>
       </div>
       <div class="crew-row">
-        <div>
-          <div class="crew-name">Anthony (Kuya Tony)</div>
-          <div class="crew-days">Jun 18–21 · All days</div>
-        </div>
+        <div><div class="crew-name">Anthony (Kuya Tony)</div><div class="crew-days">Jun 18–21 · All days</div></div>
         <div class="crew-status cs-in">✅ IN</div>
       </div>
       <div class="crew-row">
-        <div>
-          <div class="crew-name">Kathleen Orque + Jordyn</div>
-          <div class="crew-days">Jun 20 confirmed · Jun 21 possible</div>
-        </div>
+        <div><div class="crew-name">Kathleen Orque + Jordyn</div><div class="crew-days">Jun 20 confirmed · Jun 21 possible</div></div>
         <div class="crew-status cs-in">✅ IN (Jun 20)</div>
       </div>
       <div class="crew-row">
-        <div>
-          <div class="crew-name">Hannah</div>
-          <div class="crew-days">Jun 20 beach/dinner · Jun 21 flexible</div>
-        </div>
+        <div><div class="crew-name">Hannah</div><div class="crew-days">Jun 20 beach/dinner · Jun 21 flexible</div></div>
         <div class="crew-status cs-maybe">🤙 LIKELY</div>
       </div>
       <div class="crew-row">
-        <div>
-          <div class="crew-name">Alyssa Marie Yabut + Joe</div>
-          <div class="crew-days">Jun 20 dinner/beach · pending tickets</div>
-        </div>
+        <div><div class="crew-name">Alyssa Marie Yabut + Joe</div><div class="crew-days">Jun 20 dinner/beach</div></div>
         <div class="crew-status cs-pending">⏳ PENDING</div>
       </div>
     </div>
   </div>
 
-  <!-- VIBES -->
-  <div class="sh"><div class="sh-line"></div><div class="sh-text">✨ Vibes</div><div class="sh-line"></div></div>
+  <div class="sh"><div class="sh-line"></div><div class="sh-text">✨ The Vibe</div><div class="sh-line"></div></div>
   <div class="vibes-card">
-    <div class="vibes-title">The Energy This Week</div>
+    <div class="vibes-title">This Week's Energy</div>
     <div class="vibe-tags">
       <span class="vt">#SeafaringPeopleSummer</span>
-      <span class="vt">🏰 First Disneyland trip</span>
+      <span class="vt">🏰 Disneyland first timer</span>
       <span class="vt">🌊 Beach day</span>
-      <span class="vt">🛶 Outrigger canoe energy</span>
+      <span class="vt">🛶 Outrigger energy</span>
       <span class="vt">🍦 Pedal boats + ice cream</span>
       <span class="vt">🥳 Birthday dinner</span>
       <span class="vt">🇵🇭 Filipino family link-up</span>
@@ -378,11 +297,9 @@
     </div>
   </div>
 
-  <footer>
-    Made with <span class="footer-heart">♥</span> by Unit 0 · For The Barangay · Astrid's Birthday Week 2026
-  </footer>
+  <footer>Made with <span class="footer-heart">♥</span> by Unit 0 · For The Barangay · Astrid's Birthday Week 2026</footer>
 
-</div><!-- /wrap -->
+</div>
 </div><!-- /main -->
 
 <script>
@@ -392,17 +309,13 @@
       document.getElementById('gate').style.display = 'none';
       document.getElementById('main').style.display = 'block';
     } else {
-      var err = document.getElementById('gate-err');
-      err.style.display = 'block';
+      document.getElementById('gate-err').style.display = 'block';
       document.getElementById('gate-input').value = '';
       document.getElementById('gate-input').focus();
     }
   }
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') checkPw();
-  });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Enter') checkPw(); });
 
-  // Countdown to Jun 18 2026
   function updateCountdown() {
     var target = new Date('2026-06-18T00:00:00-07:00');
     var now = new Date();
@@ -413,12 +326,9 @@
       document.getElementById('cd-min').textContent = '00';
       return;
     }
-    var days = Math.floor(diff / (1000*60*60*24));
-    var hrs = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-    var min = Math.floor((diff % (1000*60*60)) / (1000*60));
-    document.getElementById('cd-days').textContent = String(days).padStart(2,'0');
-    document.getElementById('cd-hrs').textContent = String(hrs).padStart(2,'0');
-    document.getElementById('cd-min').textContent = String(min).padStart(2,'0');
+    document.getElementById('cd-days').textContent = String(Math.floor(diff/86400000)).padStart(2,'0');
+    document.getElementById('cd-hrs').textContent = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+    document.getElementById('cd-min').textContent = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
   }
   updateCountdown();
   setInterval(updateCountdown, 30000);
