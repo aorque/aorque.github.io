@@ -9,6 +9,45 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
+      --bg: #0a0f1e; --bg2: #0f1729; --bg3: #141f35;
+      --ink: #e8f0fe; --ink-soft: #8fa3c8; --ink-muted: #3a4a6b;
+      --border: #1a2540; --border2: #243050;
+      --gold: #f5c842; --teal: #00d4d4; --pink: #ff6b9d;
+      --green: #39d98a; --purple: #a78bfa; --orange: #fb923c;
+      --mono: 'Space Mono', monospace; --serif: 'Playfair Display', Georgia, serif; --sans: 'Inter', system-ui, sans-serif;
+    }
+
+    /* PASSWORD GATE */
+    #gate {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #0a0f1e;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 20px;
+      padding: 24px;
+    }
+    #gate-title { font-family: var(--serif); font-size: 2rem; font-weight: 800; color: var(--gold); text-align: center; }
+    #gate-sub { font-family: var(--mono); font-size: 10px; color: var(--ink-muted); letter-spacing: 0.2em; text-align: center; }
+    #gate-input {
+      background: #0f1729; border: 2px solid #243050; border-radius: 8px;
+      color: var(--ink); font-family: var(--mono); font-size: 1.1rem;
+      padding: 12px 20px; text-align: center; width: 100%; max-width: 280px;
+      letter-spacing: 0.15em; outline: none;
+      transition: border-color 0.2s;
+    }
+    #gate-input:focus { border-color: var(--gold); }
+    #gate-btn {
+      background: var(--gold); color: #0a0f1e;
+      border: none; border-radius: 8px;
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 12px 32px; cursor: pointer; width: 100%; max-width: 280px;
+      transition: opacity 0.15s;
+    }
+    #gate-btn:hover { opacity: 0.85; }
+    #gate-err { font-family: var(--mono); font-size: 10px; color: var(--pink); display: none; }
+    #main { display: none; }
+  </style>
+    :root {
       --bg: #0a0f1e;
       --bg2: #0f1729;
       --bg3: #141f35;
@@ -149,6 +188,19 @@
   </style>
 </head>
 <body>
+
+<!-- PASSWORD GATE -->
+<div id="gate">
+  <div style="font-size:3rem">🎂</div>
+  <div id="gate-title">The Barangay</div>
+  <div id="gate-sub">ENTER PASSWORD TO VIEW ASTRID'S BIRTHDAY PLANS</div>
+  <input id="gate-input" type="password" placeholder="password" autocomplete="off" />
+  <div id="gate-err">wrong password — try again 🙈</div>
+  <button id="gate-btn" onclick="checkPw()">Enter →</button>
+</div>
+
+<!-- MAIN CONTENT (hidden until unlocked) -->
+<div id="main">
 <div class="wrap">
 
   <!-- HERO -->
@@ -330,9 +382,26 @@
     Made with <span class="footer-heart">♥</span> by Unit 0 · For The Barangay · Astrid's Birthday Week 2026
   </footer>
 
-</div>
+</div><!-- /wrap -->
+</div><!-- /main -->
 
 <script>
+  function checkPw() {
+    var val = document.getElementById('gate-input').value.trim().toLowerCase();
+    if (val === 'barangay') {
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('main').style.display = 'block';
+    } else {
+      var err = document.getElementById('gate-err');
+      err.style.display = 'block';
+      document.getElementById('gate-input').value = '';
+      document.getElementById('gate-input').focus();
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPw();
+  });
+
   // Countdown to Jun 18 2026
   function updateCountdown() {
     var target = new Date('2026-06-18T00:00:00-07:00');
