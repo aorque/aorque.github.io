@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>will you go on a lil date with me?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --pink: #ffb6c1;
+      --lavender: #e6d5f5;
+      --mint: #b5ead7;
+      --cream: #fdf6f0;
+    }
+
+    body {
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--cream);
+      color: #5a4a6f;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes floatHeart {
+      0% {
+        opacity: 0;
+        transform: translateY(100vh) translateX(0);
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-100vh) translateX(100px);
+      }
+    }
+
+    .heart {
+      position: fixed;
+      font-size: 2rem;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      max-width: 500px;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: #5a4a6f;
+      line-height: 1.2;
+    }
+
+    .kaomoji {
+      font-size: 1.5rem;
+      display: block;
+      margin-top: 8px;
+      margin-bottom: 30px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 50px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      font-family: 'Nunito', inherit;
+      font-size: 1rem;
+      padding: 14px 35px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    #yes-btn {
+      background: linear-gradient(135deg, var(--pink) 0%, var(--lavender) 100%);
+      color: #5a4a6f;
+    }
+
+    #yes-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(255, 182, 193, 0.4);
+    }
+
+    #yes-btn:active {
+      transform: translateY(-1px);
+    }
+
+    #no-btn-container {
+      position: relative;
+      min-height: 50px;
+      display: inline-block;
+    }
+
+    .crying-kaomoji {
+      color: var(--pink);
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      animation: fadeInCry 0.4s ease-out;
+    }
+
+    @keyframes fadeInCry {
+      from {
+        opacity: 0;
+        transform: scale(1.5);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    #no-btn {
+      background: var(--mint);
+      color: #5a4a6f;
+      border: none;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    #no-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(181, 234, 215, 0.4);
+    }
+
+    #no-btn.shrinking {
+      animation: shrinkBtn 0.4s ease-out;
+    }
+
+    @keyframes shrinkBtn {
+      from {
+        transform: scale(1);
+      }
+      to {
+        transform: scale(0.85);
+      }
+    }
+
+    #no-btn.vanished {
+      display: none;
+    }
+
+    .vanish-message {
+      color: var(--pink);
+      font-size: 1.1rem;
+      font-style: italic;
+      margin-top: 30px;
+      opacity: 0;
+      animation: fadeInMessage 0.6s ease-out forwards;
+    }
+
+    @keyframes fadeInMessage {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .footer {
+      font-size: 0.95rem;
+      color: #b5a1d0;
+      margin-top: 40px;
+    }
+
+    /* Confirmation screen */
+    .confirmation-screen {
+      display: none;
+      animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .confirmation-screen.show {
+      display: block;
+    }
+
+    .confirmation-screen h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #5a4a6f;
+    }
+
+    .sparkles {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      animation: bounce 1s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .confirmation-screen p {
+      font-size: 1.1rem;
+      color: #8b7b9f;
+      margin-bottom: 30px;
+    }
+
+    .reset-btn {
+      background: var(--mint);
+      color: #5a4a6f;
+      padding: 12px 30px;
+      font-size: 0.9rem;
+    }
+
+    .reset-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(181, 234, 215, 0.4);
+    }
+
+    .confetti {
+      position: fixed;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .kaomoji {
+        font-size: 1.2rem;
+      }
+
+      button {
+        padding: 12px 28px;
+        font-size: 0.95rem;
+      }
+
+      .button-group {
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- PASSWORD GATE -->
+  <div id="pw-gate" style="position:fixed;inset:0;background:#0a0a0f;z-index:99999;display:flex;align-items:center;justify-content:center">
+    <div style="text-align:center;padding:32px;border:1px solid #1e1e30;border-radius:12px;background:#0f0f18;min-width:280px">
+      <input id="pw-input" type="password" placeholder="password" autofocus style="width:100%;background:#14141f;border:1px solid #1e1e30;border-radius:6px;padding:10px;color:#fff;font-size:14px;text-align:center;outline:none" onkeydown="if(event.key==='Enter')checkPw()" />
+      <div id="pw-err" style="margin-top:8px;font-size:11px;color:#ff4f6e;min-height:14px"></div>
+    </div>
+  </div>
+
+  <script>
+    (function(){if(sessionStorage.getItem('riffauth')==='spencerwire')document.getElementById('pw-gate').style.display='none'})();
+    function checkPw(){var v=document.getElementById('pw-input').value;if(v==='spencerwire'){sessionStorage.setItem('riffauth','spencerwire');document.getElementById('pw-gate').style.display='none';}else{document.getElementById('pw-err').textContent='wrong password';document.getElementById('pw-input').value='';document.getElementById('pw-input').focus();}}
+  </script>
+
+  <!-- FLOATING HEARTS BACKGROUND -->
+  <script>
+    function createFloatingHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.textContent = '💕';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.animation = `floatHeart ${5 + Math.random() * 3}s linear forwards`;
+      document.body.appendChild(heart);
+      
+      setTimeout(() => heart.remove(), 8000);
+    }
+
+    setInterval(createFloatingHeart, 2000);
+  </script>
+
+  <div class="container">
+    <div class="ask-screen">
+      <h1>will you go on a lil date with me?</h1>
+      <span class="kaomoji">(⁄ ⁄•⁄ω⁄•⁄ ⁄)</span>
+      <div class="button-group">
+        <button id="yes-btn">YES ✨</button>
+        <div id="no-btn-container">
+          <button id="no-btn">no 🥺</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="confirmation-screen">
+      <div class="sparkles">✨🌸✨</div>
+      <h2>YAAAAY!!</h2>
+      <p>we're gonna have so much fun 💗</p>
+      <button class="reset-btn" onclick="location.reload()">← back</button>
+    </div>
+
+    <div class="footer">made with 🌸 and a little too much courage</div>
+  </div>
+
+  <script>
+    const isMobile = () => {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    };
+
+    const noBtn = document.getElementById('no-btn');
+    const noBtnContainer = document.getElementById('no-btn-container');
+    const yesBtn = document.getElementById('yes-btn');
+    const askScreen = document.querySelector('.ask-screen');
+    const confirmationScreen = document.querySelector('.confirmation-screen');
+
+    let clickCount = 0;
+    const maxClicks = 5;
+    let currentScale = 1;
+
+    function shrinkNoButton() {
+      if (clickCount >= maxClicks) return;
+
+      clickCount++;
+      currentScale = 1 - (clickCount * 0.15);
+
+      // Add crying kaomoji above
+      const crying = document.createElement('div');
+      crying.className = 'crying-kaomoji';
+      crying.textContent = '╥﹏╥';
+      noBtnContainer.insertBefore(crying, noBtn);
+
+      // Shrink button
+      noBtn.classList.add('shrinking');
+      noBtn.style.transform = `scale(${Math.max(0.3, currentScale)})`;
+
+      setTimeout(() => {
+        noBtn.classList.remove('shrinking');
+      }, 400);
+
+      if (clickCount >= maxClicks) {
+        setTimeout(() => {
+          noBtn.classList.add('vanished');
+          
+          // Show vanish message
+          const vanishMsg = document.createElement('div');
+          vanishMsg.className = 'vanish-message';
+          vanishMsg.textContent = 'it just... vanished (´；ω；`)';
+          noBtnContainer.appendChild(vanishMsg);
+        }, 300);
+      }
+    }
+
+    // Remove existing event listeners and add new ones
+    const noBtn2 = noBtn.cloneNode(true);
+    noBtn.parentNode.replaceChild(noBtn2, noBtn);
+    
+    const finalNoBtn = document.getElementById('no-btn');
+
+    finalNoBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      shrinkNoButton();
+    });
+
+    finalNoBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      shrinkNoButton();
+    });
+
+    yesBtn.addEventListener('click', () => {
+      // Create confetti
+      for (let i = 0; i < 30; i++) {
+        createConfetti();
+      }
+      askScreen.style.display = 'none';
+      confirmationScreen.classList.add('show');
+    });
+
+    yesBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      // Create confetti
+      for (let i = 0; i < 30; i++) {
+        createConfetti();
+      }
+      askScreen.style.display = 'none';
+      confirmationScreen.classList.add('show');
+    });
+
+    function createConfetti() {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.textContent = ['🌸', '✨', '💗', '🎉', '💕'][Math.floor(Math.random() * 5)];
+      confetti.style.left = Math.random() * window.innerWidth + 'px';
+      confetti.style.top = '-20px';
+      confetti.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+      confetti.style.animation = `confettiFall ${2 + Math.random() * 1}s linear forwards`;
+      document.body.appendChild(confetti);
+
+      setTimeout(() => confetti.remove(), 3000);
+    }
+
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes confettiFall {
+        to {
+          transform: translateY(${window.innerHeight + 100}px) translateX(${(Math.random() - 0.5) * 200}px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
