@@ -308,32 +308,99 @@ Prep coffee. Update wardrobe. GL.
     const responseArea = document.getElementById('response-area');
 
     let declineCount = 0;
-    const declineSequence = ['--decline', '--seriously?', '--please_reconsider'];
+    const initialSequence = ['--decline', '--are_you_sure', '--seriously', '--please_reconsider', '--i_am_begging_you'];
+    const errorMessages = [
+      'ERROR: emotional_damage.exe',
+      'FATAL: self_worth.dll not found',
+      'WARNING: deploying puppy_eyes.sh',
+      'CRITICAL: dignity.sys corrupted'
+    ];
+    const unhingedLabels = [
+      '--why_not_tho',
+      '--its_just_a_date',
+      '--i_made_an_app_for_this',
+      '--please_im_begging_with_sudo'
+    ];
+
+    function getLoadingBarString(clickNum) {
+      // Clicks 26-45: 20 clicks total, distribute 10 fills across them
+      const progressInRange = clickNum - 26; // 0-19
+      const percentage = Math.min(20 + Math.floor((progressInRange / 19) * 80), 100);
+      const filled = Math.round((percentage / 100) * 10);
+      const empty = 10 - filled;
+      const bar = '[' + '████'.repeat(filled) + '░░░░'.repeat(empty).substring(0, 40 - filled * 4) + '] ';
+      return bar + 'Compiling reasons to say yes... ' + percentage + '%';
+    }
 
     function handleDecline() {
-      if (declineCount === 0) {
-        const error = document.createElement('div');
-        error.className = 'error-message';
-        error.textContent = 'ERROR: This operation is not permitted. See man riff(1) for details.';
-        responseArea.innerHTML = '';
-        responseArea.appendChild(error);
-      } else if (declineCount === 1) {
-        noBtn.textContent = '--seriously?';
-      } else if (declineCount === 2) {
-        noBtn.textContent = '--please_reconsider';
-      } else if (declineCount >= 3) {
-        const error = document.createElement('div');
-        error.className = 'error-message';
-        error.textContent = 'sudo: permission denied';
-        responseArea.innerHTML = '';
-        responseArea.appendChild(error);
-        noBtn.disabled = true;
-        noBtn.style.opacity = '0.5';
-        noBtn.style.cursor = 'not-allowed';
-        return;
-      }
-      
       declineCount++;
+
+      // Clicks 1-10: Normal decline sequence
+      if (declineCount <= 10) {
+        const msg = initialSequence[Math.min(declineCount - 1, initialSequence.length - 1)];
+        noBtn.textContent = msg;
+        responseArea.innerHTML = '';
+      }
+      // Clicks 11-25: Terminal errors
+      else if (declineCount <= 25) {
+        const errorIndex = (declineCount - 11) % errorMessages.length;
+        const error = document.createElement('div');
+        error.className = 'error-message';
+        error.textContent = errorMessages[errorIndex];
+        responseArea.appendChild(error);
+      }
+      // Clicks 26-45: Loading bars
+      else if (declineCount <= 45) {
+        const loadingBar = document.createElement('div');
+        loadingBar.className = 'output';
+        loadingBar.textContent = getLoadingBarString(declineCount);
+        responseArea.appendChild(loadingBar);
+      }
+      // Clicks 46-60: Unhinged button labels
+      else if (declineCount <= 60) {
+        const labelIndex = (declineCount - 46) % unhingedLabels.length;
+        noBtn.textContent = unhingedLabels[labelIndex];
+      }
+      // Clicks 61-68: Special messages
+      else if (declineCount < 69) {
+        const specialMsg = document.createElement('div');
+        specialMsg.className = 'output';
+        if (declineCount === 61) {
+          specialMsg.textContent = 'rm -rf /reasons/to/say/no';
+        } else if (declineCount === 62) {
+          specialMsg.textContent = 'sudo give_chance --force';
+        } else {
+          specialMsg.textContent = '';
+        }
+        if (specialMsg.textContent) {
+          responseArea.appendChild(specialMsg);
+        }
+      }
+      // Click 69: The nice moment
+      else if (declineCount === 69) {
+        const success = document.createElement('div');
+        success.className = 'success-message';
+        success.textContent = 'nice.exe executed successfully 😏';
+        responseArea.innerHTML = '';
+        responseArea.appendChild(success);
+
+        const asciiHeart = document.createElement('div');
+        asciiHeart.className = 'ascii-heart';
+        asciiHeart.innerHTML = `
+  ❤️  ❤️  ❤️<br>
+ ❤️   ❤️   ❤️<br>
+❤️     ❤️     ❤️<br>
+ ❤️   ❤️   ❤️<br>
+  ❤️  ❤️  ❤️
+        `;
+        responseArea.appendChild(asciiHeart);
+
+        // Show confirmation screen
+        setTimeout(() => {
+          askScreen.style.display = 'none';
+          confirmationScreen.classList.add('show');
+        }, 800);
+      }
     }
 
     yesBtn.addEventListener('click', () => {
