@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>be my riff partner?</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --accent: #ff5c5c;
+      --accent2: #ff8c42;
+      --dark: #0a0a0f;
+      --darker: #14141f;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, var(--dark) 0%, #1a0a0f 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        repeating-linear-gradient(
+          0deg,
+          rgba(255, 92, 92, 0.03) 0px,
+          rgba(255, 92, 92, 0.03) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      max-width: 500px;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes glitch {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      margin-bottom: 40px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -2px;
+      line-height: 1.1;
+    }
+
+    h1:hover {
+      animation: glitch 0.3s ease-in-out;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 60px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      font-size: 1.1rem;
+      padding: 16px 40px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    #yes-btn {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(255, 92, 92, 0.5);
+    }
+
+    #yes-btn:hover,
+    #yes-btn:active {
+      transform: scale(1.1);
+      box-shadow: 0 0 40px rgba(255, 92, 92, 0.8);
+    }
+
+    #yes-btn:active {
+      transform: scale(0.95);
+    }
+
+    #no-btn {
+      background: rgba(255, 92, 92, 0.1);
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      position: relative;
+    }
+
+    #no-btn:hover {
+      background: rgba(255, 92, 92, 0.2);
+    }
+
+    #no-btn.sad {
+      opacity: 0.5;
+      border-color: #666;
+      color: #666;
+      cursor: not-allowed;
+    }
+
+    #no-btn.sad:hover {
+      background: rgba(255, 92, 92, 0.1);
+      transform: none;
+    }
+
+    .escape-counter {
+      font-size: 0.9rem;
+      color: #ff8c42;
+      margin-top: 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .escape-counter.show {
+      opacity: 1;
+    }
+
+    .footer {
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 40px;
+      font-style: italic;
+    }
+
+    /* Confirmation screen */
+    .confirmation-screen {
+      display: none;
+      animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .confirmation-screen.show {
+      display: block;
+    }
+
+    .confirmation-screen h2 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .confirmation-screen p {
+      font-size: 1.1rem;
+      color: #ccc;
+      margin-bottom: 40px;
+    }
+
+    .reset-btn {
+      background: rgba(255, 92, 92, 0.2);
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      padding: 12px 30px;
+      font-size: 0.9rem;
+    }
+
+    .reset-btn:hover {
+      background: rgba(255, 92, 92, 0.3);
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      button {
+        padding: 14px 30px;
+        font-size: 1rem;
+      }
+
+      .button-group {
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- PASSWORD GATE -->
+  <div id="pw-gate" style="position:fixed;inset:0;background:#0a0a0f;z-index:99999;display:flex;align-items:center;justify-content:center">
+    <div style="text-align:center;padding:32px;border:1px solid #1e1e30;border-radius:12px;background:#0f0f18;min-width:280px">
+      <input id="pw-input" type="password" placeholder="password" autofocus style="width:100%;background:#14141f;border:1px solid #1e1e30;border-radius:6px;padding:10px;color:#fff;font-size:14px;text-align:center;outline:none" onkeydown="if(event.key==='Enter')checkPw()" />
+      <div id="pw-err" style="margin-top:8px;font-size:11px;color:#ff4f6e;min-height:14px"></div>
+    </div>
+  </div>
+
+  <script>
+    (function(){if(sessionStorage.getItem('riffauth')==='spencerwire')document.getElementById('pw-gate').style.display='none'})();
+    function checkPw(){var v=document.getElementById('pw-input').value;if(v==='spencerwire'){sessionStorage.setItem('riffauth','spencerwire');document.getElementById('pw-gate').style.display='none';}else{document.getElementById('pw-err').textContent='wrong password';document.getElementById('pw-input').value='';document.getElementById('pw-input').focus();}}
+  </script>
+
+  <div class="container">
+    <div class="ask-screen">
+      <h1>be my riff partner?</h1>
+      <div class="button-group">
+        <button id="yes-btn">YES</button>
+        <button id="no-btn">no</button>
+      </div>
+      <div id="escape-counter" class="escape-counter"></div>
+    </div>
+
+    <div class="confirmation-screen">
+      <h2>🔥 LET'S GO</h2>
+      <p>screenshot this.</p>
+      <button class="reset-btn" onclick="location.reload()">← back</button>
+    </div>
+
+    <div class="footer">built at midnight by someone who thought this was a good idea</div>
+  </div>
+
+  <script>
+    const isMobile = () => {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    };
+
+    const noBtn = document.getElementById('no-btn');
+    const yesBtn = document.getElementById('yes-btn');
+    const askScreen = document.querySelector('.ask-screen');
+    const confirmationScreen = document.querySelector('.confirmation-screen');
+    const escapeCounter = document.getElementById('escape-counter');
+
+    let escapeCount = 0;
+    const maxEscapes = 5;
+
+    function moveNoButton() {
+      if (noBtn.classList.contains('sad')) return;
+
+      escapeCount++;
+      
+      if (isMobile()) {
+        // Mobile: random teleport
+        const x = Math.random() * (window.innerWidth - 100);
+        const y = Math.random() * (window.innerHeight - 50) + 50;
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
+      } else {
+        // Desktop: move away from cursor
+        const rect = noBtn.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 150;
+        const newX = Math.max(50, Math.min(window.innerWidth - rect.width - 50, cx + Math.cos(angle) * distance));
+        const newY = Math.max(50, Math.min(window.innerHeight - rect.height - 50, cy + Math.sin(angle) * distance));
+        
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = (newX - rect.width / 2) + 'px';
+        noBtn.style.top = (newY - rect.height / 2) + 'px';
+      }
+
+      if (escapeCount >= maxEscapes) {
+        noBtn.textContent = 'fine. you win. but you\'ll regret this.';
+        noBtn.classList.add('sad');
+        escapeCounter.classList.remove('show');
+      } else {
+        escapeCounter.textContent = `(${escapeCount}/${maxEscapes} escapes)`;
+        escapeCounter.classList.add('show');
+      }
+    }
+
+    if (isMobile()) {
+      noBtn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        moveNoButton();
+      });
+    } else {
+      noBtn.addEventListener('mouseover', moveNoButton);
+      noBtn.addEventListener('click', moveNoButton);
+    }
+
+    yesBtn.addEventListener('click', () => {
+      askScreen.style.display = 'none';
+      confirmationScreen.classList.add('show');
+    });
+
+    yesBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      askScreen.style.display = 'none';
+      confirmationScreen.classList.add('show');
+    });
+  </script>
+</body>
+</html>
