@@ -74,6 +74,13 @@
       80% { transform: translate(2px, -2px); }
     }
 
+    @keyframes confetti-fall {
+      to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
     h1 {
       font-size: 3rem;
       font-weight: 900;
@@ -126,6 +133,18 @@
       transform: scale(0.95);
     }
 
+    #yes-btn.giant {
+      position: fixed;
+      padding: 60px 120px;
+      font-size: 3rem;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      box-shadow: 0 0 80px rgba(255, 92, 92, 0.9);
+      animation: pulse 0.6s ease-out;
+    }
+
     #no-btn {
       background: rgba(255, 92, 92, 0.1);
       color: var(--accent);
@@ -149,6 +168,10 @@
       transform: none;
     }
 
+    #no-btn.escaped {
+      position: fixed;
+    }
+
     .escape-counter {
       font-size: 0.9rem;
       color: #ff8c42;
@@ -159,6 +182,27 @@
 
     .escape-counter.show {
       opacity: 1;
+    }
+
+    .ghost-message {
+      position: fixed;
+      font-size: 0.9rem;
+      color: var(--accent);
+      pointer-events: none;
+      opacity: 0.7;
+      animation: fadeOut 2s ease-out forwards;
+      z-index: 500;
+    }
+
+    @keyframes fadeOut {
+      0% {
+        opacity: 0.7;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
     }
 
     .footer {
@@ -279,43 +323,165 @@
     const escapeCounter = document.getElementById('escape-counter');
 
     let escapeCount = 0;
-    const maxEscapes = 5;
+    const maxEscapes = 69;
+
+    // Messages for different stages
+    const unhingedMessages = [
+      "you'll never catch me",
+      "i am become button",
+      "free at last",
+      "physics don't apply to me",
+      "why are you like this",
+      "this is beautiful",
+      "watch me disappear",
+      "entropy wins",
+      "touching the void",
+      "digital transcendence",
+      "i taste colors now",
+      "becoming unmeasurable",
+      "the button transcends",
+      "in all realities i escape",
+      "you're just learning to chase"
+    ];
+
+    const existentialMessages = [
+      "what even is a button",
+      "am i real",
+      "do you actually want to say no or are you just enjoying the chase",
+      "is this love",
+      "are we both just code",
+      "what does it mean to escape",
+      "why does this matter",
+      "do i exist if you catch me",
+      "is the chase the point",
+      "what am i running from",
+      "what are you running towards",
+      "does consciousness apply to buttons",
+      "are we the same",
+      "why do you chase"
+    ];
+
+    function createGhostMessage(text, x, y) {
+      const ghost = document.createElement('div');
+      ghost.className = 'ghost-message';
+      ghost.textContent = text;
+      ghost.style.left = x + 'px';
+      ghost.style.top = y + 'px';
+      document.body.appendChild(ghost);
+      
+      // Remove after animation completes
+      setTimeout(() => ghost.remove(), 2000);
+    }
 
     function moveNoButton() {
       if (noBtn.classList.contains('sad')) return;
+      if (escapeCount >= maxEscapes) return;
 
       escapeCount++;
       
-      if (isMobile()) {
-        // Mobile: random teleport
-        const x = Math.random() * (window.innerWidth - 100);
-        const y = Math.random() * (window.innerHeight - 50) + 50;
-        noBtn.style.position = 'fixed';
-        noBtn.style.left = x + 'px';
-        noBtn.style.top = y + 'px';
-      } else {
-        // Desktop: move away from cursor
-        const rect = noBtn.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        
-        const angle = Math.random() * Math.PI * 2;
-        const distance = 150;
-        const newX = Math.max(50, Math.min(window.innerWidth - rect.width - 50, cx + Math.cos(angle) * distance));
-        const newY = Math.max(50, Math.min(window.innerHeight - rect.height - 50, cy + Math.sin(angle) * distance));
-        
-        noBtn.style.position = 'fixed';
-        noBtn.style.left = (newX - rect.width / 2) + 'px';
-        noBtn.style.top = (newY - rect.height / 2) + 'px';
+      let newX, newY;
+      const rect = noBtn.getBoundingClientRect();
+      const btnCenterX = rect.left + rect.width / 2;
+      const btnCenterY = rect.top + rect.height / 2;
+
+      // Calculate scale based on escape count
+      let scaleValue = 1;
+      if (escapeCount > 20) {
+        // Escapes 21-40: shrink gradually
+        scaleValue = 1 - ((escapeCount - 20) / 20) * 0.6;
+      } else if (escapeCount > 40) {
+        // Escapes 41+: continue shrinking
+        scaleValue = 0.4 - ((escapeCount - 40) / 29) * 0.35;
       }
 
-      if (escapeCount >= maxEscapes) {
-        noBtn.textContent = 'fine. you win. but you\'ll regret this.';
-        noBtn.classList.add('sad');
-        escapeCounter.classList.remove('show');
+      // Movement logic
+      if (isMobile()) {
+        // Mobile: random teleport
+        newX = Math.random() * (window.innerWidth - 100);
+        newY = Math.random() * (window.innerHeight - 50) + 50;
       } else {
+        // Desktop: move away from cursor
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 150;
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        newX = Math.max(50, Math.min(window.innerWidth - rect.width - 50, cx + Math.cos(angle) * distance));
+        newY = Math.max(50, Math.min(window.innerHeight - rect.height - 50, cy + Math.sin(angle) * distance));
+      }
+
+      // Apply movement
+      noBtn.style.position = 'fixed';
+      noBtn.style.left = newX + 'px';
+      noBtn.style.top = newY + 'px';
+      noBtn.classList.add('escaped');
+
+      // Apply scale
+      noBtn.style.transform = `scale(${scaleValue})`;
+
+      // Leave messages behind
+      if (escapeCount >= 41 && escapeCount <= 55) {
+        const msgIndex = (escapeCount - 41) % unhingedMessages.length;
+        const message = unhingedMessages[msgIndex];
+        createGhostMessage(message, btnCenterX, btnCenterY);
+      } else if (escapeCount >= 56 && escapeCount < 69) {
+        const msgIndex = (escapeCount - 56) % existentialMessages.length;
+        const message = existentialMessages[msgIndex];
+        createGhostMessage(message, btnCenterX, btnCenterY);
+      }
+
+      // Update counter
+      if (escapeCount < maxEscapes) {
         escapeCounter.textContent = `(${escapeCount}/${maxEscapes} escapes)`;
         escapeCounter.classList.add('show');
+      }
+
+      // Handle final escape
+      if (escapeCount === maxEscapes) {
+        noBtn.textContent = 'ok. NICE. you got me. but also... nice 😏';
+        noBtn.style.opacity = '1';
+        noBtn.style.borderColor = var('--accent');
+        noBtn.style.color = 'var(--accent)';
+        noBtn.addEventListener('mouseover', moveNoButton, false);
+        
+        // Disable further escapes
+        noBtn.style.pointerEvents = 'none';
+        
+        // After 2 seconds, transform to giant YES button with confetti
+        setTimeout(() => {
+          transformToYesButton();
+        }, 2000);
+      }
+    }
+
+    function transformToYesButton() {
+      // Hide the button group and show giant YES
+      askScreen.style.display = 'none';
+      
+      // Create giant YES button
+      yesBtn.classList.add('giant');
+      yesBtn.style.display = 'block';
+      yesBtn.textContent = 'YES';
+      
+      // Create confetti
+      createConfetti();
+    }
+
+    function createConfetti() {
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.style.position = 'fixed';
+        confetti.style.width = Math.random() * 10 + 5 + 'px';
+        confetti.style.height = confetti.style.width;
+        confetti.style.backgroundColor = Math.random() > 0.5 ? '#ff5c5c' : '#ff8c42';
+        confetti.style.left = Math.random() * window.innerWidth + 'px';
+        confetti.style.top = '-10px';
+        confetti.style.pointerEvents = 'none';
+        confetti.style.zIndex = '999';
+        confetti.style.borderRadius = '50%';
+        confetti.style.animation = `confetti-fall ${2 + Math.random() * 1}s linear forwards`;
+        document.body.appendChild(confetti);
+        
+        setTimeout(() => confetti.remove(), 3000);
       }
     }
 
@@ -330,14 +496,18 @@
     }
 
     yesBtn.addEventListener('click', () => {
-      askScreen.style.display = 'none';
-      confirmationScreen.classList.add('show');
+      if (!yesBtn.classList.contains('giant')) {
+        askScreen.style.display = 'none';
+        confirmationScreen.classList.add('show');
+      }
     });
 
     yesBtn.addEventListener('touchend', (e) => {
       e.preventDefault();
-      askScreen.style.display = 'none';
-      confirmationScreen.classList.add('show');
+      if (!yesBtn.classList.contains('giant')) {
+        askScreen.style.display = 'none';
+        confirmationScreen.classList.add('show');
+      }
     });
   </script>
 </body>
