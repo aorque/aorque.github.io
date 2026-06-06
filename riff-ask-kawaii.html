@@ -176,6 +176,16 @@
       }
     }
 
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    #no-btn.shaking {
+      animation: shake 0.3s ease-in-out infinite;
+    }
+
     #no-btn.vanished {
       display: none;
     }
@@ -196,6 +206,15 @@
       to {
         opacity: 1;
       }
+    }
+
+    .begging-text {
+      color: #d4738f;
+      font-size: 1rem;
+      font-style: italic;
+      margin-bottom: 12px;
+      animation: fadeInMessage 0.4s ease-out;
+      font-weight: 600;
     }
 
     .footer {
@@ -264,6 +283,54 @@
       position: fixed;
       pointer-events: none;
       z-index: 3;
+    }
+
+    .nice-joke-screen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .nice-joke-screen.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .nice-joke-content {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      color: #5a4a6f;
+      animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .nice-joke-content h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .nice-joke-content p {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
     }
 
     @media (max-width: 600px) {
@@ -338,6 +405,15 @@
     <div class="footer">made with 🌸 and a little too much courage</div>
   </div>
 
+  <!-- NICE JOKE MODAL -->
+  <div class="nice-joke-screen" id="niceJokeScreen">
+    <div class="nice-joke-content">
+      <h2>ok fine... but also...</h2>
+      <p style="font-size: 5rem; margin: 20px 0;">😏</p>
+      <button class="reset-btn" onclick="location.reload()">← back</button>
+    </div>
+  </div>
+
   <script>
     const isMobile = () => {
       return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -348,40 +424,138 @@
     const yesBtn = document.getElementById('yes-btn');
     const askScreen = document.querySelector('.ask-screen');
     const confirmationScreen = document.querySelector('.confirmation-screen');
+    const niceJokeScreen = document.getElementById('niceJokeScreen');
 
     let clickCount = 0;
-    const maxClicks = 5;
+    const maxClicks = 69;
     let currentScale = 1;
+
+    // Kaomoji progression arrays
+    const kaomojis = [
+      // Early (1-15): Sad
+      ['(╥﹏╥)', '(｡•́︿•̀｡)', '(>_<)', '(╥﹏╥)', '(｡•́︿•̀｡)', '(>_<)', '(╥﹏╥)', '(｡•́︿•̀｡)', '(>_<)', '(╥﹏╥)', '(｡•́︿•̀｡)', '(>_<)', '(╥﹏╥)', '(｡•́︿•̀｡)', '(>_<)'],
+      // Mid (16-30): Distressed
+      ['(ノД`)·', '(╯°□°）╯', '(┳◇┳)', '(ノД`)·', '(╯°□°）╯', '(┳◇┳)', '(ノД`)·', '(╯°□°）╯', '(┳◇┳)', '(ノД`)·', '(╯°□°）╯', '(┳◇┳)', '(ノД`)·', '(╯°□°）╯', '(┳◇┳)'],
+      // Late (31-50): Desperate
+      ['(;´༎ຶД༎ຶ`)', 'ヽ(；▽；)ノ', '(」゜ロ゜)」', '(;´༎ຶД༎ຶ`)', 'ヽ(；▽；)ノ', '(」゜ロ゜)」', '(;´༎ຶД༎ຶ`)', 'ヽ(；▽；)ノ', '(」゜ロ゜)」', '(;´༎ຶД༎ຶ`)', 'ヽ(；▽；)ノ', '(」゜ロ゜)」', '(;´༎ຶД༎ຶ`)', 'ヽ(；▽；)ノ', '(」゜ロ゜)」', '(;´༎ຶД༎ຶ`)', 'ヽ(；▽；)ノ', '(」゜ロ゜)」', '(;´༎ຶД༎ຶ`)', 'ヽ(；▽；)ノ'],
+      // Begging (51-68): Ultra desperate
+      ['お願い！(>人<)', '頑張って！(ง •̀_•́)ง', 'please... (´;ω;`)', 'お願い！(>人<)', '頑張って！(ง •̀_•́)ง', 'please... (´;ω;`)', 'お願い！(>人<)', '頑張って！(ง •̀_•́)ง', 'please... (´;ω;`)', 'お願い！(>人<)', '頑張って！(ง •̀_•́)ง', 'please... (´;ω;`)', 'お願い！(>人<)', '頑張って！(ง •̀_•́)ง', 'please... (´;ω;`)', 'お願い！(>人<)', '頑望って！(ง •̀_•́)ง', 'please... (´;ω;`)'],
+    ];
+
+    const beggingTexts = [
+      'please...',
+      'i\'m sorry...',
+      'please reconsider...',
+      'don\'t you like me? 😢',
+      'give me a chance...',
+      'i\'m begging you...',
+      'please say yes...',
+      'pretty please...',
+      'with sugar on top...',
+      'i\'ll do anything...',
+      'just give it a try...',
+      'come on...',
+      'please be kind...',
+      'i need this...',
+      'please... 💔',
+      'you\'re breaking my heart...',
+      'one more chance...',
+      'i believe in us...',
+    ];
+
+    function getKaomoji(click) {
+      if (click <= 15) {
+        return kaomojis[0][(click - 1) % kaomojis[0].length];
+      } else if (click <= 30) {
+        return kaomojis[1][(click - 16) % kaomojis[1].length];
+      } else if (click <= 50) {
+        return kaomojis[2][(click - 31) % kaomojis[2].length];
+      } else if (click < 69) {
+        return kaomojis[3][(click - 51) % kaomojis[3].length];
+      } else {
+        return 'nice 😏';
+      }
+    }
+
+    function getButtonColor(click) {
+      if (click <= 30) {
+        return 'var(--mint)';
+      }
+      // Progressive color shift from mint to pink/red (clicks 31-68)
+      const colorProgress = (click - 30) / (68 - 30);
+      // Interpolate between mint (#b5ead7) and red (#ff6b9d)
+      const r = Math.round(181 + (255 - 181) * colorProgress);
+      const g = Math.round(234 + (107 - 234) * colorProgress);
+      const b = Math.round(215 + (157 - 215) * colorProgress);
+      return `rgb(${r}, ${g}, ${b})`;
+    }
 
     function shrinkNoButton() {
       if (clickCount >= maxClicks) return;
 
       clickCount++;
-      currentScale = 1 - (clickCount * 0.15);
 
+      // Clicks 1-15: Small scale steps (0.92 per click)
+      // Clicks 16-68: Tiny scale steps (0.97 per click to make it last)
+      if (clickCount <= 15) {
+        currentScale *= 0.92;
+      } else if (clickCount < 69) {
+        currentScale *= 0.97;
+      }
+
+      currentScale = Math.max(0.05, currentScale);
+
+      // Get appropriate kaomoji
+      const emoji = getKaomoji(clickCount);
+      
       // Add crying kaomoji above
       const crying = document.createElement('div');
       crying.className = 'crying-kaomoji';
-      crying.textContent = '╥﹏╥';
+      crying.textContent = emoji;
       noBtnContainer.insertBefore(crying, noBtn);
+
+      // Update button color based on click count
+      const newColor = getButtonColor(clickCount);
+      noBtn.style.background = newColor;
+
+      // Add shaking animation for clicks 16-30
+      if (clickCount >= 16 && clickCount <= 30) {
+        noBtn.classList.add('shaking');
+      } else if (clickCount > 30) {
+        noBtn.classList.remove('shaking');
+      }
 
       // Shrink button
       noBtn.classList.add('shrinking');
-      noBtn.style.transform = `scale(${Math.max(0.3, currentScale)})`;
+      noBtn.style.transform = `scale(${currentScale})`;
 
       setTimeout(() => {
         noBtn.classList.remove('shrinking');
       }, 400);
 
+      // Add begging text for clicks 51-68
+      if (clickCount >= 51 && clickCount < 69) {
+        const beggingText = document.createElement('div');
+        beggingText.className = 'begging-text';
+        beggingText.textContent = beggingTexts[(clickCount - 51) % beggingTexts.length];
+        noBtnContainer.insertBefore(beggingText, noBtn);
+      }
+
+      // Special event on click 69
       if (clickCount >= maxClicks) {
         setTimeout(() => {
-          noBtn.classList.add('vanished');
+          // Create massive confetti
+          for (let i = 0; i < 100; i++) {
+            createConfetti();
+          }
           
-          // Show vanish message
-          const vanishMsg = document.createElement('div');
-          vanishMsg.className = 'vanish-message';
-          vanishMsg.textContent = 'it just... vanished (´；ω；`)';
-          noBtnContainer.appendChild(vanishMsg);
+          // Hide the ask screen
+          askScreen.style.display = 'none';
+          
+          // Show nice joke screen
+          setTimeout(() => {
+            niceJokeScreen.classList.add('show');
+          }, 300);
         }, 300);
       }
     }
@@ -423,7 +597,7 @@
     function createConfetti() {
       const confetti = document.createElement('div');
       confetti.className = 'confetti';
-      confetti.textContent = ['🌸', '✨', '💗', '🎉', '💕'][Math.floor(Math.random() * 5)];
+      confetti.textContent = ['🌸', '✨', '💗', '🎉', '💕', '💖', '🌺', '⭐'][Math.floor(Math.random() * 8)];
       confetti.style.left = Math.random() * window.innerWidth + 'px';
       confetti.style.top = '-20px';
       confetti.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
