@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riff — You said yes 🔥</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#09090f;--surface:#0f0f1a;--border:#1c1c2e;
+  --accent:#ff5c5c;--accent2:#ff8c42;
+  --text:#f0f0f5;--muted:#6b6b80;--green:#4ecdc4;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+.blob{position:fixed;width:500px;height:500px;border-radius:50%;filter:blur(120px);opacity:0.10;pointer-events:none;z-index:0;}
+.blob-1{background:#ff5c5c;top:-200px;left:-100px;}
+.blob-2{background:#ff8c42;bottom:-200px;right:-100px;}
+
+.page{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:32px 20px 80px;}
+
+nav{width:100%;max-width:480px;display:flex;align-items:center;justify-content:space-between;padding-bottom:40px;}
+.logo{font-size:18px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-tag{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;border:1px solid var(--border);padding:4px 10px;border-radius:20px;}
+
+/* ===== STEP 1: DATE PICKER ===== */
+#step-pick{width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;gap:20px;}
+
+.hero-label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);}
+.hero-title{font-size:clamp(30px,8vw,46px);font-weight:900;letter-spacing:-2px;text-align:center;line-height:1.05;}
+.hero-title span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:14px;color:var(--muted);text-align:center;line-height:1.6;padding:0 8px;}
+
+.pick-card{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px 24px;position:relative;overflow:hidden;}
+.pick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+
+.pick-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
+
+.field-group{display:flex;flex-direction:column;gap:14px;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+input[type="text"],input[type="date"],input[type="time"],input[type="datetime-local"]{
+  width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;
+  padding:14px 16px;font-size:15px;font-family:'Inter',sans-serif;
+  color:var(--text);outline:none;transition:border-color 0.2s;-webkit-appearance:none;
+  color-scheme:dark;
+}
+input:focus{border-color:var(--accent);}
+input::placeholder{color:var(--muted);}
+
+.btn-set{
+  width:100%;margin-top:8px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none;border-radius:12px;padding:17px;
+  font-size:15px;font-weight:700;font-family:'Inter',sans-serif;
+  color:#fff;cursor:pointer;-webkit-appearance:none;touch-action:manipulation;
+  transition:opacity 0.2s,transform 0.1s;
+}
+.btn-set:hover{opacity:0.9;}
+.btn-set:active{transform:scale(0.98);}
+
+/* ===== STEP 2: COUNTDOWN ===== */
+#step-countdown{width:100%;max-width:480px;display:none;flex-direction:column;align-items:center;gap:20px;}
+
+.confirmed-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(78,205,196,0.1);border:1px solid rgba(78,205,196,0.3);
+  border-radius:20px;padding:6px 16px;
+  font-size:11px;font-weight:700;letter-spacing:1px;color:var(--green);
+}
+
+.date-display{
+  width:100%;background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:20px 24px;text-align:center;
+}
+.date-display .dd-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.date-display .dd-val{font-size:18px;font-weight:800;letter-spacing:-0.5px;}
+
+/* Big countdown */
+.countdown-card{
+  width:100%;background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:32px 24px;text-align:center;position:relative;overflow:hidden;
+}
+.countdown-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+.cd-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:24px;}
+.cd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.cd-unit{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 8px;}
+.cd-num{font-family:'Space Mono',monospace;font-size:clamp(24px,7vw,36px);font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+.cd-unit-label{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+
+/* Progress bar */
+.progress-wrap{width:100%;margin-top:20px;}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:8px;}
+.progress-bar{width:100%;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 1s linear;}
+
+/* Riff session info */
+.session-card{
+  width:100%;background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:20px 24px;
+}
+.session-card .sc-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+.session-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.session-row:last-child{border-bottom:none;padding-bottom:0;}
+.session-row:first-of-type{padding-top:0;}
+.sr-icon{font-size:18px;flex-shrink:0;}
+.sr-text{font-size:13px;color:var(--muted);line-height:1.4;}
+.sr-text b{color:var(--text);font-weight:600;}
+
+/* Share section */
+.share-card{
+  width:100%;background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:20px 24px;
+}
+.share-card .sc-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.share-url{
+  width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;
+  padding:12px 16px;font-size:13px;font-family:'Space Mono',monospace;
+  color:var(--accent);cursor:pointer;word-break:break-all;line-height:1.4;
+  transition:border-color 0.2s;
+}
+.share-url:hover{border-color:var(--accent);}
+.copy-btn{
+  width:100%;margin-top:10px;background:var(--bg);border:1px solid var(--border);
+  border-radius:10px;padding:12px;font-size:13px;font-weight:700;
+  font-family:'Inter',sans-serif;color:var(--text);cursor:pointer;
+  -webkit-appearance:none;touch-action:manipulation;transition:all 0.2s;
+}
+.copy-btn:hover{border-color:var(--accent);color:var(--accent);}
+.share-note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.5;text-align:center;}
+
+/* Founding cert teaser */
+.cert-teaser{
+  width:100%;background:linear-gradient(135deg,rgba(255,92,92,0.05),rgba(255,140,66,0.05));
+  border:1px solid rgba(255,92,92,0.2);border-radius:16px;padding:20px 24px;
+  text-align:center;
+}
+.cert-teaser .ct-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+.cert-teaser h4{font-size:15px;font-weight:700;margin-bottom:6px;}
+.cert-teaser p{font-size:12px;color:var(--muted);line-height:1.6;}
+
+/* ===== STEP 3: LAUNCH ===== */
+#step-launch{width:100%;max-width:480px;display:none;flex-direction:column;align-items:center;gap:20px;}
+
+.launch-hero{text-align:center;}
+.launch-icon{font-size:64px;margin-bottom:16px;animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.launch-title{font-size:36px;font-weight:900;letter-spacing:-1.5px;margin-bottom:8px;}
+.launch-title span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.launch-sub{font-size:14px;color:var(--muted);line-height:1.6;}
+
+.launch-btn{
+  width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none;border-radius:14px;padding:20px;
+  font-size:17px;font-weight:800;font-family:'Inter',sans-serif;
+  color:#fff;cursor:pointer;-webkit-appearance:none;touch-action:manipulation;
+  transition:opacity 0.2s,transform 0.1s;letter-spacing:-0.3px;
+}
+.launch-btn:hover{opacity:0.9;}
+.launch-btn:active{transform:scale(0.98);}
+
+.auto-launch{font-size:12px;color:var(--muted);text-align:center;}
+.auto-launch span{color:var(--accent);font-weight:700;font-family:'Space Mono',monospace;}
+
+footer{margin-top:48px;font-size:11px;color:var(--muted);text-align:center;letter-spacing:0.5px;line-height:1.8;}
+</style>
+</head>
+<body>
+
+<!-- Password gate -->
+<div id="pw-gate" style="position:fixed;inset:0;background:#0a0a0f;z-index:99999;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif">
+  <div style="text-align:center;padding:32px;border:1px solid #1e1e30;border-radius:12px;background:#0f0f18;min-width:300px">
+    <div style="font-size:20px;font-weight:900;background:linear-gradient(135deg,#ff5c5c,#ff8c42);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px;">riff</div>
+    <input id="pw-input" type="password" placeholder="password" autofocus
+      style="width:100%;background:#14141f;border:1px solid #1e1e30;border-radius:6px;padding:12px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;text-align:center;outline:none;-webkit-appearance:none;"
+      onkeydown="if(event.key==='Enter')checkPw()" />
+    <div id="pw-err" style="margin-top:10px;font-size:11px;color:#ff4f6e;min-height:14px;letter-spacing:1px;"></div>
+  </div>
+</div>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="page">
+
+  <nav>
+    <div class="logo">riff</div>
+    <div class="nav-tag">date confirmed</div>
+  </nav>
+
+  <!-- ===== STEP 1: PICK A DATE ===== -->
+  <div id="step-pick">
+    <div class="hero-label">she said yes 🔥</div>
+    <div class="hero-title">pick the<br><span>date & time.</span></div>
+    <p class="hero-sub">Lock in when you're meeting. I'll start a countdown and have Riff ready the moment you arrive.</p>
+
+    <div class="pick-card">
+      <div class="pick-label">set your date</div>
+      <div class="field-group">
+        <div class="field">
+          <label>Her name</label>
+          <input type="text" id="her-name" placeholder="first name only" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label>Date & Time</label>
+          <input type="datetime-local" id="date-input" />
+        </div>
+        <div class="field">
+          <label>Where you're meeting</label>
+          <input type="text" id="location" placeholder="bar name, restaurant, wherever" autocomplete="off" />
+        </div>
+      </div>
+      <button class="btn-set" onclick="setDate()" ontouchend="setDate()">Start the countdown →</button>
+    </div>
+  </div>
+
+  <!-- ===== STEP 2: COUNTDOWN ===== -->
+  <div id="step-countdown">
+
+    <div class="confirmed-badge">✓ date confirmed</div>
+
+    <div class="hero-title" style="text-align:center;" id="cd-headline">the riff date<br><span id="cd-name-display">is happening.</span></div>
+
+    <div class="date-display">
+      <div class="dd-label">Meeting</div>
+      <div class="dd-val" id="date-display-val">—</div>
+    </div>
+
+    <!-- Big countdown -->
+    <div class="countdown-card">
+      <div class="cd-label">Time until your riff date</div>
+      <div class="cd-grid">
+        <div class="cd-unit"><div class="cd-num" id="cd-days">00</div><div class="cd-unit-label">days</div></div>
+        <div class="cd-unit"><div class="cd-num" id="cd-hours">00</div><div class="cd-unit-label">hours</div></div>
+        <div class="cd-unit"><div class="cd-num" id="cd-mins">00</div><div class="cd-unit-label">mins</div></div>
+        <div class="cd-unit"><div class="cd-num" id="cd-secs">00</div><div class="cd-unit-label">secs</div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>created</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+        <div class="progress-label" style="margin-top:6px;">
+          <span></span><span id="progress-right">date time</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- What happens when it hits zero -->
+    <div class="session-card">
+      <div class="sc-label">what happens at zero</div>
+      <div class="session-row"><div class="sr-icon">🚀</div><div class="sr-text">Countdown hits zero → <b>this page auto-launches your Riff session</b></div></div>
+      <div class="session-row"><div class="sr-icon">📱</div><div class="sr-text">Both of you have this link. When you sit down, open it — <b>you'll both be dropped into the same session</b></div></div>
+      <div class="session-row"><div class="sr-icon">⏱️</div><div class="sr-text">2-hour timer starts the moment you both join. <b>Session disappears when it ends.</b></div></div>
+      <div class="session-row"><div class="sr-icon">🎟️</div><div class="sr-text">After the date, you'll get a <b>Founding Date Certificate</b> — you're in the first 100.</div></div>
+    </div>
+
+    <!-- Share link -->
+    <div class="share-card">
+      <div class="sc-label">send her this link</div>
+      <div class="share-url" id="share-url-display" onclick="copyLink()" ontouchend="copyLink()">aorque.github.io/riff-date.html</div>
+      <button class="copy-btn" id="copy-btn" onclick="copyLink()" ontouchend="copyLink()">📋 Copy link to send her</button>
+      <p class="share-note">She opens the same link. You'll both see the same countdown. When it hits zero — you're both in.</p>
+    </div>
+
+    <!-- Founding date teaser -->
+    <div class="cert-teaser">
+      <div class="ct-label">founding date #<span id="founding-num">?</span></div>
+      <h4>You're part of the origin story.</h4>
+      <p>The first 100 people to go on a Riff date get a founding certificate. Probably worthless. Probably not forever.</p>
+    </div>
+
+  </div>
+
+  <!-- ===== STEP 3: LAUNCH (countdown = 0) ===== -->
+  <div id="step-launch">
+    <div class="launch-hero">
+      <div class="launch-icon">🔥</div>
+      <div class="launch-title">it's <span>time.</span></div>
+      <p class="launch-sub">Your Riff session is ready.<br>Open it together when you sit down.</p>
+    </div>
+
+    <button class="launch-btn" onclick="launchRiff()" ontouchend="launchRiff()">Launch Riff →</button>
+    <div class="auto-launch">Auto-launching in <span id="auto-countdown">5</span>s...</div>
+
+    <div class="session-card" style="margin-top:8px;">
+      <div class="sc-label">reminder</div>
+      <div class="session-row"><div class="sr-icon">📵</div><div class="sr-text">Put your phones face-up. You'll both need to tap the same prompts.</div></div>
+      <div class="session-row"><div class="sr-icon">⏱️</div><div class="sr-text">2 hours. Timer visible the whole time. Everything disappears when it ends.</div></div>
+      <div class="session-row"><div class="sr-icon">🎯</div><div class="sr-text">You're founding date #<span id="launch-founding-num">?</span>. She is too.</div></div>
+    </div>
+  </div>
+
+  <footer>
+    riff.fun · a fleeting moments product · 2026<br>
+    <span style="color:var(--accent);">presence over permanence.</span>
+  </footer>
+
+</div>
+
+<script>
+// Password gate
+(function(){
+  if(sessionStorage.getItem('riffauth')==='spencerwire')
+    document.getElementById('pw-gate').style.display='none';
+})();
+function checkPw(){
+  var v=document.getElementById('pw-input').value;
+  if(v==='spencerwire'){
+    sessionStorage.setItem('riffauth','spencerwire');
+    document.getElementById('pw-gate').style.display='none';
+  } else {
+    document.getElementById('pw-err').textContent='wrong password';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+// Set min datetime to now
+var now = new Date();
+now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+document.getElementById('date-input').min = now.toISOString().slice(0,16);
+
+var targetTime = null;
+var createdTime = null;
+var herName = '';
+var location = '';
+var foundingNum = Math.floor(Math.random() * 23) + 12; // random between 12-34
+
+function setDate(){
+  var nameVal = document.getElementById('her-name').value.trim();
+  var dateVal = document.getElementById('date-input').value;
+  var locVal  = document.getElementById('location').value.trim();
+
+  if(!dateVal){
+    document.getElementById('date-input').style.borderColor='#ff5c5c';
+    document.getElementById('date-input').focus();
+    return;
+  }
+
+  herName = nameVal || 'her';
+  location = locVal || 'somewhere';
+  targetTime = new Date(dateVal).getTime();
+  createdTime = Date.now();
+
+  // Persist in sessionStorage so both phones sync
+  sessionStorage.setItem('riffTarget', targetTime);
+  sessionStorage.setItem('riffCreated', createdTime);
+  sessionStorage.setItem('riffName', herName);
+  sessionStorage.setItem('riffLocation', location);
+  sessionStorage.setItem('riffFounding', foundingNum);
+
+  showCountdown();
+}
+
+function showCountdown(){
+  document.getElementById('step-pick').style.display='none';
+  var cd = document.getElementById('step-countdown');
+  cd.style.display='flex';
+
+  // Update UI
+  if(herName && herName !== 'her'){
+    document.getElementById('cd-name-display').textContent = 'with ' + herName + '.';
+  }
+
+  var d = new Date(targetTime);
+  var opts = {weekday:'long',month:'long',day:'numeric',hour:'numeric',minute:'2-digit'};
+  document.getElementById('date-display-val').textContent =
+    d.toLocaleDateString('en-US', opts) + (location ? ' · ' + location : '');
+
+  document.getElementById('founding-num').textContent = foundingNum;
+  document.getElementById('launch-founding-num').textContent = foundingNum;
+
+  // Share URL (current page URL)
+  var shareUrl = window.location.href.split('?')[0];
+  document.getElementById('share-url-display').textContent = shareUrl;
+
+  startCountdown();
+}
+
+function startCountdown(){
+  function tick(){
+    var now = Date.now();
+    var diff = targetTime - now;
+
+    if(diff <= 0){
+      // Launch!
+      document.getElementById('step-countdown').style.display='none';
+      document.getElementById('step-launch').style.display='flex';
+      startAutoLaunch();
+      return;
+    }
+
+    var days  = Math.floor(diff / 86400000);
+    var hours = Math.floor((diff % 86400000) / 3600000);
+    var mins  = Math.floor((diff % 3600000) / 60000);
+    var secs  = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById('cd-days').textContent  = String(days).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+    document.getElementById('cd-mins').textContent  = String(mins).padStart(2,'0');
+    document.getElementById('cd-secs').textContent  = String(secs).padStart(2,'0');
+
+    // Progress bar (created → target)
+    var total = targetTime - createdTime;
+    var elapsed = now - createdTime;
+    var pct = Math.min(100, Math.max(0, (elapsed/total)*100));
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-pct').textContent = Math.round(pct) + '%';
+
+    var tgt = new Date(targetTime);
+    document.getElementById('progress-right').textContent =
+      tgt.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' ' +
+      tgt.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  }
+
+  tick();
+  setInterval(tick, 1000);
+}
+
+function startAutoLaunch(){
+  var n = 5;
+  document.getElementById('auto-countdown').textContent = n;
+  var iv = setInterval(function(){
+    n--;
+    document.getElementById('auto-countdown').textContent = n;
+    if(n <= 0){
+      clearInterval(iv);
+      launchRiff();
+    }
+  }, 1000);
+}
+
+function launchRiff(){
+  window.location.href = 'https://riff.fun';
+}
+
+function copyLink(){
+  var url = window.location.href.split('?')[0];
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(url).then(function(){
+      var btn = document.getElementById('copy-btn');
+      btn.textContent = '✅ Copied!';
+      setTimeout(function(){ btn.textContent = '📋 Copy link to send her'; }, 2000);
+    });
+  } else {
+    // Fallback
+    var ta = document.createElement('textarea');
+    ta.value = url;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    document.getElementById('copy-btn').textContent = '✅ Copied!';
+    setTimeout(function(){ document.getElementById('copy-btn').textContent = '📋 Copy link to send her'; }, 2000);
+  }
+}
+
+// On load: check if target already set (so both phones resume the same countdown)
+window.onload = function(){
+  var saved = sessionStorage.getItem('riffTarget');
+  if(saved){
+    targetTime = parseInt(saved);
+    createdTime = parseInt(sessionStorage.getItem('riffCreated')) || Date.now();
+    herName = sessionStorage.getItem('riffName') || 'her';
+    location = sessionStorage.getItem('riffLocation') || '';
+    foundingNum = parseInt(sessionStorage.getItem('riffFounding')) || foundingNum;
+    if(targetTime > Date.now()){
+      showCountdown();
+    }
+  }
+};
+</script>
+</body>
+</html>
