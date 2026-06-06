@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riff · New Quest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0f0f18;
+      color: #e0e0ff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .achievement-popup {
+      position: fixed;
+      top: 40px;
+      right: 40px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border: 2px solid #06b6d4;
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 320px;
+      z-index: 1000;
+      animation: slideIn 0.6s ease-out;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .achievement-popup-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      color: #06b6d4;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 8px;
+    }
+
+    .achievement-popup-text {
+      font-size: 1.1rem;
+      color: #e0e0ff;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .achievement-popup-xp {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      color: #7c3aed;
+    }
+
+    .container {
+      max-width: 500px;
+      width: 100%;
+      background: linear-gradient(135deg, #16213e 0%, #0f1629 100%);
+      border: 2px solid #7c3aed;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 0 30px rgba(124, 58, 237, 0.2);
+      animation: fadeIn 0.5s ease-out 0.5s both;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .quest-header {
+      border-bottom: 2px solid #7c3aed;
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .quest-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      color: #06b6d4;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: #e0e0ff;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    .quest-details {
+      background: rgba(124, 58, 237, 0.1);
+      border-left: 3px solid #7c3aed;
+      padding: 16px;
+      margin: 24px 0;
+      border-radius: 4px;
+    }
+
+    .quest-detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+    }
+
+    .quest-detail-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .quest-detail-label {
+      color: #8a7a9e;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .quest-detail-value {
+      color: #06b6d4;
+      font-weight: 600;
+    }
+
+    .difficulty-easy {
+      color: #10b981;
+    }
+
+    .reward-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: #e0e0ff;
+    }
+
+    .reward-item:before {
+      content: '✓';
+      color: #7c3aed;
+      font-weight: bold;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+      flex-direction: column;
+    }
+
+    button {
+      padding: 14px 24px;
+      font-size: 0.95rem;
+      font-family: 'Space Mono', monospace;
+      border: 2px solid;
+      background: transparent;
+      cursor: pointer;
+      letter-spacing: 0.1em;
+      transition: all 0.2s ease;
+      position: relative;
+      text-transform: uppercase;
+      font-weight: 700;
+      overflow: hidden;
+    }
+
+    .btn-accept {
+      border-color: #7c3aed;
+      color: #e0e0ff;
+    }
+
+    .btn-accept:hover, .btn-accept:focus {
+      background: #7c3aed;
+      color: #0f0f18;
+      box-shadow: 0 0 20px rgba(124, 58, 237, 0.5);
+    }
+
+    .btn-accept:active {
+      transform: scale(0.98);
+    }
+
+    .btn-decline {
+      border-color: #06b6d4;
+      color: #06b6d4;
+    }
+
+    .btn-decline:hover, .btn-decline:focus {
+      background: #06b6d4;
+      color: #0f0f18;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+    }
+
+    .btn-decline:active {
+      transform: scale(0.98);
+    }
+
+    .confirmation-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    .confirmation-modal.show {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .confirmation-content {
+      background: linear-gradient(135deg, #16213e 0%, #0f1629 100%);
+      border: 2px solid #7c3aed;
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 380px;
+      text-align: center;
+    }
+
+    .confirmation-text {
+      font-size: 1.1rem;
+      color: #e0e0ff;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .rewards-list {
+      background: rgba(124, 58, 237, 0.1);
+      border: 1px solid #7c3aed;
+      padding: 16px;
+      margin: 20px 0;
+      border-radius: 6px;
+      text-align: left;
+    }
+
+    .confirmation-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn-sm {
+      flex: 1;
+      padding: 12px 16px;
+      font-size: 0.85rem;
+    }
+
+    .quest-failed {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #1a0f2e 0%, #0f0f18 100%);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2500;
+      flex-direction: column;
+      gap: 24px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .quest-failed.show {
+      display: flex;
+    }
+
+    .failed-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 3rem;
+      color: #ff4f6e;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      text-align: center;
+    }
+
+    .failed-subtitle {
+      font-family: 'Space Mono', monospace;
+      font-size: 1rem;
+      color: #8a7a9e;
+      letter-spacing: 0.1em;
+    }
+
+    .failed-message {
+      font-size: 0.9rem;
+      color: #06b6d4;
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+
+    .quest-failed button {
+      margin-top: 40px;
+      padding: 16px 40px;
+      border-color: #06b6d4;
+      color: #06b6d4;
+    }
+
+    .quest-failed button:hover {
+      background: #06b6d4;
+      color: #0f0f18;
+    }
+
+    .success-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a3a3a 0%, #0f1629 100%);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2500;
+      flex-direction: column;
+      gap: 24px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .success-screen.show {
+      display: flex;
+    }
+
+    .success-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 2.5rem;
+      color: #10b981;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      text-align: center;
+    }
+
+    .xp-bar-container {
+      width: 280px;
+      height: 40px;
+      background: rgba(124, 58, 237, 0.2);
+      border: 2px solid #7c3aed;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .xp-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #7c3aed 0%, #06b6d4 100%);
+      width: 0%;
+      animation: fillXP 2s ease-out forwards;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      color: #0f0f18;
+      font-weight: bold;
+    }
+
+    @keyframes fillXP {
+      to {
+        width: 100%;
+      }
+    }
+
+    .xp-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      color: #06b6d4;
+      margin-top: 12px;
+    }
+
+    .badges {
+      display: flex;
+      gap: 16px;
+      margin-top: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      width: 60px;
+      height: 60px;
+      border: 2px solid #7c3aed;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      background: rgba(124, 58, 237, 0.1);
+      animation: popIn 0.4s ease-out backwards;
+    }
+
+    .badge:nth-child(1) { animation-delay: 0.6s; }
+    .badge:nth-child(2) { animation-delay: 0.8s; }
+    .badge:nth-child(3) { animation-delay: 1s; }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0) rotate(-10deg);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+      }
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #8a7a9e;
+      letter-spacing: 0.1em;
+      font-family: 'Space Mono', monospace;
+    }
+
+    @media (max-width: 480px) {
+      .achievement-popup {
+        top: auto;
+        right: auto;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        max-width: none;
+      }
+
+      .container {
+        padding: 24px;
+      }
+
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      .failed-title {
+        font-size: 2rem;
+      }
+
+      .success-title {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Password Gate -->
+  <div id="pw-gate" style="position:fixed;inset:0;background:#0a0a0f;z-index:99999;display:flex;align-items:center;justify-content:center">
+    <div style="text-align:center;padding:32px;border:1px solid #1e1e30;border-radius:12px;background:#0f0f18;min-width:280px">
+      <input id="pw-input" type="password" placeholder="password" autofocus style="width:100%;background:#14141f;border:1px solid #1e1e30;border-radius:6px;padding:10px;color:#fff;font-size:14px;text-align:center;outline:none" onkeydown="if(event.key==='Enter')checkPw()" />
+      <div id="pw-err" style="margin-top:8px;font-size:11px;color:#ff4f6e;min-height:14px"></div>
+    </div>
+  </div>
+
+  <script>
+    (function(){if(sessionStorage.getItem('riffauth')==='spencerwire')document.getElementById('pw-gate').style.display='none'})();
+    function checkPw(){var v=document.getElementById('pw-input').value;if(v==='spencerwire'){sessionStorage.setItem('riffauth','spencerwire');document.getElementById('pw-gate').style.display='none';}else{document.getElementById('pw-err').textContent='wrong password';document.getElementById('pw-input').value='';document.getElementById('pw-input').focus();}}
+  </script>
+
+  <!-- Achievement Popup -->
+  <div class="achievement-popup" id="achievementPopup">
+    <div class="achievement-popup-title">Achievement Unlocked</div>
+    <div class="achievement-popup-text">You caught my attention</div>
+    <div class="achievement-popup-xp">+50 XP</div>
+  </div>
+
+  <!-- Main Quest Container -->
+  <div class="container" id="mainContainer">
+    <div class="quest-header">
+      <div class="quest-label">⚔️ New Quest Available</div>
+      <h1>Go on a date with me</h1>
+    </div>
+
+    <div class="quest-details">
+      <div class="quest-detail-row">
+        <span class="quest-detail-label">Objective:</span>
+        <span class="quest-detail-value">Test the Riff icebreaker app</span>
+      </div>
+      <div class="quest-detail-row">
+        <span class="quest-detail-label">Difficulty:</span>
+        <span class="quest-detail-value difficulty-easy">Easy</span>
+      </div>
+      <div class="quest-detail-row">
+        <span class="quest-detail-label">Reward:</span>
+        <span class="quest-detail-value">Good conversation, free drinks</span>
+      </div>
+      <div class="quest-detail-row">
+        <span class="quest-detail-label">Time Limit:</span>
+        <span class="quest-detail-value">2 hours</span>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button class="btn-accept" id="acceptBtn" onclick="handleAccept()" ontouchend="handleAccept()">Accept Quest</button>
+      <button class="btn-decline" id="declineBtn" onclick="handleDecline()" ontouchend="handleDecline()">Decline Quest</button>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="confirmation-modal" id="confirmationModal">
+    <div class="confirmation-content">
+      <div class="confirmation-text">
+        Are you sure? You will miss out on:
+      </div>
+      <div class="rewards-list">
+        <div class="reward-item">Good conversation</div>
+        <div class="reward-item">Free drinks</div>
+        <div class="reward-item">+100 XP</div>
+        <div class="reward-item">Date Master badge</div>
+      </div>
+      <div class="confirmation-text" style="font-size: 0.95rem; margin-bottom: 0;">
+        Abandon quest?
+      </div>
+      <div class="confirmation-buttons">
+        <button class="btn-decline btn-sm" onclick="confirmAbandon()" ontouchend="confirmAbandon()">Yes, Abandon</button>
+        <button class="btn-accept btn-sm" onclick="cancelAbandon()" ontouchend="cancelAbandon()">No, Keep Quest</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quest Failed Screen -->
+  <div class="quest-failed" id="questFailed">
+    <div class="failed-title">QUEST FAILED</div>
+    <div class="failed-subtitle">🎵 sad 8-bit music plays</div>
+    <div class="failed-message">You made the wrong choice...</div>
+    <button class="btn-accept" onclick="handleRetry()" ontouchend="handleRetry()">Retry Quest</button>
+  </div>
+
+  <!-- Quest Accepted Screen -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-title">QUEST ACCEPTED!</div>
+    
+    <div>
+      <div style="text-align: center; margin-bottom: 8px; color: #06b6d4; font-family: 'Space Mono', monospace; font-size: 0.9rem;">
+        EXP Progress
+      </div>
+      <div class="xp-bar-container">
+        <div class="xp-bar">100 XP</div>
+      </div>
+      <div class="xp-text">+100 XP Earned</div>
+    </div>
+
+    <div style="text-align: center; color: #06b6d4; font-family: 'Space Mono', monospace; font-size: 0.9rem;">
+      Unlocked Achievements
+    </div>
+    <div class="badges">
+      <div class="badge">💬</div>
+      <div class="badge">🎯</div>
+      <div class="badge">⭐</div>
+    </div>
+  </div>
+
+  <div class="footer">SAVE POINT · riff.fun · ©2026</div>
+
+  <script>
+    function handleAccept() {
+      const mainContainer = document.getElementById('mainContainer');
+      const successScreen = document.getElementById('successScreen');
+      
+      mainContainer.style.opacity = '0';
+      mainContainer.style.pointerEvents = 'none';
+      
+      setTimeout(() => {
+        successScreen.classList.add('show');
+      }, 300);
+    }
+
+    function handleDecline() {
+      const confirmationModal = document.getElementById('confirmationModal');
+      confirmationModal.classList.add('show');
+    }
+
+    function cancelAbandon() {
+      const confirmationModal = document.getElementById('confirmationModal');
+      confirmationModal.classList.remove('show');
+    }
+
+    function confirmAbandon() {
+      const confirmationModal = document.getElementById('confirmationModal');
+      const mainContainer = document.getElementById('mainContainer');
+      
+      confirmationModal.classList.remove('show');
+      mainContainer.style.opacity = '0';
+      mainContainer.style.pointerEvents = 'none';
+      
+      setTimeout(() => {
+        const questFailed = document.getElementById('questFailed');
+        questFailed.classList.add('show');
+      }, 300);
+    }
+
+    function handleRetry() {
+      const questFailed = document.getElementById('questFailed');
+      const mainContainer = document.getElementById('mainContainer');
+      const successScreen = document.getElementById('successScreen');
+      
+      questFailed.classList.remove('show');
+      successScreen.classList.remove('show');
+      mainContainer.style.opacity = '1';
+      mainContainer.style.pointerEvents = 'auto';
+      
+      // Reset buttons
+      const declineBtn = document.getElementById('declineBtn');
+      const acceptBtn = document.getElementById('acceptBtn');
+      declineBtn.style.opacity = '1';
+      declineBtn.style.pointerEvents = 'auto';
+      acceptBtn.style.opacity = '1';
+      acceptBtn.style.pointerEvents = 'auto';
+    }
+  </script>
+</body>
+</html>
