@@ -274,7 +274,7 @@ function checkPw(){
     <div class="card teal">
       <div class="ch"><div class="ci">📈</div><span class="ct">Quick Stats</span></div>
       <div class="sgrid">
-        <div class="sb"><span class="sn" id="sc">138</span><span class="sl">Sessions</span></div>
+        <div class="sb"><span class="sn" id="sc">143</span><span class="sl">Sessions</span></div>
         <div class="sb o" onclick="showPage('projects')" style="cursor:pointer"><span class="sn">7</span><span class="sl">Projects</span></div>
         <div class="sb p" onclick="showPage('system')" style="cursor:pointer"><span class="sn">16</span><span class="sl">Cron Jobs</span></div>
         <div class="sb"><span class="sn">3</span><span class="sl">Brain Dumps</span></div>
@@ -904,7 +904,7 @@ function checkPw(){
 
 <script>
   // Live data — injected by nightly cron
-  var LIVE = {"total_cost": 154.55, "total_tokens": 206469037, "total_sessions": 138, "today_cost": 25.44, "memory_pct": 69, "user_pct": 82, "skill_count": 113, "total_lines": 35184, "tool_calls": 886, "cron_jobs": 16, "updated": "Jun 6 2026 15:00 PT"};
+  var LIVE = {"total_cost": 155.69, "total_tokens": 208223237, "total_sessions": 143, "today_cost": 26.59, "memory_pct": 69, "user_pct": 89, "skill_count": 113, "total_lines": 35304, "tool_calls": 905, "cron_jobs": 16, "updated": "Jun 6 2026 16:00 PT"};
 
   function applyLive(d){
     // Token card
@@ -981,7 +981,7 @@ function checkPw(){
   })();
 
   // Sessions — hardcoded from DB (updated by Unit 0 on each deploy)
-  document.getElementById('sc').textContent='138';
+  document.getElementById('sc').textContent='143';
   (function spendPage(){
     // Hardcoded from last DB pull — updated by dashboard rebuild cron
     var data = {
