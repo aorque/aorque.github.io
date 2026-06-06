@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riff · An Invitation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f5f0e8;
+      color: #0d0c0a;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+
+    .container.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+      line-height: 1.1;
+    }
+
+    .subhead {
+      font-size: 1.1rem;
+      color: #8a7a6a;
+      margin-bottom: 48px;
+      line-height: 1.8;
+      max-width: 380px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #c9a84c, transparent);
+      margin: 40px auto 40px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 16px;
+      flex-direction: column;
+      margin-top: 48px;
+    }
+
+    button {
+      padding: 16px 32px;
+      font-size: 1rem;
+      font-family: 'Playfair Display', serif;
+      border: 1px solid #c9a84c;
+      background: transparent;
+      color: #0d0c0a;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      transition: all 0.3s ease;
+      position: relative;
+      text-transform: uppercase;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+    }
+
+    .btn-accept {
+      border: 2px solid #c9a84c;
+      background: transparent;
+      color: #0d0c0a;
+    }
+
+    .btn-accept:hover, .btn-accept:focus {
+      background: #c9a84c;
+      color: #f5f0e8;
+      box-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
+    }
+
+    .btn-accept:active {
+      transform: scale(0.98);
+    }
+
+    .btn-decline {
+      border: 1px solid #8a7a6a;
+      color: #8a7a6a;
+    }
+
+    .btn-decline:hover, .btn-decline:focus {
+      border-color: #0d0c0a;
+      color: #0d0c0a;
+      background: rgba(13, 12, 10, 0.03);
+    }
+
+    .btn-decline:active {
+      transform: scale(0.98);
+    }
+
+    .response-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: #8a7a6a;
+      margin-top: 24px;
+      letter-spacing: 0.05em;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .response-text.show {
+      opacity: 1;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #8a7a6a;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+  <!-- Password Gate -->
+  <div id="pw-gate" style="position:fixed;inset:0;background:#0a0a0f;z-index:99999;display:flex;align-items:center;justify-content:center">
+    <div style="text-align:center;padding:32px;border:1px solid #1e1e30;border-radius:12px;background:#0f0f18;min-width:280px">
+      <input id="pw-input" type="password" placeholder="password" autofocus style="width:100%;background:#14141f;border:1px solid #1e1e30;border-radius:6px;padding:10px;color:#fff;font-size:14px;text-align:center;outline:none" onkeydown="if(event.key==='Enter')checkPw()" />
+      <div id="pw-err" style="margin-top:8px;font-size:11px;color:#ff4f6e;min-height:14px"></div>
+    </div>
+  </div>
+
+  <script>
+    (function(){if(sessionStorage.getItem('riffauth')==='spencerwire')document.getElementById('pw-gate').style.display='none'})();
+    function checkPw(){var v=document.getElementById('pw-input').value;if(v==='spencerwire'){sessionStorage.setItem('riffauth','spencerwire');document.getElementById('pw-gate').style.display='none';}else{document.getElementById('pw-err').textContent='wrong password';document.getElementById('pw-input').value='';document.getElementById('pw-input').focus();}}
+  </script>
+
+  <!-- Main Content -->
+  <div class="container" id="mainContainer">
+    <h1>an invitation.</h1>
+    <p class="subhead">I would like to take you to dinner. The app is called Riff. The conversation will be good.</p>
+    
+    <div class="divider"></div>
+
+    <div class="buttons">
+      <button class="btn-accept" id="acceptBtn" onclick="handleAccept()" ontouchend="handleAccept()">I accept</button>
+      <button class="btn-decline" id="declineBtn" onclick="handleDecline()" ontouchend="handleDecline()">I must decline</button>
+    </div>
+
+    <p class="response-text" id="responseText">Noted. A shame.</p>
+  </div>
+
+  <div class="footer">Riff · A Fleeting Moments Experience</div>
+
+  <script>
+    function handleAccept() {
+      const container = document.getElementById('mainContainer');
+      container.classList.add('fade-out');
+      
+      setTimeout(() => {
+        const buttons = document.querySelector('.buttons');
+        buttons.innerHTML = '';
+        
+        const heading = document.querySelector('h1');
+        heading.textContent = 'Wonderful.';
+        
+        const subhead = document.querySelector('.subhead');
+        subhead.textContent = "I'll be in touch.";
+        subhead.style.color = '#c9a84c';
+        
+        container.classList.remove('fade-out');
+      }, 400);
+    }
+
+    function handleDecline() {
+      const declineBtn = document.getElementById('declineBtn');
+      const responseText = document.getElementById('responseText');
+      const acceptBtn = document.getElementById('acceptBtn');
+      
+      declineBtn.style.transition = 'all 0.3s ease';
+      declineBtn.style.opacity = '0';
+      declineBtn.style.pointerEvents = 'none';
+      
+      acceptBtn.style.opacity = '0';
+      acceptBtn.style.pointerEvents = 'none';
+      
+      setTimeout(() => {
+        responseText.classList.add('show');
+      }, 200);
+    }
+  </script>
+</body>
+</html>
