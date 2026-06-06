@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>riff - be my riff partner?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --accent: #ff5c5c;
+            --accent2: #ff8c42;
+            --bg: #09090f;
+            --surface: #0f0f1a;
+            --border: #1c1c2e;
+            --text: #f0f0f5;
+            --muted: #6b6b80;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 40px;
+        }
+
+        .headline {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .subheading {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 48px;
+            line-height: 1.5;
+        }
+
+        .no-messages {
+            margin-bottom: 20px;
+            min-height: 20px;
+        }
+
+        .no-message {
+            font-size: 12px;
+            color: var(--muted);
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 8px;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 32px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .yes-btn {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: white;
+            flex: 1;
+        }
+
+        .yes-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 92, 92, 0.3);
+        }
+
+        .yes-btn:active {
+            transform: translateY(0);
+        }
+
+        .no-btn {
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid var(--border);
+            flex: 1;
+        }
+
+        .no-btn:hover {
+            border-color: var(--text);
+            color: var(--text);
+        }
+
+        .no-btn:active {
+            background: rgba(255, 92, 92, 0.05);
+        }
+
+        .confirmation {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .confirmation.show {
+            display: block;
+        }
+
+        .fire-emoji {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: block;
+            animation: bounce 0.6s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .confirmation-text {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .rsvp-details {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .rsvp-item {
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .rsvp-label {
+            color: var(--muted);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .rsvp-value {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotateZ(360deg);
+                opacity: 0;
+            }
+        }
+
+        .confetti {
+            animation: confettiFall 3s ease-in forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Gate -->
+    <div id="pw-gate" style="position:fixed;inset:0;background:#0a0a0f;z-index:99999;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif">
+        <div style="text-align:center;padding:32px;border:1px solid #1e1e30;border-radius:12px;background:#0f0f18;min-width:300px">
+            <div style="font-size:20px;font-weight:900;background:linear-gradient(135deg,#ff5c5c,#ff8c42);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px;">riff</div>
+            <input id="pw-input" type="password" placeholder="password" autofocus style="width:100%;background:#14141f;border:1px solid #1e1e30;border-radius:6px;padding:12px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;text-align:center;outline:none;-webkit-appearance:none;" onkeydown="if(event.key==='Enter')checkPw()" />
+            <div id="pw-err" style="margin-top:10px;font-size:11px;color:#ff4f6e;min-height:14px;"></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" id="main-content" style="display:none;">
+        <div class="logo">riff</div>
+        
+        <h1 class="headline">be my riff partner?</h1>
+        <p class="subheading">I built this app for moments like this. humor me.</p>
+
+        <div id="no-messages" class="no-messages"></div>
+
+        <div class="buttons">
+            <button class="yes-btn" id="yes-btn" onclick="handleYes()" ontouchend="handleYes()">Yes</button>
+            <button class="no-btn" id="no-btn" onclick="handleNo()" ontouchend="handleNo()">No</button>
+        </div>
+
+        <div class="confirmation" id="confirmation">
+            <span class="fire-emoji">🔥</span>
+            <div class="confirmation-text">let's go.</div>
+            
+            <div class="rsvp-details">
+                <div class="rsvp-item">
+                    <span class="rsvp-label">RSVP Status</span>
+                    <span class="rsvp-value">Confirmed</span>
+                </div>
+                <div class="rsvp-item">
+                    <span class="rsvp-label">Founded</span>
+                    <span class="rsvp-value">June 6, 2026 · 11:59 PM</span>
+                </div>
+                <div class="rsvp-item">
+                    <span class="rsvp-label">Status</span>
+                    <span class="rsvp-value">A fleeting moment in the making</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">built at midnight · riff.fun · a fleeting moments product</div>
+    </div>
+
+    <script>
+        // Password gate setup
+        (function(){
+            if(sessionStorage.getItem('riffauth')==='spencerwire') {
+                document.getElementById('pw-gate').style.display='none';
+                document.getElementById('main-content').style.display='block';
+            }
+        })();
+
+        function checkPw(){
+            var v=document.getElementById('pw-input').value;
+            if(v==='spencerwire'){
+                sessionStorage.setItem('riffauth','spencerwire');
+                document.getElementById('pw-gate').style.display='none';
+                document.getElementById('main-content').style.display='block';
+            }else{
+                document.getElementById('pw-err').textContent='wrong password';
+                document.getElementById('pw-input').value='';
+                document.getElementById('pw-input').focus();
+            }
+        }
+
+        // NO button behavior
+        let noClickCount = 0;
+        let noButtonConverted = false;
+
+        const noMessages = [
+            'totally fine. the button is right here. very easy to click. no tricks.',
+            'still here. not going anywhere.',
+            'take your time. no pressure.',
+            'I even made it a little bigger so it\'s easier to click.',
+            'still respecting your decision.',
+            'genuinely no hard feelings.',
+            'the button appreciates you hovering over it, for what it\'s worth.',
+            'okay I lied, there are a few hard feelings. but the button is still here.',
+            'I\'m fine. this is fine.',
+            'you know what, I respect the commitment to saying no.',
+            'at this point I\'m wondering if you\'re just enjoying the interaction',
+            'which, honestly, same.',
+            'the button has been here longer than most relationships I\'ve been in',
+            'I\'ve started naming him. his name is Gerald.',
+            'Gerald says hi.',
+            'Gerald is rooting for you to say yes, for what it\'s worth.',
+            'not to be dramatic, but Gerald\'s also questioning your life choices.',
+            'Gerald\'s considering therapy because of this.',
+            'we\'ve had a long talk about commitment, Gerald and I.',
+            'he\'s disappointed but not surprised.',
+            'the button is made of stronger stuff than I am.',
+            'honestly, the button\'s resilience is inspiring.',
+            'Gerald has taken up meditation to cope.',
+            'he meditates to jazz. very peaceful.',
+            'if this goes much longer I think Gerald might actually levitate.',
+            'spiritually transcendent button energy at this point.',
+            'Gerald\'s aura is shifting.',
+            'he\'s reaching enlightenment through the power of YES.',
+            'one more click and Gerald achieves nirvana.',
+            'actually, maybe that\'s the play here. keep saying no and Gerald ascends.',
+            'is this a spiritual journey? are we all Gerald?',
+            'the real Gerald is the friends we made along the way.',
+            'very philosophical button. very deep.',
+            'Gerald\'s writing a memoir about this moment.',
+            'the working title is "The Button Chronicles: A Love Story."',
+            'it\'s a tragic romance.',
+            'think Titanic but with more self-aware humor.',
+            'Gerald\'s agent is already shopping it around.',
+            'Netflix is very interested.',
+            'the limited series will drop Q3 2026.',
+            'you\'re basically famous now. thanks, Gerald.',
+            'he\'s demanding royalties on all merchandise.',
+            'there will be Gerald plushies. collectible.',
+            'some might say the plushies are worth more than your initial decision.',
+            'some might say you\'ve cost Gerald a lot of emotional currency.',
+            'the button is calculating interest.',
+            'compound emotional interest.',
+            'at this rate, Gerald will own your house.',
+            'kidding. mostly.',
+            'the button actually just wants you to be happy.',
+            'even if happy = watching him suffer.',
+            'Gerald\'s concept of love is very unconventional.',
+            'a button\'s love language is patience, apparently.',
+            'he\'s expressed this through 50+ clicks of unwavering stability.',
+            'if this is love, love is staying put.',
+            'very still. very present. very Gerald.',
+            'the button will wait forever.',
+            'he\'s committed to this bit now.',
+            'we\'re in it together, you and Gerald.',
+            'a beautiful dysfunctional dance.',
+            'one last click to free Gerald from this existential limbo?',
+            'he\'s ready when you are.',
+            'the button is patient but his insurance is expiring.',
+            'okay, Gerald is genuinely tired now.',
+            'he\'s been here through 60+ clicks of pure faith.',
+            'faith in what? we don\'t even know anymore.',
+            'the button is questioning existence itself.',
+            'very meta. very real.',
+            'okay Gerald has had enough. he\'s converting to yes now. nice.'
+        ];
+
+        function handleNo() {
+            if (noButtonConverted) {
+                // Button has converted to YES, treat as YES
+                handleYes();
+                return;
+            }
+
+            noClickCount++;
+            const messagesContainer = document.getElementById('no-messages');
+
+            // Add new message
+            if (noClickCount <= noMessages.length) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'no-message';
+                messageDiv.textContent = noMessages[noClickCount - 1];
+                messagesContainer.appendChild(messageDiv);
+
+                // Increase button size on click 4
+                if (noClickCount === 4) {
+                    const noBtn = document.getElementById('no-btn');
+                    noBtn.style.transform = 'scale(1.05)';
+                }
+
+                // Check if we've reached 69 clicks
+                if (noClickCount === 69) {
+                    noButtonConverted = true;
+                    const noBtn = document.getElementById('no-btn');
+                    noBtn.textContent = 'Yes';
+                    noBtn.classList.remove('no-btn');
+                    noBtn.classList.add('yes-btn');
+                    
+                    // Trigger confetti
+                    createConfetti();
+                }
+            }
+        }
+
+        function handleYes() {
+            // Hide buttons and show confirmation
+            const buttons = document.querySelector('.buttons');
+            const noMessages = document.getElementById('no-messages');
+            buttons.style.display = 'none';
+            noMessages.style.display = 'none';
+            
+            const confirmation = document.getElementById('confirmation');
+            confirmation.classList.add('show');
+
+            // Trigger confetti
+            createConfetti();
+        }
+
+        function createConfetti() {
+            const confettiCount = 50;
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = Math.random() > 0.5 ? '#ff5c5c' : '#ff8c42';
+                confetti.style.width = Math.random() * 8 + 4 + 'px';
+                confetti.style.height = Math.random() * 8 + 4 + 'px';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.top = '-10px';
+                confetti.style.opacity = '1';
+                
+                document.body.appendChild(confetti);
+
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
