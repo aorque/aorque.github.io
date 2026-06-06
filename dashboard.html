@@ -228,8 +228,8 @@ function checkPw(){
 <div class="ticker">
   <span class="tick-inner">&nbsp;&nbsp;
     <b>[RUNWAY]</b> <em id="td">97</em> days remaining &nbsp;|&nbsp;
-    <b>[TOKEN]</b> 2-day spend: <em>$52.36</em> — crons switched to Haiku &nbsp;|&nbsp;
-    <b>[TEAMWIRE]</b> 6 prospects profiled · Spencer skills ingested · SMP Inc research pending &nbsp;|&nbsp;
+    <b>[SPEND]</b> Total spend: <em>$143.89</em> · Today: <em>$14.78</em> — 114 sessions · 821 tool calls &nbsp;|&nbsp;
+    <b>[BUILD]</b> Riff app launched · 7 ask-out pages · Evening Operators playbook · Nightshift Alumni brand · Fleeting Moments charter &nbsp;|&nbsp;
     <b>[MERCH]</b> 3AM Club store build @ 12:30PM today &nbsp;|&nbsp;
     <b>[CONTENT]</b> GR86 Last Rides series — window closing &nbsp;|&nbsp;
     <b>[BRAND]</b> Nightshift Syndicate / Late Hour Syndicate — fully clear &nbsp;|&nbsp;
@@ -614,7 +614,7 @@ function checkPw(){
     <div style="font-size:9px;color:var(--muted);margin-bottom:10px">Tony Orque · CBO · AI Implementation · Personal OS built on Hermes</div>
     <div class="row"><div class="row-main"><div class="row-title">Business Context</div><div class="row-sub">Solo operator, 15+ yrs events/ops, scaling into AI. Needed a system that could hold context, ship artifacts, run background ops, and learn his workflows.</div></div></div>
     <div class="row"><div class="row-main"><div class="row-title">Pain Before TeamWire</div><div class="row-sub">Scattered notes, missed follow-ups, no system for his brain dumps, manual research for every prospect, no ops infrastructure outside of work.</div></div></div>
-    <div class="row"><div class="row-main"><div class="row-title">Workflows Deployed (3 days)</div><div class="row-sub">8 agents live · 109 skills built · Morning briefing · Weekly accountability · KB sync · Nightly memory compression · Dashboard auto-deploy · Prospect research pipeline</div></div></div>
+    <div class="row"><div class="row-main"><div class="row-title">Workflows Deployed (3 days)</div><div class="row-sub">8 agents live · 112 skills built · Morning briefing · Weekly accountability · KB sync · Nightly memory compression · Dashboard auto-deploy · Prospect research pipeline</div></div></div>
     <div class="row"><div class="row-main"><div class="row-title">Early Signal</div><div class="row-sub">72 sessions · 461 tool calls · 121.9M tokens · $102 total spend · Daily cost dropped 66% from setup day to Day 3</div></div></div>
     <div class="row"><div class="row-main"><div class="row-title">What This Proves</div><div class="row-sub">A non-technical SMB operator can deploy a 8-agent AI system in 3 days. Zero engineering. The wedge: ops automation for time-starved founders.</div></div></div>
     <div style="margin-top:10px;padding:8px 10px;background:var(--bg3);border-radius:6px;border-left:2px solid var(--green);font-size:9px;color:var(--muted)">
@@ -898,7 +898,7 @@ function checkPw(){
 
 <script>
   // Live data — injected by nightly cron
-  var LIVE = {"total_cost":73.45,"total_tokens":491670,"total_sessions":49,"today_cost":26.82,"memory_pct":75,"user_pct":95};
+  var LIVE = {"total_cost":143.89,"total_tokens":192547387,"total_sessions":114,"today_cost":14.78,"memory_pct":57,"user_pct":94};
 
   function applyLive(d){
     // Token card
@@ -979,7 +979,7 @@ function checkPw(){
   (function spendPage(){
     // Hardcoded from last DB pull — updated by dashboard rebuild cron
     var data = {
-      today: { cost: 19.81, sessions: 18, tools: 248 },
+      today: { cost: 14.78, sessions: 12, tools: 120 },
       history: [
         { day: 'Jun 3', cost: 46.62, label: 'Setup day' },
         { day: 'Jun 4', cost: 40.00, label: 'Marathon' },
