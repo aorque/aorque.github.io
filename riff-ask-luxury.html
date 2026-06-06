@@ -141,6 +141,61 @@
       color: #8a7a6a;
       letter-spacing: 0.1em;
     }
+
+    .elegant-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: #8a7a6a;
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+      opacity: 0;
+      animation: fadeInText 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeInText {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .cracking-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: #c9a84c;
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+      opacity: 0;
+      animation: fadeInText 0.5s ease-out forwards;
+    }
+
+    .desperate-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: #0d0c0a;
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+      opacity: 0;
+      animation: fadeInText 0.5s ease-out forwards;
+      font-weight: 500;
+    }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: #c9a84c;
+      animation: confettiFall linear forwards;
+    }
+
+    @keyframes confettiFall {
+      to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
@@ -169,12 +224,42 @@
       <button class="btn-decline" id="declineBtn" onclick="handleDecline()" ontouchend="handleDecline()">I must decline</button>
     </div>
 
-    <p class="response-text" id="responseText">Noted. A shame.</p>
+    <div id="responseContainer"></div>
   </div>
 
   <div class="footer">Riff · A Fleeting Moments Experience</div>
 
   <script>
+    let declineCount = 0;
+    const formalResponses = [
+      'Noted.',
+      'I see.',
+      'Very well.',
+      'As you wish.',
+      'One reconsiders.',
+      'Curious.',
+      'Mmm.',
+      'Indeed.',
+      'Quite.'
+    ];
+    const curiousphrases = [
+      'One finds this... curious behavior.',
+      'Most unusual.',
+      'One begins to wonder.'
+    ];
+    const crackingPhrases = [
+      'One must confess this is... unexpected.',
+      'One had rather hoped for a different outcome.',
+      'One finds oneself... reconsidering.'
+    ];
+    const desperatePhrases = [
+      'One implores you to reconsider.',
+      'One has prepared a rather lovely evening.',
+      'The reservation has been made. The wine selected.',
+      'One is not above compromise.',
+      'Surely there is something we can discuss?'
+    ];
+
     function handleAccept() {
       const container = document.getElementById('mainContainer');
       container.classList.add('fade-out');
@@ -195,20 +280,109 @@
     }
 
     function handleDecline() {
+      declineCount++;
       const declineBtn = document.getElementById('declineBtn');
-      const responseText = document.getElementById('responseText');
       const acceptBtn = document.getElementById('acceptBtn');
-      
-      declineBtn.style.transition = 'all 0.3s ease';
-      declineBtn.style.opacity = '0';
-      declineBtn.style.pointerEvents = 'none';
-      
-      acceptBtn.style.opacity = '0';
-      acceptBtn.style.pointerEvents = 'none';
-      
-      setTimeout(() => {
-        responseText.classList.add('show');
-      }, 200);
+      const responseContainer = document.getElementById('responseContainer');
+
+      // Click 1: Initial response
+      if (declineCount === 1) {
+        const response = document.createElement('p');
+        response.className = 'response-text show';
+        response.textContent = 'Noted.';
+        responseContainer.innerHTML = '';
+        responseContainer.appendChild(response);
+        declineBtn.style.transition = 'all 0.3s ease';
+        declineBtn.style.opacity = '0';
+        declineBtn.style.pointerEvents = 'none';
+        acceptBtn.style.opacity = '0';
+        acceptBtn.style.pointerEvents = 'none';
+      }
+      // Clicks 2-10: Button reappears smaller with formal responses
+      else if (declineCount <= 10) {
+        declineBtn.style.opacity = '1';
+        declineBtn.style.pointerEvents = 'auto';
+        acceptBtn.style.opacity = '0';
+        acceptBtn.style.pointerEvents = 'none';
+        
+        const fontSize = Math.max(0.7, 1 - ((declineCount - 2) * 0.08));
+        declineBtn.style.fontSize = fontSize + 'rem';
+        declineBtn.style.padding = (12 * fontSize) + 'px ' + (24 * fontSize) + 'px';
+        
+        const responseIdx = Math.min(declineCount - 2, formalResponses.length - 1);
+        const response = document.createElement('p');
+        response.className = 'response-text show';
+        response.textContent = formalResponses[responseIdx];
+        responseContainer.innerHTML = '';
+        responseContainer.appendChild(response);
+      }
+      // Clicks 11-25: Curious text appears above
+      else if (declineCount <= 25) {
+        declineBtn.style.opacity = '0.3';
+        declineBtn.style.pointerEvents = 'auto';
+        
+        const phraseIdx = (declineCount - 11) % curiousphrases.length;
+        const text = document.createElement('p');
+        text.className = 'elegant-text';
+        text.textContent = curiousphrases[phraseIdx];
+        responseContainer.appendChild(text);
+      }
+      // Clicks 26-45: Restraint cracks (color shift to gold)
+      else if (declineCount <= 45) {
+        const phraseIdx = (declineCount - 26) % crackingPhrases.length;
+        const text = document.createElement('p');
+        text.className = 'cracking-text';
+        text.textContent = crackingPhrases[phraseIdx];
+        responseContainer.appendChild(text);
+      }
+      // Clicks 46-60: Full desperation
+      else if (declineCount <= 60) {
+        const phraseIdx = (declineCount - 46) % desperatePhrases.length;
+        const text = document.createElement('p');
+        text.className = 'desperate-text';
+        text.textContent = desperatePhrases[phraseIdx];
+        responseContainer.appendChild(text);
+      }
+      // Clicks 61-68: Begging message
+      else if (declineCount < 69) {
+        const text = document.createElement('p');
+        text.className = 'desperate-text';
+        text.textContent = 'One is not above begging. There. One said it.';
+        if (responseContainer.children.length < 2) {
+          responseContainer.appendChild(text);
+        }
+      }
+      // Click 69: Full breakdown and gold confetti
+      else if (declineCount === 69) {
+        responseContainer.innerHTML = '';
+        
+        const heading = document.querySelector('h1');
+        heading.textContent = 'ok FINE. nice. 😏';
+        heading.style.color = '#c9a84c';
+        
+        const subhead = document.querySelector('.subhead');
+        subhead.textContent = "let's go.";
+        subhead.style.color = '#c9a84c';
+        
+        declineBtn.style.display = 'none';
+        acceptBtn.style.display = 'none';
+        
+        // Gold confetti
+        for (let i = 0; i < 30; i++) {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * window.innerWidth + 'px';
+          confetti.style.top = '-10px';
+          confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+          confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+          document.body.appendChild(confetti);
+        }
+        
+        // Trigger YES screen after a moment
+        setTimeout(() => {
+          handleAccept();
+        }, 1500);
+      }
     }
   </script>
 </body>
