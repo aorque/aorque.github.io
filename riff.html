@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riff — Make First Dates Actually Fun</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  :root{
+    --bg:#09090f;
+    --surface:#0f0f1a;
+    --border:#1c1c2e;
+    --accent:#ff5c5c;
+    --accent2:#ff8c42;
+    --text:#f0f0f5;
+    --muted:#6b6b80;
+    --subtle:#1a1a2e;
+  }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+
+  /* Noise texture overlay */
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* Gradient blob */
+  .blob{
+    position:fixed;
+    width:600px;
+    height:600px;
+    border-radius:50%;
+    filter:blur(120px);
+    opacity:0.12;
+    pointer-events:none;
+    z-index:0;
+  }
+  .blob-1{background:var(--accent);top:-200px;left:-200px;}
+  .blob-2{background:var(--accent2);bottom:-200px;right:-200px;}
+
+  .page{
+    position:relative;
+    z-index:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    min-height:100vh;
+    padding:24px 20px 60px;
+  }
+
+  /* Nav */
+  nav{
+    width:100%;
+    max-width:480px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 0 48px;
+  }
+  .logo{
+    font-size:20px;
+    font-weight:800;
+    letter-spacing:-0.5px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .badge{
+    font-size:9px;
+    font-weight:700;
+    letter-spacing:2px;
+    color:var(--muted);
+    text-transform:uppercase;
+    border:1px solid var(--border);
+    padding:4px 10px;
+    border-radius:20px;
+  }
+
+  /* Hero */
+  .hero{
+    width:100%;
+    max-width:480px;
+    text-align:center;
+    padding-bottom:48px;
+  }
+
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:20px;
+  }
+  .eyebrow::before,.eyebrow::after{
+    content:'';
+    width:20px;
+    height:1px;
+    background:var(--accent);
+    opacity:0.5;
+  }
+
+  h1{
+    font-size:clamp(36px,10vw,56px);
+    font-weight:900;
+    line-height:1.05;
+    letter-spacing:-2px;
+    margin-bottom:20px;
+  }
+  h1 span{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+
+  .subhead{
+    font-size:16px;
+    font-weight:400;
+    color:var(--muted);
+    line-height:1.6;
+    margin-bottom:40px;
+    padding:0 8px;
+  }
+
+  /* Form */
+  .form-wrap{
+    width:100%;
+    max-width:400px;
+    margin:0 auto;
+  }
+
+  .input-row{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  input[type="email"]{
+    width:100%;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 20px;
+    font-size:15px;
+    font-family:'Inter',sans-serif;
+    color:var(--text);
+    outline:none;
+    transition:border-color 0.2s;
+    -webkit-appearance:none;
+  }
+  input[type="email"]::placeholder{color:var(--muted);}
+  input[type="email"]:focus{border-color:var(--accent);}
+
+  .cta-btn{
+    width:100%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border:none;
+    border-radius:12px;
+    padding:17px 24px;
+    font-size:15px;
+    font-weight:700;
+    font-family:'Inter',sans-serif;
+    color:#fff;
+    cursor:pointer;
+    transition:opacity 0.2s,transform 0.1s;
+    letter-spacing:0.3px;
+    -webkit-appearance:none;
+    touch-action:manipulation;
+  }
+  .cta-btn:hover{opacity:0.9;}
+  .cta-btn:active{transform:scale(0.98);}
+
+  .fine-print{
+    margin-top:14px;
+    font-size:11px;
+    color:var(--muted);
+    text-align:center;
+  }
+
+  /* Success state */
+  .success{
+    display:none;
+    text-align:center;
+    padding:28px 24px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+  }
+  .success-icon{font-size:36px;margin-bottom:12px;}
+  .success h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .success p{font-size:13px;color:var(--muted);line-height:1.5;}
+
+  /* Divider */
+  .divider{
+    width:100%;
+    max-width:480px;
+    height:1px;
+    background:var(--border);
+    margin:48px 0;
+  }
+
+  /* How it works */
+  .section-label{
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:28px;
+    text-align:center;
+  }
+
+  .steps{
+    width:100%;
+    max-width:480px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+
+  .step{
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+  }
+
+  .step-num{
+    min-width:32px;
+    height:32px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:800;
+    flex-shrink:0;
+  }
+
+  .step-text h4{
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:4px;
+  }
+  .step-text p{
+    font-size:13px;
+    color:var(--muted);
+    line-height:1.5;
+  }
+
+  /* Sample cards */
+  .divider2{
+    width:100%;
+    max-width:480px;
+    height:1px;
+    background:var(--border);
+    margin:48px 0;
+  }
+
+  .cards{
+    width:100%;
+    max-width:480px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;right:0;
+    height:2px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    opacity:0;
+    transition:opacity 0.2s;
+  }
+  .card:hover::before{opacity:1;}
+
+  .card-tier{
+    font-size:9px;
+    font-weight:700;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .tier-1{color:#4ecdc4;}
+  .tier-2{color:#f7dc6f;}
+  .tier-3{color:var(--accent);}
+
+  .card-prompt{
+    font-size:15px;
+    font-weight:600;
+    line-height:1.45;
+  }
+
+  /* Timer demo */
+  .timer-demo{
+    width:100%;
+    max-width:480px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+    margin-top:12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .timer-label{font-size:12px;color:var(--muted);}
+  .timer-val{
+    font-size:22px;
+    font-weight:800;
+    font-variant-numeric:tabular-nums;
+    letter-spacing:-1px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .timer-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+
+  /* Social proof */
+  .proof{
+    width:100%;
+    max-width:480px;
+    text-align:center;
+    margin-top:48px;
+    padding:28px 20px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+  }
+  .proof-num{
+    font-size:40px;
+    font-weight:900;
+    letter-spacing:-2px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    margin-bottom:6px;
+  }
+  .proof-text{font-size:13px;color:var(--muted);}
+
+  /* Footer */
+  footer{
+    margin-top:60px;
+    font-size:11px;
+    color:var(--muted);
+    text-align:center;
+    letter-spacing:1px;
+  }
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="page">
+
+  <!-- Nav -->
+  <nav>
+    <div class="logo">riff</div>
+    <div class="badge">Coming Soon</div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="eyebrow">for first dates</div>
+    <h1>Make it <span>less</span><br>awkward.</h1>
+    <p class="subhead">A shared experience for two people. Prompts, dares, and conversations that actually go somewhere. No app. No account. Just open a link and riff.</p>
+
+    <!-- Email form -->
+    <div class="form-wrap">
+      <div class="input-row" id="form-row">
+        <input type="email" id="email-input" placeholder="drop your email" autocomplete="email" />
+        <button class="cta-btn" onclick="handleSubmit()" ontouchend="handleSubmit()">I want early access →</button>
+      </div>
+      <p class="fine-print">No spam. We'll let you know when it's ready.</p>
+      <div class="success" id="success-msg">
+        <div class="success-icon">🔥</div>
+        <h3>You're on the list.</h3>
+        <p>We'll hit you when Riff goes live. In the meantime — go on that date.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- How it works -->
+  <p class="section-label">How it works</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <h4>One person opens riff.fun</h4>
+        <p>You get a 4-digit code and a shareable link. No signup, no download.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <h4>The other person joins</h4>
+        <p>Tap the link or enter the code. You're both in the same session instantly.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <h4>Cards feed you both in real time</h4>
+        <p>Prompts, questions, and dares that escalate as you go. Stupid, then interesting, then real.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text">
+        <h4>Session expires. Gone.</h4>
+        <p>Two hours. Timer visible the whole time. When it's done, it's done. No trace, no record.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider2"></div>
+
+  <!-- Sample cards -->
+  <p class="section-label">Sample prompts</p>
+  <div class="cards">
+    <div class="card">
+      <div class="card-tier tier-1">Warm Up</div>
+      <div class="card-prompt">"What's the most unhinged thing you've Googled in the last week?"</div>
+    </div>
+    <div class="card">
+      <div class="card-tier tier-1">Warm Up</div>
+      <div class="card-prompt">"Rate this date so far out of 10. Hold up your fingers at the same time."</div>
+    </div>
+    <div class="card">
+      <div class="card-tier tier-2">Getting Interesting</div>
+      <div class="card-prompt">"Show me the last photo you took. Explain it."</div>
+    </div>
+    <div class="card">
+      <div class="card-tier tier-2">Getting Interesting</div>
+      <div class="card-prompt">"What's a hill you will die on that most people think is insane?"</div>
+    </div>
+    <div class="card">
+      <div class="card-tier tier-3">Wild Card 🔥</div>
+      <div class="card-prompt">"Swap phones for 60 seconds. No deleting."</div>
+    </div>
+  </div>
+
+  <!-- Timer demo -->
+  <div class="timer-demo">
+    <div>
+      <div class="timer-label">Session expires in</div>
+      <div class="timer-sub">then it's gone forever</div>
+    </div>
+    <div>
+      <div class="timer-val" id="timer">1:47:23</div>
+    </div>
+  </div>
+
+  <!-- Social proof placeholder -->
+  <div class="proof">
+    <div class="proof-num">50</div>
+    <div class="proof-text">early access spots. first come first served.</div>
+  </div>
+
+  <footer>riff.fun &nbsp;·&nbsp; a fleeting moments product &nbsp;·&nbsp; 2026</footer>
+
+</div>
+
+<script>
+// Live countdown timer (demo — counts down from 1:47:23)
+var secs = 6443;
+function tick(){
+  if(secs<=0){secs=7200;}
+  secs--;
+  var h=Math.floor(secs/3600);
+  var m=Math.floor((secs%3600)/60);
+  var s=secs%60;
+  document.getElementById('timer').textContent=
+    h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+}
+setInterval(tick,1000);
+
+// Email submit
+function handleSubmit(){
+  var email=document.getElementById('email-input').value;
+  if(!email||!email.includes('@')){
+    document.getElementById('email-input').style.borderColor='#ff5c5c';
+    document.getElementById('email-input').focus();
+    return;
+  }
+  document.getElementById('form-row').style.display='none';
+  document.querySelector('.fine-print').style.display='none';
+  document.getElementById('success-msg').style.display='block';
+}
+</script>
+</body>
+</html>
