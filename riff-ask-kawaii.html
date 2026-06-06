@@ -323,7 +323,7 @@
       <div class="button-group">
         <button id="yes-btn">YES ✨</button>
         <div id="no-btn-container">
-          <button id="no-btn">no 🥺</button>
+          <button id="no-btn" ontouchend="handleNoTouch(event)">no 🥺</button>
         </div>
       </div>
     </div>
@@ -386,19 +386,18 @@
       }
     }
 
-    // Remove existing event listeners and add new ones
-    const noBtn2 = noBtn.cloneNode(true);
-    noBtn.parentNode.replaceChild(noBtn2, noBtn);
-    
+    // Attach directly — no cloneNode (strips handlers)
     const finalNoBtn = document.getElementById('no-btn');
 
     finalNoBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       shrinkNoButton();
     });
 
     finalNoBtn.addEventListener('touchend', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       shrinkNoButton();
     });
 
