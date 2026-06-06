@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hey (insert cute girl's name here)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#09090f;--surface:#0f0f1a;--border:#1c1c2e;
+  --accent:#ff5c5c;--accent2:#ff8c42;
+  --text:#f0f0f5;--muted:#6b6b80;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+.blob{position:fixed;width:500px;height:500px;border-radius:50%;filter:blur(120px);opacity:0.10;pointer-events:none;z-index:0;}
+.blob-1{background:#ff5c5c;top:-200px;left:-100px;}
+.blob-2{background:#ff8c42;bottom:-200px;right:-100px;}
+
+.page{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:32px 20px 80px;}
+
+/* nav */
+nav{width:100%;max-width:480px;display:flex;align-items:center;justify-content:space-between;padding-bottom:48px;}
+.logo{font-size:18px;font-weight:900;letter-spacing:-0.5px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-tag{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;border:1px solid var(--border);padding:4px 10px;border-radius:20px;}
+
+/* hero */
+.hero{width:100%;max-width:480px;text-align:center;margin-bottom:40px;}
+
+.eyebrow{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+
+.to-name{
+  font-size:clamp(32px,9vw,52px);
+  font-weight:900;
+  letter-spacing:-2px;
+  line-height:1.0;
+  margin-bottom:6px;
+  color:var(--text);
+}
+.to-name span{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.subtitle{font-size:14px;color:var(--muted);margin-bottom:32px;line-height:1.6;padding:0 8px;}
+
+/* the ask card */
+.ask-card{
+  width:100%;max-width:480px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:32px 28px;
+  margin-bottom:24px;
+  position:relative;
+  overflow:hidden;
+}
+.ask-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+
+.ask-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+
+.ask-body{font-size:15px;line-height:1.7;color:var(--text);margin-bottom:24px;}
+.ask-body b{color:#fff;font-weight:700;}
+.ask-body .highlight{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;}
+
+/* buttons */
+.btn-row{display:flex;flex-direction:column;gap:12px;width:100%;}
+.btn-yes{
+  width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none;border-radius:12px;padding:17px 24px;
+  font-size:15px;font-weight:700;font-family:'Inter',sans-serif;
+  color:#fff;cursor:pointer;
+  transition:opacity 0.2s,transform 0.1s;
+  -webkit-appearance:none;touch-action:manipulation;
+}
+.btn-yes:hover{opacity:0.9;}
+.btn-yes:active{transform:scale(0.98);}
+.btn-no{
+  width:100%;background:transparent;
+  border:1px solid var(--border);border-radius:12px;padding:15px 24px;
+  font-size:13px;font-weight:600;font-family:'Inter',sans-serif;
+  color:var(--muted);cursor:pointer;
+  transition:all 0.2s;position:relative;
+  -webkit-appearance:none;touch-action:manipulation;
+}
+.btn-no:hover{color:var(--text);border-color:#3a3a50;}
+
+/* evidence section */
+.evidence{width:100%;max-width:480px;display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.ev-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;display:flex;align-items:flex-start;gap:14px;}
+.ev-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
+.ev-text h4{font-size:13px;font-weight:700;margin-bottom:4px;}
+.ev-text p{font-size:12px;color:var(--muted);line-height:1.5;}
+
+/* riff preview */
+.riff-preview{width:100%;max-width:480px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 20px;margin-bottom:24px;}
+.riff-preview-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+.sample-cards{display:flex;flex-direction:column;gap:8px;}
+.sample-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;}
+.sample-tier{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.t1{color:#4ecdc4;}.t2{color:#f7dc6f;}.t3{color:var(--accent);}
+.sample-prompt{font-size:13px;color:var(--text);font-weight:500;line-height:1.4;}
+
+/* timer */
+.timer-section{width:100%;max-width:480px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.timer-left .tl{font-size:12px;color:var(--muted);}
+.timer-left .ts{font-size:10px;color:var(--muted);margin-top:2px;}
+.timer-val{font-size:26px;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:-1px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+/* yes state */
+.yes-state{display:none;text-align:center;padding:40px 28px;background:var(--surface);border:1px solid var(--border);border-radius:20px;width:100%;max-width:480px;}
+.yes-icon{font-size:48px;margin-bottom:16px;}
+.yes-title{font-size:24px;font-weight:900;letter-spacing:-0.5px;margin-bottom:8px;}
+.yes-title span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.yes-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
+.yes-detail{font-size:12px;color:var(--muted);background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;line-height:1.6;text-align:left;}
+
+/* no state */
+.no-state{display:none;text-align:center;padding:40px 28px;background:var(--surface);border:1px solid var(--border);border-radius:20px;width:100%;max-width:480px;}
+.no-icon{font-size:48px;margin-bottom:16px;}
+.no-title{font-size:20px;font-weight:800;margin-bottom:8px;}
+.no-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
+.btn-reconsider{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:12px;padding:14px 24px;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;color:#fff;cursor:pointer;-webkit-appearance:none;touch-action:manipulation;}
+
+footer{margin-top:48px;font-size:11px;color:var(--muted);text-align:center;letter-spacing:0.5px;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="page">
+
+  <nav>
+    <div class="logo">riff</div>
+    <div class="nav-tag">personal message</div>
+  </nav>
+
+  <div class="hero" id="main-content">
+    <div class="eyebrow">a message for</div>
+    <div class="to-name">hey, <span>(insert cute<br>girl's name here)</span></div>
+    <p class="subtitle">okay this is either the most creative thing<br>or the most unhinged thing you've ever received.<br>probably both.</p>
+  </div>
+
+  <!-- The Ask -->
+  <div class="ask-card" id="main-content2">
+    <div class="ask-label">the pitch</div>
+    <div class="ask-body">
+      so I'm building this <b>icebreaker app</b> for first dates. the concept is stupid simple — two people, shared prompts, session disappears after two hours. no account, no trace, just vibes.<br><br>
+      the problem is I need to actually <span class="highlight">test it on a real date</span> to know if it works.<br><br>
+      and honestly? I've been trying to think of someone I'd actually want to do that with. you came to mind first.<br><br>
+      so here's the thing — I'm not technically asking you on a date. I'm asking you to be a <b>beta tester.</b> which is basically the same thing but with less pressure and more plausible deniability.<br><br>
+      worst case: free drinks, awkward questions, good story.<br>
+      best case: you help me build something and we actually vibe.
+    </div>
+    <div class="btn-row" id="btn-row">
+      <button class="btn-yes" onclick="handleYes()" ontouchend="handleYes()">okay fine, I'm in 👀</button>
+      <button class="btn-no" id="no-btn" onclick="handleNo()" ontouchend="handleNo()">I'm going to pass</button>
+    </div>
+  </div>
+
+  <!-- Evidence / why you -->
+  <div class="evidence" id="evidence-section">
+    <div class="ev-card">
+      <div class="ev-icon">⏱️</div>
+      <div class="ev-text">
+        <h4>Sessions are temporary</h4>
+        <p>2-hour timer. When it's done, everything disappears. No screenshots, no archive, no record. Just the conversation.</p>
+      </div>
+    </div>
+    <div class="ev-card">
+      <div class="ev-icon">📵</div>
+      <div class="ev-text">
+        <h4>No app download</h4>
+        <p>Just a link. You scan, you're in. That's literally it. I built it so there's no excuse not to try it.</p>
+      </div>
+    </div>
+    <div class="ev-card">
+      <div class="ev-icon">🎯</div>
+      <div class="ev-text">
+        <h4>You'd be doing me a favor</h4>
+        <p>Real talk — I need the feedback. You're helping build something. That's a pretty good excuse to say yes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sample prompts preview -->
+  <div class="riff-preview" id="riff-preview">
+    <div class="riff-preview-label">a preview of what you're agreeing to</div>
+    <div class="sample-cards">
+      <div class="sample-card">
+        <div class="sample-tier t1">Warm Up</div>
+        <div class="sample-prompt">"Rate this date so far out of 10. Show fingers at the same time."</div>
+      </div>
+      <div class="sample-card">
+        <div class="sample-tier t2">Getting Interesting</div>
+        <div class="sample-prompt">"Show me the last photo you took. Explain it."</div>
+      </div>
+      <div class="sample-card">
+        <div class="sample-tier t3">Wild Card 🔥</div>
+        <div class="sample-prompt">"Swap phones for 60 seconds. No deleting."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timer demo -->
+  <div class="timer-section" id="timer-section">
+    <div class="timer-left">
+      <div class="tl">Session expires in</div>
+      <div class="ts">then it's gone. no trace.</div>
+    </div>
+    <div class="timer-val" id="timer">2:00:00</div>
+  </div>
+
+  <!-- YES state -->
+  <div class="yes-state" id="yes-state">
+    <div class="yes-icon">🔥</div>
+    <div class="yes-title">okay <span>let's go.</span></div>
+    <p class="yes-sub">screenshot this and send it back to me.<br>that's your confirmation. I'll handle the rest.</p>
+    <div class="yes-detail">
+      📍 you pick the spot — I'll just show up<br>
+      🍹 first drink's on me (beta tester discount)<br>
+      ⏱️ two hours max, I promise I won't overstay<br>
+      📵 no phones... except for the app, obviously
+    </div>
+  </div>
+
+  <!-- NO state -->
+  <div class="no-state" id="no-state">
+    <div class="no-icon">😮</div>
+    <div class="no-title">wait, really?</div>
+    <p class="no-sub">okay that's fair. but just so you know — the button below moves every time you try to click it. I'm not above it.</p>
+    <button class="btn-reconsider" onclick="reconsider()" ontouchend="reconsider()">actually wait, I changed my mind</button>
+  </div>
+
+  <footer>
+    built by someone who thought this was a good idea at midnight<br>
+    <span style="color:var(--accent);font-weight:700;">riff.fun</span> · a fleeting moments product
+  </footer>
+
+</div>
+
+<script>
+// countdown from 2 hours
+var secs = 7200;
+function tick(){
+  if(secs > 0) secs--;
+  var h=Math.floor(secs/3600);
+  var m=Math.floor((secs%3600)/60);
+  var s=secs%60;
+  var el=document.getElementById('timer');
+  if(el) el.textContent=h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+}
+setInterval(tick,1000);
+
+function handleYes(){
+  document.getElementById('ask-card') && null;
+  document.getElementById('main-content').style.display='none';
+  document.getElementById('main-content2').style.display='none';
+  document.getElementById('evidence-section').style.display='none';
+  document.getElementById('riff-preview').style.display='none';
+  document.getElementById('timer-section').style.display='none';
+  document.getElementById('yes-state').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function handleNo(){
+  document.getElementById('main-content').style.display='none';
+  document.getElementById('main-content2').style.display='none';
+  document.getElementById('evidence-section').style.display='none';
+  document.getElementById('riff-preview').style.display='none';
+  document.getElementById('timer-section').style.display='none';
+  document.getElementById('no-state').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function reconsider(){
+  document.getElementById('no-state').style.display='none';
+  document.getElementById('main-content').style.display='block';
+  document.getElementById('main-content2').style.display='block';
+  document.getElementById('evidence-section').style.display='flex';
+  document.getElementById('riff-preview').style.display='block';
+  document.getElementById('timer-section').style.display='flex';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
