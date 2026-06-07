@@ -639,7 +639,7 @@ function checkPw(){
 
     <!-- BIG NUMBER -->
     <div style="text-align:center;padding:18px 0 8px">
-      <div style="font-family:var(--mono);font-size:52px;font-weight:700;color:var(--orange);line-height:1;text-shadow:0 0 24px rgba(232,160,32,0.5)" id="spend-big" data-spend-value="4.89">$4.89</div>
+      <div style="font-family:var(--mono);font-size:52px;font-weight:700;color:var(--orange);line-height:1;text-shadow:0 0 24px rgba(232,160,32,0.5)" id="spend-big" data-spend-value="4.89">$4.96</div>
       <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px">TODAY'S SPEND · TARGET $3–6/DAY</div>
     </div>
 
@@ -904,7 +904,7 @@ function checkPw(){
 
 <script>
   // Live data — injected by nightly cron
-  var LIVE = {"total_cost": 153.5353, "total_tokens": 235742428, "total_sessions": 193, "today_cost": 4.4601, "memory_pct": 84, "user_pct": 86, "skill_count": 115, "total_lines": 36361, "tool_calls": 1670, "cron_jobs": 16, "updated": "Jun 7 2026 21:58 PT"}
+  var LIVE = {"total_cost": 153.5353, "total_tokens": 235742428, "total_sessions": 193, "today_cost": 4.9576, "memory_pct": 84, "user_pct": 86, "skill_count": 115, "total_lines": 36361, "tool_calls": 1670, "cron_jobs": 16, "updated": "Jun 7 2026 21:58 PT"}
 
   function applyLive(d){
     // Token card
@@ -1013,7 +1013,7 @@ function checkPw(){
     var s = document.getElementById('spend-sessions');
     var t = document.getElementById('spend-tools');
     var sv = document.getElementById('spend-saved');
-    if(s) s.textContent = 22;
+    if(s) s.textContent = 44;
     if(t) t.textContent = 159179;
     // Est. saved = what this would've cost all-Sonnet (approx 3x Haiku cost) minus actual
     if(sv) sv.textContent = '$6.48';
@@ -1033,8 +1033,9 @@ function checkPw(){
 
     // 7-day history
     var hist = document.getElementById('spend-history');
-    if(hist) {
-      hist.innerHTML = `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-02 — 1 sessions</span><span style="color:var(--green);font-weight:700">$0.08</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:0%;height:100%;background:var(--green);border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-03 — 6 sessions</span><span style="color:#ff4f6e;font-weight:700">$45.42</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:90%;height:100%;background:#ff4f6e;border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-04 — 7 sessions</span><span style="color:#ff4f6e;font-weight:700">$44.75</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:89%;height:100%;background:#ff4f6e;border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-05 — 10 sessions</span><span style="color:#ff4f6e;font-weight:700">$46.27</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:92%;height:100%;background:#ff4f6e;border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-06 — 21 sessions</span><span style="color:#ff4f6e;font-weight:700">$12.60</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:25%;height:100%;background:#ff4f6e;border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-07 — 42 sessions</span><span style="color:var(--yellow);font-weight:700">$4.77</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:9%;height:100%;background:var(--yellow);border-radius:2px;transition:width 1s ease"></div></div></div>`;
+    if(hist)
+      {
+      hist.innerHTML = `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-02 — 1 sessions</span><span style="color:var(--green);font-weight:700">$0.08</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:0%;height:100%;background:var(--green);border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-03 — 6 sessions</span><span style="color:#ff4f6e;font-weight:700">$45.42</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:91%;height:100%;background:#ff4f6e;border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-04 — 7 sessions</span><span style="color:#ff4f6e;font-weight:700">$44.75</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:90%;height:100%;background:#ff4f6e;border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-05 — 10 sessions</span><span style="color:#ff4f6e;font-weight:700">$46.27</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:93%;height:100%;background:#ff4f6e;border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-06 — 21 sessions</span><span style="color:#ff4f6e;font-weight:700">$12.60</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:25%;height:100%;background:#ff4f6e;border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-07 — 44 sessions</span><span style="color:var(--yellow);font-weight:700">$4.96</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:10%;height:100%;background:var(--yellow);border-radius:2px;transition:width 1s ease"></div></div></div>`;
     }
       var td=document.getElementById('td');if(td)td.textContent=left;
     }
