@@ -639,7 +639,7 @@ function checkPw(){
 
     <!-- BIG NUMBER -->
     <div style="text-align:center;padding:18px 0 8px">
-      <div style="font-family:var(--mono);font-size:52px;font-weight:700;color:var(--orange);line-height:1;text-shadow:0 0 24px rgba(232,160,32,0.5)" id="spend-big">$0.00</div>
+      <div style="font-family:var(--mono);font-size:52px;font-weight:700;color:var(--orange);line-height:1;text-shadow:0 0 24px rgba(232,160,32,0.5)" id="spend-big">$1.72</div>
       <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px">TODAY'S SPEND · TARGET $3–6/DAY</div>
     </div>
 
@@ -985,11 +985,14 @@ function checkPw(){
   (function spendPage(){
     // Hardcoded from last DB pull — updated by dashboard rebuild cron
     var data = {
-      today: { cost: 19.81, sessions: 18, tools: 248 },
+      today: { cost: 1.7231, sessions: 4, tools: 248 },
       history: [
-        { day: 'Jun 3', cost: 46.62, label: 'Setup day' },
-        { day: 'Jun 4', cost: 40.00, label: 'Marathon' },
-        { day: 'Jun 5', cost: 19.81, label: 'Build day (routing applied)' },
+        { day: 'Jun 2', cost: 0.0753, label: '1 sessions' },
+        { day: 'Jun 3', cost: 45.4227, label: '6 sessions' },
+        { day: 'Jun 4', cost: 44.7528, label: '7 sessions' },
+        { day: 'Jun 5', cost: 46.2749, label: '10 sessions' },
+        { day: 'Jun 6', cost: 12.5992, label: '21 sessions' },
+        { day: 'Jun 7', cost: 1.7231, label: '4 sessions' }
       ],
       max_scale: 12  // $12 = 100% on bar
     };
