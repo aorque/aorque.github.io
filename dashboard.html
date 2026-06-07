@@ -985,8 +985,8 @@ function checkPw(){
   (function spendPage(){
     // Hardcoded from last DB pull — updated by dashboard rebuild cron
     var data = {
-      today: { cost: 3.7831, sessions: 31, tools: 159179 },
-      history: [{ day: '2026-06-02', cost: 0.0753, label: '1 sessions' }, { day: '2026-06-03', cost: 45.4227, label: '6 sessions' }, { day: '2026-06-04', cost: 44.7528, label: '7 sessions' }, { day: '2026-06-05', cost: 46.2749, label: '10 sessions' }, { day: '2026-06-06', cost: 12.5992, label: '21 sessions' }, { day: '2026-06-07', cost: 3.7831, label: '31 sessions' }],
+      today: { cost: 3.9413, sessions: 33, tools: 233683 },
+      history: [{ day: '2026-06-02', cost: 0.0753, label: '1 sessions' }, { day: '2026-06-03', cost: 45.4227, label: '6 sessions' }, { day: '2026-06-04', cost: 44.7528, label: '7 sessions' }, { day: '2026-06-05', cost: 46.2749, label: '10 sessions' }, { day: '2026-06-06', cost: 12.5992, label: '21 sessions' }, { day: '2026-06-07', cost: 3.9412, label: '33 sessions' }],
       max_scale: 50
     };
 
@@ -1035,41 +1035,8 @@ function checkPw(){
     // 7-day history
     var hist = document.getElementById('spend-history');
     if(hist) {
-      var max = Math.max.apply(null, data.history.map(function(d){return d.cost;}));
-      hist.innerHTML = data.history.map(function(d){
-        var w = Math.round((d.cost/max)*100);
-        var c = d.cost < 10 ? 'var(--green)' : d.cost < 25 ? 'var(--yellow)' : 'var(--orange)';
-        return '<div style="margin-bottom:10px">' +
-          '<div style="display:flex;justify-content:space-between;margin-bottom:3px">' +
-          '<span style="color:var(--ink)">' + d.day + ' — ' + d.label + '</span>' +
-          '<span style="color:'+c+';font-weight:700">$'+d.cost.toFixed(2)+'</span></div>' +
-          '<div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden">' +
-          '<div style="width:'+w+'%;height:100%;background:'+c+';border-radius:2px;transition:width 1s ease"></div>' +
-          '</div></div>';
-      }).join('');
+      hist.innerHTML = `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-02 — 1 sessions</span><span style="color:var(--green);font-weight:700">$0.08</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:0%;height:100%;background:var(--green);border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-03 — 6 sessions</span><span style="color:var(--orange);font-weight:700">$45.42</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:98%;height:100%;background:var(--orange);border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-04 — 7 sessions</span><span style="color:var(--orange);font-weight:700">$44.75</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:97%;height:100%;background:var(--orange);border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-05 — 10 sessions</span><span style="color:var(--orange);font-weight:700">$46.27</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:100%;height:100%;background:var(--orange);border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-06 — 21 sessions</span><span style="color:var(--yellow);font-weight:700">$12.60</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:27%;height:100%;background:var(--yellow);border-radius:2px;transition:width 1s ease"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--ink)">2026-06-07 — 33 sessions</span><span style="color:var(--green);font-weight:700">$3.94</span></div><div style="background:var(--bg3);border-radius:2px;height:8px;overflow:hidden"><div style="width:9%;height:100%;background:var(--green);border-radius:2px;transition:width 1s ease"></div></div></div>`;
     }
-  })();
-
-
-
-  // Runway
-  (function(){
-    var start=new Date('2026-06-04T00:00:00-07:00');
-    var total=97;
-    var end=new Date(start.getTime()+total*86400000);
-    function update(){
-      var now=new Date();
-      var elapsed=Math.max(0,Math.floor((now-start)/86400000));
-      var left=Math.max(0,total-elapsed);
-      var pct=Math.min(100,Math.round(elapsed/total*100));
-      document.getElementById('rdays').textContent=left;
-      document.getElementById('rwks').textContent=Math.floor(left/7);
-      document.getElementById('rmos').textContent=(left/30.44).toFixed(1);
-      document.getElementById('rmo').innerHTML=(left/30.44).toFixed(1)+'<span style="font-size:18px;color:var(--muted)">mo</span>';
-      document.getElementById('rbar').style.width=pct+'%';
-      document.getElementById('rlab').textContent=pct+'% consumed';
-      document.getElementById('rpct').textContent=pct+'% used';
-      document.getElementById('rzero').textContent='Zero day: '+end.toLocaleDateString('en-US',{timeZone:'America/Los_Angeles',month:'long',day:'numeric',year:'numeric'});
       var td=document.getElementById('td');if(td)td.textContent=left;
     }
     update();setInterval(update,60000);
