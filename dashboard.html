@@ -1062,7 +1062,7 @@ function checkPw(){
 
   function loadSpend(){
     // Try VPS endpoint first, fallback to localhost
-    var endpoints = ['http://localhost:7843/spend', 'http://127.0.0.1:7843/spend'];
+    var endpoints = ['http://2.25.167.58:7843/spend', 'http://127.0.0.1:7843/spend'];
     var fetchSpend = function(idx) {
       if(idx >= endpoints.length) {
         var el=document.getElementById('spend-updated');
