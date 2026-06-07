@@ -904,7 +904,7 @@ function checkPw(){
 
 <script>
   // Live data — injected by nightly cron
-  var LIVE = {"total_cost": 163.65, "total_tokens": 230085402, "total_sessions": 162, "today_cost": 6.57, "memory_pct": 84, "user_pct": 86, "skill_count": 115, "total_lines": 36361, "tool_calls": 1396, "cron_jobs": 16, "updated": "Jun 7 2026 05:00 PT"};
+  var LIVE = {"total_cost": 163.65, "total_tokens": 230085402, "total_sessions": 162, "today_cost": 2.49, "memory_pct": 84, "user_pct": 86, "skill_count": 115, "total_lines": 36361, "tool_calls": 1396, "cron_jobs": 16, "updated": "Jun 7 2026 05:00 PT"};
 
   function applyLive(d){
     // Token card
@@ -985,14 +985,14 @@ function checkPw(){
   (function spendPage(){
     // Hardcoded from last DB pull — updated by dashboard rebuild cron
     var data = {
-      today: { cost: 2.3922, sessions: 8, tools: 43655 },
+      today: { cost: 2.4904, sessions: 9, tools: 79835 },
       history: [
-        { day: 'Jun 2', cost: 0.0753, label: '1 sessions' },
-        { day: 'Jun 3', cost: 45.4227, label: '6 sessions' },
-        { day: 'Jun 4', cost: 44.7528, label: '7 sessions' },
-        { day: 'Jun 5', cost: 46.2749, label: '10 sessions' },
-        { day: 'Jun 6', cost: 12.5992, label: '21 sessions' },
-        { day: 'Jun 7', cost: 2.3922, label: '8 sessions' }
+        { day: '2026-06-02', cost: 0.0753, label: '1 sessions' },
+        { day: '2026-06-03', cost: 45.4227, label: '6 sessions' },
+        { day: '2026-06-04', cost: 44.7528, label: '7 sessions' },
+        { day: '2026-06-05', cost: 46.2749, label: '10 sessions' },
+        { day: '2026-06-06', cost: 12.5992, label: '21 sessions' },
+        { day: '2026-06-07', cost: 2.4904, label: '9 sessions' },
       ],
       max_scale: 12  // $12 = 100% on bar
     };
@@ -1021,8 +1021,8 @@ function checkPw(){
     var s = document.getElementById('spend-sessions');
     var t = document.getElementById('spend-tools');
     var sv = document.getElementById('spend-saved');
-    if(s) s.textContent = data.today.sessions;
-    if(t) t.textContent = data.today.tools;
+    if(s) s.textContent = 9;
+    if(t) t.textContent = 79835;
     // Est. saved = what this would've cost all-Sonnet (approx 3x Haiku cost) minus actual
     if(sv) sv.textContent = '$' + Math.max(0, (cost * 2.0)).toFixed(2);
 
