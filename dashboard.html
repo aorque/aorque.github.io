@@ -639,18 +639,18 @@ function checkPw(){
 
     <!-- BIG NUMBER -->
     <div style="text-align:center;padding:18px 0 8px">
-      <div style="font-family:var(--mono);font-size:52px;font-weight:700;color:var(--orange);line-height:1;text-shadow:0 0 24px rgba(232,160,32,0.5)" id="spend-big">$0.5127</div>
+      <div style="font-family:var(--mono);font-size:52px;font-weight:700;color:var(--orange);line-height:1;text-shadow:0 0 24px rgba(232,160,32,0.5)" id="spend-big">$0.83</div>
       <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px">TODAY'S SPEND · TARGET $3–6/DAY</div>
     </div>
 
     <!-- PROGRESS BAR — video game style -->
     <div style="position:relative;margin:0 0 6px">
       <div style="background:var(--bg3);border:1px solid var(--border);border-radius:4px;height:28px;overflow:hidden;position:relative">
-        <div id="spend-bar" style="height:100%;width:35.9%;background:linear-gradient(90deg,var(--green),var(--teal));transition:width 0.8s ease;border-radius:4px"></div>
+        <div id="spend-bar" style="height:100%;width:6.900833333333332%;background:linear-gradient(90deg,var(--green),var(--teal));transition:width 0.8s ease;border-radius:4px></div>
         <!-- target marker at 50% = $6 of $12 max scale -->
         <div style="position:absolute;top:0;left:50%;height:100%;width:2px;background:rgba(255,255,255,0.3)"></div>
         <div style="position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:8px;color:var(--green)">TARGET $6</div>
-        <div id="spend-bar-label" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;color:rgba(255,255,255,0.8)">43%</div>
+        <div id="spend-bar-label" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;color:rgba(255,255,255,0.8)">6%</div>
       </div>
     </div>
 
@@ -680,7 +680,7 @@ function checkPw(){
     <div class="ch"><div class="ci">📊</div><span class="ct">Today's Usage</span></div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)">
       <div style="background:var(--bg2);padding:14px;text-align:center">
-        <div style="font-family:var(--mono);font-size:24px;font-weight:700;color:var(--teal)" id="spend-sessions">57</div>
+        <div style="font-family:var(--mono);font-size:24px;font-weight:700;color:var(--teal)" id="spend-sessions">9</div>
         <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">SESSIONS</div>
       </div>
       <div style="background:var(--bg2);padding:14px;text-align:center">
@@ -984,7 +984,7 @@ function checkPw(){
   document.getElementById('sc').textContent='231';
   (function spendPage(){
     // Hardcoded from last DB pull — updated by dashboard rebuild cron
-    var data = { today: { cost: 0.5127, sessions: 7, tools: 58395 }, history: [{ day: "2026-06-02", cost: 0.0753, label: "1 sessions " }, { day: "2026-06-03", cost: 45.4227, label: "6 sessions " }, { day: "2026-06-04", cost: 44.7528, label: "7 sessions " }, { day: "2026-06-05", cost: 46.2749, label: "10 sessions " }, { day: "2026-06-06", cost: 12.5992, label: "21 sessions " }, { day: "2026-06-07", cost: 6.6497, label: "64 sessions " }, { day: "2026-06-08", cost: 0.5127, label: "7 sessions " }], max_scale: 56 };
+    var data = { today: { cost: 0.8281, sessions: 9, tools: 58395 }, history: [{ day: "2026-06-02", cost: 0.0753, label: "1 sessions  " }, { day: "2026-06-03", cost: 45.4227, label: "6 sessions  " }, { day: "2026-06-04", cost: 44.7528, label: "7 sessions  " }, { day: "2026-06-05", cost: 46.2749, label: "10 sessions  " }, { day: "2026-06-06", cost: 12.5992, label: "21 sessions  " }, { day: "2026-06-07", cost: 6.6497, label: "64 sessions  " }, { day: "2026-06-08", cost: 0.8281, label: "9 sessions  " }], max_scale: 46 };
 
     var cost = data.today.cost;
     var pct = Math.min(100, Math.round((cost / data.max_scale) * 100));
