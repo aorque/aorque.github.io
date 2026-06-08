@@ -984,8 +984,8 @@ function checkPw(){
   document.getElementById('sc').textContent='204';
   (function spendPage(){
     // Hardcoded from last DB pull — updated by dashboard rebuild cron
-    var data = { today: { cost: 5.3282, sessions: 48, tools: 159179 },
-      history: [{ day: "2026-06-02", cost: 0.0753, label: "1 sessions" }, { day: "2026-06-03", cost: 45.4227, label: "6 sessions" }, { day: "2026-06-04", cost: 44.7528, label: "7 sessions" }, { day: "2026-06-05", cost: 46.2749, label: "10 sessions" }, { day: "2026-06-06", cost: 12.5992, label: "21 sessions" }, { day: "2026-06-07", cost: 5.3283, label: "48 sessions" }],
+    var data = { today: { cost: 5.3710, sessions: 49, tools: 159179 },
+      history: [{ day: "2026-06-02", cost: 0.0753, label: "1 sessions" }, { day: "2026-06-03", cost: 45.4227, label: "6 sessions" }, { day: "2026-06-04", cost: 44.7528, label: "7 sessions" }, { day: "2026-06-05", cost: 46.2749, label: "10 sessions" }, { day: "2026-06-06", cost: 12.5992, label: "21 sessions" }, { day: "2026-06-07", cost: 5.3711, label: "49 sessions" }],
       max_scale: 50
     };
 
@@ -1013,7 +1013,7 @@ function checkPw(){
     var s = document.getElementById('spend-sessions');
     var t = document.getElementById('spend-tools');
     var sv = document.getElementById('spend-saved');
-    if(s) s.textContent = 44;
+    if(s) s.textContent = 49;
     if(t) t.textContent = 159179;
     // Est. saved = what this would've cost all-Sonnet (approx 3x Haiku cost) minus actual
     if(sv) sv.textContent = '$6.48';
