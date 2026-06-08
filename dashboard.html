@@ -990,7 +990,7 @@ function checkPw(){
   document.getElementById('sc').textContent='306';
   (function spendPage(){
     // Hardcoded from last DB pull — updated by dashboard rebuild cron
-        var data = { today: { cost: 6.9575, sessions: 74, tools: 296422 }, history: [{"day": "2026-06-02", "cost": 0.0753, "sessions": 1},{"day": "2026-06-03", "cost": 45.4227, "sessions": 6},{"day": "2026-06-04", "cost": 44.7528, "sessions": 7},{"day": "2026-06-05", "cost": 46.2749, "sessions": 10},{"day": "2026-06-06", "cost": 12.5992, "sessions": 21},{"day": "2026-06-07", "cost": 6.6497, "sessions": 64},{"day": "2026-06-08", "cost": 6.9575, "sessions": 74}], max_scale: 46.2749 };
+        var data = { today: { cost: 7.4729, sessions: 80, tools: 296422 }, history: [{"day": "2026-06-02", "cost": 0.0753, "sessions": 1}, {"day": "2026-06-03", "cost": 45.4227, "sessions": 6}, {"day": "2026-06-04", "cost": 44.7528, "sessions": 7}, {"day": "2026-06-05", "cost": 46.2749, "sessions": 10}, {"day": "2026-06-06", "cost": 12.5992, "sessions": 21}, {"day": "2026-06-07", "cost": 6.6497, "sessions": 64}, {"day": "2026-06-08", "cost": 7.4728, "sessions": 80}], max_scale: 46.2749 };
 
     var cost = data.today.cost;
     var pct = Math.min(100, Math.round((cost / data.max_scale) * 100));
@@ -1007,7 +1007,7 @@ function checkPw(){
       bar.style.width = pct + '%';
       bar.style.background = 'linear-gradient(90deg, var(--green), ' + color + ')';
     }
-    if(bigNum) { bigNum.textContent = '$6.96'; bigNum.style.color = color; }
+    if(bigNum) { bigNum.textContent = "$7.47"; bigNum.style.color = color; }
     if(barLabel) barLabel.textContent = pct + '% of $' + data.max_scale + ' ceiling';
 
     var el = document.getElementById('spend-updated');
