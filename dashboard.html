@@ -639,7 +639,7 @@ function checkPw(){
 
     <!-- BIG NUMBER -->
     <div style="text-align:center;padding:18px 0 8px">
-      <div style="font-family:var(--mono);font-size:52px;font-weight:700;color:var(--orange);line-height:1;text-shadow:0 0 24px rgba(232,160,32,0.5)" id="spend-big" style="color:var(--orange)">$0.15</div>
+      <div style="font-family:var(--mono);font-size:52px;font-weight:700;color:var(--orange);line-height:1;text-shadow:0 0 24px rgba(232,160,32,0.5)" id="spend-big">$0.5127</div>
       <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px">TODAY'S SPEND · TARGET $3–6/DAY</div>
     </div>
 
@@ -984,7 +984,7 @@ function checkPw(){
   document.getElementById('sc').textContent='228';
   (function spendPage(){
     // Hardcoded from last DB pull — updated by dashboard rebuild cron
-    var data = { today: { cost: 0.2838, sessions: 4, tools: 40660 }, history: [{ day: "2026-06-02", cost: 0.0753, label: "1 sessions " }, { day: "2026-06-03", cost: 45.4227, label: "6 sessions " }, { day: "2026-06-04", cost: 44.7528, label: "7 sessions " }, { day: "2026-06-05", cost: 46.2749, label: "10 sessions " }, { day: "2026-06-06", cost: 12.5992, label: "21 sessions " }, { day: "2026-06-07", cost: 6.6497, label: "64 sessions " }, { day: "2026-06-08", cost: 0.2838, label: "4 sessions " }], max_scale: 56 };
+    var data = { today: { cost: 0.5127, sessions: 7, tools: 58395 }, history: [{ day: "2026-06-02", cost: 0.0753, label: "1 sessions " }, { day: "2026-06-03", cost: 45.4227, label: "6 sessions " }, { day: "2026-06-04", cost: 44.7528, label: "7 sessions " }, { day: "2026-06-05", cost: 46.2749, label: "10 sessions " }, { day: "2026-06-06", cost: 12.5992, label: "21 sessions " }, { day: "2026-06-07", cost: 6.6497, label: "64 sessions " }, { day: "2026-06-08", cost: 0.5127, label: "7 sessions " }], max_scale: 56 };
 
     var cost = data.today.cost;
     var pct = Math.min(100, Math.round((cost / data.max_scale) * 100));
