@@ -687,7 +687,7 @@ function checkPw(){
         <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">SESSIONS</div>
       </div>
       <div style="background:var(--bg2);padding:14px;text-align:center">
-        <div style="font-family:var(--mono);font-size:24px;font-weight:700;color:var(--orange)">279603</div>
+        <div style="font-family:var(--mono);font-size:24px;font-weight:700;color:var(--orange)" id="spend-tools-today">—</div>
         <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">TOOL CALLS</div>
       </div>
       <div style="background:var(--bg2);padding:14px;text-align:center">
@@ -1024,8 +1024,8 @@ function checkPw(){
     var el = document.getElementById('spend-updated');
     if(el) el.textContent = 'as of ' + new Date().toLocaleTimeString('en-US',{timeZone:'America/Los_Angeles',hour:'numeric',minute:'2-digit'}) + ' PT';
 
-    var s = document.getElementById('spend-sessions');
-    var t = document.getElementById('spend-tools');
+    var s = document.getElementById('spend-sessions-today');
+    var t = document.getElementById('spend-tools-today');
     var sv = document.getElementById('spend-saved');
     // Sessions count
     if(s) s.textContent = data.today.sessions;
