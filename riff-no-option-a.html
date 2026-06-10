@@ -1,561 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>be my riff partner?</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --accent: #ff5c5c;
-      --accent2: #ff8c42;
-      --bg: #09090f;
-      --surface: #0f0f1a;
-      --border: #1c1c2e;
-      --text: #f0f0f5;
-      --muted: #6b6b80;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 500px;
-      width: 100%;
-      text-align: center;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #ff5c5c, #ff8c42);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 48px;
-      letter-spacing: -0.5px;
-    }
-
-    .headline {
-      font-size: 36px;
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
-    }
-
-    .subhead {
-      font-size: 16px;
-      color: var(--muted);
-      margin-bottom: 48px;
-      line-height: 1.5;
-      font-weight: 400;
-    }
-
-    .buttons-container {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-      position: relative;
-      min-height: 60px;
-    }
-
-    .btn {
-      padding: 14px 32px;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      transition: all 0.2s ease;
-      letter-spacing: -0.3px;
-    }
-
-    .btn-yes {
-      background: linear-gradient(135deg, #ff5c5c, #ff8c42);
-      color: white;
-      padding: 14px 48px;
-    }
-
-    .btn-yes:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 24px rgba(255, 92, 92, 0.3);
-    }
-
-    .btn-yes:active {
-      transform: scale(0.98);
-    }
-
-    .btn-no {
-      background: transparent;
-      color: var(--muted);
-      border: 1.5px solid var(--border);
-      position: relative;
-      z-index: 10;
-    }
-
-    .btn-no:hover {
-      color: var(--text);
-      border-color: var(--muted);
-    }
-
-    .btn-no.surrendered {
-      color: var(--text);
-      border-color: var(--muted);
-    }
-
-    .btn-no.surrendered::after {
-      content: ' 🏳️';
-      margin-left: 4px;
-    }
-
-    .ghost-text {
-      position: absolute;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--muted);
-      opacity: 0;
-      pointer-events: none;
-      white-space: nowrap;
-      animation: fadeInFade 0.6s ease-out;
-    }
-
-    @keyframes fadeInFade {
-      0% {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      20% {
-        opacity: 1;
-      }
-      80% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0;
-        transform: scale(0.6);
-      }
-    }
-
-    .surrender-text {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 12px;
-      opacity: 0;
-      animation: fadeIn 0.4s ease-out 1.5s forwards;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-
-    /* Confirmation screens */
-    .screen {
-      display: none;
-      animation: fadeInScreen 0.4s ease-out;
-    }
-
-    .screen.active {
-      display: block;
-    }
-
-    @keyframes fadeInScreen {
-      from {
-        opacity: 0;
-        transform: scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    .confirmation-emoji {
-      font-size: 64px;
-      margin-bottom: 24px;
-      display: block;
-    }
-
-    .confirmation-title {
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
-    }
-
-    .confirmation-text {
-      font-size: 15px;
-      color: var(--muted);
-      margin-bottom: 32px;
-      line-height: 1.6;
-    }
-
-    .details-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 24px;
-      margin-bottom: 32px;
-      text-align: left;
-    }
-
-    .detail-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .detail-item:last-child {
-      border-bottom: none;
-    }
-
-    .detail-label {
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .detail-value {
-      color: var(--text);
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .timer {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 24px;
-    }
-
-    .footer {
-      margin-top: 64px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .footer a {
-      color: var(--accent);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-
-    .footer a:hover {
-      color: var(--accent2);
-    }
-
-    /* Password gate overlay */
-    #pw-gate {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      z-index: 99999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Inter', sans-serif;
-    }
-
-    #pw-gate.hidden {
-      display: none;
-    }
-
-    .pw-box {
-      text-align: center;
-      padding: 32px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--surface);
-      min-width: 300px;
-    }
-
-    .pw-logo {
-      font-size: 20px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #ff5c5c, #ff8c42);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 20px;
-      letter-spacing: -0.5px;
-    }
-
-    #pw-input {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 12px;
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      text-align: center;
-      outline: none;
-      -webkit-appearance: none;
-      transition: border-color 0.2s ease;
-    }
-
-    #pw-input:focus {
-      border-color: var(--muted);
-    }
-
-    #pw-err {
-      margin-top: 10px;
-      font-size: 11px;
-      color: #ff4f6e;
-      min-height: 14px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>be my riff partner?</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#0e0e12;color:#eaeaf0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;}
+.container{max-width:520px;width:100%;text-align:center;position:relative;z-index:2;}
+.hidden{display:none !important;}
+.logo{font-weight:800;font-size:1rem;color:#8b7cf8;margin-bottom:20px;letter-spacing:0.1em;text-transform:uppercase;}
+h1{font-size:2.4rem;font-weight:800;line-height:1.2;margin-bottom:12px;}
+.sub{color:#9a9aa8;margin-bottom:38px;}
+.btn-row{display:flex;gap:16px;justify-content:center;align-items:center;min-height:90px;flex-wrap:wrap;}
+button{font-family:'Inter',sans-serif;font-weight:600;font-size:1.05rem;border:none;border-radius:12px;padding:17px 42px;cursor:pointer;touch-action:manipulation;-webkit-appearance:none;-webkit-tap-highlight-color:transparent;user-select:none;transition:transform 0.12s;}
+button:active{transform:scale(0.95);}
+#btn-yes{background:linear-gradient(135deg,#8b7cf8,#d57cf8);color:#fff;box-shadow:0 8px 24px rgba(139,124,248,0.35);}
+#btn-no{background:#1b1b24;color:#777;border:1px solid #2c2a42;}
+#btn-no.fleeing{position:fixed;z-index:60;transition:top 0.2s cubic-bezier(0.3,1.4,0.5,1),left 0.2s cubic-bezier(0.3,1.4,0.5,1);}
+.taunt{color:#8b7cf8;font-size:0.85rem;min-height:1.6em;margin-top:18px;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.screen{animation:fadeIn 0.5s ease;}
+#yes-screen .big{font-size:3.4rem;margin-bottom:14px;}
+#yes-screen h2{font-size:1.8rem;margin-bottom:8px;}
+#yes-screen p{color:#9a9aa8;margin-bottom:26px;line-height:1.6;}
+.detail-card{background:#15151d;border:1px solid #232336;border-radius:14px;padding:16px 20px;margin-bottom:10px;display:flex;justify-content:space-between;font-size:0.92rem;}
+.detail-card .k{color:#9a9aa8;}
+.timer{font-size:2.2rem;font-weight:800;font-variant-numeric:tabular-nums;margin:18px 0 6px;}
+.cert{border:1px dashed #8b7cf8;border-radius:14px;padding:18px;margin-top:22px;color:#9a9aa8;font-size:0.82rem;line-height:1.7;}
+.cert b{color:#eaeaf0;}
+#no-screen h2{font-size:1.6rem;margin-bottom:10px;}
+#no-screen p{color:#9a9aa8;line-height:1.65;margin-bottom:24px;}
+.linkish{background:none;color:#8b7cf8;font-size:0.85rem;padding:10px;}
+.footer{position:fixed;bottom:12px;left:0;right:0;text-align:center;font-size:0.7rem;color:#444;}
+@media(max-width:600px){h1{font-size:1.9rem;}}
+</style>
 </head>
 <body>
-
-<!-- Password Gate -->
-<div id="pw-gate">
-  <div class="pw-box">
-    <div class="pw-logo">riff</div>
-    <input id="pw-input" type="password" placeholder="password" autofocus onkeydown="if(event.key==='Enter')checkPw()" ontouchend="" />
-    <div id="pw-err"></div>
-  </div>
-</div>
-
-<!-- Main Container -->
 <div class="container">
-  <!-- Main Screen -->
-  <div id="main-screen" class="screen active">
+  <div class="screen" id="main-screen">
     <div class="logo">riff</div>
-    <div class="headline">be my riff partner?</div>
-    <div class="subhead">I built this app for moments like this. humor me.</div>
-    
-    <div class="buttons-container">
-      <button class="btn btn-yes" id="btn-yes" onclick="handleYes()" ontouchend="handleYes()">YES</button>
-      <button class="btn btn-no" id="btn-no" onclick="handleNo()" ontouchend="handleNo()">NO</button>
+    <h1 id="headline">be my riff partner?</h1>
+    <div class="sub">I built this app for moments like this. humor me.</div>
+    <div class="btn-row">
+      <button id="btn-yes" type="button">YES</button>
+      <button id="btn-no" type="button">NO</button>
     </div>
+    <div class="taunt" id="taunt"></div>
   </div>
 
-  <!-- Yes Confirmation Screen -->
-  <div id="yes-screen" class="screen">
-    <span class="confirmation-emoji">🔥</span>
-    <div class="confirmation-title">let's go.</div>
-    <div class="confirmation-text">screenshot this and send it to me. that's your RSVP.</div>
-    
-    <div class="details-box">
-      <div class="detail-item">
-        <span class="detail-label">First drink</span>
-        <span class="detail-value">Your pick</span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">When</span>
-        <span class="detail-value">This weekend</span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">Where</span>
-        <span class="detail-value">Downtown</span>
-      </div>
-    </div>
-
-    <div class="timer" id="timer">2:00:00</div>
-
-    <div class="details-box" style="border: 1px dashed var(--border);">
-      <div style="text-align: center;">
-        <div class="detail-label" style="margin-bottom: 8px;">Founding Member Certificate</div>
-        <div class="detail-value" style="font-size: 12px; color: var(--muted);">Issued on</div>
-        <div class="detail-value" style="margin-top: 4px;">June 6, 2026</div>
-      </div>
-    </div>
+  <div class="screen hidden" id="yes-screen">
+    <div class="big">🔥</div>
+    <h2>let's go.</h2>
+    <p>screenshot this and send it to me. that's your RSVP.</p>
+    <div class="detail-card"><span class="k">First drink</span><span>Your pick</span></div>
+    <div class="detail-card"><span class="k">When</span><span>This weekend</span></div>
+    <div class="detail-card"><span class="k">Where</span><span>Downtown</span></div>
+    <div class="timer">2:00:00</div>
+    <div class="cert"><b>Founding Member Certificate</b><br>Issued on June 6, 2026<br>officially part of the Riff beta. no take-backs.</div>
   </div>
 
-  <!-- No Response Screen -->
-  <div id="no-screen" class="screen">
-    <span class="confirmation-emoji">🤝</span>
-    <div class="confirmation-title">respect.</div>
-    <div class="confirmation-text">but you're missing out.</div>
-    <div style="margin-top: 48px; padding: 24px; background: var(--surface); border-radius: 8px; border: 1px solid var(--border);">
-      <div style="font-size: 13px; color: var(--muted); line-height: 1.8;">
-        <div>No RSVP needed.</div>
-        <div style="margin-top: 8px;">The riff stays open.</div>
-        <div style="margin-top: 8px;">Maybe next time.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <div class="footer">
-    <div>built at midnight · <a href="#">riff.fun</a> · a fleeting moments product</div>
+  <div class="screen hidden" id="no-screen">
+    <h2>🤝 respect.</h2>
+    <p>but you're missing out on a legendary evening and a founding member certificate. the offer stays open.</p>
+    <button class="linkish" id="reconsider" type="button">…okay, let me reconsider</button>
   </div>
 </div>
+<div class="footer">built at midnight · riff.date</div>
 
 <script>
-  // Password gate
-  (function() {
-    if (sessionStorage.getItem('riffauth') === 'spencerwire') {
-      document.getElementById('pw-gate').classList.add('hidden');
-    }
-  })();
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var tries = 0;
+  var taunts = ['nice try.','the NO button has commitment issues.','it\'s faster than it looks.','YES doesn\'t run. just saying.','okay this is cardio now.','last one, then it gives up. maybe.'];
 
-  function checkPw() {
-    var v = document.getElementById('pw-input').value;
-    if (v === 'spencerwire') {
-      sessionStorage.setItem('riffauth', 'spencerwire');
-      document.getElementById('pw-gate').classList.add('hidden');
-    } else {
-      document.getElementById('pw-err').textContent = 'wrong password';
-      document.getElementById('pw-input').value = '';
-      document.getElementById('pw-input').focus();
-    }
+  try {
+    var to = new URLSearchParams(location.search).get('to');
+    if (to) { $('headline').textContent = to + ', be my riff partner?'; }
+  } catch(e){}
+
+  function flee(){
+    var b = $('btn-no');
+    b.classList.add('fleeing');
+    var pad = 16, w = b.offsetWidth || 110, h = b.offsetHeight || 54;
+    b.style.left = pad + Math.random()*(window.innerWidth - w - pad*2) + 'px';
+    b.style.top  = pad + Math.random()*(window.innerHeight - h - pad*2) + 'px';
+    tries++;
+    $('taunt').textContent = taunts[Math.min(tries-1, taunts.length-1)];
+    if (tries >= 7){ b.textContent = 'fine… YES'; b.classList.remove('fleeing'); b.id=''; b.addEventListener('click', yes); }
   }
 
-  // NO button behavior
-  let noEscapeCount = 0;
-  const maxEscapes = 3;
-  let noButtonSurrendered = false;
-
-  function handleNo() {
-    if (noButtonSurrendered) {
-      showNoScreen();
-      return;
-    }
-
-    if (noEscapeCount < maxEscapes) {
-      noEscapeCount++;
-      runAwayButton();
-    }
+  function yes(){
+    $('main-screen').classList.add('hidden');
+    $('no-screen').classList.add('hidden');
+    $('yes-screen').classList.remove('hidden');
   }
 
-  function runAwayButton() {
-    const btn = document.getElementById('btn-no');
-    const container = document.querySelector('.buttons-container');
-    
-    // Get random position
-    const maxX = container.clientWidth - btn.offsetWidth - 40;
-    const maxY = container.clientHeight - btn.offsetHeight - 40;
-    
-    const randomX = Math.random() * maxX - (maxX / 2);
-    const randomY = Math.random() * maxY - (maxY / 2);
-
-    // Store original position for ghost text
-    const rect = btn.getBoundingClientRect();
-    const ghostX = rect.left + rect.width / 2;
-    const ghostY = rect.top + rect.height / 2;
-
-    // Move button
-    btn.style.position = 'relative';
-    btn.style.left = randomX + 'px';
-    btn.style.top = randomY + 'px';
-
-    // Shrink button
-    const scale = 1 - (noEscapeCount * 0.2);
-    btn.style.transform = `scale(${scale})`;
-
-    // Create ghost text
-    const ghostTexts = ['nope', 'still nope', 'ok fine you can have this one'];
-    const ghostDiv = document.createElement('div');
-    ghostDiv.className = 'ghost-text';
-    ghostDiv.textContent = ghostTexts[noEscapeCount - 1];
-    ghostDiv.style.left = ghostX + 'px';
-    ghostDiv.style.top = ghostY + 'px';
-    ghostDiv.style.position = 'fixed';
-    container.appendChild(ghostDiv);
-
-    // Check if surrendered
-    if (noEscapeCount === maxEscapes) {
-      setTimeout(() => {
-        surrenderButton();
-      }, 1800);
-    }
-  }
-
-  function surrenderButton() {
-    noButtonSurrendered = true;
-    const btn = document.getElementById('btn-no');
-    const container = document.querySelector('.buttons-container');
-
-    // Reset position and scale
-    btn.style.position = 'static';
-    btn.style.left = 'auto';
-    btn.style.top = 'auto';
-    btn.style.transform = 'scale(1)';
-    
-    // Add surrendered styling
-    btn.classList.add('surrendered');
-    btn.textContent = 'ok fine, click me';
-
-    // Add surrender text above button
-    const surrenderDiv = document.createElement('div');
-    surrenderDiv.className = 'surrender-text';
-    surrenderDiv.textContent = '...you wore me down';
-    surrenderDiv.style.marginTop = '-60px';
-    surrenderDiv.style.marginBottom = '20px';
-    container.insertBefore(surrenderDiv, btn);
-  }
-
-  // YES button
-  function handleYes() {
-    showYesScreen();
-    startTimer();
-  }
-
-  // Screen management
-  function showScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(screenId).classList.add('active');
-  }
-
-  function showYesScreen() {
-    showScreen('yes-screen');
-  }
-
-  function showNoScreen() {
-    showScreen('no-screen');
-  }
-
-  // Timer
-  function startTimer() {
-    let timeLeft = 2 * 60 * 60; // 2 hours in seconds
-    const timerEl = document.getElementById('timer');
-
-    const interval = setInterval(() => {
-      const hours = Math.floor(timeLeft / 3600);
-      const minutes = Math.floor((timeLeft % 3600) / 60);
-      const seconds = timeLeft % 60;
-
-      timerEl.textContent = 
-        String(hours).padStart(2, '0') + ':' +
-        String(minutes).padStart(2, '0') + ':' +
-        String(seconds).padStart(2, '0');
-
-      timeLeft--;
-
-      if (timeLeft < 0) {
-        clearInterval(interval);
-        timerEl.textContent = '0:00:00';
-      }
-    }, 1000);
-  }
+  $('btn-yes').addEventListener('click', yes);
+  $('btn-no').addEventListener('touchstart', function(e){ e.preventDefault(); flee(); }, {passive:false});
+  $('btn-no').addEventListener('mouseenter', flee);
+  $('btn-no').addEventListener('click', function(){
+    // if somehow caught early, show the no screen after 3 real catches
+    if (tries < 3) { flee(); return; }
+    $('main-screen').classList.add('hidden');
+    $('no-screen').classList.remove('hidden');
+  });
+  $('reconsider').addEventListener('click', function(){
+    $('no-screen').classList.add('hidden');
+    $('main-screen').classList.remove('hidden');
+  });
+})();
 </script>
-
 </body>
 </html>

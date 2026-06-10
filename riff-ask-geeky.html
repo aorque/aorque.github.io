@@ -1,432 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ask_out.sh</title>
-  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Courier Prime', 'Space Mono', monospace;
-      background: #000;
-      color: #00ff41;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      position: relative;
-      overflow: hidden;
-      line-height: 1.6;
-    }
-
-    @keyframes scanlines {
-      0% {
-        background-position: 0 0;
-      }
-      100% {
-        background-position: 0 2px;
-      }
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.15) 0px,
-        rgba(0, 0, 0, 0.15) 1px,
-        transparent 1px,
-        transparent 2px
-      );
-      pointer-events: none;
-      z-index: 1;
-      animation: scanlines 8s linear infinite;
-    }
-
-    .container {
-      position: relative;
-      z-index: 2;
-      max-width: 700px;
-      animation: fadeIn 0.6s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-
-    .terminal {
-      background: #000;
-      border: 2px solid #00ff41;
-      border-radius: 4px;
-      padding: 20px;
-      font-size: 0.95rem;
-      box-shadow: 0 0 20px rgba(0, 255, 65, 0.3), inset 0 0 10px rgba(0, 255, 65, 0.05);
-    }
-
-    .prompt {
-      margin-bottom: 8px;
-      word-break: break-all;
-    }
-
-    .prompt strong {
-      color: #00ff41;
-      font-weight: 700;
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 12px;
-      height: 18px;
-      background: #00ff41;
-      margin-left: 4px;
-      animation: blink 1s step-start infinite;
-    }
-
-    @keyframes blink {
-      50% {
-        background: transparent;
-      }
-    }
-
-    .output {
-      margin-bottom: 16px;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-    }
-
-    .loading-sequence {
-      margin-bottom: 20px;
-    }
-
-    .loading-line {
-      margin-bottom: 6px;
-      animation: fadeIn 0.5s ease-out;
-    }
-
-    .percent {
-      color: #00ff41;
-      font-weight: 700;
-    }
-
-    .button-group {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    button {
-      background: #000;
-      color: #00ff41;
-      border: 1px solid #00ff41;
-      padding: 10px 20px;
-      font-family: 'Courier Prime', monospace;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-
-    button:hover {
-      background: #00ff41;
-      color: #000;
-      box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
-    }
-
-    button:active {
-      transform: scale(0.95);
-    }
-
-    .error-message {
-      color: #ff4141;
-      margin-top: 12px;
-      font-weight: 700;
-      animation: fadeIn 0.4s ease-out;
-    }
-
-    .success-message {
-      color: #00ff41;
-      margin-top: 12px;
-      font-weight: 700;
-      animation: fadeIn 0.4s ease-out;
-    }
-
-    .ascii-heart {
-      color: #ff4141;
-      text-align: center;
-      margin: 15px 0;
-      line-height: 1.2;
-      font-size: 0.8rem;
-    }
-
-    .footer {
-      margin-top: 30px;
-      color: #666;
-      font-size: 0.85rem;
-      text-align: center;
-    }
-
-    /* Confirmation screen */
-    .confirmation-screen {
-      display: none;
-    }
-
-    .confirmation-screen.show {
-      display: block;
-      animation: slideDown 0.5s ease-out;
-    }
-
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .reset-btn {
-      margin-top: 20px;
-    }
-
-    @media (max-width: 600px) {
-      .terminal {
-        padding: 15px;
-      }
-
-      .prompt {
-        font-size: 0.85rem;
-      }
-
-      button {
-        padding: 8px 16px;
-        font-size: 0.8rem;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ask_out.sh</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'JetBrains Mono',monospace;background:#0c0c0c;color:#33ff66;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+.terminal{max-width:600px;width:100%;background:#111;border:1px solid #2a2a2a;border-radius:10px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.7);}
+.titlebar{background:#1c1c1c;padding:10px 14px;display:flex;gap:7px;align-items:center;}
+.dot{width:12px;height:12px;border-radius:50%;}
+.dot.r{background:#ff5f56;}.dot.y{background:#ffbd2e;}.dot.g{background:#27c93f;}
+.titlebar .name{color:#777;font-size:0.75rem;margin-left:8px;}
+.body{padding:22px 20px 28px;font-size:0.82rem;line-height:1.9;}
+.prompt{color:#33ff66;}
+.prompt .path{color:#5c9cff;}
+.dim{color:#7a7a7a;}
+.ok{color:#33ff66;}
+.warn{color:#ffbd2e;}
+.rule{color:#333;}
+.cursor{display:inline-block;width:9px;height:16px;background:#33ff66;vertical-align:middle;animation:blink 1s steps(2) infinite;}
+@keyframes blink{50%{opacity:0;}}
+.btn-row{display:flex;gap:14px;margin:18px 0 6px;flex-wrap:wrap;}
+button{font-family:'JetBrains Mono',monospace;font-size:0.85rem;font-weight:700;background:#111;border:1px solid #33ff66;color:#33ff66;border-radius:6px;padding:13px 26px;cursor:pointer;touch-action:manipulation;-webkit-appearance:none;-webkit-tap-highlight-color:transparent;user-select:none;transition:all 0.15s;}
+button:active{transform:scale(0.96);}
+#yes-btn:hover{background:#33ff66;color:#0c0c0c;}
+#no-btn{border-color:#555;color:#888;}
+.hidden{display:none !important;}
+pre{font-size:0.5rem;line-height:1.3;color:#33ff66;overflow-x:auto;margin:14px 0;}
+.todo{color:#444;font-size:0.7rem;margin-top:18px;}
+@media(max-width:600px){.body{font-size:0.72rem;}pre{font-size:0.38rem;}}
+</style>
 </head>
 <body>
-  <!-- PASSWORD GATE -->
-  <div id="pw-gate" style="position:fixed;inset:0;background:#0a0a0f;z-index:99999;display:flex;align-items:center;justify-content:center">
-    <div style="text-align:center;padding:32px;border:1px solid #1e1e30;border-radius:12px;background:#0f0f18;min-width:280px">
-      <input id="pw-input" type="password" placeholder="password" autofocus style="width:100%;background:#14141f;border:1px solid #1e1e30;border-radius:6px;padding:10px;color:#fff;font-size:14px;text-align:center;outline:none" onkeydown="if(event.key==='Enter')checkPw()" />
-      <div id="pw-err" style="margin-top:8px;font-size:11px;color:#ff4f6e;min-height:14px"></div>
-    </div>
-  </div>
-
-  <script>
-    (function(){if(sessionStorage.getItem('riffauth')==='spencerwire')document.getElementById('pw-gate').style.display='none'})();
-    function checkPw(){var v=document.getElementById('pw-input').value;if(v==='spencerwire'){sessionStorage.setItem('riffauth','spencerwire');document.getElementById('pw-gate').style.display='none';}else{document.getElementById('pw-err').textContent='wrong password';document.getElementById('pw-input').value='';document.getElementById('pw-input').focus();}}
-  </script>
-
-  <div class="container">
-    <div class="ask-screen">
-      <div class="terminal">
-        <div class="prompt">
-          <strong>$</strong> ./ask_out.sh --target=[NAME] --app=riff
-          <span class="cursor"></span>
+<div class="terminal">
+  <div class="titlebar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="name">ask_out.sh — bash</span></div>
+  <div class="body">
+    <div id="boot">
+      <div class="prompt"><span class="path">~</span> $ ./ask_out.sh --target=<span id="target">[NAME]</span> --app=riff</div>
+      <div class="dim" id="l1"></div>
+      <div class="dim" id="l2"></div>
+      <div class="dim" id="l3"></div>
+      <div id="choice" class="hidden">
+        <div class="rule">────────────────────────────────────</div>
+        <div>Ready for deployment. <span class="warn">Choose wisely.</span></div>
+        <div class="rule">────────────────────────────────────</div>
+        <div class="btn-row">
+          <button id="yes-btn" type="button">--accept</button>
+          <button id="no-btn" type="button">--decline</button>
         </div>
-        
-        <div class="loading-sequence" id="loading">
-          <div class="loading-line">Analyzing compatibility... <span class="percent">94%</span></div>
-          <div class="loading-line">Checking vibe levels... <span class="percent">ELEVATED</span></div>
-          <div class="loading-line">Compiling date request... <span class="percent">DONE</span></div>
-        </div>
-
-        <div class="output">
-────────────────────────────────────
-Ready for deployment. Choose wisely.
-────────────────────────────────────
-        </div>
-
-        <div class="button-group">
-          <button id="yes-btn">--accept</button>
-          <button id="no-btn">--decline</button>
-        </div>
-
-        <div id="response-area"></div>
       </div>
     </div>
 
-    <div class="confirmation-screen">
-      <div class="terminal">
-        <div class="prompt">
-          <strong>$</strong> ./ask_out.sh --target=[NAME] --app=riff
-          <span class="cursor"></span>
-        </div>
-
-        <div class="output">Compilation successful!</div>
-
-        <div class="ascii-heart">
-  ██╗  ██╗███████╗ █████╗ ██████╗ ████████╗
-  ██║  ██║██╔════╝██╔══██╗██╔══██╗╚══██╔══╝
-  ███████║█████╗  ███████║██████╔╝   ██║   
-  ██╔══██║██╔══╝  ██╔══██║██╔══██╗   ██║   
-  ██║  ██║███████╗██║  ██║██║  ██║   ██║   
-  ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   
-        </div>
-
-        <div class="output">
-────────────────────────────────────
-Date request accepted.
-Prep coffee. Update wardrobe. GL.
-────────────────────────────────────
-        </div>
-
-        <button class="reset-btn" onclick="location.reload()">$ clear && exit</button>
-      </div>
+    <div id="accepted" class="hidden">
+      <div class="prompt"><span class="path">~</span> $ ./ask_out.sh --target=<span id="target2">[NAME]</span> --app=riff</div>
+      <div class="ok">Compilation successful!</div>
+<pre>
+██╗  ██╗███████╗ █████╗ ██████╗ ████████╗
+██║  ██║██╔════╝██╔══██╗██╔══██╗╚══██╔══╝
+███████║█████╗  ███████║██████╔╝   ██║
+██╔══██║██╔══╝  ██╔══██║██╔══██╗   ██║
+██║  ██║██║     ██║  ██║██║  ██║   ██║
+╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝
+</pre>
+      <div class="rule">────────────────────────────────────</div>
+      <div class="ok">Date request accepted.</div>
+      <div class="dim">Prep coffee. Update wardrobe. GL.</div>
+      <div class="rule">────────────────────────────────────</div>
+      <div class="btn-row"><button id="reset-btn" type="button">$ clear && exit</button></div>
     </div>
 
-    <div class="footer">// TODO: make this less embarrassing</div>
+    <div id="declined" class="hidden">
+      <div class="warn">ERROR 418: I'm a teapot. Decline not supported in this build.</div>
+      <div class="dim">Retrying with elevated charm privileges (sudo)...</div>
+      <div class="btn-row"><button id="retry-yes" type="button">sudo --accept</button></div>
+    </div>
+
+    <div class="todo">// TODO: make this less embarrassing</div>
+    <span class="cursor"></span>
   </div>
+</div>
 
-  <script>
-    const yesBtn = document.getElementById('yes-btn');
-    const noBtn = document.getElementById('no-btn');
-    const askScreen = document.querySelector('.ask-screen');
-    const confirmationScreen = document.querySelector('.confirmation-screen');
-    const responseArea = document.getElementById('response-area');
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
 
-    let declineCount = 0;
-    const initialSequence = ['--decline', '--are_you_sure', '--seriously', '--please_reconsider', '--i_am_begging_you'];
-    const errorMessages = [
-      'ERROR: emotional_damage.exe',
-      'FATAL: self_worth.dll not found',
-      'WARNING: deploying puppy_eyes.sh',
-      'CRITICAL: dignity.sys corrupted'
-    ];
-    const unhingedLabels = [
-      '--why_not_tho',
-      '--its_just_a_date',
-      '--i_made_an_app_for_this',
-      '--please_im_begging_with_sudo'
-    ];
+  try {
+    var to = new URLSearchParams(location.search).get('to');
+    if (to) { $('target').textContent = to; $('target2').textContent = to; }
+  } catch(e){}
 
-    function getLoadingBarString(clickNum) {
-      // Clicks 26-45: 20 clicks total, distribute 10 fills across them
-      const progressInRange = clickNum - 26; // 0-19
-      const percentage = Math.min(20 + Math.floor((progressInRange / 19) * 80), 100);
-      const filled = Math.round((percentage / 100) * 10);
-      const empty = 10 - filled;
-      const bar = '[' + '████'.repeat(filled) + '░░░░'.repeat(empty).substring(0, 40 - filled * 4) + '] ';
-      return bar + 'Compiling reasons to say yes... ' + percentage + '%';
-    }
+  function typeLine(id, text, delay, cb){
+    setTimeout(function(){
+      var el = $(id), i = 0;
+      var t = setInterval(function(){
+        el.textContent = text.slice(0, ++i);
+        if (i >= text.length){ clearInterval(t); if (cb) cb(); }
+      }, 22);
+    }, delay);
+  }
 
-    function handleDecline() {
-      declineCount++;
+  typeLine('l1','Analyzing compatibility... 94%',300);
+  typeLine('l2','Checking vibe levels... ELEVATED',1400);
+  typeLine('l3','Compiling date request... DONE',2500,function(){
+    setTimeout(function(){ $('choice').classList.remove('hidden'); }, 400);
+  });
 
-      // Clicks 1-10: Normal decline sequence
-      if (declineCount <= 10) {
-        const msg = initialSequence[Math.min(declineCount - 1, initialSequence.length - 1)];
-        noBtn.textContent = msg;
-        responseArea.innerHTML = '';
-      }
-      // Clicks 11-25: Terminal errors
-      else if (declineCount <= 25) {
-        const errorIndex = (declineCount - 11) % errorMessages.length;
-        const error = document.createElement('div');
-        error.className = 'error-message';
-        error.textContent = errorMessages[errorIndex];
-        responseArea.appendChild(error);
-      }
-      // Clicks 26-45: Loading bars
-      else if (declineCount <= 45) {
-        const loadingBar = document.createElement('div');
-        loadingBar.className = 'output';
-        loadingBar.textContent = getLoadingBarString(declineCount);
-        responseArea.appendChild(loadingBar);
-      }
-      // Clicks 46-60: Unhinged button labels
-      else if (declineCount <= 60) {
-        const labelIndex = (declineCount - 46) % unhingedLabels.length;
-        noBtn.textContent = unhingedLabels[labelIndex];
-      }
-      // Clicks 61-68: Special messages
-      else if (declineCount < 69) {
-        const specialMsg = document.createElement('div');
-        specialMsg.className = 'output';
-        if (declineCount === 61) {
-          specialMsg.textContent = 'rm -rf /reasons/to/say/no';
-        } else if (declineCount === 62) {
-          specialMsg.textContent = 'sudo give_chance --force';
-        } else {
-          specialMsg.textContent = '';
-        }
-        if (specialMsg.textContent) {
-          responseArea.appendChild(specialMsg);
-        }
-      }
-      // Click 69: The nice moment
-      else if (declineCount === 69) {
-        const success = document.createElement('div');
-        success.className = 'success-message';
-        success.textContent = 'nice.exe executed successfully 😏';
-        responseArea.innerHTML = '';
-        responseArea.appendChild(success);
+  function accept(){
+    $('boot').classList.add('hidden');
+    $('declined').classList.add('hidden');
+    $('accepted').classList.remove('hidden');
+  }
 
-        const asciiHeart = document.createElement('div');
-        asciiHeart.className = 'ascii-heart';
-        asciiHeart.innerHTML = `
-  ❤️  ❤️  ❤️<br>
- ❤️   ❤️   ❤️<br>
-❤️     ❤️     ❤️<br>
- ❤️   ❤️   ❤️<br>
-  ❤️  ❤️  ❤️
-        `;
-        responseArea.appendChild(asciiHeart);
-
-        // Show confirmation screen
-        setTimeout(() => {
-          askScreen.style.display = 'none';
-          confirmationScreen.classList.add('show');
-        }, 800);
-      }
-    }
-
-    yesBtn.addEventListener('click', () => {
-      askScreen.style.display = 'none';
-      confirmationScreen.classList.add('show');
-    });
-
-    yesBtn.addEventListener('touchend', (e) => {
-      e.preventDefault();
-      askScreen.style.display = 'none';
-      confirmationScreen.classList.add('show');
-    });
-
-    noBtn.addEventListener('click', handleDecline);
-    noBtn.addEventListener('touchend', (e) => {
-      e.preventDefault();
-      handleDecline();
-    });
-
-    // Simulate loading sequence
-    const loading = document.getElementById('loading');
-    loading.style.opacity = '0';
-    setTimeout(() => {
-      loading.style.opacity = '1';
-      loading.style.transition = 'opacity 0.3s ease-in';
-    }, 300);
-  </script>
+  $('yes-btn').addEventListener('click', accept);
+  $('no-btn').addEventListener('click', function(){
+    $('boot').classList.add('hidden');
+    $('declined').classList.remove('hidden');
+  });
+  $('retry-yes').addEventListener('click', accept);
+  $('reset-btn').addEventListener('click', function(){ location.reload(); });
+})();
+</script>
 </body>
 </html>
