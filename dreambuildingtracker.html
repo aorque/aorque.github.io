@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<!--
+  DREAM BUILDING BOT — PERSONAL COMMAND CENTER · Tony Orque
+  Single self-contained file. Inline CSS + vanilla JS. No build step, no frameworks.
+  Fonts via Google Fonts CDN. All checkbox / tracker / progress state persists in localStorage.
+  STANDALONE FILE — separate from the live usage dashboard.html pipeline.
+  ► To deploy on GitHub Pages, rename this file to index.html.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#08070d" />
+  <meta name="description" content="Dream Building Bot — Personal Command Center for Tony Orque. Dreams, TeamWire, financials, execution." />
+  <title>Dream Building Bot — Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#08070d; --bg-1:#0e0c16; --bg-2:#141121; --bg-3:#1a1628; --bg-4:#221b33;
+      --border:#271f3a; --border-2:#352a4e; --border-bright:#4a3a6e;
+      --violet:#a78bfa; --violet-6:#8b5cf6; --violet-7:#7c3aed;
+      --magenta:#e879f9; --magenta-6:#d946ef; --pink:#f472b6;
+      --cyan:#38bdf8; --cyan-6:#22d3ee;
+      --grad:linear-gradient(120deg,#8b5cf6 0%,#c026d3 55%,#e879f9 100%);
+      --grad-soft:linear-gradient(120deg,rgba(139,92,246,.18),rgba(217,70,239,.14));
+      --grad-tw:linear-gradient(120deg,#22d3ee 0%,#7c3aed 100%);
+      --grad-tw-soft:linear-gradient(120deg,rgba(34,211,238,.16),rgba(124,58,237,.16));
+      --green:#34d399; --amber:#fbbf24; --rose:#fb7185; --slate:#94a3b8;
+      --text:#efedf7; --dim:#bbb4cf; --muted:#7d7595; --faint:#564f6e;
+      --sans:'Inter',system-ui,-apple-system,sans-serif;
+      --display:'Space Grotesk','Inter',sans-serif;
+      --mono:'JetBrains Mono',ui-monospace,monospace;
+      --r:14px; --r-sm:9px;
+      --glow:0 0 0 1px rgba(139,92,246,.10), 0 14px 36px -20px rgba(139,92,246,.35);
+    }
+    html{-webkit-text-size-adjust:100%}
+    body{font-family:var(--sans);color:var(--text);background:var(--bg);font-size:15px;line-height:1.55;
+      min-height:100vh;padding-bottom:env(safe-area-inset-bottom);-webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;z-index:-2;
+      background:radial-gradient(1100px 560px at 2% -8%,rgba(139,92,246,.13),transparent 60%),
+        radial-gradient(900px 520px at 100% 4%,rgba(217,70,239,.10),transparent 55%),
+        radial-gradient(760px 700px at 50% 118%,rgba(34,211,238,.07),transparent 60%),var(--bg)}
+    body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.6;
+      background-image:linear-gradient(rgba(160,140,210,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(160,140,210,.022) 1px,transparent 1px);
+      background-size:46px 46px;mask-image:radial-gradient(circle at 50% 30%,#000,transparent 95%)}
+    ::selection{background:rgba(217,70,239,.3);color:#fff}
+    .ic{width:1em;height:1em;display:inline-block;vertical-align:-.13em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+    /* HEADER */
+    header{position:sticky;top:0;z-index:60;background:rgba(10,8,18,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+    .hwrap{max-width:1280px;margin:0 auto;padding:11px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0;margin-right:auto}
+    .mark{width:42px;height:42px;border-radius:11px;flex-shrink:0;display:grid;place-items:center;background:var(--grad);color:#fff;box-shadow:var(--glow)}
+    .mark .ic{width:22px;height:22px;stroke-width:2}
+    .btxt h1{font-family:var(--display);font-size:16px;font-weight:700;letter-spacing:.13em;line-height:1.1;background:linear-gradient(90deg,#fff,#e0d3ff 60%,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .btxt .sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--muted);margin-top:3px}
+    .hmeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.06em;padding:6px 10px;border-radius:8px;background:var(--bg-2);border:1px solid var(--border);color:var(--dim);white-space:nowrap}
+    .chip .ic{width:13px;height:13px;color:var(--muted)}
+    .chip.live{color:var(--green);border-color:rgba(52,211,153,.28);background:rgba(52,211,153,.08)}
+    .chip.feel{color:var(--magenta);border-color:rgba(232,121,249,.3);background:rgba(232,121,249,.08)}
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(52,211,153,.5);animation:pulse 2.4s infinite}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(52,211,153,.5)}70%{box-shadow:0 0 0 7px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+
+    /* TABS */
+    .tabbar{position:sticky;top:0;z-index:50;background:rgba(10,8,18,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .tabs{max-width:1280px;margin:0 auto;display:flex;gap:2px;padding:0 10px;overflow-x:auto;scrollbar-width:none}
+    .tabs::-webkit-scrollbar{display:none}
+    .tab{appearance:none;background:none;border:0;cursor:pointer;white-space:nowrap;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);padding:14px 13px;min-height:48px;display:flex;align-items:center;gap:7px;border-bottom:2px solid transparent;transition:color .18s;position:relative}
+    .tab .ic{width:15px;height:15px}
+    .tab:hover{color:var(--dim)}
+    .tab.active{color:var(--text)}
+    .tab.active::after{content:'';position:absolute;left:9px;right:9px;bottom:-1px;height:2px;border-radius:2px;background:var(--grad);box-shadow:0 0 12px rgba(217,70,239,.5)}
+
+    /* LAYOUT */
+    main{max-width:1280px;margin:0 auto;padding:18px 16px 60px}
+    .page{display:none;animation:fade .35s ease}
+    .page.active{display:block}
+    @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+    .grid{display:grid;gap:14px}
+    @media(min-width:760px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g2-wide{grid-template-columns:1.4fr 1fr}}
+    .sectlabel{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:6px 2px 10px}
+    .sectlabel .ln{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+
+    /* CARD */
+    .card{background:linear-gradient(180deg,var(--bg-2),var(--bg-1));border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;transition:border-color .2s}
+    .card:hover{border-color:var(--border-2)}
+    .card.accent{border-top:2px solid transparent;background-image:linear-gradient(180deg,var(--bg-2),var(--bg-1)),var(--grad);background-origin:border-box;background-clip:padding-box,border-box}
+    .card.tw{border-top:2px solid transparent;background-image:linear-gradient(180deg,var(--bg-2),var(--bg-1)),var(--grad-tw);background-origin:border-box;background-clip:padding-box,border-box}
+    .chead{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+    .cicon{width:34px;height:34px;border-radius:9px;flex-shrink:0;display:grid;place-items:center;background:var(--grad-soft);border:1px solid var(--border-2);color:var(--violet)}
+    .cicon.tw{background:var(--grad-tw-soft);color:var(--cyan)}
+    .cicon .ic{width:17px;height:17px}
+    .ctitle{font-family:var(--display);font-size:15px;font-weight:600;color:var(--text);line-height:1.2}
+    .csub{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);margin-top:2px;text-transform:uppercase}
+    .chead .badge{margin-left:auto}
+
+    /* BADGES */
+    .badge{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border-radius:6px;white-space:nowrap;flex-shrink:0;display:inline-flex;align-items:center;gap:5px}
+    .b-locked{background:rgba(167,139,250,.12);color:var(--violet);border:1px solid rgba(167,139,250,.32)}
+    .b-pending{background:rgba(251,191,36,.1);color:var(--amber);border:1px solid rgba(251,191,36,.3)}
+    .b-active{background:rgba(52,211,153,.1);color:var(--green);border:1px solid rgba(52,211,153,.3)}
+    .b-ready{background:rgba(56,189,248,.1);color:var(--cyan);border:1px solid rgba(56,189,248,.3)}
+    .b-queued{background:rgba(148,163,184,.1);color:var(--slate);border:1px solid rgba(148,163,184,.28)}
+    .b-high{background:rgba(251,113,133,.1);color:var(--rose);border:1px solid rgba(251,113,133,.32)}
+    .b-crit{background:rgba(251,113,133,.16);color:#ffb3c0;border:1px solid rgba(251,113,133,.4)}
+    .b-hot{background:rgba(251,113,133,.16);color:#ffb3c0;border:1px solid rgba(251,113,133,.42)}
+
+    /* STAT TILES */
+    .stats{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+    @media(min-width:560px){.stats{grid-template-columns:repeat(4,1fr)}}
+    .tile{background:var(--bg-2);border:1px solid var(--border);border-radius:11px;padding:14px 13px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s}
+    .tile:hover{border-color:var(--border-2);transform:translateY(-2px)}
+    .tile::after{content:'';position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--grad);opacity:.65}
+    .tile.warn::after{background:linear-gradient(90deg,#a16207,var(--amber))}
+    .tile.crit::after{background:linear-gradient(90deg,#9f1239,var(--rose))}
+    .tile.good::after{background:linear-gradient(90deg,#047857,var(--green))}
+    .tile.tw::after{background:var(--grad-tw)}
+    .tnum{font-family:var(--mono);font-weight:700;font-size:22px;line-height:1;letter-spacing:-.02em;background:linear-gradient(180deg,#fff,#d8c9ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .tile.warn .tnum{background:linear-gradient(180deg,#fff,#fde68a);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .tile.crit .tnum{background:linear-gradient(180deg,#fff,#fecdd3);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .tile.good .tnum{background:linear-gradient(180deg,#fff,#a7f3d0);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .tile.tw .tnum{background:linear-gradient(180deg,#fff,#a5e8f7);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .tlabel{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:7px;line-height:1.3}
+
+    /* PROGRESS */
+    .prog{margin:2px 0}
+    .pmeta{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.04em;margin-bottom:6px}
+    .pmeta b{color:var(--violet);font-weight:700}
+    .track{height:8px;background:var(--bg-3);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+    .bar-fill{height:100%;border-radius:6px;background:var(--grad);box-shadow:0 0 10px rgba(217,70,239,.4);width:0;transition:width .5s cubic-bezier(.4,0,.2,1)}
+    .bar-fill.tw{background:var(--grad-tw);box-shadow:0 0 10px rgba(34,211,238,.4)}
+
+    /* LISTS / MISC */
+    .body-txt{color:var(--dim);font-size:14px;line-height:1.6}
+    .lead{color:var(--dim);font-size:14.5px;line-height:1.65}
+    .kv{display:flex;gap:10px;font-size:13.5px;color:var(--dim);padding:7px 0;border-bottom:1px dashed var(--border)}
+    .kv:last-child{border-bottom:0}
+    .kv .k{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);min-width:108px;flex-shrink:0;padding-top:2px}
+    .kv .v{color:var(--text)}
+    .tags{display:flex;flex-wrap:wrap;gap:7px}
+    .tag{font-family:var(--mono);font-size:11px;letter-spacing:.03em;color:var(--dim);background:var(--bg-3);border:1px solid var(--border);border-radius:7px;padding:6px 10px}
+    .tag b{color:var(--violet)}
+    .tag.tw b{color:var(--cyan)}
+    .miniband{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:16px 0 9px;display:flex;align-items:center;gap:8px}
+    .miniband::before{content:'';width:14px;height:2px;border-radius:2px;background:var(--grad)}
+    .flist{display:grid;gap:8px}
+    .fitem{display:flex;gap:10px;align-items:flex-start;background:var(--bg-2);border:1px solid var(--border);border-radius:9px;padding:10px 12px}
+    .fitem .fi{width:22px;height:22px;border-radius:6px;flex-shrink:0;display:grid;place-items:center;background:var(--grad-soft);border:1px solid var(--border-2);color:var(--violet);margin-top:1px}
+    .fitem .fi .ic{width:12px;height:12px}
+    .fitem .ft{font-size:13.5px;color:var(--text);font-weight:500}
+    .fitem .fd{font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.5}
+    .fitem.num .fi{font-family:var(--mono);font-size:11px;font-weight:700;color:#fff;background:var(--grad);border-color:transparent}
+
+    /* CHECKLIST */
+    .checklist{display:grid;gap:7px;margin-top:4px}
+    .tk{display:flex;align-items:center;gap:12px;background:var(--bg-2);border:1px solid var(--border);border-radius:9px;padding:11px 13px;min-height:46px;cursor:pointer;transition:border-color .18s,background .18s;user-select:none}
+    .tk:hover{border-color:var(--border-2);background:var(--bg-3)}
+    .tk input{appearance:none;-webkit-appearance:none;width:20px;height:20px;flex-shrink:0;border:1.6px solid var(--border-bright);border-radius:6px;background:var(--bg-1);cursor:pointer;position:relative;transition:background .18s,border-color .18s}
+    .tk input:checked{background:var(--grad);border-color:transparent;box-shadow:0 0 10px rgba(217,70,239,.4)}
+    .tk input:checked::after{content:'';position:absolute;left:6.4px;top:3px;width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(43deg)}
+    .tk-label{flex:1;font-size:13.5px;color:var(--text);transition:color .18s}
+    .tk input:checked ~ .tk-label{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--faint)}
+
+    /* PROCESS STEPPER */
+    .steps{display:grid;margin-top:4px}
+    .step{display:flex;gap:13px;padding:0 0 16px;position:relative}
+    .step:last-child{padding-bottom:0}
+    .step::before{content:'';position:absolute;left:15px;top:30px;bottom:-2px;width:2px;background:var(--border-2)}
+    .step:last-child::before{display:none}
+    .step.done::before{background:var(--grad)}
+    .snum{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:700;z-index:1;border:1.6px solid var(--border-2);background:var(--bg-2);color:var(--muted)}
+    .step.active .snum{background:var(--grad);color:#fff;border-color:transparent;box-shadow:0 0 0 4px rgba(139,92,246,.16),0 0 16px rgba(217,70,239,.4)}
+    .step.done .snum{background:rgba(139,92,246,.18);color:var(--violet);border-color:rgba(139,92,246,.4)}
+    .sbody{flex:1;padding-top:3px}
+    .sttl{font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+    .sdesc{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+    .pill{font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:5px}
+    .pill.on{background:rgba(52,211,153,.14);color:var(--green);border:1px solid rgba(52,211,153,.3)}
+    .pill.off{background:var(--bg-3);color:var(--muted);border:1px solid var(--border)}
+
+    /* STEPPER CONTROL */
+    .stepper{display:flex;align-items:center;gap:10px}
+    .sbtn{appearance:none;width:38px;height:38px;border-radius:9px;border:1px solid var(--border-2);background:var(--bg-3);color:var(--violet);font-size:20px;font-weight:700;cursor:pointer;display:grid;place-items:center;transition:.15s;line-height:1}
+    .sbtn:hover{background:var(--bg-4);border-color:var(--border-bright)}
+    .sbtn:active{transform:scale(.94)}
+
+    /* SCENE / QUOTE */
+    .scene{background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(217,70,239,.06));border:1px solid var(--border-2);border-radius:10px;padding:14px 15px}
+    .scene .qlabel{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--magenta);margin-bottom:7px;display:flex;align-items:center;gap:7px}
+    .scene p{color:var(--text);font-size:14px;line-height:1.65}
+    .quote{font-style:italic;color:var(--dim);font-size:14px;line-height:1.6;padding-left:14px;border-left:2px solid var(--violet-6)}
+    .quote b{color:var(--text);font-style:normal}
+
+    /* OPTION CARDS */
+    .opts{display:grid;gap:11px}
+    @media(min-width:560px){.opts{grid-template-columns:1fr 1fr}}
+    .opt{background:var(--bg-2);border:1px solid var(--border);border-radius:11px;padding:13px;transition:border-color .2s,transform .2s}
+    .opt:hover{border-color:var(--border-2);transform:translateY(-2px)}
+    .opt.lead-opt{border-color:rgba(167,139,250,.34);background:linear-gradient(135deg,rgba(139,92,246,.1),var(--bg-2))}
+    .opt .oh{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+    .opt .oi{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:var(--grad-soft);border:1px solid var(--border-2);color:var(--violet)}
+    .opt .oi .ic{width:14px;height:14px}
+    .opt .ot{font-family:var(--display);font-size:13.5px;font-weight:600;color:var(--text)}
+    .opt .od{font-size:12.5px;color:var(--muted);line-height:1.5}
+
+    /* NOW BAR */
+    .nowbar{display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:11px;border:1px dashed var(--border-bright);background:var(--bg-1);margin-top:12px}
+    .nowbar .nl{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.13em;color:var(--amber);background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);padding:4px 9px;border-radius:6px;white-space:nowrap}
+    .nowbar .nt{font-size:12.5px;color:var(--dim)}
+
+    /* DEBT BAR */
+    .debtbar{height:30px;border-radius:9px;overflow:hidden;display:flex;border:1px solid var(--border);background:var(--bg-3)}
+    .seg{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:#fff;white-space:nowrap}
+    .seg.s1{background:linear-gradient(180deg,#8b5cf6,#7c3aed)}
+    .seg.s2{background:linear-gradient(180deg,#c026d3,#a21caf)}
+    .seg.s3{background:linear-gradient(180deg,#db2777,#9d174d)}
+    .legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:11px}
+    .lg{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--dim)}
+    .lg .sw{width:11px;height:11px;border-radius:3px;flex-shrink:0}
+    .lg .sw.s1{background:#8b5cf6}.lg .sw.s2{background:#c026d3}.lg .sw.s3{background:#db2777}
+    .lg b{font-family:var(--mono);color:var(--text)}
+
+    /* TRACKERS */
+    .tracker{background:var(--bg-1);border:1px solid var(--border);border-radius:11px;padding:14px}
+    .trk-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:11px}
+    .trk-title{font-family:var(--display);font-size:13.5px;font-weight:600;color:var(--text)}
+    .trk-sub{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em}
+    .trk-inlabel{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin:12px 0 6px}
+    .trk-row{display:flex;align-items:center;gap:0;background:var(--bg-2);border:1px solid var(--border-2);border-radius:9px;overflow:hidden}
+    .trk-pre{font-family:var(--mono);font-weight:700;color:var(--muted);padding:0 4px 0 12px;font-size:15px}
+    .numin{font-family:var(--mono);background:transparent;border:0;color:var(--text);padding:11px 12px 11px 4px;font-size:15px;width:100%;outline:none;-moz-appearance:textfield}
+    .numin::-webkit-outer-spin-button,.numin::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+    .qbtns{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+    .qbtn{appearance:none;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--violet);background:var(--bg-3);border:1px solid var(--border-2);border-radius:8px;padding:9px 12px;min-height:40px;cursor:pointer;transition:.15s}
+    .qbtn:hover{background:var(--bg-4);border-color:var(--border-bright)}
+    .qbtn:active{transform:scale(.96)}
+    .qbtn.tw{color:var(--cyan)}
+    .qbtn.ghost{color:var(--muted)}
+    .trk-stage{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.05em;padding:6px 11px;border-radius:7px;display:inline-block;margin-top:11px}
+    .st-amber{background:rgba(251,191,36,.1);color:var(--amber);border:1px solid rgba(251,191,36,.3)}
+    .st-green{background:rgba(52,211,153,.1);color:var(--green);border:1px solid rgba(52,211,153,.3)}
+    .st-vio{background:rgba(167,139,250,.12);color:var(--violet);border:1px solid rgba(167,139,250,.3)}
+    .st-dream{background:rgba(232,121,249,.14);color:#f5b8fb;border:1px solid rgba(232,121,249,.4)}
+
+    /* MILESTONE LADDER (checkable) */
+    .ladder{display:grid;gap:9px}
+    .rung{display:flex;align-items:center;gap:12px;background:var(--bg-2);border:1px solid var(--border);border-radius:11px;padding:13px 14px;position:relative;overflow:hidden;cursor:pointer;transition:border-color .2s}
+    .rung:hover{border-color:var(--border-2)}
+    .rung .rbar{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--grad)}
+    .rcheck{appearance:none;-webkit-appearance:none;width:22px;height:22px;flex-shrink:0;border:1.6px solid var(--border-bright);border-radius:50%;background:var(--bg-1);cursor:pointer;position:relative;transition:.18s}
+    .rcheck:checked{background:var(--grad);border-color:transparent;box-shadow:0 0 10px rgba(217,70,239,.4)}
+    .rcheck:checked::after{content:'';position:absolute;left:7px;top:4px;width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(43deg)}
+    .rung .rval{font-family:var(--mono);font-weight:700;font-size:17px;letter-spacing:-.02em;color:var(--text);min-width:86px;flex-shrink:0}
+    .rung .rinfo{flex:1;min-width:0}
+    .rung .rt{font-size:13.5px;font-weight:600;color:var(--text)}
+    .rung .rd{font-size:12px;color:var(--muted);margin-top:2px}
+    .rtag{font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:6px;flex-shrink:0}
+    .rung.r4{border-color:rgba(232,121,249,.35);background:linear-gradient(120deg,rgba(217,70,239,.12),var(--bg-2))}
+    .rung.r4 .rval{background:linear-gradient(90deg,#f0abfc,#fff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .rung.reached{border-color:rgba(52,211,153,.4);background:linear-gradient(120deg,rgba(52,211,153,.08),var(--bg-2))}
+    .rtag.dream{background:rgba(232,121,249,.16);color:#f5b8fb;border:1px solid rgba(232,121,249,.4)}
+    .rtag.next{background:rgba(52,211,153,.14);color:var(--green);border:1px solid rgba(52,211,153,.34)}
+    .rtag.mid{background:rgba(167,139,250,.12);color:var(--violet);border:1px solid rgba(167,139,250,.3)}
+
+    /* HORIZONTAL TIMELINE */
+    .htl{display:grid;gap:10px}
+    @media(min-width:680px){.htl{grid-template-columns:repeat(4,1fr)}}
+    .phase{background:var(--bg-2);border:1px solid var(--border);border-radius:11px;padding:13px;position:relative}
+    .phase .pdot{width:11px;height:11px;border-radius:50%;background:var(--grad);box-shadow:0 0 10px rgba(217,70,239,.5);margin-bottom:9px}
+    .phase .pwhen{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--violet);text-transform:uppercase}
+    .phase .pwhat{font-size:13px;color:var(--text);margin-top:6px;line-height:1.45}
+
+    /* PRICING */
+    .pricing{display:grid;gap:11px}
+    @media(min-width:620px){.pricing{grid-template-columns:repeat(3,1fr)}}
+    .price{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:16px 14px;text-align:center;position:relative;transition:border-color .2s,transform .2s}
+    .price:hover{border-color:var(--border-2);transform:translateY(-2px)}
+    .price.mid{border-color:rgba(34,211,238,.34);background:linear-gradient(180deg,rgba(34,211,238,.06),var(--bg-2))}
+    .price .pamt{font-family:var(--mono);font-weight:700;font-size:26px;background:var(--grad-tw);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .price .pper{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:.06em}
+    .price .ptier{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-top:9px}
+
+    /* KANBAN */
+    .kanban{display:grid;gap:12px}
+    @media(min-width:820px){.kanban{grid-template-columns:repeat(3,1fr);align-items:start}}
+    .kcol{background:var(--bg-1);border:1px solid var(--border);border-radius:12px;padding:11px}
+    .kcol-h{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:3px 4px 10px}
+    .kcol-h .kc-dot{width:8px;height:8px;border-radius:50%}
+    .kc-dot.hot{background:var(--rose);box-shadow:0 0 8px var(--rose)}
+    .kc-dot.qual{background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+    .kc-dot.unc{background:var(--slate)}
+    .kcol-h .kc-n{margin-left:auto;color:var(--dim)}
+    .kcard{background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:9px;transition:border-color .2s,transform .2s}
+    .kcard:last-child{margin-bottom:0}
+    .kcard:hover{border-color:var(--border-2);transform:translateY(-1px)}
+    .kcard.hot{border-color:rgba(251,113,133,.3)}
+    .kc-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+    .kc-name{font-family:var(--display);font-size:13.5px;font-weight:600;color:var(--text);flex:1;min-width:0}
+    .kc-type{font-size:11.5px;color:var(--muted);margin-bottom:9px;line-height:1.4}
+    .kc-stk{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+    .kc-stk span{font-family:var(--mono);font-size:9.5px;color:var(--dim);background:var(--bg-3);border:1px solid var(--border);border-radius:5px;padding:3px 6px}
+    .kc-line{font-size:11.5px;color:var(--dim);line-height:1.5;margin-top:6px}
+    .kc-line b{color:var(--cyan);font-weight:600}
+    .kc-pain{font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:6px}
+    .kc-pain b{color:var(--rose);font-weight:600;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+
+    /* NAME CHIPS */
+    .namechips{display:flex;flex-wrap:wrap;gap:8px}
+    .nchip{appearance:none;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.02em;color:var(--dim);background:var(--bg-2);border:1px solid var(--border-2);border-radius:9px;padding:9px 13px;min-height:42px;cursor:pointer;transition:.16s}
+    .nchip:hover{border-color:var(--border-bright);color:var(--text)}
+    .nchip.sel{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 0 14px rgba(217,70,239,.4)}
+    .namenote{font-size:12.5px;color:var(--muted);margin-top:11px}
+    .namenote b{font-family:var(--mono);color:var(--violet)}
+
+    /* GAUGE */
+    .gauge{display:flex;align-items:center;gap:14px;margin:6px 0 4px}
+    .gnum{font-family:var(--mono);font-weight:700;font-size:34px;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .gnum span{font-size:16px;color:var(--muted);-webkit-text-fill-color:var(--muted)}
+    .pips{display:flex;gap:5px;flex:1}
+    .pip{flex:1;height:24px;border-radius:4px;background:var(--bg-3);border:1px solid var(--border)}
+    .pip.on{background:var(--grad);border-color:transparent;box-shadow:0 0 8px rgba(217,70,249,.35)}
+    .signal{display:grid;gap:8px}
+    .sigrow{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.5}
+    .sigrow .sg{font-family:var(--mono);font-weight:700;flex-shrink:0}
+    .sigrow.yes .sg{color:var(--green)}
+    .sigrow.no .sg{color:var(--rose)}
+    .sigrow .sx{color:var(--dim)}
+
+    /* LOG */
+    .logitem{position:relative;padding:13px 14px 13px 16px;background:var(--bg-2);border:1px solid var(--border);border-radius:11px;margin-bottom:10px;overflow:hidden}
+    .logitem::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--grad)}
+    .logitem:last-child{margin-bottom:0}
+    .ltime{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--violet);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:7px}
+    .ltext{font-size:13.5px;color:var(--dim);line-height:1.6}
+    .ltext b{color:var(--text)}
+    .ltext .tagword{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--magenta);text-transform:uppercase}
+    .insight{background:var(--bg-2);border:1px solid var(--border);border-radius:11px;padding:13px 14px;margin-bottom:10px}
+    .insight:last-child{margin-bottom:0}
+    .ihead{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+    .ihead .ii{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:var(--grad-soft);border:1px solid var(--border-2);color:var(--magenta);flex-shrink:0}
+    .ihead .ii .ic{width:14px;height:14px}
+    .ititle{font-family:var(--display);font-size:13.5px;font-weight:600;color:var(--text)}
+    .idate{font-family:var(--mono);font-size:9.5px;color:var(--muted);margin-top:1px;letter-spacing:.06em}
+    .itext{font-size:13px;color:var(--dim);line-height:1.6}
+    .metric{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-bottom:1px dashed var(--border)}
+    .metric:last-child{border-bottom:0}
+    .metric .ml{font-size:13px;color:var(--dim)}
+    .metric .mv{font-family:var(--mono);font-weight:700;font-size:13.5px;color:var(--violet);white-space:nowrap}
+
+    /* SNAPSHOT ROWS */
+    .snap{display:grid;gap:8px}
+    .snaprow{display:flex;align-items:center;gap:11px;background:var(--bg-2);border:1px solid var(--border);border-radius:9px;padding:11px 12px}
+    .snaprow .si{width:28px;height:28px;border-radius:7px;display:grid;place-items:center;background:var(--grad-soft);border:1px solid var(--border-2);color:var(--violet);flex-shrink:0}
+    .snaprow .si.tw{background:var(--grad-tw-soft);color:var(--cyan)}
+    .snaprow .si .ic{width:14px;height:14px}
+    .snaprow .sn{flex:1;min-width:0}
+    .snaprow .snt{font-size:13px;font-weight:600;color:var(--text)}
+    .snaprow .sns{font-size:11.5px;color:var(--muted)}
+
+    /* RUNWAY DUAL */
+    .runway{display:grid;gap:10px}
+    @media(min-width:520px){.runway{grid-template-columns:1fr 1fr}}
+    .rwcard{background:var(--bg-2);border:1px solid var(--border);border-radius:11px;padding:13px}
+    .rwcard.personal{border-color:rgba(251,191,36,.26)}
+    .rwcard.company{border-color:rgba(34,211,238,.26)}
+    .rw-l{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+    .rw-v{font-family:var(--mono);font-weight:700;font-size:21px;color:var(--text)}
+    .rwcard.personal .rw-v{color:#fde68a}
+    .rwcard.company .rw-v{color:#a5e8f7}
+    .rw-d{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.45}
+
+    /* FOOTER */
+    footer{max-width:1280px;margin:30px auto 0;padding:26px 16px 40px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between}
+    .fmeta{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--muted);line-height:1.8}
+    .fmeta b{color:var(--violet)}
+    .reset{appearance:none;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:9px 13px;cursor:pointer;transition:.18s;display:inline-flex;align-items:center;gap:7px}
+    .reset:hover{color:var(--rose);border-color:rgba(251,113,133,.34);background:rgba(251,113,133,.06)}
+    .reset .ic{width:13px;height:13px}
+    .note{font-size:11.5px;color:var(--faint);font-family:var(--mono);letter-spacing:.03em;margin-top:10px;line-height:1.6}
+
+    @media(max-width:480px){
+      .hwrap{padding:10px 13px}.mark{width:38px;height:38px}
+      .btxt h1{font-size:14px;letter-spacing:.09em}
+      main{padding:14px 12px 50px}.card{padding:14px}.tnum{font-size:20px}
+      .hide-xs{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18 15l.8 2.2L21 18l-2.2.8L18 21l-.8-2.2L15 18l2.2-.8z"/></symbol>
+  <symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="11" rx="2.5"/><path d="M12 8V4"/><circle cx="12" cy="4" r="1.4"/><circle cx="9" cy="13" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1.2" fill="currentColor" stroke="none"/><path d="M9.5 16.5h5"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2.1 2.1M16.9 16.9L19 19M19 5l-2.1 2.1M7.1 16.9L5 19"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.2-9C1.3 7.8 3 5 6 5c2 0 3.2 1.2 4 2.5C10.8 6.2 12 5 14 5c3 0 4.7 2.8 3.2 6-2.2 4.6-9.2 9-9.2 9z"/></symbol>
+  <symbol id="i-coins" viewBox="0 0 24 24"><ellipse cx="9" cy="7" rx="6" ry="3"/><path d="M3 7v5c0 1.7 2.7 3 6 3s6-1.3 6-3V7"/><path d="M9 15v3c0 1.7 2.7 3 6 3s6-1.3 6-3v-5c0-1.5-2-2.7-4.7-3"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.3 1 2.5h6c0-1.2.3-1.8 1-2.5A6 6 0 0 0 12 3z"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-1.5 4L16 12H5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H14a4 4 0 0 0 0-8H9a4 4 0 0 1 0-8h-.5"/></symbol>
+  <symbol id="i-money" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6 12h.01M18 12h.01"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 4v4h4"/></symbol>
+  <symbol id="i-quote" viewBox="0 0 24 24"><path d="M7 7h4v6H7c0 2 1 3 3 3M13 7h4v6h-4c0 2 1 3 3 3" stroke-width="1.6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-5.2 7-11a7 7 0 0 0-14 0c0 5.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></symbol>
+  <symbol id="i-city" viewBox="0 0 24 24"><path d="M4 21V8l6-3v16M10 21V11l8-4v14M3 21h18M13 11h2M13 15h2M7 12h0M7 16h0"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-13 0 9-5 13-13 13H5z"/><path d="M5 19c3-4 6-6 9-7"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9-9 9z" stroke-width="0" fill="none"/><path d="M20 12l-8 8-9-9V4h7z"/><circle cx="7.5" cy="7.5" r="1.3"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 5.5a3 3 0 0 1 0 5.5M17 14.5a6 6 0 0 1 4 5.5"/></symbol>
+  <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M5 15c-1.5 1.5-2 5-2 5s3.5-.5 5-2"/><path d="M9 15l-3-3c1-5 5-9 11-9 0 6-4 10-9 11z"/><circle cx="14.5" cy="9.5" r="1.4"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M9 3L7 21M17 3l-2 18M4 8h16M3 16h16"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M3 13l2-5a3 3 0 0 1 3-2h8a3 3 0 0 1 3 2l2 5"/><path d="M3 13h18v5H3z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></symbol>
+  <symbol id="i-news" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></symbol>
+  <symbol id="i-store" viewBox="0 0 24 24"><path d="M4 9l1-5h14l1 5M4 9v11h16V9M4 9h16M9 20v-6h6v6"/></symbol>
+  <symbol id="i-wind" viewBox="0 0 24 24"><path d="M3 8h11a3 3 0 1 0-3-3M3 16h15a3 3 0 1 1-3 3"/></symbol>
+  <symbol id="i-build" viewBox="0 0 24 24"><path d="M4 21V6l8-3 8 3v15"/><path d="M4 21h16M9 21v-5h6v5M8 9h.01M12 9h.01M16 9h.01M8 13h.01M16 13h.01"/></symbol>
+</defs></svg>
+
+<header>
+  <div class="hwrap">
+    <div class="brand">
+      <div class="mark"><svg class="ic"><use href="#i-target"/></svg></div>
+      <div class="btxt">
+        <h1>DREAM BUILDING BOT</h1>
+        <div class="sub">PERSONAL COMMAND CENTER · TONY ORQUE</div>
+      </div>
+    </div>
+    <div class="hmeta">
+      <span class="chip live"><span class="dot"></span>ACTIVE</span>
+      <span class="chip feel"><svg class="ic"><use href="#i-heart"/></svg>FEELING 9/10</span>
+      <span class="chip hide-xs"><svg class="ic"><use href="#i-clock"/></svg>JUN 10, 2026</span>
+      <span class="chip hide-xs">v0.1</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tabbar">
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="overview"><svg class="ic"><use href="#i-grid"/></svg>Overview</button>
+    <button class="tab" data-tab="dreams"><svg class="ic"><use href="#i-target"/></svg>Dreams</button>
+    <button class="tab" data-tab="teamwire"><svg class="ic"><use href="#i-zap"/></svg>TeamWire</button>
+    <button class="tab" data-tab="financials"><svg class="ic"><use href="#i-coins"/></svg>Financials</button>
+    <button class="tab" data-tab="execution"><svg class="ic"><use href="#i-flag"/></svg>Execution</button>
+    <button class="tab" data-tab="bots"><svg class="ic"><use href="#i-bot"/></svg>Bots</button>
+    <button class="tab" data-tab="log"><svg class="ic"><use href="#i-pulse"/></svg>Log</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ===== OVERVIEW ===== -->
+  <section class="page active" id="tab-overview" role="tabpanel">
+    <div class="card accent" style="margin-bottom:14px">
+      <div class="chead">
+        <div class="cicon"><svg class="ic"><use href="#i-target"/></svg></div>
+        <div><div class="ctitle">Mission Command</div><div class="csub">1 day post–Tilt Rips exit · status active</div></div>
+        <span class="badge b-active"><span class="dot"></span>Live</span>
+      </div>
+      <p class="lead">Tony's personal command center — discovery via the <b style="color:var(--violet)">Dream Building Bot</b>, income via <b style="color:var(--cyan)">TeamWire.AI</b>, and the path out of survival mode toward <b style="color:var(--magenta)">$3.4K/day passive</b>. Quit Tilt Rips Jun 9. The work now: lock the dreams, land early customers, and build the financial engine.</p>
+      <div class="miniband">Mission progress</div>
+      <div class="prog">
+        <div class="pmeta"><span>Action items complete across all tracks</span><span><b id="overall-count">0 / 0</b> &nbsp;·&nbsp; <b id="overall-pct">0%</b></span></div>
+        <div class="track"><div class="bar-fill" id="overall-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="sectlabel">Headline metrics<span class="ln"></span></div>
+    <div class="stats" style="margin-bottom:14px">
+      <div class="tile"><div class="tnum">$3,400</div><div class="tlabel">Daily Target</div></div>
+      <div class="tile"><div class="tnum">$1.24M</div><div class="tlabel">Annual Passive</div></div>
+      <div class="tile"><div class="tnum">$102K</div><div class="tlabel">Monthly Passive</div></div>
+      <div class="tile crit"><div class="tnum">$90K</div><div class="tlabel">Personal Debt</div></div>
+      <div class="tile"><div class="tnum">9<span style="color:var(--muted);font-size:15px">/10</span></div><div class="tlabel">Feeling Factor</div></div>
+      <div class="tile good"><div class="tnum">$5.5K</div><div class="tlabel">Safe / Month</div></div>
+      <div class="tile warn"><div class="tnum">~3 mo</div><div class="tlabel">Personal Runway</div></div>
+      <div class="tile"><div class="tnum">$0</div><div class="tlabel">Passive Income</div></div>
+    </div>
+
+    <div class="grid g2-wide" style="margin-bottom:14px">
+      <div class="card">
+        <div class="chead">
+          <div class="cicon"><svg class="ic"><use href="#i-layers"/></svg></div>
+          <div><div class="ctitle">System Status</div><div class="csub">Dreams · bots · business</div></div>
+        </div>
+        <div class="snap">
+          <div class="snaprow"><div class="si"><svg class="ic"><use href="#i-target"/></svg></div><div class="sn"><div class="snt">Dream #1 — $3.4K/Day Passive</div><div class="sns">Visualization complete</div></div><span class="badge b-locked">Locked</span></div>
+          <div class="snaprow"><div class="si"><svg class="ic"><use href="#i-home"/></svg></div><div class="sn"><div class="snt">Dream #2 — Bahay Kubo Mansion</div><div class="sns">Ilocos Norte vs LA</div></div><span class="badge b-pending">Pending</span></div>
+          <div class="snaprow"><div class="si"><svg class="ic"><use href="#i-spark"/></svg></div><div class="sn"><div class="snt">Dreams #3–5</div><div class="sns">Next visualization session</div></div><span class="badge b-locked">Locked In</span></div>
+          <div class="snaprow"><div class="si tw"><svg class="ic"><use href="#i-zap"/></svg></div><div class="sn"><div class="snt">TeamWire.AI</div><div class="sns">Pre-product · 5 prospects in pipeline</div></div><span class="badge b-ready">Building</span></div>
+          <div class="snaprow"><div class="si"><svg class="ic"><use href="#i-bot"/></svg></div><div class="sn"><div class="snt">Dream Building Bot — Phase 1</div><div class="sns">Step 1 / 5 · Extraction active</div></div><span class="badge b-active">Active</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="chead">
+          <div class="cicon"><svg class="ic"><use href="#i-clock"/></svg></div>
+          <div><div class="ctitle">Runway</div><div class="csub">Two clocks, kept separate</div></div>
+        </div>
+        <div class="runway">
+          <div class="rwcard personal">
+            <div class="rw-l">Personal</div>
+            <div class="rw-v">~3 months</div>
+            <div class="rw-d">At $0 income. Safe number $5.5K/mo.</div>
+          </div>
+          <div class="rwcard company">
+            <div class="rw-l">TeamWire (company)</div>
+            <div class="rw-v">~$14K</div>
+            <div class="rw-d">Pre-revenue · actively fundraising.</div>
+          </div>
+        </div>
+        <div class="nowbar"><span class="nl">~10 DAYS</span><span class="nt">GR86 → Tesla trade-in · content series "Last Rides + Boba Runs"</span></div>
+      </div>
+    </div>
+
+    <div class="sectlabel">Income engines<span class="ln"></span></div>
+    <div class="grid g3">
+      <div class="card">
+        <div class="chead"><div class="cicon tw"><svg class="ic"><use href="#i-zap"/></svg></div><div><div class="ctitle">TeamWire.AI</div><div class="csub">Business</div></div></div>
+        <p class="body-txt">AI-agent platform for SMBs. Flat-rate pricing, 5 prospects in pipeline, fundraising. <b style="color:var(--cyan)">See the TeamWire tab →</b></p>
+      </div>
+      <div class="card">
+        <div class="chead"><div class="cicon"><svg class="ic"><use href="#i-news"/></svg></div><div><div class="ctitle">Nightshift Alumni</div><div class="csub">Content</div></div></div>
+        <p class="body-txt">"Notes from someone who never slept." Weekly <b style="color:var(--violet)">Sunday Feel Trip</b>.<br><span style="font-family:var(--mono);font-size:11px;color:var(--muted)">nightshiftalumni.substack.com</span></p>
+      </div>
+      <div class="card">
+        <div class="chead"><div class="cicon"><svg class="ic"><use href="#i-coins"/></svg></div><div><div class="ctitle">Investments</div><div class="csub">Passive</div></div></div>
+        <p class="body-txt">Crypto, stocks &amp; real estate — the third leg of the $3.4K/day path alongside content + TeamWire.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DREAMS ===== -->
+  <section class="page" id="tab-dreams" role="tabpanel">
+    <div class="card accent" style="margin-bottom:14px">
+      <div class="chead">
+        <div class="cicon"><svg class="ic"><use href="#i-target"/></svg></div>
+        <div><div class="ctitle">Dream #1 — $3.4K/Day Passive Income</div><div class="csub">Locked · 6–12 month horizon</div></div>
+        <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><span class="badge b-crit">Critical</span><span class="badge b-locked">Locked</span></div>
+      </div>
+
+      <div class="scene" style="margin-bottom:14px">
+        <div class="qlabel"><svg class="ic"><use href="#i-pin"/></svg>The Scene · 45-min unbroken visualization</div>
+        <p>A private white-sand beach in the Philippines — with his significant other (non-negotiable: "if I don't have a significant other, the whole thing feels incomplete"). Family thriving. Fully out of survival mode. Legacy systems — schools, clinics, businesses — built to outlast him.</p>
+      </div>
+      <div class="quote" style="margin-bottom:16px"><b>The unlock question:</b> "When you close your eyes and picture yourself making $3.4K/day passive, where are you physically? What are you doing? Is someone there with you?"</div>
+
+      <div class="miniband">The deeper why</div>
+      <div class="flist" style="margin-bottom:16px">
+        <div class="fitem"><div class="fi"><svg class="ic"><use href="#i-up"/></svg></div><div class="ft">Out of survival mode entirely</div></div>
+        <div class="fitem"><div class="fi"><svg class="ic"><use href="#i-heart"/></svg></div><div><div class="ft">Abundant mindset</div><div class="fd">Full cup — able to give</div></div></div>
+        <div class="fitem"><div class="fi"><svg class="ic"><use href="#i-home"/></svg></div><div><div class="ft">Invest in family</div><div class="fd">Parents, sisters, cousins, community</div></div></div>
+        <div class="fitem"><div class="fi"><svg class="ic"><use href="#i-grid"/></svg></div><div><div class="ft">Kids' futures automated</div><div class="fd">Passive-income dashboards</div></div></div>
+        <div class="fitem"><div class="fi"><svg class="ic"><use href="#i-layers"/></svg></div><div><div class="ft">Legacy building</div><div class="fd">Schools, clinics, businesses, systems</div></div></div>
+      </div>
+
+      <div class="miniband">Financial math</div>
+      <div class="stats" style="grid-template-columns:repeat(2,1fr);margin-bottom:14px">
+        <div class="tile"><div class="tnum">$3,400</div><div class="tlabel">Daily Target</div></div>
+        <div class="tile"><div class="tnum">$102K</div><div class="tlabel">Monthly Passive</div></div>
+        <div class="tile"><div class="tnum">$1.24M</div><div class="tlabel">Annual Passive</div></div>
+        <div class="tile good"><div class="tnum">&lt;1 mo</div><div class="tlabel">Debt Payoff @ Target</div></div>
+      </div>
+
+      <div class="miniband">Likely path — three streams</div>
+      <div class="tags" style="margin-bottom:16px">
+        <span class="tag tw"><b>TeamWire</b> · recurring SaaS</span>
+        <span class="tag"><b>Content</b> · Nightshift Alumni</span>
+        <span class="tag"><b>Investments</b> · crypto, stocks, real estate</span>
+      </div>
+
+      <div class="grid g2">
+        <div>
+          <div class="miniband">Next actions · reverse-engineering</div>
+          <div class="checklist" data-group="d1act">
+            <label class="tk"><input type="checkbox" data-key="d1-act-1"><span class="tk-label">Find 5–10 people making $3.4K/day</span></label>
+            <label class="tk"><input type="checkbox" data-key="d1-act-2"><span class="tk-label">Interview paths — gather contact info</span></label>
+            <label class="tk"><input type="checkbox" data-key="d1-act-3"><span class="tk-label">Competitive analysis — tools, timeline, skills</span></label>
+            <label class="tk"><input type="checkbox" data-key="d1-act-4"><span class="tk-label">Data synthesis — step-by-step breakdown</span></label>
+            <label class="tk"><input type="checkbox" data-key="d1-act-5"><span class="tk-label">Sell-in — make it feel inevitable</span></label>
+          </div>
+          <div class="prog" style="margin-top:11px"><div class="pmeta"><span>Completion</span><span><b class="grp-count">0/5</b> · <b class="grp-pct">0%</b></span></div><div class="track"><div class="bar-fill"></div></div></div>
+        </div>
+        <div>
+          <div class="miniband">Research progress</div>
+          <div class="tracker">
+            <div class="prog" style="margin-bottom:14px"><div class="pmeta"><span>Case studies reverse-engineered</span><span><b id="research-count">0/10</b></span></div><div class="track"><div class="bar-fill" id="research-fill"></div></div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+              <span style="font-size:12px;color:var(--muted)">Log makers as you study them</span>
+              <div class="stepper"><button class="sbtn" id="research-dec" aria-label="Decrease">−</button><button class="sbtn" id="research-inc" aria-label="Increase">+</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <div class="chead">
+          <div class="cicon"><svg class="ic"><use href="#i-build"/></svg></div>
+          <div><div class="ctitle">Dream #2 — Luxury Bahay Kubo Mansion</div><div class="csub">Awaiting visualization</div></div>
+          <span class="badge b-pending">Pending</span>
+        </div>
+        <p class="body-txt" style="margin-bottom:13px">A 3-level fortified <b style="color:var(--text)">"Filipino Tropical Brutalist"</b> home — bamboo + dark hardwood + poured concrete + huge glass. Hilltop, partial ocean view, off-grid personal wind farm.</p>
+        <div class="flist" style="margin-bottom:13px">
+          <div class="fitem"><div class="fi"><svg class="ic"><use href="#i-build"/></svg></div><div><div class="ft">3-level fortified build</div><div class="fd">Bamboo · dark hardwood · concrete · glass</div></div></div>
+          <div class="fitem"><div class="fi"><svg class="ic"><use href="#i-wind"/></svg></div><div><div class="ft">Off-grid wind farm</div><div class="fd">Self-powered, independent</div></div></div>
+          <div class="fitem"><div class="fi"><svg class="ic"><use href="#i-pin"/></svg></div><div><div class="ft">Hilltop · partial ocean view</div></div></div>
+        </div>
+        <div class="miniband">Location — priority TBD</div>
+        <div class="opts">
+          <div class="opt lead-opt"><div class="oh"><div class="oi"><svg class="ic"><use href="#i-leaf"/></svg></div><div class="ot">Ilocos Norte</div></div><div class="od">Family ancestral land · roots · leading option</div></div>
+          <div class="opt"><div class="oh"><div class="oi"><svg class="ic"><use href="#i-city"/></svg></div><div class="ot">LA option</div></div><div class="od">Urban, luxury, high-energy</div></div>
+        </div>
+        <div class="nowbar"><span class="nl">NEXT</span><span class="nt">Priority decided in the next nighttime visualization session</span></div>
+      </div>
+
+      <div class="card">
+        <div class="chead">
+          <div class="cicon"><svg class="ic"><use href="#i-spark"/></svg></div>
+          <div><div class="ctitle">Dreams #3–5</div><div class="csub">To be identified</div></div>
+          <span class="badge b-locked">Locked In</span>
+        </div>
+        <p class="body-txt" style="margin-bottom:14px">Three to five more major dreams to surface in the next deep visualization session — scheduled for nighttime, when the heart is most open.</p>
+        <div class="flist">
+          <div class="fitem"><div class="fi"><svg class="ic"><use href="#i-clock"/></svg></div><div><div class="ft">When</div><div class="fd">Next nighttime session (with Dream #2)</div></div></div>
+          <div class="fitem"><div class="fi"><svg class="ic"><use href="#i-spark"/></svg></div><div><div class="ft">Expected</div><div class="fd">3–5 more major dreams</div></div></div>
+          <div class="fitem"><div class="fi"><svg class="ic"><use href="#i-heart"/></svg></div><div><div class="ft">Condition</div><div class="fd">Deep visualization, emotionally open</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TEAMWIRE ===== -->
+  <section class="page" id="tab-teamwire" role="tabpanel">
+    <div class="card tw" style="margin-bottom:14px">
+      <div class="chead">
+        <div class="cicon tw"><svg class="ic"><use href="#i-zap"/></svg></div>
+        <div><div class="ctitle">TeamWire.AI</div><div class="csub">Income engine · pre-product</div></div>
+        <span class="badge b-ready">Fundraising</span>
+      </div>
+      <p class="lead" style="margin-bottom:6px">An AI-agent platform for small &amp; mid-size businesses ($500K–$100M/yr) drowning in operational chaos. Agents handle <b style="color:var(--text)">calls, texts, follow-ups &amp; scheduling 24/7</b> — solving missed leads and slow follow-up. The wedge: businesses bleed money on problems AI can already solve.</p>
+      <div class="quote" style="margin:12px 0 4px">Mission: "Meaningful AI tools as accessible to as many people as possible." — built for the little guys, the everyman.</div>
+
+      <div class="miniband">The numbers</div>
+      <div class="stats" style="grid-template-columns:repeat(2,1fr)">
+        <div class="tile tw"><div class="tnum">5 / $5–15K</div><div class="tlabel">90-Day Goal · Customers / MRR</div></div>
+        <div class="tile tw"><div class="tnum">30–50%</div><div class="tlabel">Fewer Missed Leads</div></div>
+        <div class="tile"><div class="tnum">$500K–$100M</div><div class="tlabel">Target Customer Revenue</div></div>
+        <div class="tile warn"><div class="tnum">~$14K</div><div class="tlabel">Company Runway</div></div>
+      </div>
+      <p class="note">Company runway (~$14K, pre-revenue) is tracked separately from Tony's personal ~3-month runway.</p>
+
+      <div class="miniband">Flat-rate pricing — the differentiator</div>
+      <div class="pricing">
+        <div class="price"><div class="pamt">$299</div><div class="pper">/ month</div><div class="ptier">Tier 1</div></div>
+        <div class="price mid"><div class="pamt">$799</div><div class="pper">/ month</div><div class="ptier">Tier 2</div></div>
+        <div class="price"><div class="pamt">$1,999</div><div class="pper">/ month</div><div class="ptier">Tier 3</div></div>
+      </div>
+      <p class="note">Rivals charge per action / per resolution ($0.50–$5.00 each) — costs spiral at volume. TeamWire is flat-rate: you know your cost, you control your margin.</p>
+
+      <div class="grid g2" style="margin-top:16px">
+        <div>
+          <div class="miniband">Team</div>
+          <div class="flist">
+            <div class="fitem"><div class="fi"><svg class="ic"><use href="#i-users"/></svg></div><div><div class="ft">Tony Orque — ops / GTM</div><div class="fd">Left a $150K job · 15 yrs ops at TAO Group (15 Vegas properties)</div></div></div>
+            <div class="fitem"><div class="fi"><svg class="ic"><use href="#i-users"/></svg></div><div><div class="ft">Thomas — co-founder</div><div class="fd">Product + funding</div></div></div>
+            <div class="fitem"><div class="fi"><svg class="ic"><use href="#i-users"/></svg></div><div><div class="ft">Masoud · Mike · Richie</div><div class="fd">Core team</div></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="miniband">Pipeline — immediate next actions</div>
+          <div class="checklist" data-group="twact">
+            <label class="tk"><input type="checkbox" data-key="tw-act-1"><span class="tk-label">Mark @ Sickies meeting — today ~4–5 PM PT</span></label>
+            <label class="tk"><input type="checkbox" data-key="tw-act-2"><span class="tk-label">Send Mark one-pager + Thomas's calendar link</span></label>
+            <label class="tk"><input type="checkbox" data-key="tw-act-3"><span class="tk-label">Sickies: John 5–6 hr onboarding</span></label>
+            <label class="tk"><input type="checkbox" data-key="tw-act-4"><span class="tk-label">Verify SMP Inc + SD Claw identities</span></label>
+          </div>
+          <div class="prog" style="margin-top:11px"><div class="pmeta"><span>Completion</span><span><b class="grp-count">0/4</b> · <b class="grp-pct">0%</b></span></div><div class="track"><div class="bar-fill tw"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sectlabel">Prospect pipeline<span class="ln"></span></div>
+    <div class="kanban">
+      <div class="kcol">
+        <div class="kcol-h"><span class="kc-dot hot"></span>Hot · active<span class="kc-n">1</span></div>
+        <div class="kcard hot">
+          <div class="kc-top"><div class="kc-name">Sickies Burgers</div><span class="badge b-hot">Hot</span></div>
+          <div class="kc-type">Upscale burger chain · 13 locations · owners Mark + Scott</div>
+          <div class="kc-stk"><span>Restaurant365</span><span>Bevcheck</span><span>→ Toast</span></div>
+          <div class="kc-pain"><b>Pains</b> · server coaching / reviews, labor mgmt, P&amp;L &amp; AVT reporting, inventory variance</div>
+          <div class="kc-line"><b>Angle</b> · one hub for all GMs, regional ops &amp; vendor updates</div>
+          <div class="kc-line" style="color:var(--rose)">Next · Mark meeting today ~4–5 PM PT · John 5–6 hr onboarding pending</div>
+        </div>
+      </div>
+      <div class="kcol">
+        <div class="kcol-h"><span class="kc-dot qual"></span>Qualifying<span class="kc-n">2</span></div>
+        <div class="kcard">
+          <div class="kc-top"><div class="kc-name">The Card Shop</div><span class="badge b-ready">Qualifying</span></div>
+          <div class="kc-type">Collectibles / trading-card retail</div>
+          <div class="kc-stk"><span>TCGplayer</span><span>Crystal Commerce</span><span>Discord</span><span>Whatnot</span></div>
+          <div class="kc-pain"><b>Pain</b> · real-time card pricing, inventory across channels</div>
+          <div class="kc-line"><b>Angle</b> · staff + customer community alerts in one place</div>
+        </div>
+        <div class="kcard">
+          <div class="kc-top"><div class="kc-name">Mrs. Events</div><span class="badge b-ready">Qualifying</span></div>
+          <div class="kc-type">Events planning &amp; production</div>
+          <div class="kc-stk"><span>HoneyBook</span><span>Asana</span><span>Eventbrite</span><span>DocuSign</span></div>
+          <div class="kc-pain"><b>Pain</b> · day-of chaos, vendor coordination, contract follow-ups</div>
+          <div class="kc-line"><b>Angle</b> · command center for events — staff, vendors, clients</div>
+        </div>
+      </div>
+      <div class="kcol">
+        <div class="kcol-h"><span class="kc-dot unc"></span>Unconfirmed<span class="kc-n">2</span></div>
+        <div class="kcard">
+          <div class="kc-top"><div class="kc-name">SMP Inc</div><span class="badge b-queued">Verify</span></div>
+          <div class="kc-type">Las Vegas · promo staffing / events (unconfirmed)</div>
+          <div class="kc-stk"><span>When I Work</span><span>ADP</span><span>Salesforce</span></div>
+          <div class="kc-pain"><b>Pain</b> · managing a large part-time/event workforce in real time</div>
+          <div class="kc-line"><b>Angle</b> · dispatch event crews with real-time shift comms</div>
+        </div>
+        <div class="kcard">
+          <div class="kc-top"><div class="kc-name">SD Claw</div><span class="badge b-queued">Verify</span></div>
+          <div class="kc-type">Claw-machine / amusement operator (unconfirmed)</div>
+          <div class="kc-stk"><span>Nayax</span><span>Cantaloupe</span><span>Airtable</span></div>
+          <div class="kc-pain"><b>Pain</b> · route/restocking coordination, machine alerts</div>
+          <div class="kc-line"><b>Angle</b> · keep route techs &amp; ops team synced</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINANCIALS ===== -->
+  <section class="page" id="tab-financials" role="tabpanel">
+    <div class="card accent" style="margin-bottom:14px">
+      <div class="chead">
+        <div class="cicon"><svg class="ic"><use href="#i-money"/></svg></div>
+        <div><div class="ctitle">Current Situation</div><div class="csub">1 day post–Tilt Rips exit · $0 income</div></div>
+        <span class="badge b-high">Survival Mode</span>
+      </div>
+      <div class="miniband">Personal debt · $90K total</div>
+      <div class="debtbar"><div class="seg s1" style="flex:35">$35K</div><div class="seg s2" style="flex:20">$20K</div><div class="seg s3" style="flex:35">$35K</div></div>
+      <div class="legend">
+        <div class="lg"><span class="sw s1"></span>Navy Federal @ 10.69% — <b>$35K</b></div>
+        <div class="lg"><span class="sw s2"></span>Student loans — <b>$20K</b></div>
+        <div class="lg"><span class="sw s3"></span>Remainder — <b>$35K</b></div>
+      </div>
+      <div class="stats" style="grid-template-columns:repeat(2,1fr);margin-top:16px">
+        <div class="tile good"><div class="tnum">$5.5K</div><div class="tlabel">Safe Number / Month</div></div>
+        <div class="tile warn"><div class="tnum">~3 mo</div><div class="tlabel">Personal Runway</div></div>
+        <div class="tile crit"><div class="tnum">10.69%</div><div class="tlabel">NFCU APR</div></div>
+        <div class="tile"><div class="tnum">$0</div><div class="tlabel">Current Income</div></div>
+      </div>
+    </div>
+
+    <div class="grid g2" style="margin-bottom:14px">
+      <div class="card">
+        <div class="chead"><div class="cicon"><svg class="ic"><use href="#i-coins"/></svg></div><div><div class="ctitle">Debt Paydown Tracker</div><div class="csub">Log payments as you go</div></div></div>
+        <div class="tracker">
+          <div class="trk-head"><span class="trk-title">$90,000 → $0</span><span class="trk-sub" id="debt-pct-top">0% cleared</span></div>
+          <div class="prog"><div class="pmeta"><span><b id="debt-paid">$0</b> paid</span><span><span id="debt-rem">$90,000</span> remaining · <b id="debt-pct">0%</b></span></div><div class="track"><div class="bar-fill" id="debt-fill"></div></div></div>
+          <label class="trk-inlabel" for="debt-input">Remaining balance</label>
+          <div class="trk-row"><span class="trk-pre">$</span><input type="number" id="debt-input" class="numin" min="0" max="90000" step="500" value="90000" inputmode="numeric"></div>
+          <div class="qbtns"><button class="qbtn" data-debt="-1000">Pay −$1K</button><button class="qbtn" data-debt="-5000">Pay −$5K</button><button class="qbtn ghost" data-debt="reset">Reset</button></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="chead"><div class="cicon"><svg class="ic"><use href="#i-up"/></svg></div><div><div class="ctitle">Income Tracker</div><div class="csub">Toward $102K/mo dream</div></div></div>
+        <div class="tracker">
+          <div class="trk-head"><span class="trk-title" id="income-now">$0/mo</span><span class="trk-sub" id="income-pct">0% to dream</span></div>
+          <div class="prog"><div class="pmeta"><span>Current monthly passive</span><span>target <b>$102,000</b></span></div><div class="track"><div class="bar-fill" id="income-fill"></div></div></div>
+          <span class="trk-stage st-amber" id="income-stage">Below safe number</span>
+          <label class="trk-inlabel" for="income-input">Current monthly income</label>
+          <div class="trk-row"><span class="trk-pre">$</span><input type="number" id="income-input" class="numin" min="0" step="250" value="0" inputmode="numeric"></div>
+          <div class="qbtns"><button class="qbtn" data-income="500">+$500</button><button class="qbtn" data-income="1000">+$1K</button><button class="qbtn ghost" data-income="reset">Reset</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:14px">
+      <div class="chead">
+        <div class="cicon"><svg class="ic"><use href="#i-flag"/></svg></div>
+        <div><div class="ctitle">Milestone Ladder</div><div class="csub">Tap a rung to mark it reached</div></div>
+        <span class="badge b-locked" style="margin-left:auto"><span id="ms-count">0/4</span> reached</span>
+      </div>
+      <div class="ladder">
+        <label class="rung r4"><input type="checkbox" class="rcheck" data-key="ms-4"><div class="rbar"></div><div class="rval">$102K<span style="font-size:11px;color:var(--muted)">/mo</span></div><div class="rinfo"><div class="rt">$3.4K/day achieved</div><div class="rd">$1.24M / year passive</div></div><span class="rtag dream">The Dream</span></label>
+        <label class="rung"><input type="checkbox" class="rcheck" data-key="ms-3"><div class="rbar"></div><div class="rval">$22K<span style="font-size:11px;color:var(--muted)">/mo</span></div><div class="rinfo"><div class="rt">50% of the dream</div><div class="rd">Halfway to $102K/mo</div></div><span class="rtag mid">Scale</span></label>
+        <label class="rung"><input type="checkbox" class="rcheck" data-key="ms-2"><div class="rbar"></div><div class="rval">$11K<span style="font-size:11px;color:var(--muted)">/mo</span></div><div class="rinfo"><div class="rt">Debt-paydown acceleration</div><div class="rd">Extra firepower against the $90K</div></div><span class="rtag mid">Accelerate</span></label>
+        <label class="rung"><input type="checkbox" class="rcheck" data-key="ms-1"><div class="rbar"></div><div class="rval">$5.5K<span style="font-size:11px;color:var(--muted)">/mo</span></div><div class="rinfo"><div class="rt">Safe — covers bills, no panic</div><div class="rd">First rung to reach</div></div><span class="rtag next">Next Target</span></label>
+      </div>
+      <div class="nowbar"><span class="nl">NOW</span><span class="nt">$0 income · ~3-month personal runway · 1 day post–Tilt Rips exit</span></div>
+    </div>
+
+    <div class="card">
+      <div class="chead"><div class="cicon"><svg class="ic"><use href="#i-route"/></svg></div><div><div class="ctitle">Projected Timeline</div><div class="csub">Path to $3.4K/day</div></div></div>
+      <div class="htl">
+        <div class="phase"><div class="pdot"></div><div class="pwhen">Month 1</div><div class="pwhat">TeamWire operations live</div></div>
+        <div class="phase"><div class="pdot"></div><div class="pwhen">Month 2–3</div><div class="pwhat">First revenue + research complete</div></div>
+        <div class="phase"><div class="pdot"></div><div class="pwhen">Month 3–4</div><div class="pwhat">Execute on first stream</div></div>
+        <div class="phase"><div class="pdot"></div><div class="pwhen">Month 6–12</div><div class="pwhat">Reach $3.4K/day milestone</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXECUTION ===== -->
+  <section class="page" id="tab-execution" role="tabpanel">
+    <div class="sectlabel">Action items · checked items save to this device<span class="ln"></span></div>
+    <div class="grid g3" style="margin-bottom:16px">
+      <div class="card">
+        <div class="chead"><div class="cicon"><svg class="ic"><use href="#i-flag"/></svg></div><div><div class="ctitle">This Week</div><div class="csub">Now → Jun 16</div></div></div>
+        <div class="checklist" data-group="tw1">
+          <label class="tk"><input type="checkbox" data-key="ex-tw-1"><span class="tk-label">Visualization session #2 (Dream #2 + #3–5)</span></label>
+          <label class="tk"><input type="checkbox" data-key="ex-tw-2"><span class="tk-label">Dream Building Bot v1</span></label>
+          <label class="tk"><input type="checkbox" data-key="ex-tw-3"><span class="tk-label">$3.4K/day makers research</span></label>
+          <label class="tk"><input type="checkbox" data-key="ex-tw-4"><span class="tk-label">Financial dashboard MVP</span></label>
+          <label class="tk"><input type="checkbox" data-key="ex-tw-5"><span class="tk-label">Start manual voice-memo export</span></label>
+          <label class="tk"><input type="checkbox" data-key="ex-tw-6"><span class="tk-label">Pick the process name</span></label>
+        </div>
+        <div class="prog" style="margin-top:12px"><div class="pmeta"><span>Done</span><span><b class="grp-count">0/6</b> · <b class="grp-pct">0%</b></span></div><div class="track"><div class="bar-fill"></div></div></div>
+      </div>
+      <div class="card">
+        <div class="chead"><div class="cicon"><svg class="ic"><use href="#i-search"/></svg></div><div><div class="ctitle">Week 2</div><div class="csub">Jun 17 → Jun 23</div></div></div>
+        <div class="checklist" data-group="w2">
+          <label class="tk"><input type="checkbox" data-key="ex-w2-1"><span class="tk-label">Complete achiever interviews</span></label>
+          <label class="tk"><input type="checkbox" data-key="ex-w2-2"><span class="tk-label">Compile reverse-engineered $3.4K/day paths</span></label>
+          <label class="tk"><input type="checkbox" data-key="ex-w2-3"><span class="tk-label">Start Execution Ops Bot design</span></label>
+          <label class="tk"><input type="checkbox" data-key="ex-w2-4"><span class="tk-label">Launch first income-stream experiments</span></label>
+          <label class="tk"><input type="checkbox" data-key="ex-w2-5"><span class="tk-label">Telethon voice-memo automation</span></label>
+        </div>
+        <div class="prog" style="margin-top:12px"><div class="pmeta"><span>Done</span><span><b class="grp-count">0/5</b> · <b class="grp-pct">0%</b></span></div><div class="track"><div class="bar-fill"></div></div></div>
+      </div>
+      <div class="card">
+        <div class="chead"><div class="cicon"><svg class="ic"><use href="#i-route"/></svg></div><div><div class="ctitle">Month 1 · June</div><div class="csub">30-day targets</div></div></div>
+        <div class="checklist" data-group="m1">
+          <label class="tk"><input type="checkbox" data-key="ex-m1-1"><span class="tk-label">Dream #1 lock complete</span></label>
+          <label class="tk"><input type="checkbox" data-key="ex-m1-2"><span class="tk-label">Reverse-engineering research published</span></label>
+          <label class="tk"><input type="checkbox" data-key="ex-m1-3"><span class="tk-label">Execution Ops Bot v1 live</span></label>
+          <label class="tk"><input type="checkbox" data-key="ex-m1-4"><span class="tk-label">First weekly execution plan generated</span></label>
+          <label class="tk"><input type="checkbox" data-key="ex-m1-5"><span class="tk-label">TeamWire operations at full capacity</span></label>
+        </div>
+        <div class="prog" style="margin-top:12px"><div class="pmeta"><span>Done</span><span><b class="grp-count">0/5</b> · <b class="grp-pct">0%</b></span></div><div class="track"><div class="bar-fill"></div></div></div>
+      </div>
+    </div>
+
+    <div class="sectlabel">Standing rules &amp; pending decisions<span class="ln"></span></div>
+    <div class="grid g3">
+      <div class="card">
+        <div class="chead"><div class="cicon"><svg class="ic"><use href="#i-mic"/></svg></div><div><div class="ctitle">Voice Memo Archive</div><div class="csub">Standing rule</div></div></div>
+        <p class="body-txt">Every Telegram voice memo → Google Drive (audio + transcript + metadata, by date/project). <b style="color:var(--text)">Manual export this week → Telethon automation next.</b></p>
+      </div>
+      <div class="card">
+        <div class="chead"><div class="cicon"><svg class="ic"><use href="#i-hash"/></svg></div><div><div class="ctitle">Token Cost Footer</div><div class="csub">Standing rule</div></div></div>
+        <p class="body-txt">Every response &amp; cron output ends with <span style="font-family:var(--mono);font-size:12px;color:var(--violet)">Tokens: [X] | Cost: $[Y]</span>. Cumulative per session. Non-negotiable.</p>
+      </div>
+      <div class="card">
+        <div class="chead"><div class="cicon"><svg class="ic"><use href="#i-edit"/></svg></div><div><div class="ctitle">Name the Process</div><div class="csub">Pending decision</div></div></div>
+        <p class="body-txt" style="margin-bottom:11px">Pick a name for the visualization product. Tap to choose:</p>
+        <div class="namechips" id="namepick">
+          <button class="nchip" data-name="Vision Alchemy">Vision Alchemy</button>
+          <button class="nchip" data-name="Dream Deep-Dive">Dream Deep-Dive</button>
+          <button class="nchip" data-name="Manifestation Sessions">Manifestation Sessions</button>
+          <button class="nchip" data-name="Goal Rift">Goal Rift</button>
+          <button class="nchip" data-name="Clarity Vents">Clarity Vents</button>
+          <button class="nchip" data-name="Blueprint Nights">Blueprint Nights</button>
+          <button class="nchip" data-name="$Goal Sessions">$Goal Sessions</button>
+        </div>
+        <div class="namenote">Selected: <b id="namesel">— none yet —</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BOTS ===== -->
+  <section class="page" id="tab-bots" role="tabpanel">
+    <div class="card accent" style="margin-bottom:14px">
+      <div class="chead">
+        <div class="cicon"><svg class="ic"><use href="#i-bot"/></svg></div>
+        <div><div class="ctitle">Dream Building Bot</div><div class="csub">Phase 1 · discover + lock dreams</div></div>
+        <span class="badge b-active"><span class="dot"></span>Active</span>
+      </div>
+      <p class="body-txt" style="margin-bottom:6px"><b style="color:var(--text)">Purpose:</b> Lock dreams to 1000% clarity, then prove achievability — find 5–10 people who've done it, reverse-engineer their path, and present data-driven proof with a step-by-step breakdown, timeline, tools, skills &amp; connections.</p>
+      <div class="kv"><span class="k">Modes</span><span class="v">Triggered (on-demand) + autonomous (24/7 after dream lock) · no token-budget limits</span></div>
+      <div class="kv"><span class="k">Current dream</span><span class="v">Dream #1 — $3.4K/Day Passive Income</span></div>
+
+      <div class="grid g2-wide" style="margin-top:14px">
+        <div>
+          <div class="miniband">Process flow · 5 steps</div>
+          <div class="steps">
+            <div class="step active done"><div class="snum">1</div><div class="sbody"><div class="sttl">Extraction <span class="pill on">Active</span></div><div class="sdesc">Deep interview to lock dream clarity</div></div></div>
+            <div class="step"><div class="snum">2</div><div class="sbody"><div class="sttl">Research <span class="pill off">Pending</span></div><div class="sdesc">Find 5–10 achievers + gather contact info</div></div></div>
+            <div class="step"><div class="snum">3</div><div class="sbody"><div class="sttl">Reverse-Engineer <span class="pill off">Pending</span></div><div class="sdesc">Analyze tools, timeline, skills, connections</div></div></div>
+            <div class="step"><div class="snum">4</div><div class="sbody"><div class="sttl">Synthesis <span class="pill off">Pending</span></div><div class="sdesc">Data-driven narrative — why it's achievable</div></div></div>
+            <div class="step"><div class="snum">5</div><div class="sbody"><div class="sttl">Sell-In <span class="pill off">Pending</span></div><div class="sdesc">Anthony signs off on the dream lock</div></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="miniband">Next steps</div>
+          <div class="checklist" data-group="botsteps">
+            <label class="tk"><input type="checkbox" data-key="bot-1"><span class="tk-label">Identify case studies</span></label>
+            <label class="tk"><input type="checkbox" data-key="bot-2"><span class="tk-label">Extract contact / social info</span></label>
+            <label class="tk"><input type="checkbox" data-key="bot-3"><span class="tk-label">Begin interviews / research</span></label>
+            <label class="tk"><input type="checkbox" data-key="bot-4"><span class="tk-label">Compile reverse-engineered paths</span></label>
+            <label class="tk"><input type="checkbox" data-key="bot-5"><span class="tk-label">Present synthesis to Anthony</span></label>
+          </div>
+          <div class="prog" style="margin-top:11px"><div class="pmeta"><span>Completion</span><span><b class="grp-count">0/5</b> · <b class="grp-pct">0%</b></span></div><div class="track"><div class="bar-fill"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <div class="chead"><div class="cicon"><svg class="ic"><use href="#i-gear"/></svg></div><div><div class="ctitle">Execution Ops Bot</div><div class="csub">Phase 2 · weekly execution plans</div></div><span class="badge b-queued">Queued</span></div>
+        <p class="body-txt" style="margin-bottom:13px"><b style="color:var(--text)">Input:</b> Bot #1's reverse-engineered paths. <b style="color:var(--text)">Output:</b> a granular weekly execution plan. Anthony's job: just execute.</p>
+        <div class="miniband">Output format</div>
+        <div class="flist">
+          <div class="fitem num"><div class="fi">1</div><div><div class="ft">Weekly tasks</div><div class="fd">Specific, actionable</div></div></div>
+          <div class="fitem num"><div class="fi">2</div><div><div class="ft">Milestones</div><div class="fd">Phase gates, when to pivot</div></div></div>
+          <div class="fitem num"><div class="fi">3</div><div><div class="ft">Dependencies</div><div class="fd">What comes before what</div></div></div>
+          <div class="fitem num"><div class="fi">4</div><div><div class="ft">Skill gaps</div><div class="fd">What to learn or hire</div></div></div>
+          <div class="fitem num"><div class="fi">5</div><div><div class="ft">Resource allocation</div><div class="fd">Time, money, connections</div></div></div>
+        </div>
+        <div class="nowbar" style="margin-top:14px"><span class="nl">TRIGGER</span><span class="nt">Starts after Dream #1 research lock is complete</span></div>
+      </div>
+
+      <div class="card">
+        <div class="chead"><div class="cicon" style="color:var(--magenta)"><svg class="ic"><use href="#i-heart"/></svg></div><div><div class="ctitle">Feeling Factor</div><div class="csub">The core KPI</div></div><span class="badge b-crit">Critical</span></div>
+        <div class="gauge"><div class="gnum">9<span>/10</span></div><div class="pips" id="feel-pips"></div></div>
+        <div class="quote" style="margin:12px 0 16px"><b>Manifestation + Data = Reality.</b> Latest: 9/10 (Jun 10 breakthrough, 45-min unbroken visualization).</div>
+        <div class="miniband">Signal guide</div>
+        <div class="signal">
+          <div class="sigrow yes"><span class="sg">✅</span><span class="sx"><b style="color:var(--text)">Lands</b> — concrete scenes, named losses, emotional friction</span></div>
+          <div class="sigrow no"><span class="sg">❌</span><span class="sx"><b style="color:var(--text)">Misses</b> — abstract questions, MBA-fluff, generic goals</span></div>
+        </div>
+        <div style="margin-top:14px">
+          <div class="metric"><span class="ml">Questions that landed</span><span class="mv">4 / 7 · 57%</span></div>
+          <div class="metric"><span class="ml">Emotional depth</span><span class="mv">Very high · 45 min</span></div>
+          <div class="metric"><span class="ml">Actionable outputs</span><span class="mv">2</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LOG ===== -->
+  <section class="page" id="tab-log" role="tabpanel">
+    <div class="grid g2">
+      <div class="card">
+        <div class="chead"><div class="cicon"><svg class="ic"><use href="#i-pulse"/></svg></div><div><div class="ctitle">Activity Log</div><div class="csub">Jun 10, 2026 · sunrise session</div></div></div>
+        <div class="logitem"><div class="ltime"><svg class="ic"><use href="#i-clock"/></svg>Jun 10 — 6:30 AM PT</div><div class="ltext"><span class="tagword">Breakthrough · </span><b>Visualization question unlocked the $3.4K/day dream.</b> "That is probably the best question this fucking robot has ever asked me." 45 minutes of raw truth — dream locked with full scene + deeper why.</div></div>
+        <div class="logitem"><div class="ltime"><svg class="ic"><use href="#i-clock"/></svg>Jun 10 — 5:15 AM PT</div><div class="ltext"><span class="tagword">Feeling Factor Established · </span>"I need to feel something and be passionate." Questions that landed: <b>4/7 (57%)</b>. Emotional friction beats data.</div></div>
+        <div class="logitem"><div class="ltime"><svg class="ic"><use href="#i-clock"/></svg>Jun 10 — 4:47 AM PT</div><div class="ltext"><span class="tagword">Session Start · </span>Night drive in the GR86 (Red Rocks, Nevada). Asked for questions that make him feel something. Brain-dump session initiated.</div></div>
+      </div>
+
+      <div class="card">
+        <div class="chead"><div class="cicon"><svg class="ic"><use href="#i-bulb"/></svg></div><div><div class="ctitle">Key Insights</div><div class="csub">What the session taught us</div></div></div>
+        <div class="insight"><div class="ihead"><div class="ii"><svg class="ic"><use href="#i-target"/></svg></div><div><div class="ititle">Breakthrough Discovery</div><div class="idate">Jun 10 · 6:30 AM</div></div><span class="badge b-high" style="margin-left:auto">High</span></div><div class="itext">A single visualization question unlocked the full dream scene + deeper why. Feeling factor achieved: 9/10.</div></div>
+        <div class="insight"><div class="ihead"><div class="ii"><svg class="ic"><use href="#i-heart"/></svg></div><div><div class="ititle">Manifestation + Data = Reality</div><div class="idate">Jun 10 · 5:15 AM</div></div><span class="badge b-crit" style="margin-left:auto">Critical</span></div><div class="itext">Feeling is the KPI — not engagement or completion. Questions must create emotional friction + specificity, not deliver data.</div></div>
+        <div class="insight"><div class="ihead"><div class="ii"><svg class="ic"><use href="#i-zap"/></svg></div><div><div class="ititle">This Session IS the Product</div><div class="idate">Jun 10 · 5:00 AM</div></div><span class="badge b-high" style="margin-left:auto">High</span></div><div class="itext">The sequence — emotional clarity → presence → data → execution — is the TeamWire wedge. Anthony is customer zero.</div></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="fmeta">
+    DREAM BUILDING BOT <b>v0.1</b> &nbsp;·&nbsp; Tony Orque &nbsp;·&nbsp; Updated <b>Jun 10, 2026</b> &nbsp;·&nbsp; Feeling <b>9/10</b>
+    <div class="note">Standalone file — separate from the live dashboard.html. Progress saves locally in your browser. Rename to <b>index.html</b> for GitHub Pages.</div>
+  </div>
+  <button class="reset" id="reset-btn"><svg class="ic"><use href="#i-reset"/></svg>Reset progress</button>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var NS='dbt:';
+  var LS={
+    get:function(k,d){try{var v=localStorage.getItem(NS+k);return v===null?d:JSON.parse(v);}catch(e){return d;}},
+    set:function(k,v){try{localStorage.setItem(NS+k,JSON.stringify(v));}catch(e){}},
+    keys:function(){var a=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf(NS)===0)a.push(k);}}catch(e){}return a;}
+  };
+  function $(s,c){return (c||document).querySelector(s);}
+  function $all(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s));}
+  function fmt(n){return '$'+Math.round(n).toLocaleString('en-US');}
+
+  /* TABS */
+  var tabs=$all('.tab'),pages=$all('.page');
+  function activate(name,save){
+    var found=false;
+    tabs.forEach(function(t){var on=t.getAttribute('data-tab')===name;t.classList.toggle('active',on);if(on)found=true;});
+    pages.forEach(function(p){p.classList.toggle('active',p.id==='tab-'+name);});
+    if(!found)return false;
+    if(save){LS.set('tab',name);
+      var at=tabs.filter(function(t){return t.getAttribute('data-tab')===name;})[0];
+      if(at&&at.scrollIntoView){try{at.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});}catch(e){at.scrollIntoView();}}
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+    return true;
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){activate(t.getAttribute('data-tab'),true);});});
+  var startTab=LS.get('tab','overview');
+  if(!activate(startTab,false))activate('overview',false);
+
+  /* TASK CHECKBOXES (.tk) */
+  var checks=$all('.tk input[type="checkbox"][data-key]');
+  checks.forEach(function(c){
+    var s=LS.get('check:'+c.getAttribute('data-key'),null);
+    if(s!==null)c.checked=!!s;
+    c.addEventListener('change',function(){LS.set('check:'+c.getAttribute('data-key'),c.checked);updateGroups();updateOverall();});
+  });
+  function updateGroups(){
+    $all('[data-group]').forEach(function(g){
+      var cs=$all('.tk input[type="checkbox"][data-key]',g);
+      var done=cs.filter(function(c){return c.checked;}).length;
+      var pct=cs.length?Math.round(done/cs.length*100):0;
+      var f=$('.bar-fill',g);if(f)f.style.width=pct+'%';
+      var cn=$('.grp-count',g);if(cn)cn.textContent=done+'/'+cs.length;
+      var pc=$('.grp-pct',g);if(pc)pc.textContent=pct+'%';
+    });
+  }
+  function updateOverall(){
+    var done=checks.filter(function(c){return c.checked;}).length;
+    var pct=checks.length?Math.round(done/checks.length*100):0;
+    var f=$('#overall-fill');if(f)f.style.width=pct+'%';
+    var t=$('#overall-count');if(t)t.textContent=done+' / '+checks.length;
+    var p=$('#overall-pct');if(p)p.textContent=pct+'%';
+  }
+
+  /* MILESTONE RUNGS (.rcheck) */
+  var rungs=$all('.rcheck[data-key]');
+  function renderMs(){var d=rungs.filter(function(c){return c.checked;}).length;var el=$('#ms-count');if(el)el.textContent=d+'/'+rungs.length;}
+  rungs.forEach(function(c){
+    var s=LS.get('check:'+c.getAttribute('data-key'),null);
+    if(s!==null)c.checked=!!s;
+    if(c.parentNode)c.parentNode.classList.toggle('reached',c.checked);
+    c.addEventListener('change',function(){
+      LS.set('check:'+c.getAttribute('data-key'),c.checked);
+      if(c.parentNode)c.parentNode.classList.toggle('reached',c.checked);
+      renderMs();
+    });
+  });
+
+  /* RESEARCH STEPPER */
+  var RMAX=10,research=parseInt(LS.get('research',0),10)||0;
+  function renderResearch(){
+    research=Math.max(0,Math.min(RMAX,research));
+    var pct=Math.round(research/RMAX*100);
+    var f=$('#research-fill');if(f)f.style.width=pct+'%';
+    var c=$('#research-count');if(c)c.textContent=research+'/'+RMAX;
+  }
+  var rdec=$('#research-dec'),rinc=$('#research-inc');
+  if(rdec)rdec.addEventListener('click',function(){research--;LS.set('research',research);renderResearch();});
+  if(rinc)rinc.addEventListener('click',function(){research++;LS.set('research',research);renderResearch();});
+
+  /* DEBT TRACKER */
+  var DEBT_TOTAL=90000,debtInput=$('#debt-input');
+  function renderDebt(){
+    var rem=Math.max(0,Math.min(DEBT_TOTAL,parseFloat(debtInput.value)||0));
+    var paid=DEBT_TOTAL-rem,pct=Math.round(paid/DEBT_TOTAL*100);
+    var f=$('#debt-fill');if(f)f.style.width=pct+'%';
+    var a=$('#debt-paid');if(a)a.textContent=fmt(paid);
+    var b=$('#debt-pct');if(b)b.textContent=pct+'%';
+    var t=$('#debt-pct-top');if(t)t.textContent=pct+'% cleared';
+    var r=$('#debt-rem');if(r)r.textContent=fmt(rem);
+  }
+  if(debtInput){
+    var sd=LS.get('debt',null);if(sd!==null)debtInput.value=sd;
+    debtInput.addEventListener('input',function(){LS.set('debt',debtInput.value);renderDebt();});
+    $all('[data-debt]').forEach(function(btn){btn.addEventListener('click',function(){
+      var d=btn.getAttribute('data-debt');
+      if(d==='reset'){debtInput.value=DEBT_TOTAL;}
+      else{debtInput.value=Math.max(0,Math.min(DEBT_TOTAL,(parseFloat(debtInput.value)||0)+parseFloat(d)));}
+      LS.set('debt',debtInput.value);renderDebt();
+    });});
+    renderDebt();
+  }
+
+  /* INCOME TRACKER */
+  var INC_DREAM=102000,incInput=$('#income-input');
+  function renderIncome(){
+    var v=Math.max(0,parseFloat(incInput.value)||0);
+    var pct=Math.min(100,Math.round(v/INC_DREAM*100));
+    var f=$('#income-fill');if(f)f.style.width=pct+'%';
+    var n=$('#income-now');if(n)n.textContent=fmt(v)+'/mo';
+    var p=$('#income-pct');if(p)p.textContent=pct+'% to dream';
+    var stage,cls;
+    if(v>=102000){stage='Dream achieved — $3.4K/day';cls='st-dream';}
+    else if(v>=22000){stage='Past halfway to the dream';cls='st-vio';}
+    else if(v>=11000){stage='Debt-acceleration zone';cls='st-vio';}
+    else if(v>=5500){stage='Safe — bills covered';cls='st-green';}
+    else{stage='Below safe number';cls='st-amber';}
+    var el=$('#income-stage');if(el){el.textContent=stage;el.className='trk-stage '+cls;}
+  }
+  if(incInput){
+    var si=LS.get('income',null);if(si!==null)incInput.value=si;
+    incInput.addEventListener('input',function(){LS.set('income',incInput.value);renderIncome();});
+    $all('[data-income]').forEach(function(btn){btn.addEventListener('click',function(){
+      var d=btn.getAttribute('data-income');
+      if(d==='reset'){incInput.value=0;}
+      else{incInput.value=Math.max(0,(parseFloat(incInput.value)||0)+parseFloat(d));}
+      LS.set('income',incInput.value);renderIncome();
+    });});
+    renderIncome();
+  }
+
+  /* NAME PICKER */
+  var picked=LS.get('procname',null),nameSel=$('#namesel');
+  $all('#namepick .nchip').forEach(function(c){
+    if(c.getAttribute('data-name')===picked)c.classList.add('sel');
+    c.addEventListener('click',function(){
+      var v=c.getAttribute('data-name');
+      $all('#namepick .nchip').forEach(function(x){x.classList.remove('sel');});
+      if(picked===v){picked=null;LS.set('procname',null);}
+      else{picked=v;c.classList.add('sel');LS.set('procname',v);}
+      if(nameSel)nameSel.textContent=picked||'— none yet —';
+    });
+  });
+  if(nameSel)nameSel.textContent=picked||'— none yet —';
+
+  /* FEELING PIPS */
+  var pw=$('#feel-pips');
+  if(pw){for(var i=1;i<=10;i++){var p=document.createElement('div');p.className='pip'+(i<=9?' on':'');pw.appendChild(p);}}
+
+  /* RESET */
+  var reset=$('#reset-btn');
+  if(reset)reset.addEventListener('click',function(){
+    if(!window.confirm('Reset all saved progress on this device?'))return;
+    LS.keys().forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});
+    checks.forEach(function(c){c.checked=false;});
+    rungs.forEach(function(c){c.checked=false;if(c.parentNode)c.parentNode.classList.remove('reached');});
+    research=0;
+    if(debtInput)debtInput.value=DEBT_TOTAL;
+    if(incInput)incInput.value=0;
+    picked=null;
+    $all('#namepick .nchip').forEach(function(x){x.classList.remove('sel');});
+    if(nameSel)nameSel.textContent='— none yet —';
+    renderResearch();if(debtInput)renderDebt();if(incInput)renderIncome();renderMs();updateGroups();updateOverall();
+  });
+
+  /* INIT */
+  updateGroups();updateOverall();renderResearch();renderMs();
+})();
+</script>
+</body>
+</html>

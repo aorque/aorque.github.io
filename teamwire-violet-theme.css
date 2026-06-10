@@ -1,0 +1,51 @@
+/* TeamWire Violet Theme - Additive Styling */
+
+:root {
+  --tw-violet-primary: #7c3aed;
+  --tw-violet-light: #a78bfa;
+  --tw-violet-dark: #5b21b6;
+  --tw-violet-accent: #ec4899;
+}
+
+/* Primary action buttons */
+button, [role="button"], .btn {
+  background-color: var(--tw-violet-primary);
+  border-color: var(--tw-violet-primary);
+  color: white;
+}
+
+button:hover, [role="button"]:hover, .btn:hover {
+  background-color: var(--tw-violet-dark);
+  border-color: var(--tw-violet-dark);
+}
+
+/* Links */
+a {
+  color: var(--tw-violet-primary);
+}
+
+a:hover {
+  color: var(--tw-violet-dark);
+}
+
+/* Headers and accents */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--tw-violet-dark);
+}
+
+/* Input focus states */
+input:focus, textarea:focus, select:focus {
+  border-color: var(--tw-violet-primary);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+/* Active navigation */
+nav .active, nav [aria-current="page"] {
+  color: var(--tw-violet-primary);
+  border-bottom-color: var(--tw-violet-primary);
+}
+
+/* Accent elements */
+.accent, .highlight {
+  color: var(--tw-violet-accent);
+}
