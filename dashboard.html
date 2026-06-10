@@ -210,6 +210,21 @@ function checkPw(){
     document.getElementById('pw-input').focus();
   }
 }
+function showPage(page){
+  var pages=['overview','projects','finance','content','teamwire','dream','behavior','spend','kanban','sleep','system'];
+  pages.forEach(function(p){
+    var el=document.getElementById('page-'+p);
+    if(el) el.style.display=(p===page?'block':'none');
+  });
+  var tabs=document.querySelectorAll('.tab');
+  tabs.forEach(function(t){
+    t.classList.remove('active');
+    if(t.textContent.toLowerCase().includes(page) || t.onclick.toString().includes(page)){
+      t.classList.add('active');
+    }
+  });
+}
+document.addEventListener('DOMContentLoaded',function(){showPage('overview');});
 </script>
 
 <header>
