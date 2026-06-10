@@ -53,6 +53,19 @@ button:active{transform:scale(0.96);}
 .ptype.talk{color:var(--brand);}
 .ptype.do{color:var(--flirty);}
 .ptype.dare{color:var(--spicy);}
+.ptype.drink{color:#7cd9d9;}
+.ptype.power{color:#ffd97c;}
+.prompt-card.power{border-color:#ffd97c;background:linear-gradient(160deg,#211d12,#15151d);box-shadow:0 24px 60px rgba(255,217,124,0.12);}
+.rule-banner{background:#211d12;border:1px solid #ffd97c;border-radius:12px;padding:10px 14px;font-size:0.8rem;color:#ffd97c;margin-bottom:10px;line-height:1.5;display:none;}
+.rule-banner.on{display:block;}
+.rule-banner .cure{color:var(--mut);font-size:0.72rem;display:block;margin-top:2px;}
+.drink-row{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-top:10px;}
+.drink-row .lbl{font-size:0.95rem;}
+.drink-row .lbl small{display:block;color:var(--mut);font-size:0.78rem;font-weight:400;margin-top:2px;}
+.toggle{width:52px;height:30px;border-radius:999px;background:#2a2a3a;position:relative;transition:background 0.2s;flex-shrink:0;padding:0;}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#777;transition:all 0.2s;}
+.toggle.on{background:#7cd9d9;}
+.toggle.on::after{left:25px;background:#0e0e12;}
 .ptext{font-size:1.35rem;font-weight:600;line-height:1.45;}
 .pcount{position:absolute;bottom:16px;right:20px;font-size:0.7rem;color:var(--mut);}
 .controls{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:6px;}
@@ -107,6 +120,10 @@ button:active{transform:scale(0.96);}
       <button class="opt" data-ctx="bar" type="button"><span class="em">🍸</span>at the bar<small>games, dares, and things to point at</small></button>
       <button class="opt" data-ctx="walk" type="button"><span class="em">🌙</span>walking around<small>observational stuff + deeper questions</small></button>
     </div>
+    <div class="drink-row" id="drink-row">
+      <span class="lbl">we're drinking 🍻<small>adds "…or drink" dares + bar power-ups. sips of whatever's in your glass.</small></span>
+      <button class="toggle" id="drink-toggle" type="button" aria-label="toggle drinking mode"></button>
+    </div>
     <h2>heat level</h2>
     <div class="sub">you can always turn it up later</div>
     <div class="heat-row">
@@ -123,6 +140,7 @@ button:active{transform:scale(0.96);}
       <div class="logo" style="font-size:1rem;">riff<span class="dot">.</span></div>
       <button class="pill" id="heat-pill" type="button">🍦 sweet</button>
     </div>
+    <div class="rule-banner" id="rule-banner"></div>
     <div id="card-zone">
       <div class="prompt-card" id="card">
         <div class="ptype talk" id="ptype">talk</div>
@@ -250,9 +268,62 @@ button:active{transform:scale(0.96);}
     {t:'talk',c:'walk',h:'spicy',x:'Where do you think this is going? Like, us. Answer first, think later.'}
   ];
 
-  var state = { ctx:'line', heat:'sweet', deck:[], i:0, kept:[], answers:{} };
+  /* ============ DRINKING CARDS ============
+     two grammars: "...or drink" (personal out) and "drink if..." (shared confession)
+     all public-safe — this gets played AT a bar */
+  var D = [
+    // sweet
+    {t:'drink',c:'any',h:'sweet',x:'Drink if you checked your outfit more than twice before this date.'},
+    {t:'drink',c:'any',h:'sweet',x:'Drink if you told a friend exactly where you are right now. Both of you, be honest.'},
+    {t:'drink',c:'any',h:'sweet',x:'Do your best impression of the other person ordering a drink… or drink.'},
+    {t:'drink',c:'any',h:'sweet',x:'Drink if you\'ve ever laughed so hard a drink came out of your nose.'},
+    {t:'drink',c:'any',h:'sweet',x:'Compliment the other person without using the words nice, cool, or pretty… or drink.'},
+    {t:'drink',c:'bar',h:'sweet',x:'Guess what the other person\'s go-to drink order is. Wrong guess = you drink.'},
+    {t:'drink',c:'bar',h:'sweet',x:'Drink if you\'ve ever pretended to like a drink someone bought you.'},
+    {t:'drink',c:'bar',h:'sweet',x:'Make up a fancy name and backstory for whatever the other person is drinking… or drink.'},
+    {t:'drink',c:'table',h:'sweet',x:'Toast to the weirdest thing you have in common. Find it first. Can\'t find one? Both drink.'},
+    {t:'drink',c:'any',h:'sweet',x:'Drink if you almost cancelled tonight. (No judgment. Some judgment.)'},
+    // flirty
+    {t:'drink',c:'any',h:'flirty',x:'Drink if you\'ve thought about kissing the other person tonight.'},
+    {t:'drink',c:'any',h:'flirty',x:'Say the first thing you noticed about them, physically… or drink twice.'},
+    {t:'drink',c:'any',h:'flirty',x:'Drink if you\'ve already screenshotted this date to your group chat.'},
+    {t:'drink',c:'any',h:'flirty',x:'Hold eye contact for 10 seconds. First to laugh drinks.'},
+    {t:'drink',c:'bar',h:'flirty',x:'Let them pick your next drink, no questions asked… or drink twice.'},
+    {t:'drink',c:'bar',h:'flirty',x:'Drink if you\'d be flirting with someone here if you weren\'t on this date. Both answer.'},
+    {t:'drink',c:'bar',h:'flirty',x:'Whisper your honest rating of this bar (1–10) in their ear… or drink.'},
+    {t:'drink',c:'table',h:'flirty',x:'Feed them a sip of your drink like it\'s a wine tasting. Full sommelier commentary… or drink.'},
+    {t:'drink',c:'any',h:'flirty',x:'Drink if your last text was about this date.'},
+    {t:'drink',c:'any',h:'flirty',x:'Trade phones and set each other\'s next-round alarm label to anything… or drink twice.'},
+    // spicy (public-safe spicy: confessions, not contact)
+    {t:'drink',c:'any',h:'spicy',x:'Drink if you\'ve ever left a date out the back door. Story optional. Drink doubles if you refuse the story.'},
+    {t:'drink',c:'any',h:'spicy',x:'Say the most unhinged reason you\'ve ever agreed to a date… or finish your drink.'},
+    {t:'drink',c:'any',h:'spicy',x:'Drink if you\'ve already decided how tonight ends. No elaboration allowed. Suffer.'},
+    {t:'drink',c:'bar',h:'spicy',x:'Drink if you\'ve ever made out with someone at THIS bar. Two sips if they might be here.'},
+    {t:'drink',c:'bar',h:'spicy',x:'Tell the truth: best kiss of your life — when and where. Or finish your drink.'},
+    {t:'drink',c:'bar',h:'spicy',x:'Drink if your search history from this week would end this date.'},
+    {t:'drink',c:'any',h:'spicy',x:'Describe your type using only three words. If the other person points at themselves, drink.'},
+    {t:'drink',c:'any',h:'spicy',x:'Drink if you\'ve ever sent a risky text and immediately put the phone face-down. Reenact it.'},
+    {t:'drink',c:'table',h:'spicy',x:'Drink if you\'d split dessert. Two sips if you\'d split an Uber.'},
+    {t:'drink',c:'any',h:'spicy',x:'Show the last photo in your camera roll or finish your drink. Choose fast.'}
+  ];
+
+  /* power-ups: dealt every ~5 cards at the bar when drinking is on */
+  var PU = [
+    {k:'rule', x:'HOUSE RULE: no saying each other\'s names. Slip up = sip. Rule lasts 5 cards.'},
+    {k:'rule', x:'HOUSE RULE: you must clink glasses before every sip. Forget = extra sip. Lasts 5 cards.'},
+    {k:'rule', x:'HOUSE RULE: phones face-down. Whoever touches theirs first drinks twice. Lasts 5 cards.'},
+    {k:'rule', x:'HOUSE RULE: answer every card in a fake accent. Breaking accent = sip. Lasts 5 cards.'},
+    {k:'now', x:'DOUBLE OR NOTHING: the next card\'s refusal costs double drinks. Dealer\'s mercy not available.'},
+    {k:'now', x:'3-2-1 DUEL: count down, both answer "favorite drink ever" at the same time. Mismatch = both drink. Match = bartender owes you nothing but respect.'},
+    {k:'now', x:'BUY A ROUND: rock paper scissors. Best of three. Loser gets the next round (or the next waters).'},
+    {k:'now', x:'HYDRATION CHECK 💧: both of you, water. Yes really. The game rewards survivors.'},
+    {k:'now', x:'SWAP: you may hand your next card to them. They must do it or pay the drink. Use it wisely.'},
+    {k:'now', x:'TOAST OFF: each give a 10-second toast about the other person. Worse toast (their call) drinks.'}
+  ];
+
+  var state = { ctx:'line', heat:'sweet', deck:[], i:0, kept:[], answers:{}, drink:false, rule:null, puUsed:[] };
   var heatLabels = { sweet:'🍦 sweet', flirty:'😏 flirty', spicy:'🔥 unhinged' };
-  var typeLabels = { talk:'talk about it', do:'do this', dare:'dare 🔥' };
+  var typeLabels = { talk:'talk about it', do:'do this', dare:'dare 🔥', drink:'sip happens 🍹', power:'bar power-up ⚡' };
 
   function show(id){
     ['gate','setup','game','end','recap'].forEach(function(s){ $(s).classList.add('hidden'); });
@@ -277,7 +348,16 @@ button:active{transform:scale(0.96);}
       document.querySelectorAll('#ctx-grid .opt').forEach(function(o){ o.classList.remove('sel'); });
       b.classList.add('sel');
       state.ctx = b.dataset.ctx;
+      // bar implies drinks unless they said otherwise
+      if (state.ctx === 'bar' && !state.drinkTouched){ state.drink = true; }
+      $('drink-toggle').classList.toggle('on', state.drink);
     });
+  });
+
+  $('drink-toggle').addEventListener('click', function(){
+    state.drink = !state.drink;
+    state.drinkTouched = true;
+    $('drink-toggle').classList.toggle('on', state.drink);
   });
   document.querySelectorAll('.heat-row .opt').forEach(function(b){
     b.addEventListener('click', function(){
@@ -289,7 +369,8 @@ button:active{transform:scale(0.96);}
 
   function buildDeck(){
     var heats = state.heat === 'sweet' ? ['sweet'] : state.heat === 'flirty' ? ['sweet','flirty'] : ['sweet','flirty','spicy'];
-    var pool = P.filter(function(p){ return (p.c === state.ctx || p.c === 'any') && heats.indexOf(p.h) !== -1; });
+    var src = state.drink ? P.concat(D) : P;
+    var pool = src.filter(function(p){ return (p.c === state.ctx || p.c === 'any') && heats.indexOf(p.h) !== -1; });
     // weight toward the chosen heat
     var hot = pool.filter(function(p){ return p.h === state.heat; });
     var rest = pool.filter(function(p){ return p.h !== state.heat; });
@@ -299,7 +380,18 @@ button:active{transform:scale(0.96);}
     if (state.heat !== 'sweet'){
       state.deck = rest.slice(0,3).concat(shuffle(hot.concat(rest.slice(3))));
     }
+    // bar mode: splice a power-up roughly every 5 cards
+    if (state.drink && state.ctx === 'bar'){
+      var pus = shuffle(PU.slice());
+      var pos = 4, n = 0;
+      while (pos < state.deck.length && n < pus.length){
+        state.deck.splice(pos, 0, {t:'power', k:pus[n].k, x:pus[n].x});
+        n++; pos += 6;
+      }
+    }
     state.i = 0;
+    state.rule = null;
+    updateRuleBanner();
   }
 
   function shuffle(a){
@@ -309,17 +401,42 @@ button:active{transform:scale(0.96);}
     return a;
   }
 
+  function updateRuleBanner(){
+    var b = $('rule-banner');
+    if (state.rule && state.i < state.rule.until){
+      b.innerHTML = '⚡ ' + state.rule.text + '<span class="cure">active for ' + (state.rule.until - state.i) + ' more card' + (state.rule.until - state.i === 1 ? '' : 's') + '</span>';
+      b.classList.add('on');
+    } else {
+      if (state.rule && state.i >= state.rule.until){
+        b.innerHTML = '✓ house rule lifted. you\'re free.';
+        b.classList.add('on');
+        state.rule = null;
+        setTimeout(function(){ if (!state.rule) b.classList.remove('on'); }, 3500);
+      } else if (!state.rule) {
+        b.classList.remove('on');
+      }
+    }
+  }
+
   function deal(){
     if (state.i >= state.deck.length){ show('end'); return; }
     var p = state.deck[state.i];
+    // activate house rules as they're dealt
+    if (p.t === 'power' && p.k === 'rule' && !p.armed){
+      p.armed = true;
+      state.rule = { text: p.x.replace(' Rule lasts 5 cards.','').replace(' Lasts 5 cards.',''), until: state.i + 6 };
+    }
+    updateRuleBanner();
     var card = $('card');
     card.style.animation = 'none';
     void card.offsetWidth;
     card.style.animation = '';
+    card.className = 'prompt-card' + (p.t === 'power' ? ' power' : '');
     $('ptype').textContent = typeLabels[p.t];
     $('ptype').className = 'ptype ' + p.t;
     $('ptext').textContent = p.x;
     $('pcount').textContent = (state.i+1) + ' / ' + state.deck.length;
+    $('keep-btn').style.visibility = p.t === 'power' ? 'hidden' : 'visible';
     syncKeepBtn();
   }
 
