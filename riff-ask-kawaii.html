@@ -59,16 +59,7 @@ button{font-family:'Nunito',inherit;font-size:1rem;padding:14px 35px;border:none
 </head>
 <body>
 
-<!-- PASSWORD GATE -->
-<div id="pw-gate" style="position:fixed;inset:0;background:#0a0a0f;z-index:99999;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;">
-  <div style="text-align:center;padding:32px;border:1px solid #1e1e30;border-radius:12px;background:#0f0f18;min-width:280px;">
-    <div style="font-size:22px;font-weight:900;background:linear-gradient(135deg,#ff5c5c,#ff8c42);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:18px;">riff</div>
-    <input id="pw-input" type="password" placeholder="password" autofocus
-      style="width:100%;background:#14141f;border:1px solid #1e1e30;border-radius:6px;padding:12px;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;text-align:center;outline:none;-webkit-appearance:none;"
-      onkeydown="if(event.key==='Enter')checkPw()" />
-    <div id="pw-err" style="margin-top:8px;font-size:11px;color:#ff4f6e;min-height:14px;"></div>
-  </div>
-</div>
+
 
 <div class="container">
   <!-- ASK SCREEN -->
@@ -104,13 +95,7 @@ button{font-family:'Nunito',inherit;font-size:1rem;padding:14px 35px;border:none
 </div>
 
 <script>
-// Password gate
-(function(){if(sessionStorage.getItem('riffauth')==='spencerwire')document.getElementById('pw-gate').style.display='none';})();
-function checkPw(){
-  var v=document.getElementById('pw-input').value;
-  if(v==='spencerwire'){sessionStorage.setItem('riffauth','spencerwire');document.getElementById('pw-gate').style.display='none';}
-  else{document.getElementById('pw-err').textContent='wrong password';document.getElementById('pw-input').value='';document.getElementById('pw-input').focus();}
-}
+
 
 // Floating hearts
 function createFloatingHeart(){

@@ -199,18 +199,7 @@
   </style>
 </head>
 <body>
-  <!-- Password Gate -->
-  <div id="pw-gate" style="position:fixed;inset:0;background:#0a0a0f;z-index:99999;display:flex;align-items:center;justify-content:center">
-    <div style="text-align:center;padding:32px;border:1px solid #1e1e30;border-radius:12px;background:#0f0f18;min-width:280px">
-      <input id="pw-input" type="password" placeholder="password" autofocus style="width:100%;background:#14141f;border:1px solid #1e1e30;border-radius:6px;padding:10px;color:#fff;font-size:14px;text-align:center;outline:none" onkeydown="if(event.key==='Enter')checkPw()" />
-      <div id="pw-err" style="margin-top:8px;font-size:11px;color:#ff4f6e;min-height:14px"></div>
-    </div>
-  </div>
 
-  <script>
-    (function(){if(sessionStorage.getItem('riffauth')==='spencerwire')document.getElementById('pw-gate').style.display='none'})();
-    function checkPw(){var v=document.getElementById('pw-input').value;if(v==='spencerwire'){sessionStorage.setItem('riffauth','spencerwire');document.getElementById('pw-gate').style.display='none';}else{document.getElementById('pw-err').textContent='wrong password';document.getElementById('pw-input').value='';document.getElementById('pw-input').focus();}}
-  </script>
 
   <!-- Main Content -->
   <div class="container" id="mainContainer">
