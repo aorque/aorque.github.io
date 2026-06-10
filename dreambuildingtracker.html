@@ -393,6 +393,18 @@
   </style>
 </head>
 <body>
+  <!-- PASSWORD GATE -->
+  <div id="pw-gate" style="position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
+    <div style="text-align:center;max-width:320px;padding:40px 24px">
+      <div style="font-family:var(--display);font-size:28px;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:12px">Dream Builder</div>
+      <div style="color:var(--muted);font-size:13px;margin-bottom:32px;letter-spacing:.05em">Protected Command Center</div>
+      <input type="password" id="pw-input" placeholder="Enter password" style="width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:var(--bg-1);color:var(--text);font-family:var(--mono);font-size:13px;margin-bottom:12px;transition:border-color .2s" onkeypress="if(event.key==='Enter') checkPwDream()">
+      <div id="pw-err" style="color:#ff6b6b;font-size:11px;margin-bottom:16px;height:16px;letter-spacing:.05em"></div>
+      <button onclick="checkPwDream()" style="width:100%;padding:11px;border:1px solid var(--violet-7);background:var(--violet-7);color:#fff;border-radius:9px;font-weight:600;cursor:pointer;font-family:var(--display);letter-spacing:.05em;transition:all .2s">Unlock</button>
+    </div>
+  </div>
+
+
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></symbol>
@@ -1156,6 +1168,23 @@
 
   /* INIT */
   updateGroups();updateOverall();renderResearch();renderMs();
+})();
+
+function checkPwDream(){
+  var v=document.getElementById('pw-input').value;
+  if(v==='dream'){
+    sessionStorage.setItem('dbauth','dream');
+    document.getElementById('pw-gate').style.display='none';
+  } else {
+    document.getElementById('pw-err').textContent='ACCESS DENIED';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+  }
+}
+(function(){
+  if(sessionStorage.getItem('dbauth')==='dream'){
+    document.getElementById('pw-gate').style.display='none';
+  }
 })();
 </script>
 </body>
