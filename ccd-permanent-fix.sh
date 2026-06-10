@@ -26,7 +26,11 @@ mkdir -p "$SCRIPTS" "$LOGS" /opt/data/backups /opt/data/www
 
 echo "=== CCD PERMANENT FIX (VPS-hosted) ==="
 
-# ── 0. Move repo out of /tmp, sync to origin ──────────────────────
+# ── 0a. STOP THE BLEEDING: kill all old dashboard crons FIRST ─────
+(crontab -l 2>/dev/null | grep -v -e update_dashboard -e ccd_update -e dashboard) | crontab - || true
+echo "[0a] Old dashboard crons removed."
+
+# ── 0b. Move repo out of /tmp, sync to origin ─────────────────────
 if [ ! -d "$REPO/.git" ]; then
   if [ -d /tmp/aorque.github.io/.git ]; then
     mv /tmp/aorque.github.io "$REPO"
@@ -37,7 +41,33 @@ fi
 cd "$REPO"
 git fetch origin && git reset --hard origin/main
 cp "$DASH" "/opt/data/backups/dashboard.pre-fix.$(date +%s).html"
-echo "[0] Repo at $REPO, backup saved."
+echo "[0b] Repo at $REPO, backup saved."
+
+# ── 0c. Restore last structurally-valid version from git history ──
+echo "[0c] Searching git history for last good dashboard.html..."
+FOUND=""
+for C in $(git rev-list -n 200 origin/main -- dashboard.html); do
+  git show "$C:dashboard.html" > /tmp/ccd_candidate.html 2>/dev/null || continue
+  if python3 - << 'CHECK'
+import sys
+h = open('/tmp/ccd_candidate.html', encoding='utf-8').read()
+ok = (h.count('<script') == h.count('</script>')
+      and h.count('<div') == h.count('</div>')
+      and h.rstrip().endswith('</html>')
+      and '<!-- SESSION STATS -->' in h
+      and '<!-- 7-DAY HISTORY -->' in h
+      and len(h) > 50_000)
+sys.exit(0 if ok else 1)
+CHECK
+  then FOUND="$C"; break; fi
+done
+if [ -z "$FOUND" ]; then
+  echo "FATAL: no structurally valid dashboard.html found in last 200 commits."
+  echo "Nothing was changed. Send this output to Cowork."
+  exit 1
+fi
+cp /tmp/ccd_candidate.html "$DASH"
+echo "[0c] Restored from commit $FOUND ($(git log -1 --format='%ci %s' $FOUND))"
 
 # ── 1. One-time structural repair ─────────────────────────────────
 DASH="$DASH" python3 << 'REPAIR'
@@ -82,9 +112,9 @@ history_card = '''<!-- 7-DAY HISTORY -->
   </div>
 
   '''
-pat = re.compile(r'<!-- 7-DAY HISTORY -->.*?(?=<!-- TEAMWIRE NOTE -->)', re.S)
+pat = re.compile(r'<!-- 7-DAY HISTORY -->.*?(?=<!-- TEAMWIRE NOTE -->|<div id="page-kanban")', re.S)
 if not pat.search(html):
-    sys.exit("FATAL: 7-DAY HISTORY anchor not found — aborting, file untouched")
+    sys.exit("FATAL: could not find end boundary (TEAMWIRE NOTE / page-kanban) after 7-DAY HISTORY — aborting, file untouched")
 html = pat.sub(history_card, html, count=1)
 
 # --- 1c. Mark the big spend number with sentinels (anchored on its id) ---
