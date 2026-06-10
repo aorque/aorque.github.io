@@ -76,9 +76,9 @@ button{font-family:'Nunito',inherit;font-size:1rem;padding:14px 35px;border:none
     <h1>will you go on a lil date with me?</h1>
     <span class="kaomoji-main">(⁄ ⁄•⁄ω⁄•⁄ ⁄)</span>
     <div class="button-group">
-      <button id="yes-btn" onclick="handleYes()" ontouchend="handleYes()">YES ✨</button>
+      <button id="yes-btn" onclick="handleYes(event)" ontouchend="handleYes(event)" style="-webkit-appearance:none;touch-action:manipulation;">YES ✨</button>
       <div id="no-btn-container">
-        <button id="no-btn" onclick="handleNo()" ontouchend="handleNo()">no 🥺</button>
+        <button id="no-btn" onclick="handleNo(event)" ontouchend="handleNo(event)" style="-webkit-appearance:none;touch-action:manipulation;">no 🥺</button>
       </div>
     </div>
     <div class="footer">made with 🌸 and a little too much courage</div>
@@ -151,10 +151,7 @@ var beggingLines=['please...','i\'m sorry...','please reconsider...','don\'t you
 
 var lastTouchTime=0;
 
-function handleNo(){
-  var now=Date.now();
-  if(now-lastTouchTime<300) return; // debounce double-fire
-  lastTouchTime=now;
+function handleNo(e){\n  if(e){e.preventDefault();e.stopPropagation();}\n  var now=Date.now();\n  if(now-lastTouchTime<300) return; // debounce double-fire\n  lastTouchTime=now;
 
   if(clickCount>=MAX) return;
   clickCount++;
@@ -216,10 +213,7 @@ function handleNo(){
   }
 }
 
-function handleYes(){
-  var now=Date.now();
-  if(now-lastTouchTime<300) return;
-  lastTouchTime=now;
+function handleYes(e){\n  if(e){e.preventDefault();e.stopPropagation();}\n  var now=Date.now();\n  if(now-lastTouchTime<300) return;\n  lastTouchTime=now;
   fireConfetti(40);
   document.getElementById('ask-screen').style.display='none';
   document.getElementById('yes-screen').classList.add('show');

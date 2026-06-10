@@ -156,8 +156,8 @@ footer{margin-top:48px;font-size:11px;color:var(--muted);text-align:center;lette
       best case: you help me build something and we actually vibe.
     </div>
     <div class="btn-row" id="btn-row">
-      <button class="btn-yes" onclick="handleYes()" ontouchend="handleYes()">okay fine, I'm in 👀</button>
-      <button class="btn-no" id="no-btn" onclick="handleNo()" ontouchend="handleNo()">I'm going to pass</button>
+      <button class="btn-yes" onclick="handleYes(event)" ontouchend="handleYes(event)" style="-webkit-appearance:none;touch-action:manipulation;">okay fine, I'm in 👀</button>
+      <button class="btn-no" id="no-btn" onclick="handleNo(event)" ontouchend="handleNo(event)" style="-webkit-appearance:none;touch-action:manipulation;">I'm going to pass</button>
     </div>
   </div>
 
@@ -255,8 +255,7 @@ function tick(){
 }
 setInterval(tick,1000);
 
-function handleYes(){
-  document.getElementById('ask-card') && null;
+var lastTouchTime = 0;\nfunction handleYes(e){\n  if(e){e.preventDefault();e.stopPropagation();}\n  var now = Date.now();\n  if(now - lastTouchTime < 300) return;\n  lastTouchTime = now;\n  document.getElementById('ask-card') && null;
   document.getElementById('main-content').style.display='none';
   document.getElementById('main-content2').style.display='none';
   document.getElementById('evidence-section').style.display='none';
@@ -266,8 +265,7 @@ function handleYes(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function handleNo(){
-  document.getElementById('main-content').style.display='none';
+function handleNo(e){\n  if(e){e.preventDefault();e.stopPropagation();}\n  var now = Date.now();\n  if(now - lastTouchTime < 300) return;\n  lastTouchTime = now;\n  document.getElementById('main-content').style.display='none';
   document.getElementById('main-content2').style.display='none';
   document.getElementById('evidence-section').style.display='none';
   document.getElementById('riff-preview').style.display='none';

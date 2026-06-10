@@ -220,8 +220,8 @@
     <div class="divider"></div>
 
     <div class="buttons">
-      <button class="btn-accept" id="acceptBtn" onclick="handleAccept()" ontouchend="handleAccept()">I accept</button>
-      <button class="btn-decline" id="declineBtn" onclick="handleDecline()" ontouchend="handleDecline()">I must decline</button>
+      <button class="btn-accept" id="acceptBtn" onclick="handleAccept(event)" ontouchend="handleAccept(event)" style="-webkit-appearance:none;touch-action:manipulation;">I accept</button>
+      <button class="btn-decline" id="declineBtn" onclick="handleDecline(event)" ontouchend="handleDecline(event)" style="-webkit-appearance:none;touch-action:manipulation;">I must decline</button>
     </div>
 
     <div id="responseContainer"></div>
@@ -230,8 +230,7 @@
   <div class="footer">Riff · A Fleeting Moments Experience</div>
 
   <script>
-    let declineCount = 0;
-    const formalResponses = [
+    let declineCount = 0;\n    let lastTouchTime = 0;\n    const formalResponses = [
       'Noted.',
       'I see.',
       'Very well.',
@@ -260,9 +259,7 @@
       'Surely there is something we can discuss?'
     ];
 
-    function handleAccept() {
-      const container = document.getElementById('mainContainer');
-      container.classList.add('fade-out');
+    function handleAccept(e) {\n      if(e){e.preventDefault();e.stopPropagation();}\n      var now = Date.now();\n      if(now - lastTouchTime < 300) return;\n      lastTouchTime = now;\n      const container = document.getElementById('mainContainer');\n      container.classList.add('fade-out');
       
       setTimeout(() => {
         const buttons = document.querySelector('.buttons');
@@ -279,8 +276,7 @@
       }, 400);
     }
 
-    function handleDecline() {
-      declineCount++;
+    function handleDecline(e) {\n      if(e){e.preventDefault();e.stopPropagation();}\n      var now = Date.now();\n      if(now - lastTouchTime < 300) return;\n      lastTouchTime = now;\n      declineCount++;
       const declineBtn = document.getElementById('declineBtn');
       const acceptBtn = document.getElementById('acceptBtn');
       const responseContainer = document.getElementById('responseContainer');

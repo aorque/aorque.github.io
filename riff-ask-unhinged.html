@@ -296,8 +296,8 @@
     <div class="ask-screen">
       <h1>be my riff partner?</h1>
       <div class="button-group">
-        <button id="yes-btn">YES</button>
-        <button id="no-btn">no</button>
+        <button id="yes-btn" style="-webkit-appearance:none;touch-action:manipulation;">YES</button>
+        <button id="no-btn" style="-webkit-appearance:none;touch-action:manipulation;">no</button>
       </div>
       <div id="escape-counter" class="escape-counter"></div>
     </div>
@@ -437,10 +437,7 @@
 
       // Handle final escape
       if (escapeCount === maxEscapes) {
-        noBtn.textContent = 'ok. NICE. you got me. but also... nice 😏';
-        noBtn.style.opacity = '1';
-        noBtn.style.borderColor = var('--accent');
-        noBtn.style.color = 'var(--accent)';
+        noBtn.textContent = 'ok. NICE. you got me. but also... nice 😏';\n        noBtn.style.opacity = '1';\n        noBtn.style.borderColor = 'var(--accent)';\n        noBtn.style.color = 'var(--accent)';
         noBtn.addEventListener('mouseover', moveNoButton, false);
         
         // Disable further escapes
@@ -485,17 +482,7 @@
       }
     }
 
-    if (isMobile()) {
-      noBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        moveNoButton();
-      });
-    } else {
-      noBtn.addEventListener('mouseover', moveNoButton);
-      noBtn.addEventListener('click', moveNoButton);
-    }
-
-    yesBtn.addEventListener('click', () => {
+    var lastTouchTime = 0;\n    function debounceMove() {\n      var now = Date.now();\n      if (now - lastTouchTime < 300) return;\n      lastTouchTime = now;\n      moveNoButton();\n    }\n\n    if (isMobile()) {\n      noBtn.addEventListener('touchstart', (e) => {\n        e.preventDefault();\n        debounceMove();\n      });\n    } else {\n      noBtn.addEventListener('mouseover', debounceMove);\n      noBtn.addEventListener('click', debounceMove);\n    }\n\n    yesBtn.addEventListener('click', (e) => {\n      e.preventDefault();
       if (!yesBtn.classList.contains('giant')) {
         askScreen.style.display = 'none';
         confirmationScreen.classList.add('show');
