@@ -1,374 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Riff · An Invitation</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background-color: #f5f0e8;
-      color: #0d0c0a;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 480px;
-      width: 100%;
-      text-align: center;
-      opacity: 1;
-      transition: opacity 0.4s ease;
-    }
-
-    .container.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 3rem;
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      margin-bottom: 32px;
-      line-height: 1.1;
-    }
-
-    .subhead {
-      font-size: 1.1rem;
-      color: #8a7a6a;
-      margin-bottom: 48px;
-      line-height: 1.8;
-      max-width: 380px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .divider {
-      width: 60px;
-      height: 1px;
-      background: linear-gradient(to right, transparent, #c9a84c, transparent);
-      margin: 40px auto 40px;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 16px;
-      flex-direction: column;
-      margin-top: 48px;
-    }
-
-    button {
-      padding: 16px 32px;
-      font-size: 1rem;
-      font-family: 'Playfair Display', serif;
-      border: 1px solid #c9a84c;
-      background: transparent;
-      color: #0d0c0a;
-      cursor: pointer;
-      letter-spacing: 0.05em;
-      transition: all 0.3s ease;
-      position: relative;
-      text-transform: uppercase;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-    }
-
-    .btn-accept {
-      border: 2px solid #c9a84c;
-      background: transparent;
-      color: #0d0c0a;
-    }
-
-    .btn-accept:hover, .btn-accept:focus {
-      background: #c9a84c;
-      color: #f5f0e8;
-      box-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
-    }
-
-    .btn-accept:active {
-      transform: scale(0.98);
-    }
-
-    .btn-decline {
-      border: 1px solid #8a7a6a;
-      color: #8a7a6a;
-    }
-
-    .btn-decline:hover, .btn-decline:focus {
-      border-color: #0d0c0a;
-      color: #0d0c0a;
-      background: rgba(13, 12, 10, 0.03);
-    }
-
-    .btn-decline:active {
-      transform: scale(0.98);
-    }
-
-    .response-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 0.95rem;
-      color: #8a7a6a;
-      margin-top: 24px;
-      letter-spacing: 0.05em;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-
-    .response-text.show {
-      opacity: 1;
-    }
-
-    .footer {
-      position: fixed;
-      bottom: 20px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      font-size: 0.75rem;
-      color: #8a7a6a;
-      letter-spacing: 0.1em;
-    }
-
-    .elegant-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 0.95rem;
-      color: #8a7a6a;
-      margin-bottom: 16px;
-      letter-spacing: 0.05em;
-      opacity: 0;
-      animation: fadeInText 0.5s ease-out forwards;
-    }
-
-    @keyframes fadeInText {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-
-    .cracking-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 0.95rem;
-      color: #c9a84c;
-      margin-bottom: 16px;
-      letter-spacing: 0.05em;
-      opacity: 0;
-      animation: fadeInText 0.5s ease-out forwards;
-    }
-
-    .desperate-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 0.95rem;
-      color: #0d0c0a;
-      margin-bottom: 16px;
-      letter-spacing: 0.05em;
-      opacity: 0;
-      animation: fadeInText 0.5s ease-out forwards;
-      font-weight: 500;
-    }
-
-    .confetti {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      background: #c9a84c;
-      animation: confettiFall linear forwards;
-    }
-
-    @keyframes confettiFall {
-      to {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>an invitation.</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{font-family:'Cormorant Garamond',serif;background:#f7f4ee;color:#2b2b28;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+.card{max-width:480px;width:100%;background:#fffdf9;border:1px solid #e3ddd2;padding:64px 48px;text-align:center;box-shadow:0 20px 60px rgba(43,43,40,0.08);animation:reveal 1.2s ease-out;}
+@keyframes reveal{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.rule{width:48px;height:1px;background:#b8a888;margin:0 auto 28px;}
+h1{font-size:2.4rem;font-weight:400;font-style:italic;letter-spacing:0.02em;margin-bottom:24px;}
+.body-text{font-size:1.2rem;line-height:1.7;color:#4a4a44;margin-bottom:40px;}
+.button-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+button{font-family:'Montserrat',sans-serif;font-weight:400;font-size:0.82rem;letter-spacing:0.18em;text-transform:uppercase;padding:16px 30px;cursor:pointer;touch-action:manipulation;-webkit-appearance:none;-webkit-tap-highlight-color:transparent;user-select:none;transition:all 0.25s ease;border-radius:0;}
+button:active{transform:scale(0.97);}
+.btn-accept{background:#2b2b28;color:#f7f4ee;border:1px solid #2b2b28;}
+.btn-accept:hover{background:#b8a888;border-color:#b8a888;}
+.btn-decline{background:transparent;color:#8a8378;border:1px solid #d5cdbe;}
+.decline-note{font-family:'Montserrat',sans-serif;font-size:0.72rem;letter-spacing:0.08em;color:#b8a888;margin-top:22px;min-height:1.5em;font-style:normal;}
+.hidden{display:none !important;}
+#responseContainer h2{font-size:2.2rem;font-style:italic;font-weight:400;margin-bottom:18px;}
+#responseContainer p{font-size:1.15rem;line-height:1.7;color:#4a4a44;}
+.reset-btn{background:none;border:none;color:#b8a888;margin-top:36px;font-size:0.72rem;}
+.footer{position:fixed;bottom:16px;left:0;right:0;text-align:center;font-family:'Montserrat',sans-serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#b3ab9d;}
+@media(max-width:600px){.card{padding:48px 28px;}h1{font-size:2rem;}}
+</style>
 </head>
 <body>
-
-
-  <!-- Main Content -->
-  <div class="container" id="mainContainer">
-    <h1>an invitation.</h1>
-    <p class="subhead">I would like to take you to dinner. The app is called Riff. The conversation will be good.</p>
-    
-    <div class="divider"></div>
-
-    <div class="buttons">
-      <button class="btn-accept" id="acceptBtn" onclick="handleAccept(event)" ontouchend="handleAccept(event)" style="-webkit-appearance:none;touch-action:manipulation;">I accept</button>
-      <button class="btn-decline" id="declineBtn" onclick="handleDecline(event)" ontouchend="handleDecline(event)" style="-webkit-appearance:none;touch-action:manipulation;">I must decline</button>
-    </div>
-
-    <div id="responseContainer"></div>
+<div class="card" id="mainContainer">
+  <div class="rule"></div>
+  <h1>an invitation.</h1>
+  <p class="body-text">I would like to take you to dinner.<br>The app is called Riff.<br>The conversation will be good.</p>
+  <div class="button-row">
+    <button class="btn-accept" id="acceptBtn" type="button">I accept</button>
+    <button class="btn-decline" id="declineBtn" type="button">I must decline</button>
   </div>
+  <div class="decline-note" id="declineNote"></div>
+</div>
+<div class="card hidden" id="responseContainer">
+  <div class="rule"></div>
+  <h2>How wonderful.</h2>
+  <p>A reservation shall be made.<br>Details to follow shortly.</p>
+  <button class="reset-btn" id="backBtn" type="button">← return</button>
+</div>
+<div class="footer">Riff · A Fleeting Moments Experience</div>
 
-  <div class="footer">Riff · A Fleeting Moments Experience</div>
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var declines = 0;
+  var notes = ['Are you quite certain?','One does not simply decline.','The chef will be devastated.','We have already chilled the champagne.','Regrettably, declining is no longer on the menu.'];
 
-  <script>
-    let declineCount = 0;\n    let lastTouchTime = 0;\n    const formalResponses = [
-      'Noted.',
-      'I see.',
-      'Very well.',
-      'As you wish.',
-      'One reconsiders.',
-      'Curious.',
-      'Mmm.',
-      'Indeed.',
-      'Quite.'
-    ];
-    const curiousphrases = [
-      'One finds this... curious behavior.',
-      'Most unusual.',
-      'One begins to wonder.'
-    ];
-    const crackingPhrases = [
-      'One must confess this is... unexpected.',
-      'One had rather hoped for a different outcome.',
-      'One finds oneself... reconsidering.'
-    ];
-    const desperatePhrases = [
-      'One implores you to reconsider.',
-      'One has prepared a rather lovely evening.',
-      'The reservation has been made. The wine selected.',
-      'One is not above compromise.',
-      'Surely there is something we can discuss?'
-    ];
+  function onAccept(){
+    $('mainContainer').classList.add('hidden');
+    $('responseContainer').classList.remove('hidden');
+  }
 
-    function handleAccept(e) {\n      if(e){e.preventDefault();e.stopPropagation();}\n      var now = Date.now();\n      if(now - lastTouchTime < 300) return;\n      lastTouchTime = now;\n      const container = document.getElementById('mainContainer');\n      container.classList.add('fade-out');
-      
-      setTimeout(() => {
-        const buttons = document.querySelector('.buttons');
-        buttons.innerHTML = '';
-        
-        const heading = document.querySelector('h1');
-        heading.textContent = 'Wonderful.';
-        
-        const subhead = document.querySelector('.subhead');
-        subhead.textContent = "I'll be in touch.";
-        subhead.style.color = '#c9a84c';
-        
-        container.classList.remove('fade-out');
-      }, 400);
+  function onDecline(){
+    declines++;
+    var btn = $('declineBtn');
+    $('declineNote').textContent = notes[Math.min(declines-1, notes.length-1)];
+    btn.style.opacity = Math.max(1 - declines*0.22, 0.1);
+    btn.style.fontSize = Math.max(0.82 - declines*0.09, 0.4) + 'rem';
+    if (declines >= 5){
+      btn.classList.add('hidden');
+      $('declineNote').textContent = 'It appears "I accept" is the only remaining option.';
     }
+  }
 
-    function handleDecline(e) {\n      if(e){e.preventDefault();e.stopPropagation();}\n      var now = Date.now();\n      if(now - lastTouchTime < 300) return;\n      lastTouchTime = now;\n      declineCount++;
-      const declineBtn = document.getElementById('declineBtn');
-      const acceptBtn = document.getElementById('acceptBtn');
-      const responseContainer = document.getElementById('responseContainer');
-
-      // Click 1: Initial response
-      if (declineCount === 1) {
-        const response = document.createElement('p');
-        response.className = 'response-text show';
-        response.textContent = 'Noted.';
-        responseContainer.innerHTML = '';
-        responseContainer.appendChild(response);
-        declineBtn.style.transition = 'all 0.3s ease';
-        declineBtn.style.opacity = '0';
-        declineBtn.style.pointerEvents = 'none';
-        acceptBtn.style.opacity = '0';
-        acceptBtn.style.pointerEvents = 'none';
-      }
-      // Clicks 2-10: Button reappears smaller with formal responses
-      else if (declineCount <= 10) {
-        declineBtn.style.opacity = '1';
-        declineBtn.style.pointerEvents = 'auto';
-        acceptBtn.style.opacity = '0';
-        acceptBtn.style.pointerEvents = 'none';
-        
-        const fontSize = Math.max(0.7, 1 - ((declineCount - 2) * 0.08));
-        declineBtn.style.fontSize = fontSize + 'rem';
-        declineBtn.style.padding = (12 * fontSize) + 'px ' + (24 * fontSize) + 'px';
-        
-        const responseIdx = Math.min(declineCount - 2, formalResponses.length - 1);
-        const response = document.createElement('p');
-        response.className = 'response-text show';
-        response.textContent = formalResponses[responseIdx];
-        responseContainer.innerHTML = '';
-        responseContainer.appendChild(response);
-      }
-      // Clicks 11-25: Curious text appears above
-      else if (declineCount <= 25) {
-        declineBtn.style.opacity = '0.3';
-        declineBtn.style.pointerEvents = 'auto';
-        
-        const phraseIdx = (declineCount - 11) % curiousphrases.length;
-        const text = document.createElement('p');
-        text.className = 'elegant-text';
-        text.textContent = curiousphrases[phraseIdx];
-        responseContainer.appendChild(text);
-      }
-      // Clicks 26-45: Restraint cracks (color shift to gold)
-      else if (declineCount <= 45) {
-        const phraseIdx = (declineCount - 26) % crackingPhrases.length;
-        const text = document.createElement('p');
-        text.className = 'cracking-text';
-        text.textContent = crackingPhrases[phraseIdx];
-        responseContainer.appendChild(text);
-      }
-      // Clicks 46-60: Full desperation
-      else if (declineCount <= 60) {
-        const phraseIdx = (declineCount - 46) % desperatePhrases.length;
-        const text = document.createElement('p');
-        text.className = 'desperate-text';
-        text.textContent = desperatePhrases[phraseIdx];
-        responseContainer.appendChild(text);
-      }
-      // Clicks 61-68: Begging message
-      else if (declineCount < 69) {
-        const text = document.createElement('p');
-        text.className = 'desperate-text';
-        text.textContent = 'One is not above begging. There. One said it.';
-        if (responseContainer.children.length < 2) {
-          responseContainer.appendChild(text);
-        }
-      }
-      // Click 69: Full breakdown and gold confetti
-      else if (declineCount === 69) {
-        responseContainer.innerHTML = '';
-        
-        const heading = document.querySelector('h1');
-        heading.textContent = 'ok FINE. nice. 😏';
-        heading.style.color = '#c9a84c';
-        
-        const subhead = document.querySelector('.subhead');
-        subhead.textContent = "let's go.";
-        subhead.style.color = '#c9a84c';
-        
-        declineBtn.style.display = 'none';
-        acceptBtn.style.display = 'none';
-        
-        // Gold confetti
-        for (let i = 0; i < 30; i++) {
-          const confetti = document.createElement('div');
-          confetti.className = 'confetti';
-          confetti.style.left = Math.random() * window.innerWidth + 'px';
-          confetti.style.top = '-10px';
-          confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
-          confetti.style.animationDelay = (Math.random() * 0.5) + 's';
-          document.body.appendChild(confetti);
-        }
-        
-        // Trigger YES screen after a moment
-        setTimeout(() => {
-          handleAccept();
-        }, 1500);
-      }
-    }
-  </script>
+  $('acceptBtn').addEventListener('click', onAccept);
+  $('declineBtn').addEventListener('click', onDecline);
+  $('backBtn').addEventListener('click', function(){ location.reload(); });
+})();
+</script>
 </body>
 </html>

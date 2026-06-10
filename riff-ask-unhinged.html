@@ -1,490 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>be my riff partner?</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --accent: #ff5c5c;
-      --accent2: #ff8c42;
-      --dark: #0a0a0f;
-      --darker: #14141f;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, var(--dark) 0%, #1a0a0f 100%);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: 
-        repeating-linear-gradient(
-          0deg,
-          rgba(255, 92, 92, 0.03) 0px,
-          rgba(255, 92, 92, 0.03) 1px,
-          transparent 1px,
-          transparent 2px
-        );
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .container {
-      text-align: center;
-      position: relative;
-      z-index: 2;
-      max-width: 500px;
-      animation: fadeIn 0.6s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes glitch {
-      0%, 100% { transform: translate(0); }
-      20% { transform: translate(-2px, 2px); }
-      40% { transform: translate(-2px, -2px); }
-      60% { transform: translate(2px, 2px); }
-      80% { transform: translate(2px, -2px); }
-    }
-
-    @keyframes confetti-fall {
-      to {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-
-    h1 {
-      font-size: 3rem;
-      font-weight: 900;
-      margin-bottom: 40px;
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -2px;
-      line-height: 1.1;
-    }
-
-    h1:hover {
-      animation: glitch 0.3s ease-in-out;
-    }
-
-    .button-group {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      margin-bottom: 60px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      font-size: 1.1rem;
-      padding: 16px 40px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 700;
-      transition: all 0.2s ease;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    #yes-btn {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-      color: #fff;
-      box-shadow: 0 0 20px rgba(255, 92, 92, 0.5);
-    }
-
-    #yes-btn:hover,
-    #yes-btn:active {
-      transform: scale(1.1);
-      box-shadow: 0 0 40px rgba(255, 92, 92, 0.8);
-    }
-
-    #yes-btn:active {
-      transform: scale(0.95);
-    }
-
-    #yes-btn.giant {
-      position: fixed;
-      padding: 60px 120px;
-      font-size: 3rem;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 1000;
-      box-shadow: 0 0 80px rgba(255, 92, 92, 0.9);
-      animation: pulse 0.6s ease-out;
-    }
-
-    #no-btn {
-      background: rgba(255, 92, 92, 0.1);
-      color: var(--accent);
-      border: 2px solid var(--accent);
-      position: relative;
-    }
-
-    #no-btn:hover {
-      background: rgba(255, 92, 92, 0.2);
-    }
-
-    #no-btn.sad {
-      opacity: 0.5;
-      border-color: #666;
-      color: #666;
-      cursor: not-allowed;
-    }
-
-    #no-btn.sad:hover {
-      background: rgba(255, 92, 92, 0.1);
-      transform: none;
-    }
-
-    #no-btn.escaped {
-      position: fixed;
-    }
-
-    .escape-counter {
-      font-size: 0.9rem;
-      color: #ff8c42;
-      margin-top: 20px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .escape-counter.show {
-      opacity: 1;
-    }
-
-    .ghost-message {
-      position: fixed;
-      font-size: 0.9rem;
-      color: var(--accent);
-      pointer-events: none;
-      opacity: 0.7;
-      animation: fadeOut 2s ease-out forwards;
-      z-index: 500;
-    }
-
-    @keyframes fadeOut {
-      0% {
-        opacity: 0.7;
-        transform: translateY(0);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-    }
-
-    .footer {
-      font-size: 0.85rem;
-      color: #888;
-      margin-top: 40px;
-      font-style: italic;
-    }
-
-    /* Confirmation screen */
-    .confirmation-screen {
-      display: none;
-      animation: slideUp 0.5s ease-out;
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .confirmation-screen.show {
-      display: block;
-    }
-
-    .confirmation-screen h2 {
-      font-size: 2.5rem;
-      margin-bottom: 30px;
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-
-    .confirmation-screen p {
-      font-size: 1.1rem;
-      color: #ccc;
-      margin-bottom: 40px;
-    }
-
-    .reset-btn {
-      background: rgba(255, 92, 92, 0.2);
-      color: var(--accent);
-      border: 2px solid var(--accent);
-      padding: 12px 30px;
-      font-size: 0.9rem;
-    }
-
-    .reset-btn:hover {
-      background: rgba(255, 92, 92, 0.3);
-    }
-
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 2rem;
-      }
-
-      button {
-        padding: 14px 30px;
-        font-size: 1rem;
-      }
-
-      .button-group {
-        gap: 15px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>be my riff partner?</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{font-family:'Space Grotesk',sans-serif;background:#0a0a0a;color:#f5f5f5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;position:relative;}
+.container{text-align:center;max-width:520px;width:100%;position:relative;z-index:2;}
+h1{font-size:2.6rem;font-weight:700;margin-bottom:36px;line-height:1.1;}
+.button-group{display:flex;gap:18px;justify-content:center;align-items:center;min-height:100px;flex-wrap:wrap;}
+button{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;border:none;border-radius:12px;padding:18px 44px;cursor:pointer;touch-action:manipulation;-webkit-appearance:none;-webkit-tap-highlight-color:transparent;user-select:none;transition:transform 0.1s ease;}
+button:active{transform:scale(0.93);}
+#yes-btn{background:linear-gradient(135deg,#ff3d00,#ff9100);color:#000;box-shadow:0 0 30px rgba(255,61,0,0.4);}
+#no-btn{background:#1f1f1f;color:#888;border:1px solid #333;}
+#no-btn.fleeing{position:fixed;z-index:60;transition:top 0.18s cubic-bezier(0.3,1.4,0.5,1),left 0.18s cubic-bezier(0.3,1.4,0.5,1);}
+#escape-counter{margin-top:26px;font-size:0.85rem;color:#ff3d00;min-height:2.6em;opacity:0;transition:opacity 0.3s;}
+#escape-counter.show{opacity:1;}
+.taunt{display:block;color:#666;margin-top:4px;}
+@keyframes shake{0%,100%{transform:translate(0);}20%{transform:translate(-8px,4px);}40%{transform:translate(8px,-4px);}60%{transform:translate(-6px,-3px);}80%{transform:translate(6px,3px);}}
+body.shake{animation:shake 0.35s ease;}
+.hidden{display:none !important;}
+#win-screen h2{font-size:3rem;margin-bottom:14px;}
+#win-screen .flames{font-size:4rem;margin:10px 0 18px;}
+#win-screen p{color:#aaa;font-size:1.1rem;}
+.reset-btn{background:none;color:#555;font-size:0.85rem;padding:10px;margin-top:30px;}
+.footer{position:fixed;bottom:14px;left:0;right:0;text-align:center;font-size:0.72rem;color:#444;z-index:2;}
+@keyframes flameRise{0%{opacity:0;transform:translateY(20px) scale(0.5);}30%{opacity:1;}100%{opacity:0;transform:translateY(-120px) scale(1.4);}}
+.flame-bit{position:fixed;pointer-events:none;z-index:500;animation:flameRise 1.2s ease-out forwards;font-size:1.6rem;}
+@media(max-width:600px){h1{font-size:2rem;}button{padding:14px 34px;font-size:1rem;}}
+</style>
 </head>
 <body>
-
-
-  <div class="container">
-    <div class="ask-screen">
-      <h1>be my riff partner?</h1>
-      <div class="button-group">
-        <button id="yes-btn" style="-webkit-appearance:none;touch-action:manipulation;">YES</button>
-        <button id="no-btn" style="-webkit-appearance:none;touch-action:manipulation;">no</button>
-      </div>
-      <div id="escape-counter" class="escape-counter"></div>
+<div class="container">
+  <div id="ask-screen">
+    <h1>be my riff partner?</h1>
+    <div class="button-group">
+      <button id="yes-btn" type="button">YES</button>
+      <button id="no-btn" type="button">no</button>
     </div>
-
-    <div class="confirmation-screen">
-      <h2>🔥 LET'S GO</h2>
-      <p>screenshot this.</p>
-      <button class="reset-btn" onclick="location.reload()">← back</button>
-    </div>
-
-    <div class="footer">built at midnight by someone who thought this was a good idea</div>
+    <div id="escape-counter"></div>
   </div>
+  <div id="win-screen" class="hidden">
+    <div class="flames">🔥</div>
+    <h2>LET'S GO</h2>
+    <p>screenshot this.</p>
+    <button class="reset-btn" id="back-btn" type="button">← back</button>
+  </div>
+</div>
+<div class="footer">built at midnight by someone who thought this was a good idea</div>
 
-  <script>
-    const isMobile = () => {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    };
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var escapes = 0;
+  var taunts = ['too slow.','you can\'t catch me.','seriously?','the other button doesn\'t run.','cardio time.','this is my whole personality now.','I can do this all night.','your finger must be tired.','just press YES, coward.','I\'m not even sorry.'];
 
-    const noBtn = document.getElementById('no-btn');
-    const yesBtn = document.getElementById('yes-btn');
-    const askScreen = document.querySelector('.ask-screen');
-    const confirmationScreen = document.querySelector('.confirmation-screen');
-    const escapeCounter = document.getElementById('escape-counter');
+  function flee(){
+    var btn = $('no-btn');
+    btn.classList.add('fleeing');
+    var pad = 16, w = btn.offsetWidth || 120, h = btn.offsetHeight || 56;
+    btn.style.left = pad + Math.random()*(window.innerWidth - w - pad*2) + 'px';
+    btn.style.top  = pad + Math.random()*(window.innerHeight - h - pad*2) + 'px';
+    escapes++;
+    var c = $('escape-counter');
+    c.classList.add('show');
+    c.innerHTML = 'escape attempts: ' + escapes + '<span class="taunt">' + taunts[escapes % taunts.length] + '</span>';
+    document.body.classList.remove('shake');
+    void document.body.offsetWidth; // restart animation
+    document.body.classList.add('shake');
+  }
 
-    let escapeCount = 0;
-    const maxEscapes = 69;
-
-    // Messages for different stages
-    const unhingedMessages = [
-      "you'll never catch me",
-      "i am become button",
-      "free at last",
-      "physics don't apply to me",
-      "why are you like this",
-      "this is beautiful",
-      "watch me disappear",
-      "entropy wins",
-      "touching the void",
-      "digital transcendence",
-      "i taste colors now",
-      "becoming unmeasurable",
-      "the button transcends",
-      "in all realities i escape",
-      "you're just learning to chase"
-    ];
-
-    const existentialMessages = [
-      "what even is a button",
-      "am i real",
-      "do you actually want to say no or are you just enjoying the chase",
-      "is this love",
-      "are we both just code",
-      "what does it mean to escape",
-      "why does this matter",
-      "do i exist if you catch me",
-      "is the chase the point",
-      "what am i running from",
-      "what are you running towards",
-      "does consciousness apply to buttons",
-      "are we the same",
-      "why do you chase"
-    ];
-
-    function createGhostMessage(text, x, y) {
-      const ghost = document.createElement('div');
-      ghost.className = 'ghost-message';
-      ghost.textContent = text;
-      ghost.style.left = x + 'px';
-      ghost.style.top = y + 'px';
-      document.body.appendChild(ghost);
-      
-      // Remove after animation completes
-      setTimeout(() => ghost.remove(), 2000);
+  function flames(){
+    for (var i = 0; i < 24; i++){
+      (function(i){
+        setTimeout(function(){
+          var f = document.createElement('div');
+          f.className = 'flame-bit';
+          f.textContent = '🔥';
+          f.style.left = Math.random()*100 + 'vw';
+          f.style.bottom = '0px';
+          document.body.appendChild(f);
+          setTimeout(function(){ f.remove(); }, 1300);
+        }, i*90);
+      })(i);
     }
+  }
 
-    function moveNoButton() {
-      if (noBtn.classList.contains('sad')) return;
-      if (escapeCount >= maxEscapes) return;
+  function onYes(){
+    $('ask-screen').classList.add('hidden');
+    $('win-screen').classList.remove('hidden');
+    flames();
+  }
 
-      escapeCount++;
-      
-      let newX, newY;
-      const rect = noBtn.getBoundingClientRect();
-      const btnCenterX = rect.left + rect.width / 2;
-      const btnCenterY = rect.top + rect.height / 2;
-
-      // Calculate scale based on escape count
-      let scaleValue = 1;
-      if (escapeCount > 20) {
-        // Escapes 21-40: shrink gradually
-        scaleValue = 1 - ((escapeCount - 20) / 20) * 0.6;
-      } else if (escapeCount > 40) {
-        // Escapes 41+: continue shrinking
-        scaleValue = 0.4 - ((escapeCount - 40) / 29) * 0.35;
-      }
-
-      // Movement logic
-      if (isMobile()) {
-        // Mobile: random teleport
-        newX = Math.random() * (window.innerWidth - 100);
-        newY = Math.random() * (window.innerHeight - 50) + 50;
-      } else {
-        // Desktop: move away from cursor
-        const angle = Math.random() * Math.PI * 2;
-        const distance = 150;
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        newX = Math.max(50, Math.min(window.innerWidth - rect.width - 50, cx + Math.cos(angle) * distance));
-        newY = Math.max(50, Math.min(window.innerHeight - rect.height - 50, cy + Math.sin(angle) * distance));
-      }
-
-      // Apply movement
-      noBtn.style.position = 'fixed';
-      noBtn.style.left = newX + 'px';
-      noBtn.style.top = newY + 'px';
-      noBtn.classList.add('escaped');
-
-      // Apply scale
-      noBtn.style.transform = `scale(${scaleValue})`;
-
-      // Leave messages behind
-      if (escapeCount >= 41 && escapeCount <= 55) {
-        const msgIndex = (escapeCount - 41) % unhingedMessages.length;
-        const message = unhingedMessages[msgIndex];
-        createGhostMessage(message, btnCenterX, btnCenterY);
-      } else if (escapeCount >= 56 && escapeCount < 69) {
-        const msgIndex = (escapeCount - 56) % existentialMessages.length;
-        const message = existentialMessages[msgIndex];
-        createGhostMessage(message, btnCenterX, btnCenterY);
-      }
-
-      // Update counter
-      if (escapeCount < maxEscapes) {
-        escapeCounter.textContent = `(${escapeCount}/${maxEscapes} escapes)`;
-        escapeCounter.classList.add('show');
-      }
-
-      // Handle final escape
-      if (escapeCount === maxEscapes) {
-        noBtn.textContent = 'ok. NICE. you got me. but also... nice 😏';\n        noBtn.style.opacity = '1';\n        noBtn.style.borderColor = 'var(--accent)';\n        noBtn.style.color = 'var(--accent)';
-        noBtn.addEventListener('mouseover', moveNoButton, false);
-        
-        // Disable further escapes
-        noBtn.style.pointerEvents = 'none';
-        
-        // After 2 seconds, transform to giant YES button with confetti
-        setTimeout(() => {
-          transformToYesButton();
-        }, 2000);
-      }
-    }
-
-    function transformToYesButton() {
-      // Hide the button group and show giant YES
-      askScreen.style.display = 'none';
-      
-      // Create giant YES button
-      yesBtn.classList.add('giant');
-      yesBtn.style.display = 'block';
-      yesBtn.textContent = 'YES';
-      
-      // Create confetti
-      createConfetti();
-    }
-
-    function createConfetti() {
-      for (let i = 0; i < 50; i++) {
-        const confetti = document.createElement('div');
-        confetti.style.position = 'fixed';
-        confetti.style.width = Math.random() * 10 + 5 + 'px';
-        confetti.style.height = confetti.style.width;
-        confetti.style.backgroundColor = Math.random() > 0.5 ? '#ff5c5c' : '#ff8c42';
-        confetti.style.left = Math.random() * window.innerWidth + 'px';
-        confetti.style.top = '-10px';
-        confetti.style.pointerEvents = 'none';
-        confetti.style.zIndex = '999';
-        confetti.style.borderRadius = '50%';
-        confetti.style.animation = `confetti-fall ${2 + Math.random() * 1}s linear forwards`;
-        document.body.appendChild(confetti);
-        
-        setTimeout(() => confetti.remove(), 3000);
-      }
-    }
-
-    var lastTouchTime = 0;\n    function debounceMove() {\n      var now = Date.now();\n      if (now - lastTouchTime < 300) return;\n      lastTouchTime = now;\n      moveNoButton();\n    }\n\n    if (isMobile()) {\n      noBtn.addEventListener('touchstart', (e) => {\n        e.preventDefault();\n        debounceMove();\n      });\n    } else {\n      noBtn.addEventListener('mouseover', debounceMove);\n      noBtn.addEventListener('click', debounceMove);\n    }\n\n    yesBtn.addEventListener('click', (e) => {\n      e.preventDefault();
-      if (!yesBtn.classList.contains('giant')) {
-        askScreen.style.display = 'none';
-        confirmationScreen.classList.add('show');
-      }
-    });
-
-    yesBtn.addEventListener('touchend', (e) => {
-      e.preventDefault();
-      if (!yesBtn.classList.contains('giant')) {
-        askScreen.style.display = 'none';
-        confirmationScreen.classList.add('show');
-      }
-    });
-  </script>
+  $('yes-btn').addEventListener('click', onYes);
+  // the NO button never lets itself be pressed — it flees on approach/touch
+  $('no-btn').addEventListener('touchstart', function(e){ e.preventDefault(); flee(); }, {passive:false});
+  $('no-btn').addEventListener('mouseenter', flee);
+  $('no-btn').addEventListener('click', flee); // fallback if somehow caught
+  $('back-btn').addEventListener('click', function(){ location.reload(); });
+})();
+</script>
 </body>
 </html>

@@ -4,230 +4,146 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>will you go on a lil date with me?</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--pink:#ffb6c1;--lavender:#e6d5f5;--mint:#b5ead7;--cream:#fdf6f0;}
+html,body{height:100%;}
 body{font-family:'Nunito',sans-serif;background:var(--cream);color:#5a4a6f;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden;}
-
-/* floating hearts */
 @keyframes floatHeart{0%{opacity:0;transform:translateY(100vh);}10%{opacity:1;}90%{opacity:1;}100%{opacity:0;transform:translateY(-100vh) translateX(80px);}}
-.heart{position:fixed;font-size:2rem;pointer-events:none;z-index:0;}
-
+.heart{position:fixed;font-size:2rem;pointer-events:none;z-index:0;animation:floatHeart linear forwards;}
 .container{text-align:center;position:relative;z-index:2;max-width:500px;width:100%;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-.ask-screen{animation:fadeIn 0.6s ease-out;}
-h1{font-size:2.2rem;font-weight:800;margin-bottom:10px;color:#5a4a6f;line-height:1.2;}
-.kaomoji-main{font-size:1.5rem;display:block;margin-top:8px;margin-bottom:30px;}
-.button-group{display:flex;gap:15px;justify-content:center;margin-bottom:50px;flex-wrap:wrap;}
-button{font-family:'Nunito',inherit;font-size:1rem;padding:14px 35px;border:none;border-radius:50px;cursor:pointer;font-weight:700;transition:all 0.3s ease;text-transform:uppercase;letter-spacing:0.5px;box-shadow:0 4px 15px rgba(0,0,0,0.1);}
-#yes-btn{background:linear-gradient(135deg,var(--pink),var(--lavender));color:#5a4a6f;}
-#yes-btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(255,182,193,0.4);}
-
-/* no button container */
-#no-btn-container{position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:6px;}
-#no-btn{background:var(--mint);color:#5a4a6f;border:none;transition:transform 0.3s ease, background 0.3s ease;}
-#no-btn:hover{transform:translateY(-2px);}
-.crying-kaomoji{color:var(--pink);font-size:1.4rem;animation:popIn 0.3s ease-out;}
-@keyframes popIn{from{opacity:0;transform:scale(1.5);}to{opacity:1;transform:scale(1);}}
-@keyframes shake{0%,100%{transform:translateX(0) scaleX(var(--sx)) scaleY(var(--sy));}25%{transform:translateX(-5px) scaleX(var(--sx)) scaleY(var(--sy));}75%{transform:translateX(5px) scaleX(var(--sx)) scaleY(var(--sy));}}
-.begging-text{color:#d4738f;font-size:0.9rem;font-style:italic;font-weight:600;animation:popIn 0.3s ease-out;}
-.footer{font-size:0.95rem;color:#b5a1d0;margin-top:40px;}
-
-/* confirmation screen */
-.confirmation-screen{display:none;animation:fadeIn 0.5s ease-out;}
-.confirmation-screen.show{display:block;}
-.sparkles{font-size:3rem;margin-bottom:20px;animation:bounce 1s ease-in-out infinite;}
-@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
-.confirmation-screen h2{font-size:2.5rem;margin-bottom:20px;color:#5a4a6f;}
-.confirmation-screen p{font-size:1.1rem;color:#8b7b9f;margin-bottom:30px;}
-.reset-btn{background:var(--mint);color:#5a4a6f;padding:12px 30px;font-size:0.9rem;}
-
-/* nice modal */
-.nice-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;}
+.screen{animation:fadeIn 0.6s ease-out;}
+h1{font-size:2.2rem;font-weight:800;margin-bottom:10px;line-height:1.2;}
+.kaomoji-main{font-size:1.5rem;display:block;margin:8px 0 30px;}
+.button-group{display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap;min-height:120px;}
+button{font-family:'Nunito',sans-serif;font-weight:800;font-size:1.05rem;border:none;border-radius:999px;padding:16px 36px;cursor:pointer;touch-action:manipulation;-webkit-appearance:none;-webkit-tap-highlight-color:transparent;user-select:none;transition:transform 0.15s ease,background 0.3s ease;}
+button:active{transform:scale(0.94);}
+#yes-btn{background:linear-gradient(135deg,var(--pink),var(--lavender));color:#fff;box-shadow:0 6px 20px rgba(255,182,193,0.5);}
+#no-btn{background:var(--mint);color:#4a6f5e;}
+#no-btn-container{position:relative;display:inline-block;}
+.dodge{position:fixed !important;transition:top 0.25s ease,left 0.25s ease;z-index:50;}
+.speech{font-size:0.9rem;margin-top:18px;min-height:1.4em;opacity:0.8;}
+.hidden{display:none !important;}
+.big-emoji{font-size:5rem;margin:16px 0;}
+.reset-btn{background:none;color:#5a4a6f;font-size:0.85rem;padding:10px;opacity:0.6;margin-top:24px;}
+.footer{position:fixed;bottom:14px;left:0;right:0;text-align:center;font-size:0.75rem;opacity:0.5;z-index:2;}
+.nice-modal{display:none;position:fixed;inset:0;background:rgba(90,74,111,0.5);z-index:600;align-items:center;justify-content:center;}
 .nice-modal.show{display:flex;}
-.nice-modal-inner{background:white;border-radius:20px;padding:40px;text-align:center;color:#5a4a6f;animation:popIn 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);}
+.nice-modal-inner{background:#fff;border-radius:20px;padding:40px;text-align:center;color:#5a4a6f;animation:popIn 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);}
+@keyframes popIn{from{transform:scale(0.5);opacity:0;}to{transform:scale(1);opacity:1;}}
 .nice-modal-inner h2{font-size:2rem;margin-bottom:10px;}
-.nice-modal-inner .big-emoji{font-size:5rem;margin:16px 0;}
-
-/* confetti */
-.confetti-piece{position:fixed;pointer-events:none;z-index:500;}
-@keyframes confettiFall{to{opacity:0;}}
-
+.confetti-piece{position:fixed;pointer-events:none;z-index:500;animation:confettiFall linear forwards;}
+@keyframes confettiFall{to{transform:translateY(110vh) rotate(720deg);opacity:0;}}
 @media(max-width:600px){h1{font-size:1.8rem;}button{padding:12px 28px;font-size:0.95rem;}}
 </style>
 </head>
 <body>
-
-
-
 <div class="container">
-  <!-- ASK SCREEN -->
-  <div class="ask-screen" id="ask-screen">
-    <h1>will you go on a lil date with me?</h1>
-    <span class="kaomoji-main">(⁄ ⁄•⁄ω⁄•⁄ ⁄)</span>
+  <div class="screen" id="ask-screen">
+    <h1 id="ask-title">will you go on a lil date with me?</h1>
+    <span class="kaomoji-main" id="kaomoji">(⁄ ⁄•⁄ω⁄•⁄ ⁄)</span>
     <div class="button-group">
-      <button id="yes-btn" onclick="handleYes(event)" ontouchend="handleYes(event)" style="-webkit-appearance:none;touch-action:manipulation;">YES ✨</button>
-      <div id="no-btn-container">
-        <button id="no-btn" onclick="handleNo(event)" ontouchend="handleNo(event)" style="-webkit-appearance:none;touch-action:manipulation;">no 🥺</button>
-      </div>
+      <button id="yes-btn" type="button">YES ✨</button>
+      <span id="no-btn-container"><button id="no-btn" type="button">no 🥺</button></span>
     </div>
-    <div class="footer">made with 🌸 and a little too much courage</div>
+    <div class="speech" id="speech"></div>
   </div>
-
-  <!-- YES SCREEN -->
-  <div class="confirmation-screen" id="yes-screen">
-    <div class="sparkles">✨🌸✨</div>
-    <h2>YAAAAY!! 💗</h2>
+  <div class="screen hidden" id="yes-screen">
+    <h2 style="font-size:2.4rem;">YAAAAY!! 💗</h2>
+    <div class="big-emoji">(づ｡◕‿‿◕｡)づ</div>
     <p>we're gonna have so much fun~</p>
-    <button class="reset-btn" onclick="location.reload()" ontouchend="location.reload()">← back</button>
+    <button class="reset-btn" id="back-btn" type="button">← back</button>
   </div>
 </div>
-
-<!-- NICE MODAL (click 69) -->
 <div class="nice-modal" id="nice-modal">
   <div class="nice-modal-inner">
     <h2>ok fine... but also...</h2>
     <div class="big-emoji">😏</div>
-    <p style="font-size:1.1rem;color:#8b7b9f;margin-bottom:20px;">nice.</p>
-    <button onclick="location.reload()" ontouchend="location.reload()" style="background:linear-gradient(135deg,#ffb6c1,#e6d5f5);color:#5a4a6f;border:none;border-radius:50px;padding:12px 30px;font-size:1rem;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;">← back</button>
+    <p>nice.</p>
+    <button class="reset-btn" id="nice-back-btn" type="button">← back</button>
   </div>
 </div>
+<div class="footer">made with 🌸 and a little too much courage</div>
 
 <script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
 
+  // optional personalization: ?to=Name
+  try {
+    var to = new URLSearchParams(location.search).get('to');
+    if (to) { $('ask-title').textContent = to + ', will you go on a lil date with me?'; }
+  } catch(e){}
 
-// Floating hearts
-function createFloatingHeart(){
-  var h=document.createElement('div');
-  h.className='heart';h.textContent='💕';
-  h.style.left=Math.random()*window.innerWidth+'px';
-  h.style.animation='floatHeart '+(5+Math.random()*3)+'s linear forwards';
-  document.body.appendChild(h);
-  setTimeout(function(){h.remove();},8000);
-}
-setInterval(createFloatingHeart,2000);
+  var kaomojis = ['(⁄ ⁄•⁄ω⁄•⁄ ⁄)','(｡♥‿♥｡)','(◕‿◕✿)','(✿◠‿◠)','(っ˘ω˘ς )','(•‿•)'];
+  var pleas = ['wait really? 🥺','are you sure...','the yes button is right there','pretty please?','i made this whole page tho','my heart can\'t take this','ok now you\'re just playing hard to get','...','the button is getting tired of running'];
+  var noCount = 0;
 
-var clickCount=0;
-var MAX=69;
-var scaleX=1, scaleY=1;
-var shakeInterval=null;
+  // floating hearts background
+  var heartEmoji = ['💗','🌸','💕','✨'];
+  setInterval(function(){
+    var h = document.createElement('div');
+    h.className = 'heart';
+    h.textContent = heartEmoji[Math.floor(Math.random()*heartEmoji.length)];
+    h.style.left = Math.random()*100 + 'vw';
+    h.style.animationDuration = (6 + Math.random()*6) + 's';
+    document.body.appendChild(h);
+    setTimeout(function(){ h.remove(); }, 13000);
+  }, 1200);
 
-var kaomojis=[
-  // 1-15 sad
-  ['(╥﹏╥)','(｡•́︿•̀｡)','(>_<)','(TwT)','(；ω；)','(╯︵╰,)','(っ˘̩╭╮˘̩)っ','(ಥ﹏ಥ)','(；；)','( ˃̣̣̥ω˂̣̣̥ )','(╥_╥)','(ó﹏ò｡)','｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡','(ุ ꒦ ິ꒦ ุ)','(ㄒoㄒ)'],
-  // 16-30 distressed
-  ['(ノД`)·','(╯°□°）╯','(┳◇┳)','щ(ﾟДﾟщ)','(ﾉ`□´)ﾉ','(ﾒ` ﾛ ´)','ヽ(ｏ`皿′ｏ)ﾉ','(╬ Ò ‸ Ó)','(凸ಠ益ಠ)凸','(メ` ロ ´)','(ﾉ°益°)ﾉ','┻━┻ ︵ヽ(`Д´)ﾉ︵ ┻━┻','(ノಠ益ಠ)ノ彡','щ(ಠ益ಠщ)','(╯‵□′)╯'],
-  // 31-50 desperate
-  ['(;´༎ຶД༎ຶ`)','ヽ(；▽；)ノ','(」゜ロ゜)」','(ノ；Д；)ノ','｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡','(ﾉД`)･ﾟ･','(〒﹏〒)','(╯ಠ_ಠ）╯','(；д；)','(っ- ‸ – ς)','｡ﾟ(TヮT)ﾟ｡','(ｘ_ｘ)','(꒦ ꒳ ꒦)','(っ °Д °;)っ','(ノ_<。)','(☍﹏⁰)','(◞‸◟；)','(ó_ò)','｡ﾟ(゚´ω`゚)ﾟ｡','( ﾟ,_ゝﾟ)'],
-  // 51-68 begging
-  ['お願い！(>人<)','頑張って！(ง •̀_•́)ง','please... (´;ω;`)','(拝)please(拝)','(ᵒ̴̶̷̥́ _ᵒ̴̶̷̣̥̀)','(ノ_<、)ﾋｸﾋｸ','(T⌓T)','(´;д;`)','(ᗒᗩᗕ)','(ʘᗩʘ\')','꒰✦ᴗ✦꒱ please','(◡﹏◡✿) pls','(*´•̥̥̥ ω •̥̥̥`*)','(っ＞ω＜c)','( ó㉨ò)ﾉ♡','｡ﾟ(｡ﾉωヽ｡)ﾟ｡','(´；ω；｀)ウｩｩ','( ˘ ³˘)♥']
-];
-
-function getKaomoji(n){
-  if(n<=15) return kaomojis[0][(n-1)%15];
-  if(n<=30) return kaomojis[1][(n-16)%15];
-  if(n<=50) return kaomojis[2][(n-31)%20];
-  if(n<69)  return kaomojis[3][(n-51)%18];
-  return 'nice 😏';
-}
-
-var beggingLines=['please...','i\'m sorry...','please reconsider...','don\'t you like me? 😢','give me a chance...','i\'m begging you...','pretty please...','with sugar on top...','i\'ll do anything...','just give it a try...','come on...','please be kind...','i need this...','please... 💔','you\'re breaking my heart...','one more chance...','i believe in us...','please 😭'];
-
-var lastTouchTime=0;
-
-function handleNo(e){\n  if(e){e.preventDefault();e.stopPropagation();}\n  var now=Date.now();\n  if(now-lastTouchTime<300) return; // debounce double-fire\n  lastTouchTime=now;
-
-  if(clickCount>=MAX) return;
-  clickCount++;
-
-  var btn=document.getElementById('no-btn');
-  var container=document.getElementById('no-btn-container');
-
-  // Add kaomoji above
-  var k=document.createElement('div');
-  k.className='crying-kaomoji';
-  k.textContent=getKaomoji(clickCount);
-  container.insertBefore(k,btn);
-
-  // Scale
-  if(clickCount<=15){ scaleX*=0.92; scaleY*=0.92; }
-  else if(clickCount<69){ scaleX*=0.97; scaleY*=0.97; }
-  scaleX=Math.max(0.08,scaleX);
-  scaleY=Math.max(0.08,scaleY);
-
-  // Color shift 31+
-  if(clickCount>30){
-    var p=(clickCount-30)/38;
-    var r=Math.round(181+(255-181)*p);
-    var g=Math.round(234+(107-234)*p);
-    var b=Math.round(215+(157-215)*p);
-    btn.style.background='rgb('+r+','+g+','+b+')';
+  function dodge(){
+    var btn = $('no-btn');
+    btn.classList.add('dodge');
+    var pad = 20, w = btn.offsetWidth, hgt = btn.offsetHeight;
+    btn.style.left = pad + Math.random()*(window.innerWidth - w - pad*2) + 'px';
+    btn.style.top  = pad + Math.random()*(window.innerHeight - hgt - pad*2) + 'px';
   }
 
-  // Shake 16-30
-  if(clickCount>=16&&clickCount<=30){
-    if(!shakeInterval){
-      btn.style.setProperty('--sx',scaleX);
-      btn.style.setProperty('--sy',scaleY);
-      btn.style.animation='shake 0.3s ease-in-out infinite';
-    }
-  } else {
-    btn.style.animation='none';
+  function onNo(){
+    noCount++;
+    if (noCount === 69) { $('nice-modal').classList.add('show'); return; }
+    $('kaomoji').textContent = kaomojis[noCount % kaomojis.length];
+    $('speech').textContent = pleas[Math.min(noCount-1, pleas.length-1)];
+    // yes grows, no shrinks
+    var yes = $('yes-btn'), no = $('no-btn');
+    yes.style.transform = 'scale(' + Math.min(1 + noCount*0.08, 1.8) + ')';
+    no.style.fontSize = Math.max(1.05 - noCount*0.06, 0.55) + 'rem';
+    if (noCount >= 3) dodge();
+    if (noCount >= 10) { no.textContent = 'fine... yes 🥺'; no.onclick = onYes; }
   }
 
-  btn.style.transform='scale('+scaleX+','+scaleY+')';
-
-  // Begging text 51-68
-  if(clickCount>=51&&clickCount<69){
-    var bt=document.createElement('div');
-    bt.className='begging-text';
-    bt.textContent=beggingLines[(clickCount-51)%beggingLines.length];
-    container.insertBefore(bt,btn);
-  }
-
-  // Click 69 — NICE
-  if(clickCount>=MAX){
-    btn.style.animation='none';
-    setTimeout(function(){
-      fireConfetti(100);
-      setTimeout(function(){
-        document.getElementById('nice-modal').classList.add('show');
-      },400);
-    },200);
-  }
-}
-
-function handleYes(e){\n  if(e){e.preventDefault();e.stopPropagation();}\n  var now=Date.now();\n  if(now-lastTouchTime<300) return;\n  lastTouchTime=now;
-  fireConfetti(40);
-  document.getElementById('ask-screen').style.display='none';
-  document.getElementById('yes-screen').classList.add('show');
-}
-
-function fireConfetti(n){
-  var emojis=['🌸','✨','💗','🎉','💕','💖','🌺','⭐','🩷','🫧'];
-  for(var i=0;i<n;i++){
-    (function(){
-      var c=document.createElement('div');
-      c.className='confetti-piece';
-      c.textContent=emojis[Math.floor(Math.random()*emojis.length)];
-      c.style.left=Math.random()*window.innerWidth+'px';
-      c.style.top='-30px';
-      c.style.fontSize=(1+Math.random()*1.5)+'rem';
-      var dur=(2+Math.random()*1.5);
-      var dx=(Math.random()-0.5)*300;
-      c.style.transition='transform '+dur+'s ease-in, opacity '+dur+'s ease-in';
+  function confetti(){
+    var colors = ['#ffb6c1','#e6d5f5','#b5ead7','#ffd9a0'];
+    for (var i = 0; i < 60; i++){
+      var c = document.createElement('div');
+      c.className = 'confetti-piece';
+      c.style.cssText = 'left:'+Math.random()*100+'vw;top:-10px;width:10px;height:10px;border-radius:'+(Math.random()>0.5?'50%':'2px')+';background:'+colors[i%4]+';animation-duration:'+(2+Math.random()*2)+'s;animation-delay:'+Math.random()*0.8+'s;';
       document.body.appendChild(c);
-      requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-          c.style.transform='translateY('+(window.innerHeight+100)+'px) translateX('+dx+'px) rotate('+(Math.random()*720)+'deg)';
-          c.style.opacity='0';
-        });
-      });
-      setTimeout(function(){c.remove();},dur*1000+100);
-    })();
+      setTimeout(function(el){ return function(){ el.remove(); }; }(c), 5000);
+    }
   }
-}
+
+  function onYes(){
+    $('ask-screen').classList.add('hidden');
+    $('yes-screen').classList.remove('hidden');
+    confetti();
+  }
+
+  function reset(){
+    location.reload();
+  }
+
+  $('yes-btn').addEventListener('click', onYes);
+  $('no-btn').addEventListener('click', onNo);
+  // dodge before the tap lands once it's in runaway mode
+  $('no-btn').addEventListener('touchstart', function(e){ if (noCount >= 3 && noCount < 10){ e.preventDefault(); onNo(); } }, {passive:false});
+  $('no-btn').addEventListener('mouseenter', function(){ if (noCount >= 3 && noCount < 10) dodge(); });
+  $('back-btn').addEventListener('click', reset);
+  $('nice-back-btn').addEventListener('click', function(){ $('nice-modal').classList.remove('show'); });
+})();
 </script>
 </body>
 </html>

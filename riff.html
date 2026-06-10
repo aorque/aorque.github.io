@@ -3,555 +3,392 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Riff — The Icebreaker App</title>
+<title>riff — the date, but better</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#0e0e12;--card:#15151d;--line:#232336;--ink:#eaeaf0;--mut:#9a9aa8;--brand:#8b7cf8;--brand2:#d57cf8;--sweet:#7cd9a8;--flirty:#f8a87c;--spicy:#f87c93;}
+html,body{height:100%;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
+.wrap{max-width:520px;margin:0 auto;padding:28px 20px 60px;min-height:100vh;display:flex;flex-direction:column;}
+.hidden{display:none !important;}
+.logo{font-weight:800;font-size:1.3rem;letter-spacing:-0.02em;}
+.logo .dot{color:var(--brand);}
+button{font-family:'Inter',sans-serif;font-weight:600;border:none;cursor:pointer;touch-action:manipulation;-webkit-appearance:none;-webkit-tap-highlight-color:transparent;user-select:none;transition:transform 0.12s ease;}
+button:active{transform:scale(0.96);}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.screen{animation:fadeIn 0.4s ease;flex:1;display:flex;flex-direction:column;}
 
-  *{margin:0;padding:0;box-sizing:border-box;}
+/* ---- gate ---- */
+#gate{justify-content:center;text-align:center;}
+#gate h1{font-size:2.6rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:8px;}
+#gate .sub{color:var(--mut);margin-bottom:36px;}
+#gate input{font-family:'Inter',sans-serif;width:100%;max-width:300px;margin:0 auto 14px;display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;color:var(--ink);padding:15px 18px;font-size:1rem;text-align:center;outline:none;}
+#gate input:focus{border-color:var(--brand);}
+#gate-err{color:var(--spicy);font-size:0.82rem;min-height:1.4em;margin-bottom:10px;}
+.btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-radius:12px;padding:15px 34px;font-size:1rem;box-shadow:0 8px 24px rgba(139,124,248,0.3);}
 
-  :root{
-    --bg:#09090f;
-    --surface:#0f0f1a;
-    --border:#1c1c2e;
-    --accent:#ff5c5c;
-    --accent2:#ff8c42;
-    --text:#f0f0f5;
-    --muted:#6b6b80;
-    --subtle:#1a1a2e;
-  }
+/* ---- setup ---- */
+#setup h2{font-size:1.6rem;font-weight:800;margin:26px 0 6px;}
+#setup .sub{color:var(--mut);font-size:0.9rem;margin-bottom:22px;}
+.opt-grid{display:grid;gap:10px;}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;text-align:left;color:var(--ink);font-size:0.95rem;}
+.opt small{display:block;color:var(--mut);font-weight:400;font-size:0.8rem;margin-top:3px;}
+.opt.sel{border-color:var(--brand);background:#1b1930;}
+.opt .em{margin-right:8px;}
+.heat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.heat-row .opt{text-align:center;}
+.heat-sweet.sel{border-color:var(--sweet);}
+.heat-flirty.sel{border-color:var(--flirty);}
+.heat-spicy.sel{border-color:var(--spicy);}
+#start-btn{margin-top:28px;width:100%;}
 
-  body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Inter',sans-serif;
-    min-height:100vh;
-    overflow-x:hidden;
-  }
+/* ---- game ---- */
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.pill{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:5px 12px;}
+#card-zone{flex:1;display:flex;align-items:center;justify-content:center;padding:18px 0;}
+.prompt-card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:42px 28px;width:100%;min-height:300px;display:flex;flex-direction:column;justify-content:center;text-align:center;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.4);animation:dealIn 0.35s cubic-bezier(0.2,0.9,0.3,1.2);}
+@keyframes dealIn{from{opacity:0;transform:translateY(30px) rotate(2deg) scale(0.95);}to{opacity:1;transform:none;}}
+.ptype{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:18px;font-weight:600;}
+.ptype.talk{color:var(--brand);}
+.ptype.do{color:var(--flirty);}
+.ptype.dare{color:var(--spicy);}
+.ptext{font-size:1.35rem;font-weight:600;line-height:1.45;}
+.pcount{position:absolute;bottom:16px;right:20px;font-size:0.7rem;color:var(--mut);}
+.controls{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:6px;}
+.btn-skip{background:var(--card);border:1px solid var(--line);color:var(--mut);border-radius:12px;padding:16px;font-size:0.9rem;}
+.btn-next{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-radius:12px;padding:16px;font-size:1rem;}
+.linkish{background:none;color:var(--mut);font-size:0.8rem;padding:10px;margin-top:8px;}
 
-  /* Noise texture overlay */
-  body::before{
-    content:'';
-    position:fixed;
-    inset:0;
-    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events:none;
-    z-index:0;
-  }
+/* ---- end ---- */
+#end{justify-content:center;text-align:center;}
+#end .big{font-size:4rem;margin-bottom:14px;}
+#end h2{font-size:1.7rem;margin-bottom:10px;}
+#end p{color:var(--mut);margin-bottom:28px;line-height:1.6;}
 
-  /* Gradient blob */
-  .blob{
-    position:fixed;
-    width:600px;
-    height:600px;
-    border-radius:50%;
-    filter:blur(120px);
-    opacity:0.12;
-    pointer-events:none;
-    z-index:0;
-  }
-  .blob-1{background:var(--accent);top:-200px;left:-200px;}
-  .blob-2{background:var(--accent2);bottom:-200px;right:-200px;}
-
-  .page{
-    position:relative;
-    z-index:1;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    min-height:100vh;
-    padding:24px 20px 60px;
-  }
-
-  /* Nav */
-  nav{
-    width:100%;
-    max-width:480px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 0 48px;
-  }
-  .logo{
-    font-size:20px;
-    font-weight:800;
-    letter-spacing:-0.5px;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-  }
-  .badge{
-    font-size:9px;
-    font-weight:700;
-    letter-spacing:2px;
-    color:var(--muted);
-    text-transform:uppercase;
-    border:1px solid var(--border);
-    padding:4px 10px;
-    border-radius:20px;
-  }
-
-  /* Hero */
-  .hero{
-    width:100%;
-    max-width:480px;
-    text-align:center;
-    padding-bottom:48px;
-  }
-
-  .eyebrow{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    font-size:11px;
-    font-weight:600;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    color:var(--accent);
-    margin-bottom:20px;
-  }
-  .eyebrow::before,.eyebrow::after{
-    content:'';
-    width:20px;
-    height:1px;
-    background:var(--accent);
-    opacity:0.5;
-  }
-
-  h1{
-    font-size:clamp(36px,10vw,56px);
-    font-weight:900;
-    line-height:1.05;
-    letter-spacing:-2px;
-    margin-bottom:20px;
-  }
-  h1 span{
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-  }
-
-  .subhead{
-    font-size:16px;
-    font-weight:400;
-    color:var(--muted);
-    line-height:1.6;
-    margin-bottom:40px;
-    padding:0 8px;
-  }
-
-  /* Form */
-  .form-wrap{
-    width:100%;
-    max-width:400px;
-    margin:0 auto;
-  }
-
-  .input-row{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-  }
-
-  input[type="email"]{
-    width:100%;
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:16px 20px;
-    font-size:15px;
-    font-family:'Inter',sans-serif;
-    color:var(--text);
-    outline:none;
-    transition:border-color 0.2s;
-    -webkit-appearance:none;
-  }
-  input[type="email"]::placeholder{color:var(--muted);}
-  input[type="email"]:focus{border-color:var(--accent);}
-
-  .cta-btn{
-    width:100%;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    border:none;
-    border-radius:12px;
-    padding:17px 24px;
-    font-size:15px;
-    font-weight:700;
-    font-family:'Inter',sans-serif;
-    color:#fff;
-    cursor:pointer;
-    transition:opacity 0.2s,transform 0.1s;
-    letter-spacing:0.3px;
-    -webkit-appearance:none;
-    touch-action:manipulation;
-  }
-  .cta-btn:hover{opacity:0.9;}
-  .cta-btn:active{transform:scale(0.98);}
-
-  .fine-print{
-    margin-top:14px;
-    font-size:11px;
-    color:var(--muted);
-    text-align:center;
-  }
-
-  /* Success state */
-  .success{
-    display:none;
-    text-align:center;
-    padding:28px 24px;
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:16px;
-  }
-  .success-icon{font-size:36px;margin-bottom:12px;}
-  .success h3{font-size:18px;font-weight:700;margin-bottom:8px;}
-  .success p{font-size:13px;color:var(--muted);line-height:1.5;}
-
-  /* Divider */
-  .divider{
-    width:100%;
-    max-width:480px;
-    height:1px;
-    background:var(--border);
-    margin:48px 0;
-  }
-
-  /* How it works */
-  .section-label{
-    font-size:10px;
-    font-weight:700;
-    letter-spacing:3px;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin-bottom:28px;
-    text-align:center;
-  }
-
-  .steps{
-    width:100%;
-    max-width:480px;
-    display:flex;
-    flex-direction:column;
-    gap:16px;
-  }
-
-  .step{
-    display:flex;
-    align-items:flex-start;
-    gap:16px;
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:18px 20px;
-  }
-
-  .step-num{
-    min-width:32px;
-    height:32px;
-    border-radius:50%;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:13px;
-    font-weight:800;
-    flex-shrink:0;
-  }
-
-  .step-text h4{
-    font-size:14px;
-    font-weight:700;
-    margin-bottom:4px;
-  }
-  .step-text p{
-    font-size:13px;
-    color:var(--muted);
-    line-height:1.5;
-  }
-
-  /* Sample cards */
-  .divider2{
-    width:100%;
-    max-width:480px;
-    height:1px;
-    background:var(--border);
-    margin:48px 0;
-  }
-
-  .cards{
-    width:100%;
-    max-width:480px;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-  }
-
-  .card{
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:20px;
-    position:relative;
-    overflow:hidden;
-  }
-  .card::before{
-    content:'';
-    position:absolute;
-    top:0;left:0;right:0;
-    height:2px;
-    background:linear-gradient(90deg,var(--accent),var(--accent2));
-    opacity:0;
-    transition:opacity 0.2s;
-  }
-  .card:hover::before{opacity:1;}
-
-  .card-tier{
-    font-size:9px;
-    font-weight:700;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    margin-bottom:10px;
-  }
-  .tier-1{color:#4ecdc4;}
-  .tier-2{color:#f7dc6f;}
-  .tier-3{color:var(--accent);}
-
-  .card-prompt{
-    font-size:15px;
-    font-weight:600;
-    line-height:1.45;
-  }
-
-  /* Timer demo */
-  .timer-demo{
-    width:100%;
-    max-width:480px;
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:20px;
-    margin-top:12px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-  }
-  .timer-label{font-size:12px;color:var(--muted);}
-  .timer-val{
-    font-size:22px;
-    font-weight:800;
-    font-variant-numeric:tabular-nums;
-    letter-spacing:-1px;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-  }
-  .timer-sub{font-size:10px;color:var(--muted);margin-top:2px;}
-
-  /* Social proof */
-  .proof{
-    width:100%;
-    max-width:480px;
-    text-align:center;
-    margin-top:48px;
-    padding:28px 20px;
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:16px;
-  }
-  .proof-num{
-    font-size:40px;
-    font-weight:900;
-    letter-spacing:-2px;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    margin-bottom:6px;
-  }
-  .proof-text{font-size:13px;color:var(--muted);}
-
-  /* Footer */
-  footer{
-    margin-top:60px;
-    font-size:11px;
-    color:var(--muted);
-    text-align:center;
-    letter-spacing:1px;
-  }
+/* ---- keep / recap / deck ---- */
+.keep-btn{background:none;border:1px solid var(--line);color:var(--mut);border-radius:999px;padding:8px 16px;font-size:0.8rem;margin:14px auto 0;display:block;}
+.keep-btn.kept{border-color:var(--spicy);color:var(--spicy);}
+#recap h2{font-size:1.5rem;font-weight:800;margin:18px 0 6px;}
+#recap .sub{color:var(--mut);font-size:0.88rem;margin-bottom:18px;line-height:1.5;}
+.recap-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px;text-align:left;}
+.recap-card .q{font-size:0.92rem;font-weight:600;margin-bottom:10px;}
+.recap-card textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--ink);font-family:'Inter',sans-serif;font-size:0.88rem;padding:10px 12px;resize:vertical;min-height:54px;outline:none;}
+.recap-card textarea:focus{border-color:var(--brand);}
+.deck-cover{background:linear-gradient(160deg,#1b1930,#15151d);border:1px solid var(--brand);border-radius:18px;padding:30px 24px;text-align:center;margin:18px 0;box-shadow:0 16px 40px rgba(139,124,248,0.15);}
+.deck-cover .dc-logo{font-weight:800;font-size:1.2rem;margin-bottom:14px;}
+.deck-cover .dc-line{color:var(--mut);font-size:0.85rem;margin:4px 0;}
+.deck-cover .dc-heat{font-size:1.1rem;margin-top:10px;}
+.upsell-note{color:var(--mut);font-size:0.8rem;line-height:1.55;margin-top:12px;}
+#recap input[type=text]{width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;color:var(--ink);font-family:'Inter',sans-serif;font-size:0.9rem;padding:12px 14px;margin-bottom:10px;outline:none;}
+#recap input[type=text]:focus{border-color:var(--brand);}
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div class="blob blob-1"></div>
-<div class="blob blob-2"></div>
-
-<div class="page">
-
-  <!-- Nav -->
-  <nav>
-    <div class="logo">riff</div>
-    <div class="badge">Coming Soon</div>
-  </nav>
-
-  <!-- Hero -->
-  <div class="hero">
-    <div class="eyebrow">the icebreaker app</div>
-    <h1>Make it <span>less</span><br>awkward.</h1>
-    <p class="subhead">Prompts, dares, and conversations that actually go somewhere — for two people who just met, old friends catching up, or anyone who's tired of staring at their phone. No app. No account. Just open a link and riff.</p>
-
-    <!-- Email form -->
-    <div class="form-wrap">
-      <div class="input-row" id="form-row">
-        <input type="email" id="email-input" placeholder="drop your email" autocomplete="email" />
-        <button class="cta-btn" onclick="handleSubmit()" ontouchend="handleSubmit()">I want early access →</button>
-      </div>
-      <p class="fine-print">No spam. We'll let you know when it's ready.</p>
-      <div class="success" id="success-msg">
-        <div class="success-icon">🔥</div>
-        <h3>You're on the list.</h3>
-        <p>We'll hit you when Riff goes live. In the meantime — go on that date.</p>
-      </div>
-    </div>
+  <!-- PASSWORD GATE -->
+  <div class="screen" id="gate">
+    <h1>riff<span class="dot">.</span></h1>
+    <div class="sub">the date, but better.</div>
+    <input type="password" id="pw" placeholder="password" autocomplete="off" autocapitalize="none">
+    <div id="gate-err"></div>
+    <button class="btn-primary" id="pw-btn" type="button">enter</button>
   </div>
 
-  <div class="divider"></div>
-
-  <!-- How it works -->
-  <p class="section-label">How it works</p>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-text">
-        <h4>One person opens riff.fun</h4>
-        <p>You get a 4-digit code and a shareable link. No signup, no download.</p>
-      </div>
+  <!-- SETUP -->
+  <div class="screen hidden" id="setup">
+    <div class="logo">riff<span class="dot">.</span></div>
+    <h2>where are you two?</h2>
+    <div class="sub">picks the right kind of prompts</div>
+    <div class="opt-grid" id="ctx-grid">
+      <button class="opt sel" data-ctx="line" type="button"><span class="em">🚶</span>waiting in line<small>quick hits — short prompts while you wait</small></button>
+      <button class="opt" data-ctx="table" type="button"><span class="em">🍝</span>at the table<small>conversation that's better than "so… any siblings?"</small></button>
+      <button class="opt" data-ctx="bar" type="button"><span class="em">🍸</span>at the bar<small>games, dares, and things to point at</small></button>
+      <button class="opt" data-ctx="walk" type="button"><span class="em">🌙</span>walking around<small>observational stuff + deeper questions</small></button>
     </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-text">
-        <h4>The other person joins</h4>
-        <p>Tap the link or enter the code. You're both in the same session instantly.</p>
+    <h2>heat level</h2>
+    <div class="sub">you can always turn it up later</div>
+    <div class="heat-row">
+      <button class="opt heat-sweet sel" data-heat="sweet" type="button">🍦 sweet</button>
+      <button class="opt heat-flirty" data-heat="flirty" type="button">😏 flirty</button>
+      <button class="opt heat-spicy" data-heat="spicy" type="button">🔥 unhinged</button>
+    </div>
+    <button class="btn-primary" id="start-btn" type="button">deal the first card</button>
+  </div>
+
+  <!-- GAME -->
+  <div class="screen hidden" id="game">
+    <div class="topbar">
+      <div class="logo" style="font-size:1rem;">riff<span class="dot">.</span></div>
+      <button class="pill" id="heat-pill" type="button">🍦 sweet</button>
+    </div>
+    <div id="card-zone">
+      <div class="prompt-card" id="card">
+        <div class="ptype talk" id="ptype">talk</div>
+        <div class="ptext" id="ptext"></div>
+        <div class="pcount" id="pcount"></div>
       </div>
     </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-text">
-        <h4>Cards feed you both in real time</h4>
-        <p>Prompts, questions, and dares that escalate as you go. Stupid, then interesting, then real.</p>
-      </div>
+    <button class="keep-btn" id="keep-btn" type="button">🤍 keep this card</button>
+    <div class="controls">
+      <button class="btn-skip" id="skip-btn" type="button">skip</button>
+      <button class="btn-next" id="next-btn" type="button">we did it → next</button>
     </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-text">
-        <h4>Session expires. Gone.</h4>
-        <p>Two hours. Timer visible the whole time. When it's done, it's done. No trace, no record.</p>
-      </div>
-    </div>
+    <button class="linkish" id="change-btn" type="button">change vibe / location</button>
+    <button class="linkish" id="enddate-btn" type="button">end the date ✨</button>
   </div>
 
-  <div class="divider2"></div>
-
-  <!-- Sample cards -->
-  <p class="section-label">Sample prompts</p>
-  <div class="cards">
-    <div class="card">
-      <div class="card-tier tier-1">Warm Up</div>
-      <div class="card-prompt">"What's the most unhinged thing you've Googled in the last week?"</div>
+  <!-- RECAP / DECK UPSELL -->
+  <div class="screen hidden" id="recap">
+    <div class="logo">riff<span class="dot">.</span></div>
+    <h2>your date deck</h2>
+    <div class="sub">the cards you kept tonight. add what you actually answered — it becomes a printed deck you can hold.</div>
+    <input type="text" id="deck-loc" placeholder="where was this? (e.g. The Venetian, Las Vegas)">
+    <div class="deck-cover" id="deck-cover">
+      <div class="dc-logo">riff<span style="color:var(--brand)">.</span></div>
+      <div class="dc-line" id="dc-loc">somewhere good</div>
+      <div class="dc-line" id="dc-date"></div>
+      <div class="dc-heat" id="dc-heat"></div>
     </div>
-    <div class="card">
-      <div class="card-tier tier-1">Warm Up</div>
-      <div class="card-prompt">"Rate this date so far out of 10. Hold up your fingers at the same time."</div>
-    </div>
-    <div class="card">
-      <div class="card-tier tier-2">Getting Interesting</div>
-      <div class="card-prompt">"Show me the last photo you took. Explain it."</div>
-    </div>
-    <div class="card">
-      <div class="card-tier tier-2">Getting Interesting</div>
-      <div class="card-prompt">"What's a hill you will die on that most people think is insane?"</div>
-    </div>
-    <div class="card">
-      <div class="card-tier tier-3">Wild Card 🔥</div>
-      <div class="card-prompt">"Swap phones for 60 seconds. No deleting."</div>
-    </div>
+    <div id="recap-list"></div>
+    <button class="btn-primary" id="order-btn" type="button" style="width:100%;margin-top:10px;">get this printed → join the deck waitlist</button>
+    <div class="upsell-note">a real boxed deck of tonight's cards + your answers, shipped to you. limited beta.</div>
+    <button class="linkish" id="recap-back" type="button">← back to the deck</button>
   </div>
 
-  <!-- Timer demo -->
-  <div class="timer-demo">
-    <div>
-      <div class="timer-label">Session expires in</div>
-      <div class="timer-sub">then it's gone forever</div>
-    </div>
-    <div>
-      <div class="timer-val" id="timer">1:47:23</div>
-    </div>
+  <!-- END -->
+  <div class="screen hidden" id="end">
+    <div class="big">🎉</div>
+    <h2>deck's done.</h2>
+    <p>if you got through all of these, the date is going well.<br>you don't need an app anymore.</p>
+    <button class="btn-primary" id="again-btn" type="button">run it back</button>
+    <button class="linkish" id="end-recap-btn" type="button">see your date deck 🃏</button>
   </div>
-
-  <!-- Use cases -->
-  <div class="divider2"></div>
-  <p class="section-label">Works for any occasion</p>
-  <div class="cards">
-    <div class="card">
-      <div class="card-tier tier-1">First Dates</div>
-      <div class="card-prompt">Skip the small talk. Get to the good stuff faster.</div>
-    </div>
-    <div class="card">
-      <div class="card-tier tier-1">New Friends</div>
-      <div class="card-prompt">Just met someone interesting? Pull up Riff.</div>
-    </div>
-    <div class="card">
-      <div class="card-tier tier-2">Bars & Lounges</div>
-      <div class="card-prompt">Venues give guests a code. Instant conversation starter — no awkward silence at the bar.</div>
-    </div>
-    <div class="card">
-      <div class="card-tier tier-2">Team Offsites</div>
-      <div class="card-prompt">Better than a trust fall. Works for any two people in a room.</div>
-    </div>
-  </div>
-
-  <!-- Affiliate / B2B block -->
-  <div style="width:100%;max-width:480px;margin-top:16px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 20px;">
-    <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">For Venues & Bars</div>
-    <div style="font-size:16px;font-weight:700;margin-bottom:8px;">Put Riff on your tables.</div>
-    <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;">Give your guests a QR code. They scan, they play, they stay longer. We'll build a custom-branded version for your venue — and pay you a referral fee for every session your guests start.</div>
-    <a href="mailto:hello@riff.fun" style="display:inline-block;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;padding:12px 20px;font-size:13px;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.3px;">Partner with Riff →</a>
-  </div>
-
-  <!-- Social proof placeholder -->
-  <div class="proof">
-    <div class="proof-num">50</div>
-    <div class="proof-text">early access spots. first come first served.</div>
-  </div>
-
-  <footer>riff.fun &nbsp;·&nbsp; a fleeting moments product &nbsp;·&nbsp; 2026</footer>
 
 </div>
 
 <script>
-// Live countdown timer (demo — counts down from 1:47:23)
-var secs = 6443;
-function tick(){
-  if(secs<=0){secs=7200;}
-  secs--;
-  var h=Math.floor(secs/3600);
-  var m=Math.floor((secs%3600)/60);
-  var s=secs%60;
-  document.getElementById('timer').textContent=
-    h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
-}
-setInterval(tick,1000);
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var PW = 'spencerwire';
 
-// Email submit
-function handleSubmit(){
-  var email=document.getElementById('email-input').value;
-  if(!email||!email.includes('@')){
-    document.getElementById('email-input').style.borderColor='#ff5c5c';
-    document.getElementById('email-input').focus();
-    return;
+  /* ============ PROMPTS ============
+     type: talk (discuss) | do (activity) | dare
+     ctx: line, table, bar, walk, any
+     heat: sweet, flirty, spicy            */
+  var P = [
+    // ---------- SWEET ----------
+    {t:'talk',c:'any',h:'sweet',x:'What\'s your most irrational fear? Defend it like it\'s rational.'},
+    {t:'talk',c:'any',h:'sweet',x:'What did 12-year-old you think you\'d be doing right now?'},
+    {t:'talk',c:'any',h:'sweet',x:'What\'s the best meal you\'ve ever had? Set the scene.'},
+    {t:'talk',c:'any',h:'sweet',x:'What\'s a hill you\'ll die on that absolutely doesn\'t matter?'},
+    {t:'talk',c:'any',h:'sweet',x:'If you had a walk-up song that played every time you entered a room, what is it?'},
+    {t:'talk',c:'any',h:'sweet',x:'What\'s something you\'re weirdly good at that has zero practical use?'},
+    {t:'talk',c:'any',h:'sweet',x:'What was your phase? Everyone had a phase. Don\'t lie.'},
+    {t:'talk',c:'any',h:'sweet',x:'Describe your perfect lazy Sunday, hour by hour.'},
+    {t:'talk',c:'any',h:'sweet',x:'What\'s the last thing that made you laugh until it hurt?'},
+    {t:'talk',c:'any',h:'sweet',x:'Best compliment you\'ve ever received. Go.'},
+    {t:'do',c:'any',h:'sweet',x:'Both say your guilty-pleasure song on the count of three. 1… 2… 3.'},
+    {t:'do',c:'any',h:'sweet',x:'Rate this date so far out of 10. Show fingers at the same time.'},
+    {t:'do',c:'any',h:'sweet',x:'Each guess the other person\'s middle name. Three tries.'},
+    {t:'do',c:'any',h:'sweet',x:'Thumb war. Best of three. Loser asks the next question.'},
+    {t:'talk',c:'line',h:'sweet',x:'Make up a backstory for the person at the front of the line.'},
+    {t:'talk',c:'line',h:'sweet',x:'If this line takes 30 more minutes, what\'s our escape plan?'},
+    {t:'do',c:'line',h:'sweet',x:'20 questions, speed round: yes/no answers only, 60 seconds, go.'},
+    {t:'talk',c:'line',h:'sweet',x:'Hot take: what food is overrated? You must commit to the take.'},
+    {t:'talk',c:'table',h:'sweet',x:'If you opened a restaurant, what\'s the concept? Name it.'},
+    {t:'talk',c:'table',h:'sweet',x:'What dish does your family make that no restaurant gets right?'},
+    {t:'do',c:'table',h:'sweet',x:'Order something for each other. No vetoes. Trust the process.'},
+    {t:'talk',c:'table',h:'sweet',x:'Last meal on earth. Appetizer, main, dessert, drink. Build it.'},
+    {t:'talk',c:'bar',h:'sweet',x:'Invent a cocktail named after the other person. Describe it.'},
+    {t:'do',c:'bar',h:'sweet',x:'Guess each other\'s usual order. Loser buys the next round.'},
+    {t:'talk',c:'walk',h:'sweet',x:'Point out the building you\'d live in if money didn\'t exist.'},
+    {t:'do',c:'walk',h:'sweet',x:'Next dog you see, you both have 5 seconds to name it. Best name wins.'},
+    {t:'talk',c:'walk',h:'sweet',x:'If this street had a soundtrack right now, what song is playing?'},
+    // ---------- FLIRTY ----------
+    {t:'talk',c:'any',h:'flirty',x:'What was your actual first impression of me? Be honest.'},
+    {t:'talk',c:'any',h:'flirty',x:'What\'s your green flag? The thing that instantly wins you over.'},
+    {t:'talk',c:'any',h:'flirty',x:'Worst date you\'ve ever been on. This one excluded. Hopefully.'},
+    {t:'talk',c:'any',h:'flirty',x:'What\'s something about you that takes three dates to find out? Shortcut it.'},
+    {t:'talk',c:'any',h:'flirty',x:'Who texted first, and who took longer to reply? Settle it now.'},
+    {t:'talk',c:'any',h:'flirty',x:'What\'s your tell when you like someone? I need to know what to look for.'},
+    {t:'talk',c:'any',h:'flirty',x:'Describe your type. We\'ll both pretend you\'re not describing this table.'},
+    {t:'do',c:'any',h:'flirty',x:'Show me the last photo you took. Explain it.'},
+    {t:'do',c:'any',h:'flirty',x:'Compliment battle: alternate compliments until someone laughs or blushes. Loser blushes.'},
+    {t:'do',c:'any',h:'flirty',x:'Maintain eye contact for 15 seconds. No talking. No laughing. Good luck.'},
+    {t:'dare',c:'any',h:'flirty',x:'Do your best impression of the other person. They can\'t object until it\'s over.'},
+    {t:'talk',c:'line',h:'flirty',x:'If we ditched this line right now, where are we going instead?'},
+    {t:'do',c:'line',h:'flirty',x:'Rank: hand-holding, forehead kiss, good morning text. Compare answers.'},
+    {t:'talk',c:'table',h:'flirty',x:'Is sharing dessert romantic or a war crime? This determines the order.'},
+    {t:'dare',c:'table',h:'flirty',x:'Feed the other person one bite. Yes, it\'s cheesy. Do it anyway.'},
+    {t:'talk',c:'bar',h:'flirty',x:'What would your best friend warn me about you right now?'},
+    {t:'dare',c:'bar',h:'flirty',x:'Cheers, but you have to make a toast about this date. Minimum 10 seconds.'},
+    {t:'do',c:'bar',h:'flirty',x:'Two truths and a lie, dating edition: all three must be about past romance.'},
+    {t:'talk',c:'walk',h:'flirty',x:'On a scale of 1–10, how likely is a second date? Answer at the same time.'},
+    {t:'dare',c:'walk',h:'flirty',x:'Race to that corner. Winner gets one free question the other must answer honestly.'},
+    // ---------- UNHINGED ----------
+    {t:'talk',c:'any',h:'spicy',x:'What\'s the most chaotic thing in your camera roll that you\'re willing to explain?'},
+    {t:'talk',c:'any',h:'spicy',x:'Describe your worst ex in three words. No names. Or names, whatever.'},
+    {t:'talk',c:'any',h:'spicy',x:'What\'s a secret opinion you\'d never post online? Say it out loud.'},
+    {t:'talk',c:'any',h:'spicy',x:'What\'s the biggest lie on your dating profile? Including the photos.'},
+    {t:'talk',c:'any',h:'spicy',x:'Have you stalked my socials? How deep did you go? Months. I want months.'},
+    {t:'dare',c:'any',h:'spicy',x:'Swap phones for 60 seconds. No deleting.'},
+    {t:'dare',c:'any',h:'spicy',x:'Show the other person your screen time report. Yes, the whole thing.'},
+    {t:'dare',c:'any',h:'spicy',x:'Read the last text you sent your group chat. Out loud. With feeling.'},
+    {t:'do',c:'any',h:'spicy',x:'Rate each other\'s texting performance so far: response time, emoji use, effort. Be brutal.'},
+    {t:'talk',c:'any',h:'spicy',x:'What\'s the red flag you KNOW you have? Own it.'},
+    {t:'dare',c:'line',h:'spicy',x:'One of you has to get a stranger in this line to laugh within 2 minutes.'},
+    {t:'talk',c:'line',h:'spicy',x:'Pick two people nearby and decide: which one of us would survive longer in their life?'},
+    {t:'dare',c:'table',h:'spicy',x:'Let the other person scroll your Spotify recently played. No skipping the embarrassing ones.'},
+    {t:'talk',c:'table',h:'spicy',x:'If your exes wrote a Yelp review of dating you, what\'s the star rating and the headline?'},
+    {t:'dare',c:'bar',h:'spicy',x:'Tell the bartender it\'s the other person\'s birthday. Commit to the bit.'},
+    {t:'dare',c:'bar',h:'spicy',x:'Let the other person send one text from your phone to anyone in your contacts. One veto allowed.'},
+    {t:'talk',c:'bar',h:'spicy',x:'What\'s the most embarrassing reason you\'ve ever ended things with someone?'},
+    {t:'dare',c:'walk',h:'spicy',x:'Serenade. Right here. Minimum one verse. The other person picks the song.'},
+    {t:'talk',c:'walk',h:'spicy',x:'Where do you think this is going? Like, us. Answer first, think later.'}
+  ];
+
+  var state = { ctx:'line', heat:'sweet', deck:[], i:0, kept:[], answers:{} };
+  var heatLabels = { sweet:'🍦 sweet', flirty:'😏 flirty', spicy:'🔥 unhinged' };
+  var typeLabels = { talk:'talk about it', do:'do this', dare:'dare 🔥' };
+
+  function show(id){
+    ['gate','setup','game','end','recap'].forEach(function(s){ $(s).classList.add('hidden'); });
+    $(id).classList.remove('hidden');
+    window.scrollTo(0,0);
   }
-  document.getElementById('form-row').style.display='none';
-  document.querySelector('.fine-print').style.display='none';
-  document.getElementById('success-msg').style.display='block';
-}
+
+  /* ---- gate ---- */
+  function tryPw(){
+    if ($('pw').value.trim().toLowerCase() === PW){ show('setup'); }
+    else {
+      $('gate-err').textContent = 'nope. ask the person who sent you this.';
+      $('pw').value = '';
+    }
+  }
+  $('pw-btn').addEventListener('click', tryPw);
+  $('pw').addEventListener('keydown', function(e){ if (e.key === 'Enter') tryPw(); });
+
+  /* ---- setup ---- */
+  document.querySelectorAll('#ctx-grid .opt').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('#ctx-grid .opt').forEach(function(o){ o.classList.remove('sel'); });
+      b.classList.add('sel');
+      state.ctx = b.dataset.ctx;
+    });
+  });
+  document.querySelectorAll('.heat-row .opt').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('.heat-row .opt').forEach(function(o){ o.classList.remove('sel'); });
+      b.classList.add('sel');
+      state.heat = b.dataset.heat;
+    });
+  });
+
+  function buildDeck(){
+    var heats = state.heat === 'sweet' ? ['sweet'] : state.heat === 'flirty' ? ['sweet','flirty'] : ['sweet','flirty','spicy'];
+    var pool = P.filter(function(p){ return (p.c === state.ctx || p.c === 'any') && heats.indexOf(p.h) !== -1; });
+    // weight toward the chosen heat
+    var hot = pool.filter(function(p){ return p.h === state.heat; });
+    var rest = pool.filter(function(p){ return p.h !== state.heat; });
+    shuffle(hot); shuffle(rest);
+    state.deck = hot.concat(rest);
+    // interleave a bit so it escalates naturally: start mild, end hot
+    if (state.heat !== 'sweet'){
+      state.deck = rest.slice(0,3).concat(shuffle(hot.concat(rest.slice(3))));
+    }
+    state.i = 0;
+  }
+
+  function shuffle(a){
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random()*(i+1)), t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function deal(){
+    if (state.i >= state.deck.length){ show('end'); return; }
+    var p = state.deck[state.i];
+    var card = $('card');
+    card.style.animation = 'none';
+    void card.offsetWidth;
+    card.style.animation = '';
+    $('ptype').textContent = typeLabels[p.t];
+    $('ptype').className = 'ptype ' + p.t;
+    $('ptext').textContent = p.x;
+    $('pcount').textContent = (state.i+1) + ' / ' + state.deck.length;
+    syncKeepBtn();
+  }
+
+  /* ---- keep / recap / deck upsell ---- */
+  function syncKeepBtn(){
+    var p = state.deck[state.i];
+    var kept = p && state.kept.indexOf(p.x) !== -1;
+    $('keep-btn').textContent = kept ? '❤️ kept' : '🤍 keep this card';
+    $('keep-btn').className = 'keep-btn' + (kept ? ' kept' : '');
+  }
+
+  function toggleKeep(){
+    var p = state.deck[state.i];
+    if (!p) return;
+    var idx = state.kept.indexOf(p.x);
+    if (idx === -1) state.kept.push(p.x); else state.kept.splice(idx, 1);
+    syncKeepBtn();
+  }
+
+  function buildRecap(){
+    var list = $('recap-list');
+    list.innerHTML = '';
+    var cards = state.kept.length ? state.kept : state.deck.slice(0, state.i+1).map(function(p){ return p.x; });
+    cards.forEach(function(q){
+      var div = document.createElement('div');
+      div.className = 'recap-card';
+      var qEl = document.createElement('div');
+      qEl.className = 'q'; qEl.textContent = q;
+      var ta = document.createElement('textarea');
+      ta.placeholder = 'what was the answer? (optional, gets printed)';
+      ta.value = state.answers[q] || '';
+      ta.addEventListener('input', function(){ state.answers[q] = ta.value; });
+      div.appendChild(qEl); div.appendChild(ta);
+      list.appendChild(div);
+    });
+    var d = new Date();
+    $('dc-date').textContent = d.toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'}) + ' · ' + d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+    $('dc-heat').textContent = heatLabels[state.heat];
+    $('dc-loc').textContent = $('deck-loc').value.trim() || 'somewhere good';
+    show('recap');
+  }
+
+  function orderDeck(){
+    var loc = $('deck-loc').value.trim() || 'somewhere good';
+    var lines = ['RIFF DATE DECK ORDER (beta waitlist)','Location: ' + loc,'Date: ' + new Date().toLocaleString(),'Heat: ' + heatLabels[state.heat],'','CARDS:'];
+    var cards = state.kept.length ? state.kept : state.deck.slice(0, state.i+1).map(function(p){ return p.x; });
+    cards.forEach(function(q){ lines.push('Q: ' + q); if (state.answers[q]) lines.push('A: ' + state.answers[q]); lines.push(''); });
+    location.href = 'mailto:aorque@gmail.com?subject=' + encodeURIComponent('Riff date deck — ' + loc) + '&body=' + encodeURIComponent(lines.join('\n'));
+  }
+
+  $('keep-btn').addEventListener('click', toggleKeep);
+  $('enddate-btn').addEventListener('click', buildRecap);
+  $('end-recap-btn').addEventListener('click', buildRecap);
+  $('deck-loc').addEventListener('input', function(){ $('dc-loc').textContent = $('deck-loc').value.trim() || 'somewhere good'; });
+  $('order-btn').addEventListener('click', orderDeck);
+  $('recap-back').addEventListener('click', function(){ show('game'); deal(); });
+
+  $('start-btn').addEventListener('click', function(){ buildDeck(); show('game'); $('heat-pill').textContent = heatLabels[state.heat]; deal(); });
+  $('next-btn').addEventListener('click', function(){ state.i++; deal(); });
+  $('skip-btn').addEventListener('click', function(){ state.i++; deal(); });
+  $('change-btn').addEventListener('click', function(){ show('setup'); });
+  $('again-btn').addEventListener('click', function(){ buildDeck(); show('game'); deal(); });
+  $('heat-pill').addEventListener('click', function(){
+    var order = ['sweet','flirty','spicy'];
+    state.heat = order[(order.indexOf(state.heat)+1) % 3];
+    $('heat-pill').textContent = heatLabels[state.heat];
+    buildDeck(); deal();
+  });
+})();
 </script>
 </body>
 </html>
