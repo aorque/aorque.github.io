@@ -73,6 +73,11 @@ button:active{transform:scale(0.96);}
 .btn-skip{background:var(--card);border:1px solid var(--line);color:var(--mut);border-radius:12px;padding:16px;font-size:0.9rem;}
 .btn-next{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-radius:12px;padding:16px;font-size:1rem;}
 .linkish{background:none;color:var(--mut);font-size:0.8rem;padding:10px;margin-top:8px;}
+.ghost-row{display:flex;gap:10px;margin-top:14px;}
+.btn-ghost{flex:1;background:transparent;border:1px solid var(--line);color:var(--mut);border-radius:999px;padding:12px 10px;font-size:0.8rem;font-weight:600;transition:border-color 0.2s,color 0.2s;}
+.btn-ghost:hover{border-color:var(--brand);color:var(--ink);}
+.btn-farewell{width:100%;margin-top:10px;background:linear-gradient(135deg,rgba(139,124,248,0.10),rgba(213,124,248,0.06));border:1px solid #2c2a42;color:var(--brand);border-radius:999px;padding:13px 16px;font-size:0.82rem;font-weight:600;transition:border-color 0.2s,box-shadow 0.2s;}
+.btn-farewell:hover{border-color:var(--brand);box-shadow:0 4px 18px rgba(139,124,248,0.18);}
 
 /* ---- end ---- */
 #end{justify-content:center;text-align:center;}
@@ -155,9 +160,11 @@ button:active{transform:scale(0.96);}
       <button class="btn-skip" id="skip-btn" type="button">skip</button>
       <button class="btn-next" id="next-btn" type="button">we did it → next</button>
     </div>
-    <button class="linkish" id="change-btn" type="button">change vibe / location</button>
-    <button class="linkish" id="enddate-btn" type="button">end the date ✨</button>
-    <button class="linkish" id="gotit-btn" type="button">we've got it from here, thanks for breaking the ice 🤝</button>
+    <div class="ghost-row">
+      <button class="btn-ghost" id="change-btn" type="button">🎛 change the vibe</button>
+      <button class="btn-ghost" id="enddate-btn" type="button">✨ end the date</button>
+    </div>
+    <button class="btn-farewell" id="gotit-btn" type="button">we've got it from here — thanks for breaking the ice 🤝</button>
   </div>
 
   <!-- FAREWELL -->
@@ -165,8 +172,8 @@ button:active{transform:scale(0.96);}
     <div style="font-size:4rem;margin-bottom:16px;">🤝</div>
     <h2 style="font-size:1.7rem;margin-bottom:12px;">good. that's the whole point.</h2>
     <p style="color:var(--mut);line-height:1.65;max-width:400px;margin:0 auto 30px;">riff's only job was to get you two talking.<br>sounds like it worked. go be people.<br><br>this session will forget everything. it was never here.</p>
-    <button class="linkish" id="farewell-save" type="button">wait — save tonight's cards first 🃏</button>
-    <button class="linkish" id="farewell-back" type="button">…actually, one more card</button>
+    <button class="btn-farewell" id="farewell-save" type="button" style="max-width:340px;margin:0 auto;display:block;">wait — save tonight's cards first 🃏</button>
+    <button class="btn-ghost" id="farewell-back" type="button" style="max-width:340px;margin:12px auto 0;display:block;flex:none;width:100%;">…actually, one more card</button>
   </div>
 
   <!-- RECAP / DECK UPSELL -->
