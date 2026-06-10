@@ -68,7 +68,8 @@ button:active{transform:scale(0.96);}
 .toggle.on::after{left:25px;background:#0e0e12;}
 .ptext{font-size:1.35rem;font-weight:600;line-height:1.45;}
 .pcount{position:absolute;bottom:16px;right:20px;font-size:0.7rem;color:var(--mut);}
-.controls{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:6px;}
+.controls{display:grid;grid-template-columns:56px 1fr 2fr;gap:10px;margin-top:6px;}
+.btn-back{background:var(--card);border:1px solid var(--line);color:var(--mut);border-radius:12px;padding:16px 0;font-size:1rem;}
 .btn-skip{background:var(--card);border:1px solid var(--line);color:var(--mut);border-radius:12px;padding:16px;font-size:0.9rem;}
 .btn-next{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-radius:12px;padding:16px;font-size:1rem;}
 .linkish{background:none;color:var(--mut);font-size:0.8rem;padding:10px;margin-top:8px;}
@@ -150,11 +151,22 @@ button:active{transform:scale(0.96);}
     </div>
     <button class="keep-btn" id="keep-btn" type="button">🤍 keep this card</button>
     <div class="controls">
+      <button class="btn-back" id="back-card-btn" type="button" aria-label="previous card">↩</button>
       <button class="btn-skip" id="skip-btn" type="button">skip</button>
       <button class="btn-next" id="next-btn" type="button">we did it → next</button>
     </div>
     <button class="linkish" id="change-btn" type="button">change vibe / location</button>
     <button class="linkish" id="enddate-btn" type="button">end the date ✨</button>
+    <button class="linkish" id="gotit-btn" type="button">we've got it from here, thanks for breaking the ice 🤝</button>
+  </div>
+
+  <!-- FAREWELL -->
+  <div class="screen hidden" id="farewell" style="justify-content:center;text-align:center;">
+    <div style="font-size:4rem;margin-bottom:16px;">🤝</div>
+    <h2 style="font-size:1.7rem;margin-bottom:12px;">good. that's the whole point.</h2>
+    <p style="color:var(--mut);line-height:1.65;max-width:400px;margin:0 auto 30px;">riff's only job was to get you two talking.<br>sounds like it worked. go be people.<br><br>this session will forget everything. it was never here.</p>
+    <button class="linkish" id="farewell-save" type="button">wait — save tonight's cards first 🃏</button>
+    <button class="linkish" id="farewell-back" type="button">…actually, one more card</button>
   </div>
 
   <!-- RECAP / DECK UPSELL -->
@@ -326,9 +338,20 @@ button:active{transform:scale(0.96);}
   var typeLabels = { talk:'talk about it', do:'do this', dare:'dare 🔥', drink:'sip happens 🍹', power:'bar power-up ⚡' };
 
   function show(id){
-    ['gate','setup','game','end','recap'].forEach(function(s){ $(s).classList.add('hidden'); });
+    ['gate','setup','game','end','recap','farewell'].forEach(function(s){ $(s).classList.add('hidden'); });
     $(id).classList.remove('hidden');
     window.scrollTo(0,0);
+  }
+
+  /* seen-card memory: never repeat a card across dates until the pool runs dry */
+  function getSeen(){
+    try { return JSON.parse(localStorage.getItem('riff_seen') || '[]'); } catch(e){ return []; }
+  }
+  function markSeen(x){
+    try {
+      var s = getSeen();
+      if (s.indexOf(x) === -1){ s.push(x); if (s.length > 600) s = s.slice(-600); localStorage.setItem('riff_seen', JSON.stringify(s)); }
+    } catch(e){}
   }
 
   /* ---- gate ---- */
@@ -371,6 +394,10 @@ button:active{transform:scale(0.96);}
     var heats = state.heat === 'sweet' ? ['sweet'] : state.heat === 'flirty' ? ['sweet','flirty'] : ['sweet','flirty','spicy'];
     var src = state.drink ? P.concat(D) : P;
     var pool = src.filter(function(p){ return (p.c === state.ctx || p.c === 'any') && heats.indexOf(p.h) !== -1; });
+    // prefer cards this couple hasn't seen on previous dates
+    var seen = getSeen();
+    var fresh = pool.filter(function(p){ return seen.indexOf(p.x) === -1; });
+    if (fresh.length >= 10) pool = fresh;
     // weight toward the chosen heat
     var hot = pool.filter(function(p){ return p.h === state.heat; });
     var rest = pool.filter(function(p){ return p.h !== state.heat; });
@@ -437,6 +464,8 @@ button:active{transform:scale(0.96);}
     $('ptext').textContent = p.x;
     $('pcount').textContent = (state.i+1) + ' / ' + state.deck.length;
     $('keep-btn').style.visibility = p.t === 'power' ? 'hidden' : 'visible';
+    $('back-card-btn').style.visibility = state.i > 0 ? 'visible' : 'hidden';
+    if (p.t !== 'power') markSeen(p.x);
     syncKeepBtn();
   }
 
@@ -488,6 +517,10 @@ button:active{transform:scale(0.96);}
   }
 
   $('keep-btn').addEventListener('click', toggleKeep);
+  $('back-card-btn').addEventListener('click', function(){ if (state.i > 0){ state.i--; deal(); } });
+  $('gotit-btn').addEventListener('click', function(){ show('farewell'); });
+  $('farewell-back').addEventListener('click', function(){ show('game'); deal(); });
+  $('farewell-save').addEventListener('click', buildRecap);
   $('enddate-btn').addEventListener('click', buildRecap);
   $('end-recap-btn').addEventListener('click', buildRecap);
   $('deck-loc').addEventListener('input', function(){ $('dc-loc').textContent = $('deck-loc').value.trim() || 'somewhere good'; });
