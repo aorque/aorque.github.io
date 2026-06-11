@@ -824,7 +824,7 @@ document.addEventListener('DOMContentLoaded',function(){showPage('overview');});
   // ═══════════════════════════════════════════════════════════════
   function updateSpendBar() {
     var bigEl = document.getElementById('spend-big');
-if(bigEl) bigEl.textContent='$26.37';
+if(bigEl) bigEl.textContent='$27.20';
     var barEl = document.getElementById('spend-bar');
     if (!bigEl || !barEl) return;
     var spend = parseFloat(bigEl.textContent.replace('$','')) || 0;
