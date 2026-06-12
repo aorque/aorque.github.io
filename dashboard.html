@@ -634,11 +634,11 @@ function checkPw(){
 
   <!-- DAILY SPEND METER -->
   <div class="card yellow">
-    <div class="ch"><div class="ci">💸</div><span class="ct">Daily Token Spend</span><span class="cs" id="spend-updated">updating...</span></div>
+    <div class="ch"><div class="ci">💸</div><span class="ct">Daily Token Spend</span><span class="cs" id="spend-updated">just now</span></div>
 
     <!-- BIG NUMBER -->
     <div style="text-align:center;padding:18px 0 8px">
-      <div style="font-family:var(--mono);font-size:52px;font-weight:700;color:var(--orange);line-height:1;text-shadow:0 0 24px rgba(232,160,32,0.5)" id="spend-big">$0.00</div>
+      <div style="font-family:var(--mono);font-size:52px;font-weight:700;color:var(--orange);line-height:1;text-shadow:0 0 24px rgba(232,160,32,0.5)" id="spend-big">$23.27</div>
       <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px">TODAY'S SPEND · TARGET $3–6/DAY</div>
     </div>
 
@@ -679,7 +679,7 @@ function checkPw(){
     <div class="ch"><div class="ci">📊</div><span class="ct">Today's Usage</span></div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)">
       <div style="background:var(--bg2);padding:14px;text-align:center">
-        <div style="font-family:var(--mono);font-size:24px;font-weight:700;color:var(--teal)" id="spend-sessions">—</div>
+        <div style="font-family:var(--mono);font-size:24px;font-weight:700;color:var(--teal)" id="spend-sessions">246</div>
         <div style="font-family:var(--mono);font-size:8px;color:var(--muted)">SESSIONS</div>
       </div>
       <div style="background:var(--bg2);padding:14px;text-align:center">
@@ -1105,6 +1105,43 @@ function checkPw(){
       var td=document.getElementById('td');if(td)td.textContent=left;
     }
     update();setInterval(update,60000);
+  })();
+</script>
+
+<script>
+  var SPEND_DATA = {"today": {"cost": 23.27, "sessions": 246, "tokens": 602525}, "all_time": 260.97, "history": [], "sessions_today": [{"time": "17:52", "title": "untitled", "cost": 0.16, "tokens": 5307}, {"time": "17:48", "title": "untitled", "cost": 0.12, "tokens": 2368}, {"time": "17:43", "title": "untitled", "cost": 0.12, "tokens": 1316}, {"time": "17:37", "title": "untitled", "cost": 0.09, "tokens": 1222}, {"time": "17:32", "title": "untitled", "cost": 0.05, "tokens": 730}, {"time": "17:26", "title": "untitled", "cost": 0.13, "tokens": 1851}, {"time": "17:26", "title": "System Diagnostic After Communication Failure", "cost": 0.49, "tokens": 13525}, {"time": "17:22", "title": "untitled", "cost": 0.19, "tokens": 8963}, {"time": "17:20", "title": "untitled", "cost": 0.1, "tokens": 1699}, {"time": "17:15", "title": "untitled", "cost": 0.04, "tokens": 1230}, {"time": "17:14", "title": "Google Workspace Reconnection Setup", "cost": 0.32, "tokens": 9962}, {"time": "17:12", "title": "untitled", "cost": 0.01, "tokens": 3449}, {"time": "17:09", "title": "untitled", "cost": 0.09, "tokens": 1129}, {"time": "17:04", "title": "untitled", "cost": 0.08, "tokens": 935}, {"time": "17:01", "title": "untitled", "cost": 0.0, "tokens": 1227}, {"time": "16:58", "title": "untitled", "cost": 0.1, "tokens": 1689}, {"time": "16:53", "title": "untitled", "cost": 0.04, "tokens": 641}, {"time": "16:51", "title": "untitled", "cost": 0.12, "tokens": 9325}, {"time": "16:46", "title": "Building a Project from Video Description", "cost": 0.08, "tokens": 1442}, {"time": "16:46", "title": "untitled", "cost": 0.06, "tokens": 1293}, {"time": "16:41", "title": "untitled", "cost": 0.05, "tokens": 808}, {"time": "16:35", "title": "untitled", "cost": 0.04, "tokens": 895}, {"time": "16:30", "title": "untitled", "cost": 0.05, "tokens": 977}, {"time": "16:24", "title": "untitled", "cost": 0.06, "tokens": 1087}, {"time": "16:20", "title": "untitled", "cost": 0.06, "tokens": 8957}, {"time": "16:18", "title": "untitled", "cost": 0.06, "tokens": 812}, {"time": "16:13", "title": "untitled", "cost": 0.09, "tokens": 1227}, {"time": "16:07", "title": "untitled", "cost": 0.1, "tokens": 1339}, {"time": "16:02", "title": "untitled", "cost": 0.11, "tokens": 3057}, {"time": "15:56", "title": "untitled", "cost": 0.06, "tokens": 743}]};
+  
+  // Render history and sessions
+  (function renderSpendData() {
+    // Render 7-day history
+    var histDiv = document.getElementById('spend-history');
+    if (histDiv && SPEND_DATA.history && SPEND_DATA.history.length > 0) {
+      var html = '';
+      SPEND_DATA.history.forEach(function(d) {
+        html += '<div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border)">';
+        html += '<span>' + d.date + ' · ' + d.sessions + ' sessions</span>';
+        html += '<span style="color:var(--orange);font-weight:700">$' + d.cost.toFixed(2) + '</span>';
+        html += '</div>';
+      });
+      histDiv.innerHTML = html;
+    }
+    
+    // Render today's sessions
+    var sessDiv = document.getElementById('spend-today-sessions');
+    if (sessDiv && SPEND_DATA.sessions_today && SPEND_DATA.sessions_today.length > 0) {
+      var html = '';
+      SPEND_DATA.sessions_today.forEach(function(s) {
+        html += '<div style="padding:8px 10px;margin-bottom:4px;background:var(--bg3);border:1px solid var(--border);border-radius:4px">';
+        html += '<div style="display:flex;justify-content:space-between;align-items:baseline;font-size:10px;margin-bottom:2px">';
+        html += '<span style="color:var(--teal);font-weight:700">' + s.time + '</span>';
+        html += '<span style="color:var(--orange);font-weight:700">$' + s.cost.toFixed(2) + '</span>';
+        html += '</div>';
+        html += '<div style="font-size:9px;color:var(--muted);margin-bottom:2px">' + s.title + '</div>';
+        html += '<div style="font-size:8px;color:var(--muted)">' + s.tokens.toLocaleString() + ' tokens</div>';
+        html += '</div>';
+      });
+      sessDiv.innerHTML = html;
+    }
   })();
 </script>
 </body>
