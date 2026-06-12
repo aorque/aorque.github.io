@@ -274,7 +274,7 @@ function checkPw(){
     <div class="card teal">
       <div class="ch"><div class="ci">📈</div><span class="ct">Quick Stats</span></div>
       <div class="sgrid">
-        <div class="sb"><span class="sn" id="sc">1642</span><span class="sl">Sessions</span></div>
+        <div class="sb"><span class="sn" id="sc">1655</span><span class="sl">Sessions</span></div>
         <div class="sb o" onclick="showPage('projects')" style="cursor:pointer"><span class="sn">7</span><span class="sl">Projects</span></div>
         <div class="sb p" onclick="showPage('system')" style="cursor:pointer"><span class="sn">16</span><span class="sl">Cron Jobs</span></div>
         <div class="sb"><span class="sn">3</span><span class="sl">Brain Dumps</span></div>
@@ -613,7 +613,7 @@ function checkPw(){
 
 <script>
   // Live data — injected by nightly cron
-  var LIVE = {"total_cost": 307.06, "total_tokens": 611257559, "total_sessions": 1642, "today_cost": 29.4, "memory_pct": 100, "user_pct": 96, "skill_count": 144, "total_lines": 44325, "tool_calls": 15100, "cron_jobs": 16, "updated": "Jun 12 2026 13:00 PT"};
+  var LIVE = {"total_cost": 308.55, "total_tokens": 615441549, "total_sessions": 1655, "today_cost": 30.89, "memory_pct": 100, "user_pct": 96, "skill_count": 144, "total_lines": 44325, "tool_calls": 15251, "cron_jobs": 16, "updated": "Jun 12 2026 14:00 PT"};
 
   function applyLive(d){
     // Token card
@@ -696,7 +696,7 @@ function checkPw(){
   })();
 
   // Sessions — live from DB via local spend API
-  document.getElementById('sc').textContent='1642';
+  document.getElementById('sc').textContent='1655';
 
   var _spend_data = {"generated_at": "2026-06-12T20:55:13.252468+00:00","grand_total": 288.237,"today_cost": 16.5767,"today_sessions": 186,"days": [{"date": "2026-06-02","sessions": 1,"input": 6,"output": 125,"cache_read": 18064,"cost": 0.0753},{"date": "2026-06-03","sessions": 6,"input": 1836,"output": 198763,"cache_read": 67116108,"cost": 45.4227},{"date": "2026-06-04","sessions": 7,"input": 1395,"output": 240644,"cache_read": 48071197,"cost": 44.7528},{"date": "2026-06-05","sessions": 10,"input": 17677,"output": 268456,"cache_read": 74855629,"cost": 46.2749},{"date": "2026-06-06","sessions": 21,"input": 34526,"output": 113268,"cache_read": 20000286,"cost": 12.5992},{"date": "2026-06-07","sessions": 64,"input": 204627,"output": 247172,"cache_read": 23062455,"cost": 6.6497},{"date": "2026-06-08","sessions": 238,"input": 209922,"output": 521879,"cache_read": 51329582,"cost": 21.3507},{"date": "2026-06-09","sessions": 324,"input": 193268,"output": 692836,"cache_read": 74634526,"cost": 28.8849},{"date": "2026-06-10","sessions": 323,"input": 180061,"output": 631923,"cache_read": 85152502,"cost": 31.6838},{"date": "2026-06-11","sessions": 331,"input": 194181,"output": 726115,"cache_read": 91031749,"cost": 33.9659},{"date": "2026-06-12","sessions": 186,"input": 114440,"output": 337388,"cache_read": 45488519,"cost": 16.5771}],"sessions_today": [{"time": "13:55","title": "untitled","input": 3184,"output": 87,"cost": 0.0036,"source": "cron"},{"time": "13:50","title": "untitled","input": 29,"output": 1236,"cost": 0.0981,"source": "cron"},{"time": "13:45","title": "untitled","input": 18,"output": 1484,"cost": 0.1339,"source": "cron"}]};
 function renderSpend(data) {
