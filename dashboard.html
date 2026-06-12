@@ -274,7 +274,7 @@ function checkPw(){
     <div class="card teal">
       <div class="ch"><div class="ci">📈</div><span class="ct">Quick Stats</span></div>
       <div class="sgrid">
-        <div class="sb"><span class="sn" id="sc">1440</span><span class="sl">Sessions</span></div>
+        <div class="sb"><span class="sn" id="sc">1453</span><span class="sl">Sessions</span></div>
         <div class="sb o" onclick="showPage('projects')" style="cursor:pointer"><span class="sn">7</span><span class="sl">Projects</span></div>
         <div class="sb p" onclick="showPage('system')" style="cursor:pointer"><span class="sn">16</span><span class="sl">Cron Jobs</span></div>
         <div class="sb"><span class="sn">3</span><span class="sl">Brain Dumps</span></div>
@@ -518,7 +518,7 @@ function checkPw(){
 
 <script>
   // Live data — injected by nightly cron
-  var LIVE = {"total_cost": 287.35, "total_tokens": 555679880, "total_sessions": 1440, "today_cost": 9.69, "memory_pct": 100, "user_pct": 96, "skill_count": 143, "total_lines": 44156, "tool_calls": 13212, "cron_jobs": 16, "updated": "Jun 12 2026 22:00 PT"};
+  var LIVE = {"total_cost": 290.07, "total_tokens": 564590276, "total_sessions": 1453, "today_cost": 12.41, "memory_pct": 100, "user_pct": 96, "skill_count": 144, "total_lines": 44325, "tool_calls": 13445, "cron_jobs": 16, "updated": "Jun 12 2026 23:00 PT"};
 
   function applyLive(d){
     // Token card
@@ -595,7 +595,7 @@ function checkPw(){
   })();
 
   // Sessions — live from DB via local spend API
-  document.getElementById('sc').textContent='1440';
+  document.getElementById('sc').textContent='1453';
 
   function renderSpend(data) {
     var cost = data.today_cost || 0;
