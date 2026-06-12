@@ -525,7 +525,7 @@ function checkPw(){
 
 <script>
   // Live data — injected by nightly cron
-  var LIVE = {"total_cost": 290.07, "total_tokens": 564590276, "total_sessions": 1453, "today_cost": 12.41, "memory_pct": 100, "user_pct": 96, "skill_count": 144, "total_lines": 44325, "tool_calls": 13445, "cron_jobs": 16, "updated": "Jun 12 2026 23:00 PT"};
+  var LIVE = {"total_cost": 271.1021, "total_tokens": 4669773, "total_sessions": 328, "today_cost": 33.4088, "memory_pct": 100, "user_pct": 96, "skill_count": 144, "total_lines": 44325, "tool_calls": 13445, "cron_jobs": 16, "updated": "Jun 12 2026 23:00 PT"};
 
   function applyLive(d){
     // Token card
@@ -602,7 +602,7 @@ function checkPw(){
   })();
 
   // Sessions — live from DB via local spend API
-  document.getElementById('sc').textContent='1453';
+  document.getElementById('sc').textContent='328';
 
   function renderSpend(data) {
     var cost = data.today_cost || 0;
