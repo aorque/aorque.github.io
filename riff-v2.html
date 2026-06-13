@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0e0e12">
+<title>riff — the date, but better</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#0e0e12;--card:#15151d;--line:#232336;--ink:#eaeaf0;--mut:#9a9aa8;--brand:#8b7cf8;--brand2:#d57cf8;--sweet:#7cd9a8;--flirty:#f8a87c;--spicy:#f87c93;--gold:#ffd97c;--teal:#7cd9d9;}
+html,body{height:100%;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-text-size-adjust:100%;}
+.wrap{max-width:520px;margin:0 auto;padding:28px 20px 60px;min-height:100vh;display:flex;flex-direction:column;}
+.hidden{display:none !important;}
+.logo{font-weight:800;font-size:1.3rem;letter-spacing:-0.02em;}
+.logo .dot{color:var(--brand);}
+button{font-family:'Inter',sans-serif;font-weight:600;border:none;cursor:pointer;touch-action:manipulation;-webkit-appearance:none;-webkit-tap-highlight-color:transparent;user-select:none;transition:transform 0.12s ease;}
+button:active{transform:scale(0.96);}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.screen{animation:fadeIn 0.4s ease;flex:1;display:flex;flex-direction:column;}
+
+/* ---- gate ---- */
+#gate{justify-content:center;text-align:center;}
+#gate h1{font-size:2.6rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:8px;}
+#gate .sub{color:var(--mut);margin-bottom:14px;}
+#gate .tagline{color:var(--ink);font-size:0.95rem;line-height:1.5;max-width:330px;margin:0 auto 26px;}
+#gate input{font-family:'Inter',sans-serif;width:100%;max-width:300px;margin:0 auto 14px;display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;color:var(--ink);padding:15px 18px;font-size:16px;text-align:center;outline:none;}
+#gate input:focus{border-color:var(--brand);}
+#gate-err{color:var(--spicy);font-size:0.82rem;min-height:1.4em;margin-bottom:10px;}
+.freebar{margin-top:30px;color:var(--mut);font-size:0.78rem;letter-spacing:0.02em;line-height:1.6;}
+.freebar b{color:var(--sweet);font-weight:600;}
+.btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-radius:12px;padding:15px 34px;font-size:1rem;box-shadow:0 8px 24px rgba(139,124,248,0.3);}
+
+/* ---- resume ---- */
+#resume{justify-content:center;text-align:center;}
+#resume h2{font-size:1.6rem;font-weight:800;margin-bottom:10px;}
+#resume p{color:var(--mut);line-height:1.6;max-width:360px;margin:0 auto 26px;}
+#resume .btn-primary{width:100%;max-width:320px;margin:0 auto 12px;display:block;}
+
+/* ---- setup ---- */
+#setup h2{font-size:1.6rem;font-weight:800;margin:26px 0 6px;}
+#setup .sub{color:var(--mut);font-size:0.9rem;margin-bottom:22px;}
+.opt-grid{display:grid;gap:10px;}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;text-align:left;color:var(--ink);font-size:0.95rem;}
+.opt small{display:block;color:var(--mut);font-weight:400;font-size:0.8rem;margin-top:3px;}
+.opt.sel{border-color:var(--brand);background:#1b1930;}
+.opt .em{margin-right:8px;}
+.heat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.heat-row .opt{text-align:center;}
+.heat-sweet.sel{border-color:var(--sweet);}
+.heat-flirty.sel{border-color:var(--flirty);}
+.heat-spicy.sel{border-color:var(--spicy);}
+.heat-note{color:var(--mut);font-size:0.78rem;margin-top:8px;line-height:1.5;}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#777;transition:all 0.2s;}
+.toggle.on{background:var(--teal) !important;}
+.toggle.on::after{left:25px;background:#0e0e12;}
+#start-btn{margin-top:28px;width:100%;}
+
+/* ---- game ---- */
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.pill{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:5px 12px;}
+#card-zone{flex:1;display:flex;align-items:center;justify-content:center;padding:18px 0;}
+.prompt-card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:42px 28px;width:100%;min-height:300px;display:flex;flex-direction:column;justify-content:center;text-align:center;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.4);animation:dealIn 0.35s cubic-bezier(0.2,0.9,0.3,1.2);}
+@keyframes dealIn{from{opacity:0;transform:translateY(30px) rotate(2deg) scale(0.95);}to{opacity:1;transform:none;}}
+.ptype{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:18px;font-weight:600;}
+.ptype.talk{color:var(--brand);}
+.ptype.do{color:var(--flirty);}
+.ptype.dare{color:var(--spicy);}
+.ptype.drink{color:var(--teal);}
+.ptype.power{color:var(--gold);}
+.ptype.reflect{color:var(--sweet);}
+.prompt-card.power{border-color:var(--gold);background:linear-gradient(160deg,#211d12,#15151d);box-shadow:0 24px 60px rgba(255,217,124,0.12);}
+.prompt-card.reflect{border-color:var(--sweet);background:linear-gradient(160deg,#13241c,#15151d);box-shadow:0 24px 60px rgba(124,217,168,0.12);}
+.rule-banner{background:#211d12;border:1px solid var(--gold);border-radius:12px;padding:10px 14px;font-size:0.8rem;color:var(--gold);margin-bottom:10px;line-height:1.5;display:none;}
+.rule-banner.on{display:block;}
+.rule-banner .cure{color:var(--mut);font-size:0.72rem;display:block;margin-top:2px;}
+.ptext{font-size:1.35rem;font-weight:600;line-height:1.45;}
+.pcount{position:absolute;bottom:16px;right:20px;font-size:0.7rem;color:var(--mut);}
+.controls{display:grid;grid-template-columns:56px 1fr 2fr;gap:10px;margin-top:6px;}
+.btn-back{background:var(--card);border:1px solid var(--line);color:var(--mut);border-radius:12px;padding:16px 0;font-size:1rem;}
+.btn-skip{background:var(--card);border:1px solid var(--line);color:var(--mut);border-radius:12px;padding:16px;font-size:0.9rem;}
+.btn-next{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-radius:12px;padding:16px;font-size:1rem;}
+.subrow{display:flex;justify-content:center;gap:18px;margin-top:12px;}
+.subrow button{background:none;color:var(--mut);font-size:0.78rem;padding:6px 4px;}
+.subrow button:hover{color:var(--ink);}
+.keep-btn{background:none;border:1px solid var(--line);color:var(--mut);border-radius:999px;padding:8px 16px;font-size:0.8rem;margin:14px auto 0;display:block;}
+.keep-btn.kept{border-color:var(--spicy);color:var(--spicy);}
+.ghost-row{display:flex;gap:10px;margin-top:14px;}
+.btn-ghost{flex:1;background:transparent;border:1px solid var(--line);color:var(--mut);border-radius:999px;padding:12px 10px;font-size:0.8rem;font-weight:600;transition:border-color 0.2s,color 0.2s;}
+.btn-ghost:hover{border-color:var(--brand);color:var(--ink);}
+.btn-farewell{width:100%;margin-top:10px;background:linear-gradient(135deg,rgba(139,124,248,0.10),rgba(213,124,248,0.06));border:1px solid #2c2a42;color:var(--brand);border-radius:999px;padding:13px 16px;font-size:0.82rem;font-weight:600;transition:border-color 0.2s,box-shadow 0.2s;}
+.btn-farewell:hover{border-color:var(--brand);box-shadow:0 4px 18px rgba(139,124,248,0.18);}
+
+/* ---- reflect inline answer ---- */
+.reflect-ans{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:12px;color:var(--ink);font-family:'Inter',sans-serif;font-size:16px;padding:12px 14px;resize:vertical;min-height:64px;outline:none;margin-top:16px;}
+.reflect-ans:focus{border-color:var(--sweet);}
+
+/* ---- farewell ---- */
+#farewell{justify-content:center;text-align:center;}
+
+/* ---- keep / recap / deck ---- */
+#recap h2{font-size:1.5rem;font-weight:800;margin:18px 0 6px;}
+#recap .sub{color:var(--mut);font-size:0.88rem;margin-bottom:18px;line-height:1.5;}
+.section-label{font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--mut);margin:22px 0 10px;font-weight:600;}
+.recap-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px;text-align:left;}
+.recap-card.refl{border-color:#264a39;}
+.recap-card .q{font-size:0.92rem;font-weight:600;margin-bottom:10px;}
+.recap-card textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--ink);font-family:'Inter',sans-serif;font-size:16px;padding:10px 12px;resize:vertical;min-height:54px;outline:none;}
+.recap-card textarea:focus{border-color:var(--brand);}
+.deck-cover{background:linear-gradient(160deg,#1b1930,#15151d);border:1px solid var(--brand);border-radius:18px;padding:30px 24px;text-align:center;margin:8px 0 4px;box-shadow:0 16px 40px rgba(139,124,248,0.15);}
+.deck-cover .dc-logo{font-weight:800;font-size:1.2rem;margin-bottom:14px;}
+.deck-cover .dc-line{color:var(--mut);font-size:0.85rem;margin:4px 0;}
+.deck-cover .dc-heat{font-size:1.1rem;margin-top:10px;}
+.note-wrap{background:var(--card);border:1px dashed #3a3552;border-radius:14px;padding:16px 18px;margin-bottom:12px;}
+.note-wrap .nlbl{font-size:0.85rem;font-weight:600;margin-bottom:4px;}
+.note-wrap .nsub{color:var(--mut);font-size:0.76rem;margin-bottom:12px;line-height:1.5;}
+.note-wrap textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--ink);font-family:'Inter',sans-serif;font-size:16px;padding:10px 12px;resize:vertical;min-height:50px;outline:none;margin-bottom:10px;}
+.note-wrap textarea:last-child{margin-bottom:0;}
+.note-wrap textarea:focus{border-color:var(--brand);}
+.upsell-note{color:var(--mut);font-size:0.8rem;line-height:1.55;margin-top:12px;text-align:center;}
+#recap input[type=text]{width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;color:var(--ink);font-family:'Inter',sans-serif;font-size:16px;padding:12px 14px;margin-bottom:14px;outline:none;}
+#recap input[type=text]:focus{border-color:var(--brand);}
+.btn-secondary{width:100%;margin-top:10px;background:transparent;border:1px solid var(--brand);color:var(--brand);border-radius:12px;padding:14px;font-size:0.92rem;font-weight:600;}
+.linkish{background:none;color:var(--mut);font-size:0.8rem;padding:10px;margin:8px auto 0;display:block;}
+
+/* ---- end ---- */
+#end{justify-content:center;text-align:center;}
+#end .big{font-size:4rem;margin-bottom:14px;}
+#end h2{font-size:1.7rem;margin-bottom:10px;}
+#end p{color:var(--mut);margin-bottom:28px;line-height:1.6;}
+
+/* ---- print deck (screen-hidden, print-only) ---- */
+#print-deck{display:none;}
+@media print{
+  body{background:#fff;}
+  .wrap{display:none !important;}
+  #print-deck{display:block !important;}
+  @page{margin:14mm;}
+  .pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10mm;}
+  .pd-card{border:1.2pt solid #111;border-radius:4mm;padding:8mm 7mm;min-height:62mm;display:flex;flex-direction:column;color:#111;page-break-inside:avoid;background:#fff;}
+  .pd-card .pd-type{font-size:8pt;letter-spacing:1.5pt;text-transform:uppercase;color:#666;margin-bottom:5mm;font-weight:700;}
+  .pd-card .pd-q{font-size:13pt;font-weight:700;line-height:1.35;}
+  .pd-card .pd-a{margin-top:5mm;font-size:11pt;line-height:1.4;color:#222;border-top:0.6pt solid #ccc;padding-top:4mm;}
+  .pd-card .pd-a.blank{color:#aaa;font-style:italic;}
+  .pd-cover{border:2pt solid #111;align-items:center;justify-content:center;text-align:center;}
+  .pd-cover .pd-brand{font-size:22pt;font-weight:800;}
+  .pd-cover .pd-meta{font-size:10pt;color:#444;margin-top:3mm;}
+  .pd-note{border-style:dashed;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- PASSWORD GATE -->
+  <div class="screen" id="gate">
+    <h1>riff<span class="dot">.</span></h1>
+    <div class="sub">the date, but better.</div>
+    <div class="tagline">you're already here, across the table. put the apps away — let's actually meet each other.</div>
+    <input type="password" id="pw" placeholder="password" autocomplete="off" autocapitalize="none">
+    <div id="gate-err"></div>
+    <button class="btn-primary" id="pw-btn" type="button">enter</button>
+    <div class="freebar"><b>free.</b> no login. no subscription. no ads.<br>we only make money if you love tonight enough to keep it.</div>
+  </div>
+
+  <!-- RESUME -->
+  <div class="screen hidden" id="resume">
+    <div class="logo" style="text-align:center;margin-bottom:24px;">riff<span class="dot">.</span></div>
+    <h2>still mid-date?</h2>
+    <p>looks like you had a session going. want to pick up the cards where you left off?</p>
+    <button class="btn-primary" id="resume-yes" type="button">pick up where we left off</button>
+    <button class="btn-ghost" id="resume-no" type="button" style="max-width:320px;margin:0 auto;width:100%;flex:none;">start fresh</button>
+  </div>
+
+  <!-- SETUP -->
+  <div class="screen hidden" id="setup">
+    <div class="logo">riff<span class="dot">.</span></div>
+    <h2>where are you two?</h2>
+    <div class="sub">picks the right kind of prompts</div>
+    <div class="opt-grid" id="ctx-grid">
+      <button class="opt sel" data-ctx="line" type="button"><span class="em">🚶</span>waiting in line<small>quick hits — short prompts while you wait</small></button>
+      <button class="opt" data-ctx="table" type="button"><span class="em">🍝</span>at the table<small>conversation that's better than "so… any siblings?"</small></button>
+      <button class="opt" data-ctx="bar" type="button"><span class="em">🍸</span>at the bar<small>games, dares, and things to point at</small></button>
+      <button class="opt" data-ctx="walk" type="button"><span class="em">🌙</span>walking around<small>observational stuff + deeper questions</small></button>
+    </div>
+    <div class="drink-row opt" id="drink-row" style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;">
+      <span class="lbl" style="font-size:0.95rem;">we're drinking 🍻<small style="display:block;color:var(--mut);font-weight:400;font-size:0.78rem;margin-top:2px;">adds "…or drink" dares + bar power-ups. sips of whatever's in your glass.</small></span>
+      <button class="toggle" id="drink-toggle" type="button" aria-label="toggle drinking mode" style="width:52px;height:30px;border-radius:999px;background:#2a2a3a;position:relative;flex-shrink:0;padding:0;"></button>
+    </div>
+    <h2>heat level</h2>
+    <div class="sub">we always open easy and turn it up from there</div>
+    <div class="heat-row">
+      <button class="opt heat-sweet sel" data-heat="sweet" type="button">🍦 sweet</button>
+      <button class="opt heat-flirty" data-heat="flirty" type="button">😏 flirty</button>
+      <button class="opt heat-spicy" data-heat="spicy" type="button">🔥 unhinged</button>
+    </div>
+    <div class="heat-note">pick the ceiling — the first cards stay light no matter what, then the deck earns its way up. tap the heat anytime mid-game to dial it up or down.</div>
+    <button class="btn-primary" id="start-btn" type="button">deal the first card</button>
+  </div>
+
+  <!-- GAME -->
+  <div class="screen hidden" id="game">
+    <div class="topbar">
+      <div class="logo" style="font-size:1rem;">riff<span class="dot">.</span></div>
+      <button class="pill" id="heat-pill" type="button">🍦 sweet</button>
+    </div>
+    <div class="rule-banner" id="rule-banner"></div>
+    <div id="card-zone">
+      <div class="prompt-card" id="card">
+        <div class="ptype talk" id="ptype">talk</div>
+        <div class="ptext" id="ptext"></div>
+        <div class="pcount" id="pcount"></div>
+      </div>
+    </div>
+    <button class="keep-btn" id="keep-btn" type="button">🤍 keep this card</button>
+    <div class="controls">
+      <button class="btn-back" id="back-card-btn" type="button" aria-label="previous card">↩</button>
+      <button class="btn-skip" id="skip-btn" type="button">skip</button>
+      <button class="btn-next" id="next-btn" type="button">we did it → next</button>
+    </div>
+    <div class="subrow">
+      <button id="retire-btn" type="button">🚫 not for us — never show this again</button>
+    </div>
+    <div class="ghost-row">
+      <button class="btn-ghost" id="change-btn" type="button">🎛 change the vibe</button>
+      <button class="btn-ghost" id="enddate-btn" type="button">✨ end the date</button>
+    </div>
+    <button class="btn-farewell" id="gotit-btn" type="button">we've got it from here — thanks for breaking the ice 🤝</button>
+  </div>
+
+  <!-- REFLECT (end-of-date finale) -->
+  <div class="screen hidden" id="reflect">
+    <div class="topbar">
+      <div class="logo" style="font-size:1rem;">riff<span class="dot">.</span></div>
+      <span class="pill">reflection</span>
+    </div>
+    <div id="reflect-zone" style="flex:1;display:flex;align-items:center;justify-content:center;padding:18px 0;">
+      <div class="prompt-card reflect" id="reflect-card">
+        <div class="ptype reflect">about tonight</div>
+        <div class="ptext" id="reflect-text"></div>
+        <textarea class="reflect-ans" id="reflect-ans" placeholder="say it out loud — then jot it if you want to keep it (optional)"></textarea>
+        <div class="pcount" id="reflect-count"></div>
+      </div>
+    </div>
+    <button class="btn-next" id="reflect-next" type="button" style="width:100%;">next</button>
+    <button class="linkish" id="reflect-skip" type="button">skip reflection →</button>
+  </div>
+
+  <!-- FAREWELL -->
+  <div class="screen hidden" id="farewell">
+    <div style="font-size:4rem;margin-bottom:16px;">🤝</div>
+    <h2 style="font-size:1.7rem;margin-bottom:12px;">good. that's the whole point.</h2>
+    <p style="color:var(--mut);line-height:1.65;max-width:400px;margin:0 auto 30px;">riff's only job was to get you two talking.<br>sounds like it worked. go be people.<br><br>this session forgets everything. it was never here.</p>
+    <button class="btn-farewell" id="farewell-save" type="button" style="max-width:340px;margin:0 auto;display:block;">wait — keep tonight's cards first 🃏</button>
+    <button class="btn-ghost" id="farewell-back" type="button" style="max-width:340px;margin:12px auto 0;display:block;flex:none;width:100%;">…actually, one more card</button>
+    <button class="linkish" id="farewell-forget" type="button">done — forget everything</button>
+  </div>
+
+  <!-- RECAP / DECK BUILDER -->
+  <div class="screen hidden" id="recap">
+    <div class="logo">riff<span class="dot">.</span></div>
+    <h2>your date deck</h2>
+    <div class="sub">the session forgets everything — the deck remembers the part you kept. add what you actually said; it becomes a real boxed deck you can hold.</div>
+    <input type="text" id="deck-loc" placeholder="where was this? (e.g. The Venetian, Las Vegas)">
+    <div class="deck-cover" id="deck-cover">
+      <div class="dc-logo">riff<span style="color:var(--brand)">.</span></div>
+      <div class="dc-line" id="dc-loc">somewhere good</div>
+      <div class="dc-line" id="dc-date"></div>
+      <div class="dc-heat" id="dc-heat"></div>
+    </div>
+    <div id="refl-block" class="hidden">
+      <div class="section-label">tonight, in your words</div>
+      <div id="refl-list"></div>
+    </div>
+    <div class="section-label">the cards you kept</div>
+    <div id="recap-list"></div>
+    <div class="note-wrap">
+      <div class="nlbl">🔒 a note to each other</div>
+      <div class="nsub">write something to the other person. it prints on the last card — sealed, to open after you part.</div>
+      <textarea id="note-a" placeholder="from you →"></textarea>
+      <textarea id="note-b" placeholder="from them →"></textarea>
+    </div>
+    <button class="btn-primary" id="order-btn" type="button" style="width:100%;margin-top:10px;">get this printed → join the deck waitlist</button>
+    <button class="btn-secondary" id="preview-btn" type="button">📄 preview / save your deck (PDF)</button>
+    <div class="upsell-note">a real boxed deck of tonight's cards + your answers, shipped to you. limited beta.</div>
+    <button class="linkish" id="recap-back" type="button">← back to the date</button>
+  </div>
+
+  <!-- END -->
+  <div class="screen hidden" id="end">
+    <div class="big">🎉</div>
+    <h2>deck's done.</h2>
+    <p>if you got through all of these, the date is going well.<br>you don't need an app anymore.</p>
+    <button class="btn-primary" id="again-btn" type="button">run it back</button>
+    <button class="linkish" id="end-recap-btn" type="button">see your date deck 🃏</button>
+  </div>
+
+</div>
+
+<!-- PRINTABLE DECK (only renders on print / save-as-PDF) -->
+<div id="print-deck"></div>
+
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var PW = 'spencerwire';
+  var SESSION_TTL = 12 * 60 * 60 * 1000; // 12h — session self-destructs after this
+
+  /* ============ PROMPTS ============
+     type: talk (discuss) | do (activity) | dare
+     ctx: line, table, bar, walk, any
+     heat: sweet, flirty, spicy            */
+  var P = [
+    // ---------- SWEET ----------
+    {t:'talk',c:'any',h:'sweet',x:'What\'s your most irrational fear? Defend it like it\'s rational.'},
+    {t:'talk',c:'any',h:'sweet',x:'What did 12-year-old you think you\'d be doing right now?'},
+    {t:'talk',c:'any',h:'sweet',x:'What\'s the best meal you\'ve ever had? Set the scene.'},
+    {t:'talk',c:'any',h:'sweet',x:'What\'s a hill you\'ll die on that absolutely doesn\'t matter?'},
+    {t:'talk',c:'any',h:'sweet',x:'If you had a walk-up song that played every time you entered a room, what is it?'},
+    {t:'talk',c:'any',h:'sweet',x:'What\'s something you\'re weirdly good at that has zero practical use?'},
+    {t:'talk',c:'any',h:'sweet',x:'What was your phase? Everyone had a phase. Don\'t lie.'},
+    {t:'talk',c:'any',h:'sweet',x:'Describe your perfect lazy Sunday, hour by hour.'},
+    {t:'talk',c:'any',h:'sweet',x:'What\'s the last thing that made you laugh until it hurt?'},
+    {t:'talk',c:'any',h:'sweet',x:'Best compliment you\'ve ever received. Go.'},
+    {t:'do',c:'any',h:'sweet',x:'Both say your guilty-pleasure song on the count of three. 1… 2… 3.'},
+    {t:'do',c:'any',h:'sweet',x:'Rate this date so far out of 10. Show fingers at the same time.'},
+    {t:'do',c:'any',h:'sweet',x:'Each guess the other person\'s middle name. Three tries.'},
+    {t:'do',c:'any',h:'sweet',x:'Thumb war. Best of three. Loser asks the next question.'},
+    {t:'talk',c:'line',h:'sweet',x:'Make up a backstory for the person at the front of the line.'},
+    {t:'talk',c:'line',h:'sweet',x:'If this line takes 30 more minutes, what\'s our escape plan?'},
+    {t:'do',c:'line',h:'sweet',x:'20 questions, speed round: yes/no answers only, 60 seconds, go.'},
+    {t:'talk',c:'line',h:'sweet',x:'Hot take: what food is overrated? You must commit to the take.'},
+    {t:'talk',c:'table',h:'sweet',x:'If you opened a restaurant, what\'s the concept? Name it.'},
+    {t:'talk',c:'table',h:'sweet',x:'What dish does your family make that no restaurant gets right?'},
+    {t:'do',c:'table',h:'sweet',x:'Order something for each other. No vetoes. Trust the process.'},
+    {t:'talk',c:'table',h:'sweet',x:'Last meal on earth. Appetizer, main, dessert, drink. Build it.'},
+    {t:'talk',c:'bar',h:'sweet',x:'Invent a cocktail named after the other person. Describe it.'},
+    {t:'do',c:'bar',h:'sweet',x:'Guess each other\'s usual order. Loser buys the next round.'},
+    {t:'talk',c:'walk',h:'sweet',x:'Point out the building you\'d live in if money didn\'t exist.'},
+    {t:'do',c:'walk',h:'sweet',x:'Next dog you see, you both have 5 seconds to name it. Best name wins.'},
+    {t:'talk',c:'walk',h:'sweet',x:'If this street had a soundtrack right now, what song is playing?'},
+    // ---------- FLIRTY ----------
+    {t:'talk',c:'any',h:'flirty',x:'What was your actual first impression of me? Be honest.'},
+    {t:'talk',c:'any',h:'flirty',x:'What\'s your green flag? The thing that instantly wins you over.'},
+    {t:'talk',c:'any',h:'flirty',x:'Worst date you\'ve ever been on. This one excluded. Hopefully.'},
+    {t:'talk',c:'any',h:'flirty',x:'What\'s something about you that takes three dates to find out? Shortcut it.'},
+    {t:'talk',c:'any',h:'flirty',x:'Who texted first, and who took longer to reply? Settle it now.'},
+    {t:'talk',c:'any',h:'flirty',x:'What\'s your tell when you like someone? I need to know what to look for.'},
+    {t:'talk',c:'any',h:'flirty',x:'Describe your type. We\'ll both pretend you\'re not describing this table.'},
+    {t:'do',c:'any',h:'flirty',x:'Show me the last photo you took. Explain it.'},
+    {t:'do',c:'any',h:'flirty',x:'Compliment battle: alternate compliments until someone laughs or blushes. Loser blushes.'},
+    {t:'do',c:'any',h:'flirty',x:'Maintain eye contact for 15 seconds. No talking. No laughing. Good luck.'},
+    {t:'dare',c:'any',h:'flirty',x:'Do your best impression of the other person. They can\'t object until it\'s over.'},
+    {t:'talk',c:'line',h:'flirty',x:'If we ditched this line right now, where are we going instead?'},
+    {t:'do',c:'line',h:'flirty',x:'Rank: hand-holding, forehead kiss, good morning text. Compare answers.'},
+    {t:'talk',c:'table',h:'flirty',x:'Is sharing dessert romantic or a war crime? This determines the order.'},
+    {t:'dare',c:'table',h:'flirty',x:'Feed the other person one bite. Yes, it\'s cheesy. Do it anyway.'},
+    {t:'talk',c:'bar',h:'flirty',x:'What would your best friend warn me about you right now?'},
+    {t:'dare',c:'bar',h:'flirty',x:'Cheers, but you have to make a toast about this date. Minimum 10 seconds.'},
+    {t:'do',c:'bar',h:'flirty',x:'Two truths and a lie, dating edition: all three must be about past romance.'},
+    {t:'talk',c:'walk',h:'flirty',x:'On a scale of 1–10, how likely is a second date? Answer at the same time.'},
+    {t:'dare',c:'walk',h:'flirty',x:'Race to that corner. Winner gets one free question the other must answer honestly.'},
+    // ---------- UNHINGED ----------
+    {t:'talk',c:'any',h:'spicy',x:'What\'s the most chaotic thing in your camera roll that you\'re willing to explain?'},
+    {t:'talk',c:'any',h:'spicy',x:'Describe your worst ex in three words. No names. Or names, whatever.'},
+    {t:'talk',c:'any',h:'spicy',x:'What\'s a secret opinion you\'d never post online? Say it out loud.'},
+    {t:'talk',c:'any',h:'spicy',x:'What\'s the biggest lie on your dating profile? Including the photos.'},
+    {t:'talk',c:'any',h:'spicy',x:'Have you stalked my socials? How deep did you go? Months. I want months.'},
+    {t:'dare',c:'any',h:'spicy',x:'Swap phones for 60 seconds. No deleting.'},
+    {t:'dare',c:'any',h:'spicy',x:'Show the other person your screen time report. Yes, the whole thing.'},
+    {t:'dare',c:'any',h:'spicy',x:'Read the last text you sent your group chat. Out loud. With feeling.'},
+    {t:'do',c:'any',h:'spicy',x:'Rate each other\'s texting performance so far: response time, emoji use, effort. Be brutal.'},
+    {t:'talk',c:'any',h:'spicy',x:'What\'s the red flag you KNOW you have? Own it.'},
+    {t:'dare',c:'line',h:'spicy',x:'One of you has to get a stranger in this line to laugh within 2 minutes.'},
+    {t:'talk',c:'line',h:'spicy',x:'Pick two people nearby and decide: which one of us would survive longer in their life?'},
+    {t:'dare',c:'table',h:'spicy',x:'Let the other person scroll your Spotify recently played. No skipping the embarrassing ones.'},
+    {t:'talk',c:'table',h:'spicy',x:'If your exes wrote a Yelp review of dating you, what\'s the star rating and the headline?'},
+    {t:'dare',c:'bar',h:'spicy',x:'Tell the bartender it\'s the other person\'s birthday. Commit to the bit.'},
+    {t:'dare',c:'bar',h:'spicy',x:'Let the other person send one text from your phone to anyone in your contacts. One veto allowed.'},
+    {t:'talk',c:'bar',h:'spicy',x:'What\'s the most embarrassing reason you\'ve ever ended things with someone?'},
+    {t:'dare',c:'walk',h:'spicy',x:'Serenade. Right here. Minimum one verse. The other person picks the song.'},
+    {t:'talk',c:'walk',h:'spicy',x:'Where do you think this is going? Like, us. Answer first, think later.'}
+  ];
+
+  /* ============ DRINKING CARDS ============ */
+  var D = [
+    // sweet
+    {t:'drink',c:'any',h:'sweet',x:'Drink if you checked your outfit more than twice before this date.'},
+    {t:'drink',c:'any',h:'sweet',x:'Drink if you told a friend exactly where you are right now. Both of you, be honest.'},
+    {t:'drink',c:'any',h:'sweet',x:'Do your best impression of the other person ordering a drink… or drink.'},
+    {t:'drink',c:'any',h:'sweet',x:'Drink if you\'ve ever laughed so hard a drink came out of your nose.'},
+    {t:'drink',c:'any',h:'sweet',x:'Compliment the other person without using the words nice, cool, or pretty… or drink.'},
+    {t:'drink',c:'bar',h:'sweet',x:'Guess what the other person\'s go-to drink order is. Wrong guess = you drink.'},
+    {t:'drink',c:'bar',h:'sweet',x:'Drink if you\'ve ever pretended to like a drink someone bought you.'},
+    {t:'drink',c:'bar',h:'sweet',x:'Make up a fancy name and backstory for whatever the other person is drinking… or drink.'},
+    {t:'drink',c:'table',h:'sweet',x:'Toast to the weirdest thing you have in common. Find it first. Can\'t find one? Both drink.'},
+    {t:'drink',c:'any',h:'sweet',x:'Drink if you almost cancelled tonight. (No judgment. Some judgment.)'},
+    // flirty
+    {t:'drink',c:'any',h:'flirty',x:'Drink if you\'ve thought about kissing the other person tonight.'},
+    {t:'drink',c:'any',h:'flirty',x:'Say the first thing you noticed about them, physically… or drink twice.'},
+    {t:'drink',c:'any',h:'flirty',x:'Drink if you\'ve already screenshotted this date to your group chat.'},
+    {t:'drink',c:'any',h:'flirty',x:'Hold eye contact for 10 seconds. First to laugh drinks.'},
+    {t:'drink',c:'bar',h:'flirty',x:'Let them pick your next drink, no questions asked… or drink twice.'},
+    {t:'drink',c:'bar',h:'flirty',x:'Drink if you\'d be flirting with someone here if you weren\'t on this date. Both answer.'},
+    {t:'drink',c:'bar',h:'flirty',x:'Whisper your honest rating of this bar (1–10) in their ear… or drink.'},
+    {t:'drink',c:'table',h:'flirty',x:'Feed them a sip of your drink like it\'s a wine tasting. Full sommelier commentary… or drink.'},
+    {t:'drink',c:'any',h:'flirty',x:'Drink if your last text was about this date.'},
+    {t:'drink',c:'any',h:'flirty',x:'Trade phones and set each other\'s next-round alarm label to anything… or drink twice.'},
+    // spicy
+    {t:'drink',c:'any',h:'spicy',x:'Drink if you\'ve ever left a date out the back door. Story optional. Drink doubles if you refuse the story.'},
+    {t:'drink',c:'any',h:'spicy',x:'Say the most unhinged reason you\'ve ever agreed to a date… or finish your drink.'},
+    {t:'drink',c:'any',h:'spicy',x:'Drink if you\'ve already decided how tonight ends. No elaboration allowed. Suffer.'},
+    {t:'drink',c:'bar',h:'spicy',x:'Drink if you\'ve ever made out with someone at THIS bar. Two sips if they might be here.'},
+    {t:'drink',c:'bar',h:'spicy',x:'Tell the truth: best kiss of your life — when and where. Or finish your drink.'},
+    {t:'drink',c:'bar',h:'spicy',x:'Drink if your search history from this week would end this date.'},
+    {t:'drink',c:'any',h:'spicy',x:'Describe your type using only three words. If the other person points at themselves, drink.'},
+    {t:'drink',c:'any',h:'spicy',x:'Drink if you\'ve ever sent a risky text and immediately put the phone face-down. Reenact it.'},
+    {t:'drink',c:'table',h:'spicy',x:'Drink if you\'d split dessert. Two sips if you\'d split an Uber.'},
+    {t:'drink',c:'any',h:'spicy',x:'Show the last photo in your camera roll or finish your drink. Choose fast.'}
+  ];
+
+  /* power-ups: dealt every ~5 cards at the bar when drinking is on */
+  var PU = [
+    {k:'rule', x:'HOUSE RULE: no saying each other\'s names. Slip up = sip. Rule lasts 5 cards.'},
+    {k:'rule', x:'HOUSE RULE: you must clink glasses before every sip. Forget = extra sip. Lasts 5 cards.'},
+    {k:'rule', x:'HOUSE RULE: phones face-down. Whoever touches theirs first drinks twice. Lasts 5 cards.'},
+    {k:'rule', x:'HOUSE RULE: answer every card in a fake accent. Breaking accent = sip. Lasts 5 cards.'},
+    {k:'now', x:'DOUBLE OR NOTHING: the next card\'s refusal costs double drinks. Dealer\'s mercy not available.'},
+    {k:'now', x:'3-2-1 DUEL: count down, both answer "favorite drink ever" at the same time. Mismatch = both drink. Match = bartender owes you nothing but respect.'},
+    {k:'now', x:'BUY A ROUND: rock paper scissors. Best of three. Loser gets the next round (or the next waters).'},
+    {k:'now', x:'HYDRATION CHECK 💧: both of you, water. Yes really. The game rewards survivors.'},
+    {k:'now', x:'SWAP: you may hand your next card to them. They must do it or pay the drink. Use it wisely.'},
+    {k:'now', x:'TOAST OFF: each give a 10-second toast about the other person. Worse toast (their call) drinks.'}
+  ];
+
+  /* ============ REFLECTION CARDS (end-of-date finale) ============
+     about THIS date — unfakeable, the emotional peak, the best keepsake content */
+  var R = [
+    'One word for tonight. Both say it on three. 1… 2… 3.',
+    'What surprised you about me?',
+    'When did you decide tonight was going well? Be specific.',
+    'What\'s one thing you want to remember about right now?',
+    'Describe me to a stranger in one sentence.',
+    'What\'s a moment from tonight you\'ll tell a friend about?',
+    'Finish this out loud: "I did not expect you to…"',
+    'What\'s the question you almost asked me tonight but didn\'t? Ask it now.',
+    'If tonight were a chapter title, what is it?'
+  ];
+
+  var state = { ctx:'line', heat:'sweet', deck:[], i:0, kept:[], answers:{}, drink:false, drinkTouched:false, rule:null, reflectQs:[], reflectAns:{}, reflectI:0 };
+  var heatLabels = { sweet:'🍦 sweet', flirty:'😏 flirty', spicy:'🔥 unhinged' };
+  var typeLabels = { talk:'talk about it', do:'do this', dare:'dare 🔥', drink:'sip happens 🍹', power:'bar power-up ⚡', reflect:'about tonight' };
+  var heatRank = { sweet:0, flirty:1, spicy:2 };
+
+  function show(id){
+    ['gate','resume','setup','game','reflect','end','recap','farewell'].forEach(function(s){ $(s).classList.add('hidden'); });
+    $(id).classList.remove('hidden');
+    window.scrollTo(0,0);
+  }
+
+  /* ---------- persistence ----------
+     riff_seen  : cards seen across dates (no-repeat-across-dates), long-lived
+     riff_banned: cards retired forever, long-lived
+     riff_session: the live date — survives an accidental refresh, self-destructs on exit / after 12h */
+  function lsGet(k){ try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch(e){ return null; } }
+  function lsSet(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+  function lsDel(k){ try { localStorage.removeItem(k); } catch(e){} }
+
+  function getSeen(){ return lsGet('riff_seen') || []; }
+  function markSeen(x){
+    var s = getSeen();
+    if (s.indexOf(x) === -1){ s.push(x); if (s.length > 600) s = s.slice(-600); lsSet('riff_seen', s); }
+  }
+  function getBanned(){ return lsGet('riff_banned') || []; }
+  function banCard(x){
+    var b = getBanned();
+    if (b.indexOf(x) === -1){ b.push(x); lsSet('riff_banned', b); }
+  }
+
+  function persist(){
+    lsSet('riff_session', {
+      ts: Date.now(), ctx:state.ctx, heat:state.heat, drink:state.drink, drinkTouched:state.drinkTouched,
+      deck:state.deck, i:state.i, kept:state.kept, answers:state.answers,
+      reflectQs:state.reflectQs, reflectAns:state.reflectAns, reflectI:state.reflectI,
+      loc: $('deck-loc') ? $('deck-loc').value : '', noteA: $('note-a') ? $('note-a').value : '', noteB: $('note-b') ? $('note-b').value : ''
+    });
+  }
+  function wipeSession(){ lsDel('riff_session'); }
+  function freshSession(){
+    state = { ctx:'line', heat:'sweet', deck:[], i:0, kept:[], answers:{}, drink:false, drinkTouched:false, rule:null, reflectQs:[], reflectAns:{}, reflectI:0 };
+    wipeSession();
+  }
+
+  /* ---- gate ---- */
+  function tryPw(){
+    if ($('pw').value.trim().toLowerCase() === PW){
+      var s = lsGet('riff_session');
+      if (s && s.deck && s.deck.length && (Date.now() - (s.ts||0) < SESSION_TTL)){
+        show('resume');
+      } else {
+        wipeSession();
+        show('setup');
+      }
+    } else {
+      $('gate-err').textContent = 'nope. ask the person who sent you this.';
+      $('pw').value = '';
+    }
+  }
+  $('pw-btn').addEventListener('click', tryPw);
+  $('pw').addEventListener('keydown', function(e){ if (e.key === 'Enter') tryPw(); });
+
+  /* ---- resume ---- */
+  $('resume-yes').addEventListener('click', function(){
+    var s = lsGet('riff_session');
+    if (!s){ show('setup'); return; }
+    state.ctx = s.ctx; state.heat = s.heat; state.drink = !!s.drink; state.drinkTouched = !!s.drinkTouched;
+    state.deck = s.deck || []; state.i = s.i || 0; state.kept = s.kept || []; state.answers = s.answers || {};
+    state.reflectQs = s.reflectQs || []; state.reflectAns = s.reflectAns || {}; state.reflectI = s.reflectI || 0;
+    if ($('deck-loc')) $('deck-loc').value = s.loc || '';
+    if ($('note-a')) $('note-a').value = s.noteA || '';
+    if ($('note-b')) $('note-b').value = s.noteB || '';
+    $('heat-pill').textContent = heatLabels[state.heat];
+    show('game'); deal();
+  });
+  $('resume-no').addEventListener('click', function(){ freshSession(); show('setup'); });
+
+  /* ---- setup ---- */
+  document.querySelectorAll('#ctx-grid .opt').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('#ctx-grid .opt').forEach(function(o){ o.classList.remove('sel'); });
+      b.classList.add('sel');
+      state.ctx = b.dataset.ctx;
+      if (state.ctx === 'bar' && !state.drinkTouched){ state.drink = true; }
+      $('drink-toggle').classList.toggle('on', state.drink);
+    });
+  });
+  $('drink-toggle').addEventListener('click', function(){
+    state.drink = !state.drink;
+    state.drinkTouched = true;
+    $('drink-toggle').classList.toggle('on', state.drink);
+  });
+  document.querySelectorAll('.heat-row .opt').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('.heat-row .opt').forEach(function(o){ o.classList.remove('sel'); });
+      b.classList.add('sel');
+      state.heat = b.dataset.heat;
+    });
+  });
+
+  function shuffle(a){
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random()*(i+1)), t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function buildDeck(){
+    var heats = state.heat === 'sweet' ? ['sweet'] : state.heat === 'flirty' ? ['sweet','flirty'] : ['sweet','flirty','spicy'];
+    var src = state.drink ? P.concat(D) : P;
+    var banned = getBanned();
+    var pool = src.filter(function(p){
+      return (p.c === state.ctx || p.c === 'any') && heats.indexOf(p.h) !== -1 && banned.indexOf(p.x) === -1;
+    });
+    // prefer cards this couple hasn't seen on previous dates (no-repeat-across-dates)
+    var seen = getSeen();
+    var fresh = pool.filter(function(p){ return seen.indexOf(p.x) === -1; });
+    if (fresh.length >= 10) pool = fresh;
+
+    // EARNED RAMP: always open with sweet warm-ups, then escalate toward the chosen ceiling.
+    var sweet = shuffle(pool.filter(function(p){ return p.h === 'sweet'; }));
+    var mid   = shuffle(pool.filter(function(p){ return p.h === 'flirty'; }));
+    var hot   = shuffle(pool.filter(function(p){ return p.h === 'spicy'; }));
+    var deck;
+    if (state.heat === 'sweet'){
+      deck = sweet;
+    } else if (state.heat === 'flirty'){
+      deck = sweet.slice(0,2).concat(shuffle(sweet.slice(2).concat(mid)));
+    } else {
+      // unhinged: 2 sweet openers, then a flirty bridge, then the mix escalating to spicy
+      var bridge = mid.slice(0,2);
+      var rest = shuffle(sweet.slice(2).concat(mid.slice(2)));
+      deck = sweet.slice(0,2).concat(bridge).concat(rest).concat(hot);
+    }
+    state.deck = deck;
+
+    // bar mode: splice a power-up roughly every 5 cards (never as the opener)
+    if (state.drink && state.ctx === 'bar'){
+      var pus = shuffle(PU.slice());
+      var pos = 4, n = 0;
+      while (pos < state.deck.length && n < pus.length){
+        state.deck.splice(pos, 0, {t:'power', k:pus[n].k, x:pus[n].x});
+        n++; pos += 6;
+      }
+    }
+    state.i = 0;
+    state.rule = null;
+    updateRuleBanner();
+  }
+
+  function updateRuleBanner(){
+    var b = $('rule-banner');
+    if (state.rule && state.i < state.rule.until){
+      b.innerHTML = '⚡ ' + state.rule.text + '<span class="cure">active for ' + (state.rule.until - state.i) + ' more card' + (state.rule.until - state.i === 1 ? '' : 's') + '</span>';
+      b.classList.add('on');
+    } else {
+      if (state.rule && state.i >= state.rule.until){
+        b.innerHTML = '✓ house rule lifted. you\'re free.';
+        b.classList.add('on');
+        state.rule = null;
+        setTimeout(function(){ if (!state.rule) b.classList.remove('on'); }, 3500);
+      } else if (!state.rule) {
+        b.classList.remove('on');
+      }
+    }
+  }
+
+  function deal(){
+    if (state.i >= state.deck.length){ startReflect(); return; }
+    var p = state.deck[state.i];
+    if (p.t === 'power' && p.k === 'rule' && !p.armed){
+      p.armed = true;
+      state.rule = { text: p.x.replace(' Rule lasts 5 cards.','').replace(' Lasts 5 cards.',''), until: state.i + 6 };
+    }
+    updateRuleBanner();
+    var card = $('card');
+    card.style.animation = 'none';
+    void card.offsetWidth;
+    card.style.animation = '';
+    card.className = 'prompt-card' + (p.t === 'power' ? ' power' : '');
+    $('ptype').textContent = typeLabels[p.t];
+    $('ptype').className = 'ptype ' + p.t;
+    $('ptext').textContent = p.x;
+    $('pcount').textContent = (state.i+1) + ' / ' + state.deck.length;
+    $('keep-btn').style.visibility = p.t === 'power' ? 'hidden' : 'visible';
+    $('retire-btn').style.visibility = p.t === 'power' ? 'hidden' : 'visible';
+    $('back-card-btn').style.visibility = state.i > 0 ? 'visible' : 'hidden';
+    if (p.t !== 'power') markSeen(p.x);
+    syncKeepBtn();
+    persist();
+  }
+
+  /* ---- keep ---- */
+  function syncKeepBtn(){
+    var p = state.deck[state.i];
+    var kept = p && state.kept.indexOf(p.x) !== -1;
+    $('keep-btn').textContent = kept ? '❤️ kept' : '🤍 keep this card';
+    $('keep-btn').className = 'keep-btn' + (kept ? ' kept' : '');
+  }
+  function toggleKeep(){
+    var p = state.deck[state.i];
+    if (!p || p.t === 'power') return;
+    var idx = state.kept.indexOf(p.x);
+    if (idx === -1) state.kept.push(p.x); else state.kept.splice(idx, 1);
+    syncKeepBtn(); persist();
+  }
+  function retireCard(){
+    var p = state.deck[state.i];
+    if (!p || p.t === 'power') return;
+    banCard(p.x);
+    var ki = state.kept.indexOf(p.x);
+    if (ki !== -1) state.kept.splice(ki, 1);
+    // remove any future copies from the live deck, then advance
+    state.deck = state.deck.filter(function(c, idx){ return idx <= state.i ? true : c.x !== p.x; });
+    state.i++;
+    deal();
+  }
+
+  /* ---- reflection finale ---- */
+  function startReflect(){
+    if (!state.reflectQs.length){
+      state.reflectQs = shuffle(R.slice()).slice(0,3);
+      state.reflectI = 0;
+    }
+    showReflect();
+  }
+  function showReflect(){
+    if (state.reflectI >= state.reflectQs.length){ buildRecap(); return; }
+    var q = state.reflectQs[state.reflectI];
+    var card = $('reflect-card');
+    card.style.animation = 'none'; void card.offsetWidth; card.style.animation = '';
+    $('reflect-text').textContent = q;
+    $('reflect-ans').value = state.reflectAns[q] || '';
+    $('reflect-count').textContent = (state.reflectI+1) + ' / ' + state.reflectQs.length;
+    $('reflect-next').textContent = (state.reflectI === state.reflectQs.length - 1) ? 'see your deck →' : 'next';
+    show('reflect');
+    persist();
+  }
+  $('reflect-ans').addEventListener('input', function(){
+    var q = state.reflectQs[state.reflectI];
+    if (q){ state.reflectAns[q] = $('reflect-ans').value; persist(); }
+  });
+  $('reflect-next').addEventListener('click', function(){ state.reflectI++; showReflect(); });
+  $('reflect-skip').addEventListener('click', function(){ buildRecap(); });
+
+  /* ---- recap / deck builder ---- */
+  function buildRecap(){
+    // reflection answers block
+    var rblock = $('refl-block'), rlist = $('refl-list');
+    rlist.innerHTML = '';
+    var answeredRefl = state.reflectQs.filter(function(q){ return (state.reflectAns[q]||'').trim(); });
+    if (answeredRefl.length){
+      rblock.classList.remove('hidden');
+      answeredRefl.forEach(function(q){
+        var div = document.createElement('div');
+        div.className = 'recap-card refl';
+        var qEl = document.createElement('div'); qEl.className = 'q'; qEl.textContent = q;
+        var ta = document.createElement('textarea');
+        ta.value = state.reflectAns[q] || '';
+        ta.addEventListener('input', function(){ state.reflectAns[q] = ta.value; persist(); });
+        ta.addEventListener('focus', scrollIntoView);
+        div.appendChild(qEl); div.appendChild(ta); rlist.appendChild(div);
+      });
+    } else {
+      rblock.classList.add('hidden');
+    }
+
+    // kept cards (fallback: cards seen so far)
+    var list = $('recap-list');
+    list.innerHTML = '';
+    var cards = state.kept.length ? state.kept : state.deck.slice(0, state.i+1).filter(function(p){ return p.t !== 'power'; }).map(function(p){ return p.x; });
+    if (!cards.length){
+      list.innerHTML = '<div class="recap-card"><div class="q" style="color:var(--mut);font-weight:400;">you didn\'t keep any cards — tap 🤍 on the ones worth remembering next time. you can still print your reflection above.</div></div>';
+    }
+    cards.forEach(function(q){
+      var div = document.createElement('div');
+      div.className = 'recap-card';
+      var qEl = document.createElement('div'); qEl.className = 'q'; qEl.textContent = q;
+      var ta = document.createElement('textarea');
+      ta.placeholder = 'what was the answer? (optional, gets printed)';
+      ta.value = state.answers[q] || '';
+      ta.addEventListener('input', function(){ state.answers[q] = ta.value; persist(); });
+      ta.addEventListener('focus', scrollIntoView);
+      div.appendChild(qEl); div.appendChild(ta); list.appendChild(div);
+    });
+
+    var d = new Date();
+    $('dc-date').textContent = d.toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'}) + ' · ' + d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+    $('dc-heat').textContent = heatLabels[state.heat];
+    $('dc-loc').textContent = $('deck-loc').value.trim() || 'somewhere good';
+    show('recap');
+    persist();
+  }
+
+  // keep the focused input above the mobile keyboard
+  function scrollIntoView(e){
+    var el = e.target;
+    setTimeout(function(){ if (el && el.scrollIntoView) el.scrollIntoView({block:'center', behavior:'smooth'}); }, 250);
+  }
+
+  function collectCards(){
+    return state.kept.length ? state.kept : state.deck.slice(0, state.i+1).filter(function(p){ return p.t !== 'power'; }).map(function(p){ return p.x; });
+  }
+
+  /* ---- printable deck ---- */
+  function buildPrintDeck(){
+    var loc = $('deck-loc').value.trim() || 'somewhere good';
+    var d = new Date();
+    var dateStr = d.toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'});
+    var html = '<div class="pd-grid">';
+    // cover
+    html += '<div class="pd-card pd-cover"><div class="pd-brand">riff.</div><div class="pd-meta">' + esc(loc) + '</div><div class="pd-meta">' + esc(dateStr) + '</div><div class="pd-meta">' + esc(heatLabels[state.heat]) + '</div></div>';
+    // reflection cards
+    state.reflectQs.forEach(function(q){
+      if (!(state.reflectAns[q]||'').trim()) return;
+      html += '<div class="pd-card"><div class="pd-type">tonight</div><div class="pd-q">' + esc(q) + '</div><div class="pd-a">' + esc(state.reflectAns[q]) + '</div></div>';
+    });
+    // kept cards
+    collectCards().forEach(function(q){
+      var a = (state.answers[q]||'').trim();
+      html += '<div class="pd-card"><div class="pd-type">card</div><div class="pd-q">' + esc(q) + '</div>' +
+        (a ? '<div class="pd-a">' + esc(a) + '</div>' : '<div class="pd-a blank">— left blank —</div>') + '</div>';
+    });
+    // sealed note
+    var na = ($('note-a').value||'').trim(), nb = ($('note-b').value||'').trim();
+    if (na || nb){
+      html += '<div class="pd-card pd-note"><div class="pd-type">🔒 open after we part</div>' +
+        (na ? '<div class="pd-q" style="font-size:11pt;">' + esc(na) + '</div>' : '') +
+        (nb ? '<div class="pd-a">' + esc(nb) + '</div>' : '') + '</div>';
+    }
+    html += '</div>';
+    $('print-deck').innerHTML = html;
+  }
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+  function orderDeck(){
+    var loc = $('deck-loc').value.trim() || 'somewhere good';
+    var lines = ['RIFF DATE DECK ORDER (beta waitlist)','Location: ' + loc,'Date: ' + new Date().toLocaleString(),'Heat: ' + heatLabels[state.heat],''];
+    var answeredRefl = state.reflectQs.filter(function(q){ return (state.reflectAns[q]||'').trim(); });
+    if (answeredRefl.length){
+      lines.push('TONIGHT, IN THEIR WORDS:');
+      answeredRefl.forEach(function(q){ lines.push('Q: ' + q); lines.push('A: ' + state.reflectAns[q]); lines.push(''); });
+    }
+    lines.push('CARDS:');
+    collectCards().forEach(function(q){ lines.push('Q: ' + q); if (state.answers[q]) lines.push('A: ' + state.answers[q]); lines.push(''); });
+    var na = ($('note-a').value||'').trim(), nb = ($('note-b').value||'').trim();
+    if (na || nb){ lines.push('SEALED NOTE:'); if (na) lines.push('From you: ' + na); if (nb) lines.push('From them: ' + nb); }
+    location.href = 'mailto:aorque@gmail.com?subject=' + encodeURIComponent('Riff date deck — ' + loc) + '&body=' + encodeURIComponent(lines.join('\n'));
+  }
+
+  /* ---- wiring ---- */
+  $('keep-btn').addEventListener('click', toggleKeep);
+  $('retire-btn').addEventListener('click', retireCard);
+  $('back-card-btn').addEventListener('click', function(){ if (state.i > 0){ state.i--; deal(); } });
+  $('gotit-btn').addEventListener('click', function(){ show('farewell'); });
+  $('farewell-back').addEventListener('click', function(){ show('game'); deal(); });
+  $('farewell-save').addEventListener('click', startReflect);
+  $('farewell-forget').addEventListener('click', function(){ freshSession(); show('gate'); $('pw').value=''; });
+  $('enddate-btn').addEventListener('click', startReflect);
+  $('end-recap-btn').addEventListener('click', buildRecap);
+  $('deck-loc').addEventListener('input', function(){ $('dc-loc').textContent = $('deck-loc').value.trim() || 'somewhere good'; persist(); });
+  $('note-a').addEventListener('input', persist);
+  $('note-b').addEventListener('input', persist);
+  $('order-btn').addEventListener('click', orderDeck);
+  $('preview-btn').addEventListener('click', function(){ buildPrintDeck(); setTimeout(function(){ window.print(); }, 60); });
+  $('recap-back').addEventListener('click', function(){ show('game'); deal(); });
+
+  $('start-btn').addEventListener('click', function(){ buildDeck(); show('game'); $('heat-pill').textContent = heatLabels[state.heat]; deal(); });
+  $('next-btn').addEventListener('click', function(){ state.i++; deal(); });
+  $('skip-btn').addEventListener('click', function(){ state.i++; deal(); });
+  $('change-btn').addEventListener('click', function(){ show('setup'); });
+  $('again-btn').addEventListener('click', function(){ freshSession(); show('setup'); });
+  $('heat-pill').addEventListener('click', function(){
+    var order = ['sweet','flirty','spicy'];
+    state.heat = order[(order.indexOf(state.heat)+1) % 3];
+    $('heat-pill').textContent = heatLabels[state.heat];
+    // re-pick the ceiling mid-game without nuking progress: rebuild the *upcoming* cards only
+    rebuildTail();
+    deal();
+  });
+
+  // rebuild only the not-yet-seen tail when heat changes mid-game (keeps history intact)
+  function rebuildTail(){
+    var heats = state.heat === 'sweet' ? ['sweet'] : state.heat === 'flirty' ? ['sweet','flirty'] : ['sweet','flirty','spicy'];
+    var src = state.drink ? P.concat(D) : P;
+    var banned = getBanned();
+    var played = state.deck.slice(0, state.i+1).map(function(p){ return p.x; });
+    var pool = src.filter(function(p){
+      return (p.c === state.ctx || p.c === 'any') && heats.indexOf(p.h) !== -1 && banned.indexOf(p.x) === -1 && played.indexOf(p.x) === -1;
+    });
+    // escalate the tail toward the new ceiling
+    pool.sort(function(a,b){ return heatRank[a.h] - heatRank[b.h]; });
+    var byHeat = {sweet:[],flirty:[],spicy:[]};
+    pool.forEach(function(p){ byHeat[p.h].push(p); });
+    Object.keys(byHeat).forEach(function(k){ shuffle(byHeat[k]); });
+    var tail = byHeat.sweet.concat(byHeat.flirty).concat(byHeat.spicy);
+    state.deck = state.deck.slice(0, state.i+1).concat(tail);
+  }
+})();
+</script>
+</body>
+</html>
