@@ -631,7 +631,7 @@ function checkPw(){
 
 <script>
   // Live data — injected by nightly cron
-  var LIVE = {"total_cost": 343.8, "total_tokens": 707300468, "total_sessions": 2051, "today_cost": 2.22, "memory_pct": 90, "user_pct": 92, "skill_count": 147, "total_lines": 44986, "tool_calls": 18868, "cron_jobs": 16, "updated": "Jun 14 2026 19:00 PT"};
+  var LIVE = {"total_cost": 343.8, "total_tokens": 707300468, "total_sessions": 2051, "today_cost": 22.1427, "memory_pct": 90, "user_pct": 92, "skill_count": 147, "total_lines": 44986, "tool_calls": 18868, "cron_jobs": 16, "updated": "Jun 14 2026 19:00 PT"};
 
   function applyLive(d){
     // Token card
@@ -655,7 +655,7 @@ function checkPw(){
   
   // Auto-updated spend data
   (function() {
-    renderSpend({...SPEND_DATA, "days": [{"date": "2026-06-07", "sessions": 64, "cost": 6.6497}, {"date": "2026-06-08", "sessions": 238, "cost": 21.3507}, {"date": "2026-06-09", "sessions": 324, "cost": 28.8849}, {"date": "2026-06-10", "sessions": 323, "cost": 31.6838}, {"date": "2026-06-11", "sessions": 331, "cost": 33.9659}, {"date": "2026-06-12", "sessions": 325, "cost": 29.7017}, {"date": "2026-06-13", "sessions": 218, "cost": 18.2526}], "sessions_today": [{"time": "05:40", "title": "untitled", "input": 3184, "output": 96, "cost": 0.0037, "source": "cron"}, {"time": "05:40", "title": "untitled", "input": 3, "output": 60, "cost": 0.0077, "source": "cron"}, {"time": "05:34", "title": "untitled", "input": 10, "output": 463, "cost": 0.0373, "source": "cron"}, {"time": "05:29", "title": "untitled", "input": 18, "output": 2138, "cost": 0.1094, "source": "cron"}, {"time": "05:23", "title": "untitled", "input": 18, "output": 2218, "cost": 0.1238, "source": "cron"}, {"time": "05:18", "title": "untitled", "input": 47, "output": 1249, "cost": 0.0808, "source": "cron"}, {"time": "05:13", "title": "untitled", "input": 3265, "output": 423, "cost": 0.0118, "source": "cron"}, {"time": "05:12", "title": "untitled", "input": 15, "output": 589, "cost": 0.065, "source": "cron"}, {"time": "05:08", "title": "untitled", "input": 3199, "output": 3599, "cost": 0.1148, "source": "cron"}]});
+    renderSpend({...SPEND_DATA, "days": [{"date": "2026-06-07", "sessions": 64, "cost": 6.6497}, {"date": "2026-06-08", "sessions": 238, "cost": 21.3507}, {"date": "2026-06-09", "sessions": 324, "cost": 28.8849}, {"date": "2026-06-10", "sessions": 323, "cost": 31.6838}, {"date": "2026-06-11", "sessions": 331, "cost": 33.9659}, {"date": "2026-06-12", "sessions": 325, "cost": 29.7017}, {"date": "2026-06-13", "sessions": 268, "cost": 22.1434}], "sessions_today": [{"time": "19:48", "title": "untitled", "input": 3184, "output": 113, "cost": 0.0037}, {"time": "19:43", "title": "untitled", "input": 17, "output": 679, "cost": 0.0825}, {"time": "19:38", "title": "untitled", "input": 25, "output": 1772, "cost": 0.0949}, {"time": "19:32", "title": "untitled", "input": 18, "output": 858, "cost": 0.0441}, {"time": "19:27", "title": "untitled", "input": 17, "output": 608, "cost": 0.0431}]});
   })();
 
   applyLive(LIVE);
@@ -717,7 +717,7 @@ function checkPw(){
   document.getElementById('sc').textContent='2051';
 
     document.addEventListener("DOMContentLoaded", function(){ document.querySelectorAll("[id*='spend']").forEach(function(el){ if(el.id === "spend-big") el.textContent = "$21.12"; }); }); }); });
-    var _spend_data = {"today_cost": 21.1205, "today_sessions": 253, "days": [{"date": "2026-06-07", "sessions": 64, "cost": 6.6497}, {"date": "2026-06-08", "sessions": 238, "cost": 21.3507}, {"date": "2026-06-09", "sessions": 324, "cost": 28.8849}, {"date": "2026-06-10", "sessions": 323, "cost": 31.6838}, {"date": "2026-06-11", "sessions": 331, "cost": 33.9659}, {"date": "2026-06-12", "sessions": 325, "cost": 29.7017}, {"date": "2026-06-13", "sessions": 253, "cost": 21.1211}], "sessions_today": [{"time": "00:00", "cost": 0}]};
+    var _spend_data = {"today_cost": 22.1427, "today_sessions": 268, "days": [{"date": "2026-06-07", "sessions": 64, "cost": 6.6497}, {"date": "2026-06-08", "sessions": 238, "cost": 21.3507}, {"date": "2026-06-09", "sessions": 324, "cost": 28.8849}, {"date": "2026-06-10", "sessions": 323, "cost": 31.6838}, {"date": "2026-06-11", "sessions": 331, "cost": 33.9659}, {"date": "2026-06-12", "sessions": 325, "cost": 29.7017}, {"date": "2026-06-13", "sessions": 268, "cost": 22.1434}], "sessions_today": [{"time": "19:48", "title": "untitled", "input": 3184, "output": 113, "cost": 0.0037}, {"time": "19:43", "title": "untitled", "input": 17, "output": 679, "cost": 0.0825}, {"time": "19:38", "title": "untitled", "input": 25, "output": 1772, "cost": 0.0949}, {"time": "19:32", "title": "untitled", "input": 18, "output": 858, "cost": 0.0441}, {"time": "19:27", "title": "untitled", "input": 17, "output": 608, "cost": 0.0431}]};
         {
             "date": "2026-06-03",
             "sessions": 6,
@@ -769,7 +769,7 @@ function checkPw(){
             "cost": 28.209
         }
     ],
-    "sessions_today": [{"time": "01:59", "cost": 0.0037}, {"time": "01:55", "cost": 0.0472}, {"time": "01:50", "cost": 0.0949}, {"time": "01:44", "cost": 0.0733}, {"time": "01:39", "cost": 0.0498}, {"time": "01:33", "cost": 0.0958}, {"time": "01:28", "cost": 0.1081}, {"time": "01:27", "cost": 0.0833}, {"time": "01:21", "cost": 0.1062}, {"time": "01:16", "cost": 0.0576}, {"time": "01:10", "cost": 0.0718}, {"time": "01:05", "cost": 0.0962}, {"time": "01:00", "cost": 0.2267}, {"time": "00:59", "cost": 0.069}, {"time": "00:56", "cost": 0.1235}, {"time": "00:53", "cost": 0.0465}, {"time": "00:48", "cost": 0.0478}, {"time": "00:42", "cost": 0.0379}, {"time": "00:37", "cost": 0.0797}, {"time": "00:31", "cost": 0.1135}, {"time": "00:24", "cost": 0.0923}, {"time": "00:24", "cost": 0.1348}, {"time": "00:19", "cost": 0.1202}, {"time": "00:13", "cost": 0.0585}, {"time": "00:08", "cost": 0.0734}, {"time": "00:02", "cost": 0.078}]};
+    "sessions_today": [{"time": "19:48", "title": "untitled", "input": 3184, "output": 113, "cost": 0.0037}, {"time": "19:43", "title": "untitled", "input": 17, "output": 679, "cost": 0.0825}, {"time": "19:38", "title": "untitled", "input": 25, "output": 1772, "cost": 0.0949}, {"time": "19:32", "title": "untitled", "input": 18, "output": 858, "cost": 0.0441}, {"time": "19:27", "title": "untitled", "input": 17, "output": 608, "cost": 0.0431}]};
   
   // Render history and sessions
   (function renderSpendData() {
