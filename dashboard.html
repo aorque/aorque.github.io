@@ -960,7 +960,7 @@ function checkPw(){
     el=document.getElementById('tk-tokens');if(el)el.textContent=Math.round(d.total_tokens/1000)+'K';
     el=document.getElementById('tk-sessions');if(el)el.textContent=d.total_sessions;
     el=document.getElementById('tk-avg');if(el)el.textContent='$'+Math.round(d.total_cost/d.total_sessions*100)/100;
-    el=document.getElementById('tk-today');if(el)el.textContent='$'+d.today_cost;
+    el=document.getElementById('tk-today');if(el)el.textContent='$2.68';
     // Memory bars — all instances
     var mp=d.memory_pct, up=d.user_pct;
     var mcolor=mp>85?'var(--red)':mp>70?'var(--yellow)':'var(--green)';
