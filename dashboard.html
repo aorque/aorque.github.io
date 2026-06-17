@@ -1216,7 +1216,7 @@ function checkPw(){
     el=document.getElementById('tk-tokens');if(el)el.textContent=Math.round(d.total_tokens/1000)+'K';
     el=document.getElementById('tk-sessions');if(el)el.textContent=d.total_sessions;
     el=document.getElementById('tk-avg');if(el)el.textContent='$'+Math.round(d.total_cost/d.total_sessions*100)/100;
-    el=document.getElementById('tk-today');if(el)el.textContent='$2.68';
+    el=document.getElementById('tk-today');if(el)el.textContent = "$5.75";
     // Memory bars — all instances
     var mp=d.memory_pct, up=d.user_pct;
     var mcolor=mp>85?'var(--red)':mp>70?'var(--yellow)':'var(--green)';
@@ -1295,20 +1295,19 @@ function checkPw(){
   document.getElementById('sc').textContent='2272';
 
     document.addEventListener("DOMContentLoaded", function(){ document.querySelectorAll("[id*='spend']").forEach(function(el){ if (el.id === "spend-big") el.textContent = "$5.50"; }); }); }); }); }); });
-    var _spend_data = {"today_cost": 5.4983, "today_sessions": 51, "days": [{"date": "2026-06-02", "sessions": 1, "cost": 0.0753}, {"date": "2026-06-03", "sessions": 6, "cost": 45.4227}, {"date": "2026-06-04", "sessions": 7, "cost": 44.7528}, {"date": "2026-06-05", "sessions": 10, "cost": 46.2749}, {"date": "2026-06-06", "sessions": 21, "cost": 12.5992}, {"date": "2026-06-07", "sessions": 64, "cost": 6.6497}, {"date": "2026-06-08", "sessions": 238, "cost": 21.3507}, {"date": "2026-06-09", "sessions": 324, "cost": 28.8849}, {"date": "2026-06-10", "sessions": 323, "cost": 31.6838}, {"date": "2026-06-11", "sessions": 331, "cost": 33.9659}, {"date": "2026-06-12", "sessions": 325, "cost": 29.7017}, {"date": "2026-06-13", "sessions": 298, "cost": 25.5309}, {"date": "2026-06-14", "sessions": 56, "cost": 5.9532}, {"date": "2026-06-15", "sessions": 55, "cost": 6.2791}, {"date": "2026-06-16", "sessions": 49, "cost": 5.4143}], "sessions_today": [{"time": "21:30", "cost": 0.0037}, {"time": "20:59", "cost": 0.1361}, {"time": "20:28", "cost": 0.0922}]};
+    var _spend_data = {"today_cost": 5.7455, "today_sessions": 53, "days": [{"date": "2026-06-02", "sessions": 1, "cost": 0.0753}, {"date": "2026-06-03", "sessions": 6, "cost": 45.4227}, {"date": "2026-06-04", "sessions": 7, "cost": 44.7528}, {"date": "2026-06-05", "sessions": 10, "cost": 46.2749}, {"date": "2026-06-06", "sessions": 21, "cost": 12.5992}, {"date": "2026-06-07", "sessions": 64, "cost": 6.6497}, {"date": "2026-06-08", "sessions": 238, "cost": 21.3507}, {"date": "2026-06-09", "sessions": 324, "cost": 28.8849}, {"date": "2026-06-10", "sessions": 323, "cost": 31.6838}, {"date": "2026-06-11", "sessions": 331, "cost": 33.9659}, {"date": "2026-06-12", "sessions": 325, "cost": 29.7017}, {"date": "2026-06-13", "sessions": 298, "cost": 25.5309}, {"date": "2026-06-14", "sessions": 56, "cost": 5.9532}, {"date": "2026-06-15", "sessions": 55, "cost": 6.2791}, {"date": "2026-06-16", "sessions": 49, "cost": 5.4143}], "sessions_today": [{"time": "21:30", "cost": 0.0037}, {"time": "20:59", "cost": 0.1361}, {"time": "20:28", "cost": 0.0922}]};
   
   // Render history and sessions
   (function renderSpendData() {
     // Render 7-day history
     var histDiv = document.getElementById('spend-history');
-    if (histDiv) { histDiv.innerHTML = `<div style=\"padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);\"><span>2026-06-10 · 323 sessions</span><span style=\"color:var(--orange);font-weight:700\">$31.6838</span></div>
-<div style=\"padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);\"><span>2026-06-11 · 331 sessions</span><span style=\"color:var(--orange);font-weight:700\">$33.9659</span></div>
-<div style=\"padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);\"><span>2026-06-12 · 325 sessions</span><span style=\"color:var(--orange);font-weight:700\">$29.7017</span></div>
-<div style=\"padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);\"><span>2026-06-13 · 298 sessions</span><span style=\"color:var(--orange);font-weight:700\">$25.5309</span></div>
-<div style=\"padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);\"><span>2026-06-14 · 56 sessions</span><span style=\"color:var(--orange);font-weight:700\">$5.9532</span></div>
-<div style=\"padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);\"><span>2026-06-15 · 55 sessions</span><span style=\"color:var(--orange);font-weight:700\">$6.2791</span></div>
-<div style=\"padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);\"><span>2026-06-16 · 48 sessions</span><span style=\"color:var(--orange);font-weight:700\">$5.2782</span></div>
-`; } 
+    if (histDiv) { histDiv.innerHTML = `<div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-10 · 323 sessions</span><span style="color:var(--orange);font-weight:700;">$31.6838</span></div>
+<div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-11 · 331 sessions</span><span style="color:var(--orange);font-weight:700;">$33.9659</span></div>
+<div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-12 · 325 sessions</span><span style="color:var(--orange);font-weight:700;">$29.7017</span></div>
+<div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-13 · 298 sessions</span><span style="color:var(--orange);font-weight:700;">$25.5309</span></div>
+<div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-14 · 56 sessions</span><span style="color:var(--orange);font-weight:700;">$5.9532</span></div>
+<div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-15 · 55 sessions</span><span style="color:var(--orange);font-weight:700;">$6.2791</span></div>
+<div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-16 · 53 sessions</span><span style="color:var(--orange);font-weight:700;">$5.7456</span></div>`; } 
   
   window.showPage = showPage;})();
 </script>
