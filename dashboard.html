@@ -450,7 +450,7 @@ function checkPw(){
     el=document.getElementById('tk-tokens');if(el)el.textContent=Math.round(d.total_tokens/1000)+'K';
     el=document.getElementById('tk-sessions');if(el)el.textContent=d.total_sessions;
     el=document.getElementById('tk-avg');if(el)el.textContent='$'+Math.round(d.total_cost/d.total_sessions*100)/100;
-    el=document.getElementById('tk-today');if(el)el.textContent = "$2.49";
+    el=document.getElementById('tk-today');if(el)el.textContent = "$2.56";
     // Memory bars — all instances
     var mp=d.memory_pct, up=d.user_pct;
     var mcolor=mp>85?'var(--red)':mp>70?'var(--yellow)':'var(--green)';
@@ -536,14 +536,15 @@ function checkPw(){
   function renderSpendData() {
     // Render 7-day history
     var histDiv = document.getElementById('spend-history');
-    if (histDiv) { histDiv.innerHTML = `    <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-15 · 55 sessions</span><span style="color:var(--orange);font-weight:700;">$6.2791</span></div>
+    if (histDiv) { histDiv.innerHTML = `
+    <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-15 · 55 sessions</span><span style="color:var(--orange);font-weight:700;">$6.2791</span></div>
     <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-16 · 54 sessions</span><span style="color:var(--orange);font-weight:700;">$6.3015</span></div>
     <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-17 · 55 sessions</span><span style="color:var(--orange);font-weight:700;">$6.5147</span></div>
     <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-18 · 56 sessions</span><span style="color:var(--orange);font-weight:700;">$6.2003</span></div>
     <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-19 · 56 sessions</span><span style="color:var(--orange);font-weight:700;">$6.0084</span></div>
     <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-20 · 54 sessions</span><span style="color:var(--orange);font-weight:700;">$5.2685</span></div>
-    <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-21 · 27 sessions</span><span style="color:var(--orange);font-weight:700;">$2.3984</span></div>
-`; } 
+    <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-21 · 29 sessions</span><span style="color:var(--orange);font-weight:700;">$2.5586</span></div>
+    `; } 
   
   window.showPage = showPage;})();
 </script>
