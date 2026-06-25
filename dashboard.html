@@ -649,101 +649,13 @@ function checkPw(){
     ['mem-badge','mem-badge2'].forEach(function(id){var e=document.getElementById(id);if(e){e.textContent='Notes '+mp+'% · Profile '+up+'%';e.style.color=mcolor}});
   }
   
-  // auto-updated: 2026-06-24 19:38 UTC
-  (function() {
-    renderSpend({...SPEND_DATA, "days": [{"date": "2026-06-17", "sessions": 55, "cost": 6.5147}, {"date": "2026-06-18", "sessions": 56, "cost": 6.2003}, {"date": "2026-06-19", "sessions": 56, "cost": 6.0084}, {"date": "2026-06-20", "sessions": 54, "cost": 5.2685}, {"date": "2026-06-21", "sessions": 57, "cost": 5.9053}, {"date": "2026-06-22", "sessions": 55, "cost": 5.5127}, {"date": "2026-06-23", "sessions": 48, "cost": 5.5582}], "sessions_today": [{"time": "20:39", "input": 3184, "output": 94, "cost": 0.0037}, {"time": "20:08", "input": 3199, "output": 4597, "cost": 0.0942}, {"time": "19:36", "input": 6694, "output": 9961, "cost": 0.2633}, {"time": "19:05", "input": 3199, "output": 2319, "cost": 0.1208}, {"time": "19:00", "input": 18, "output": 4082, "cost": 0.0512}, {"time": "18:32", "input": 3199, "output": 2237, "cost": 0.0974}, {"time": "18:01", "input": 3202, "output": 2866, "cost": 0.0993}, {"time": "17:30", "input": 3199, "output": 1986, "cost": 0.0757}, {"time": "16:59", "input": 3199, "output": 2208, "cost": 0.1115}, {"time": "16:28", "input": 3199, "output": 3137, "cost": 0.1283}, {"time": "15:59", "input": 8, "output": 259, "cost": 0.0076}, {"time": "15:58", "input": 3199, "output": 1591, "cost": 0.0661}, {"time": "15:27", "input": 3199, "output": 3965, "cost": 0.1927}, {"time": "14:56", "input": 3199, "output": 1484, "cost": 0.0651}, {"time": "14:25", "input": 3199, "output": 2337, "cost": 0.1353}, {"time": "13:55", "input": 3199, "output": 1519, "cost": 0.0651}, {"time": "13:24", "input": 3199, "output": 2094, "cost": 0.0818}, {"time": "12:53", "input": 3199, "output": 2134, "cost": 0.0721}, {"time": "12:23", "input": 3199, "output": 2350, "cost": 0.0851}, {"time": "11:52", "input": 3199, "output": 5878, "cost": 0.1115}, {"time": "11:21", "input": 3199, "output": 5312, "cost": 0.1278}, {"time": "10:50", "input": 3199, "output": 2518, "cost": 0.0801}, {"time": "10:18", "input": 3199, "output": 11494, "cost": 0.1899}, {"time": "09:59", "input": 8, "output": 527, "cost": 0.0094}, {"time": "09:47", "input": 3199, "output": 2301, "cost": 0.097}, {"time": "09:16", "input": 3199, "output": 2881, "cost": 0.1101}, {"time": "08:45", "input": 3199, "output": 2672, "cost": 0.1229}, {"time": "08:13", "input": 3199, "output": 7728, "cost": 0.1888}, {"time": "07:42", "input": 3199, "output": 4508, "cost": 0.1288}, {"time": "07:12", "input": 3184, "output": 86, "cost": 0.0036}, {"time": "06:41", "input": 3199, "output": 3188, "cost": 0.1113}, {"time": "06:10", "input": 3199, "output": 2321, "cost": 0.096}, {"time": "05:39", "input": 3199, "output": 4133, "cost": 0.1322}, {"time": "05:38", "input": 3, "output": 325, "cost": 0.0282}, {"time": "05:07", "input": 3199, "output": 6429, "cost": 0.1577}, {"time": "04:36", "input": 3199, "output": 2462, "cost": 0.1186}, {"time": "04:05", "input": 6721, "output": 5060, "cost": 0.1456}, {"time": "03:58", "input": 8, "output": 337, "cost": 0.0079}, {"time": "03:34", "input": 3199, "output": 2245, "cost": 0.0606}, {"time": "03:03", "input": 3199, "output": 4398, "cost": 0.1075}, {"time": "03:01", "input": 26, "output": 5151, "cost": 0.0643}, {"time": "02:32", "input": 3199, "output": 4246, "cost": 0.1087}, {"time": "02:01", "input": 6720, "output": 1692, "cost": 0.0699}, {"time": "01:30", "input": 3199, "output": 4885, "cost": 0.1059}, {"time": "01:14", "input": 74, "output": 20998, "cost": 1.0026}, {"time": "01:00", "input": 9816, "output": 3499, "cost": 0.0501}, {"time": "00:58", "input": 3199, "output": 4382, "cost": 0.0924}, {"time": "00:27", "input": 3199, "output": 3633, "cost": 0.1125}]});
-  })();
-
-  applyLive(LIVE);
-
-  // Clock
-  function tick(){
-    var t=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true}).format(new Date());
-    document.getElementById('clock').textContent=t+' PT';
-  }
-  tick();setInterval(tick,1000);
-
-  // Footer date
-  document.getElementById('fdate').textContent=new Date().toLocaleDateString('en-US',{timeZone:'America/Los_Angeles',weekday:'long',year:'numeric',month:'long',day:'numeric'});
-
-  // Tabs
-  function showPage(id){
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    document.getElementById('page-'+id).classList.add('active');
-    event.target.classList.add('active');
-  }
-
-  // Week label
-  (function(){
-    var n=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Los_Angeles'}));
-    var m=new Date(n);m.setDate(n.getDate()-((n.getDay()+6)%7));
-    var s=new Date(m);s.setDate(m.getDate()+6);
-    var f=function(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric'})};
-    var wstr=f(m)+' – '+f(s);
-    document.getElementById('wl').textContent=wstr;
-    if(document.getElementById('wl2'))document.getElementById('wl2').textContent=wstr;
-  })();
-
-  // ── SLEEP PAGE ──────────────────────────────────────────
-  (function sleepPage(){
-    var hoursSlept = 7.0;
-    var cycles = hoursSlept / 1.5;
-    var totalCycles = 6; // max shown
-    var bars = document.getElementById('sleep-cycle-bars');
-    if(bars){
-      bars.innerHTML = '';
-      for(var i=0;i<totalCycles;i++){
-        var filled = i < Math.floor(cycles);
-        var partial = !filled && i < cycles;
-        var color = filled ? 'var(--teal)' : partial ? 'var(--yellow)' : 'var(--bg3)';
-        var border = filled||partial ? 'var(--teal)' : 'var(--border)';
-        bars.innerHTML += '<div style="flex:1;height:20px;background:'+color+';border:1px solid '+border+';border-radius:2px;position:relative">' +
-          '<div style="position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:7px;color:var(--muted)">'+(i+1)+'</div></div>';
-      }
-    }
-    var statusIcon = document.getElementById('sleep-status-icon');
-    var statusLabel = document.getElementById('sleep-status-label');
-    if(cycles >= 6){ if(statusIcon)statusIcon.textContent='✅'; if(statusLabel){statusLabel.textContent='IDEAL';statusLabel.style.color='var(--green)';} }
-    else if(cycles >= 5){ if(statusIcon)statusIcon.textContent='✅'; if(statusLabel){statusLabel.textContent='ON TARGET';statusLabel.style.color='var(--green)';} }
-    else { if(statusIcon)statusIcon.textContent='⚠️'; if(statusLabel){statusLabel.textContent='BELOW TARGET';statusLabel.style.color='var(--yellow)';} }
-  })();
-
-  // Sessions — live from DB via local spend API
-  document.getElementById('sc').textContent='2705';
-
-    document.addEventListener("DOMContentLoaded", function(){ document.querySelectorAll("[id*='spend']").forEach(function(el){ "$0.50"; }); }); }); }); }); }); });
-    var _spend_data = {"today_cost: 3.9473, "today_sessions: 37, "days": [{"date": "2026-06-18", "sessions": 56, "cost": 6.2003}, {"date": "2026-06-19", "sessions": 56, "cost": 6.0084}, {"date": "2026-06-20", "sessions": 54, "cost": 5.2685}, {"date": "2026-06-21", "sessions": 57, "cost": 5.9053}, {"date": "2026-06-22", "sessions": 55, "cost": 5.5127}, {"date": "2026-06-23", "sessions": 55, "cost": 6.4389}, {"date": "2026-06-24", "sessions": 17, "cost": 1.6144}], "W}};
-  // Render history and sessions
-  (function() {
-    var _spend_data = {"today_cost: 3.9473, "today_sessions: 37, "days": [{"date": "2026-06-18", "sessions": 56, "cost": 6.2003}, {"date": "2026-06-19", "sessions": 56, "cost": 6.0084}, {"date": "2026-06-20", "sessions": 54, "cost": 5.2685}, {"date": "2026-06-21", "sessions": 57, "cost": 5.9053}, {"date": "2026-06-22", "sessions": 55, "cost": 5.5127}, {"date": "2026-06-23", "sessions": 55, "cost": 6.4389}, {"date": "2026-06-24", "sessions": 17, "cost": 1.6144}], "W}};
-    function renderSpendData()"generated_at": "2026-06-23T11:05:30.339796+00:00", "grand_total": 382.4335, "today_cost: 3.9473, "today_sessions: 37, "days": [{"date": "2026-06-02", "sessions": 1, "input": 6, "output": 125, "cache_read": 18064, "cost": 0.0753}, {"date": "2026-06-03", "sessions": 6, "input": 1836, "output": 198763, "cache_read": 67116108, "cost": 45.4227}, {"date": "2026-06-04", "sessions": 7, "input": 1395, "output": 240644, "cache_read": 48071197, "cost": 44.7528}, {"date": "2026-06-05", "sessions": 10, "input": 17677, "output": 268456, "cache_read": 74855629, "cost": 46.2749}, {"date": "2026-06-06", "sessions": 21, "input": 34526, "output": 113268, "cache_read": 20000286, "cost": 12.5992}, {"date": "2026-06-07", "sessions": 64, "input": 204627, "output": 247172, "cache_read": 23062455, "cost": 6.6497}, {"date": "2026-06-08", "sessions": 238, "input": 209922, "output": 521879, "cache_read": 51329582, "cost": 21.3507}, {"date": "2026-06-09", "sessions": 324, "input": 193268, "output": 692836, "cache_read": 74634526, "cost": 28.8849}, {"date": "2026-06-10", "sessions": 323, "input": 180061, "output": 631923, "cache_read": 85152502, "cost": 31.6838}, {"date": "2026-06-11", "sessions": 331, "input": 194181, "output": 726115, "cache_read": 91031749, "cost": 33.9659}, {"date": "2026-06-12", "sessions": 325, "input": 192987, "output": 587785, "cache_read": 80384597, "cost": 29.7017}, {"date": "2026-06-13", "sessions": 298, "input": 208344, "output": 589137, "cache_read": 67713248, "cost": 25.5309}, {"date": "2026-06-14", "sessions": 56, "input": 161299, "output": 245777, "cache_read": 21650822, "cost": 5.9532}, {"date": "2026-06-15", "sessions": 55, "input": 160621, "output": 322438, "cache_read": 23753057, "cost": 6.2791}, {"date": "2026-06-16", "sessions": 54, "input": 167651, "output": 261152, "cache_read": 22171804, "cost": 6.3015}, {"date": "2026-06-17", "sessions": 55, "input": 164787, "output": 260518, "cache_read": 21147093, "cost": 6.5147}, {"date": "2026-06-18", "sessions": 56, "input": 168256, "output": 269139, "cache_read": 20340677, "cost": 6.2003}, {"date": "2026-06-19", "sessions": 56, "input": 168406, "output": 261837, "cache_read": 19257325, "cost": 6.0084}, {"date": "2026-06-20", "sessions": 54, "input": 168293, "output": 215936, "cache_read": 17502465, "cost": 5.2685}, {"date": "2026-06-21", "sessions": 57, "input": 167880, "output": 235342, "cache_read": 19375663, "cost": 5.9053}, {"date": "2026-06-22", "sessions": 55, "input": 174966, "output": 248319, "cache_read": 18497776, "cost": 5.5127}, {"date": "2026-06-23", "sessions": 12, "input": 42542, "output": 51668, "cache_read": 3156532, "cost": 1.5973}], "sessions_today": [{"time": "04:05", "title": "untitled", "input": 6706, "output": 220, "cost": 0.0078, "source": "cron"}, {"time": "03:58", "title": "untitled", "input": 8, "output": 337, "cost": 0.0079, "source": "cron"}, {"time": "03:34", "title": "untitled", "input": 3199, "output": 2245, "cost": 0.0606, "source": "cron"}, {"time": "03:03", "title": "untitled", "input": 3199, "output": 4398, "cost": 0.1075, "source": "cron"}, {"time": "03:01", "title": "untitled", "input": 26, "output": 5151, "cost": 0.0643, "source": "cron"}, {"time": "02:32", "title": "untitled", "input": 3199, "output": 4246, "cost": 0.1087, "source": "cron"}, {"time": "02:01", "title": "untitled", "input": 6720, "output": 1692, "cost": 0.0699, "source": "cron"}, {"time": "01:30", "title": "untitled", "input": 3199, "output": 4885, "cost": 0.1059, "source": "cron"}, {"time": "01:14", "title": "Road Trip Brain Dump Session", "input": 72, "output": 16980, "cost": 0.8096, "source": "telegram"}, {"time": "01:00", "title": "untitled", "input": 9816, "output": 3499, "cost": 0.0501, "source": "cron"}, {"time": "00:58", "title": "untitled", "input": 3199, "output": 4382, "cost": 0.0924, "source": "cron"}, {"time": "00:27", "title": "untitled", "input": 3199, "output": 3633, "cost": 0.1125, "source": "cron"}]};
-  
-  // Render history and sessions
-var _spend_data = {"today_cost: 3.9473, "today_sessions: 37, "days": [{"date": "2026-06-18", "sessions": 56, "cost": 6.2003}, {"date": "2026-06-19", "sessions": 56, "cost": 6.0084}, {"date": "2026-06-20", "sessions": 54, "cost": 5.2685}, {"date": "2026-06-21", "sessions": 57, "cost": 5.9053}, {"date": "2026-06-22", "sessions": 55, "cost": 5.5127}, {"date": "2026-06-23", "sessions": 55, "cost": 6.4389}, {"date": "2026-06-24", "sessions": 17, "cost": 1.6144}], "W}};
-  function renderSpendData() {
-    // Render 7-day history
-    var histDiv = document.getElementById('spend-history');
-    if (histDiv) { histDiv.innerHTML = `<div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-18 · 56 sessions</span><span style="color:var(--orange);font-weight:700;">$6.2003</span></div><div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-19 · 56 sessions</span><span style="color:var(--orange);font-weight:700;">$6.0084</span></div><div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-20 · 54 sessions</span><span style="color:var(--orange);font-weight:700;">$5.2685</span></div><div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-21 · 57 sessions</span><span style="color:var(--orange);font-weight:700;">$5.9053</span></div><div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-22 · 55 sessions</span><span style="color:var(--orange);font-weight:700;">$5.5127</span></div><div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-23 · 55 sessions</span><span style="color:var(--orange);font-weight:700;">$6.4389</span></div><div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-24 · 28 sessions</span><span style="color:var(--orange);font-weight:700;">$2.7221</span></div>`; } 
-  
-  window.showPage = showPage;})();
-
-
-  // auto-updated: 2026-06-24T22:44:24.278348+00:00
+  // auto-updated: 2026-06-25T01:18:10.711719+00:00
   var SPEND_DATA = {
-    "generated_at": "2026-06-25T00:47:11.776719+00:00",
-    "grand_total": 391.6014,
-    "today_cost": 4.3261,
-    "today_sessions": 43,
-    "days": [
-        {"date": "2026-06-18", "sessions": 56, "cost": 6.2003},
-        {"date": "2026-06-19", "sessions": 56, "cost": 6.0084},
-        {"date": "2026-06-20", "sessions": 54, "cost": 5.2685},
-        {"date": "2026-06-21", "sessions": 57, "cost": 5.9053},
-        {"date": "2026-06-22", "sessions": 55, "cost": 5.5127},
-        {"date": "2026-06-23", "sessions": 55, "cost": 6.4389},
-        {"date": "2026-06-24", "sessions": 43, "cost": 4.3261}
-    ]
+    "generated_at": "2026-06-25T01:18:10.711719+00:00",
+    "grand_total": 391.7148,
+    "today_cost": 4.4395,
+    "today_sessions": 44,
+    "days": [{"date": "2026-06-18","sessions": 56,"cost": 6.2003},{"date": "2026-06-19","sessions": 56,"cost": 6.0084},{"date": "2026-06-20","sessions": 54,"cost": 5.2685},{"date": "2026-06-21","sessions": 57,"cost": 5.9053},{"date": "2026-06-22","sessions": 55,"cost": 5.5127},{"date": "2026-06-23","sessions": 55,"cost": 6.4389},{"date": "2026-06-24","sessions": 44,"cost": 4.4395}]
   };
   
   function renderSpendData() {
