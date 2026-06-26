@@ -732,10 +732,10 @@ function checkPw(){
     ['mem-badge','mem-badge2'].forEach(function(id){var e=document.getElementById(id);if(e){e.textContent='Notes '+mp+'% · Profile '+up+'%';e.style.color=mcolor}});
   }
   
-  // auto-updated: 2026-06-26T00:38:45.857601+00:00
+  // auto-updated: 2026-06-26T03:44:52.372247+00:00
   var SPEND_DATA = {
-  "today_cost": 5.551,
-  "today_sessions": 50,
+  "today_cost": 5.6101,
+  "today_sessions": 51,
   "days": [
     {
       "date": "2026-06-19",
@@ -769,17 +769,25 @@ function checkPw(){
     },
     {
       "date": "2026-06-25",
-      "sessions": 50,
-      "cost": 5.5509
+      "sessions": 51,
+      "cost": 5.61
     }
   ],
   "sessions_today": [
     {
-      "time": "20:14",
+      "time": "20:44",
       "title": "untitled",
       "input": 3184,
-      "output": 95,
+      "output": 109,
       "cost": 0.0037,
+      "source": "cron"
+    },
+    {
+      "time": "20:14",
+      "title": "untitled",
+      "input": 3199,
+      "output": 1330,
+      "cost": 0.0591,
       "source": "cron"
     },
     {
@@ -797,7 +805,7 @@ function checkPw(){
     
     // Update summary stats  
     var spendBig = document.getElementById('spend-big');
-    if (spendBig) spendBig.textContent = '$' + SPEND_DATA.today_cost.toFixed(2);
+    if (spendBig) spendBig.textContent = '$' + '5.61';
     
     var spendSessions = document.getElementById('spend-sessions');
     if (spendSessions) c;
