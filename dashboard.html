@@ -29,75 +29,19 @@
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
     .clock{font-size:11px;color:var(--orange);white-space:nowrap;font-weight:700}
 
-    /* NAV TABS */
-    .tabs{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 12px;display:flex;gap:4px;overflow-x:auto}
-    .tab{padding:8px 14px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
-    .tab:hover{color:var(--text)}
-    .tab.active{color:var(--teal);border-bottom-color:var(--teal)}
-
-    /* TICKER */
-    .ticker{background:var(--bg2);border-bottom:1px solid var(--border);padding:4px 0;overflow:hidden}
-    .tick-inner{white-space:nowrap;display:inline-block;animation:tick 45s linear infinite;font-size:10px;color:var(--muted)}
-    .tick-inner b{color:var(--teal)}.tick-inner em{color:var(--orange);font-style:normal}
-    @keyframes tick{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}
-
-    /* PAGES */
-    .page{display:none;padding:12px;max-width:1100px;margin:0 auto;flex-direction:column;gap:12px}
-    .page.active{display:flex}
-    @media(min-width:600px){.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}.two-r{display:grid;grid-template-columns:2fr 1fr;gap:12px}}
-
     /* CARDS */
-    .card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;width:100%}
-    .card.teal{border-top:2px solid var(--teal)}.card.orange{border-top:2px solid var(--orange)}
-    .card.red{border-top:2px solid var(--red)}.card.purple{border-top:2px solid var(--purple)}
-    .card.green{border-top:2px solid var(--green)}.card.yellow{border-top:2px solid var(--yellow)}
-    .card.pink{border-top:2px solid var(--pink)}
+    .card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;width:100%;margin-bottom:12px}
+    .card.orange{border-top:2px solid var(--orange)}
     .ch{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-    .ci{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;background:var(--teal-glow);flex-shrink:0}
-    .orange .ci{background:var(--orange-glow)}.red .ci{background:rgba(255,79,110,.15)}
-    .purple .ci{background:var(--purple-glow)}.yellow .ci{background:rgba(245,197,24,.12)}
-    .pink .ci{background:rgba(236,72,153,.15)}.green .ci{background:rgba(57,217,138,.15)}
-    .ct{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal)}
-    .orange .ct{color:var(--orange)}.red .ct{color:var(--red)}.purple .ct{color:var(--purple)}
-    .yellow .ct{color:var(--yellow)}.pink .ct{color:var(--pink)}.green .ct{color:var(--green)}
-    .cs{font-size:8px;color:var(--muted);margin-left:auto}
-
-    /* QUICK ACTIONS */
-    .qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    @media(min-width:400px){.qa-grid{grid-template-columns:repeat(3,1fr)}}
-    @media(min-width:700px){.qa-grid{grid-template-columns:repeat(6,1fr)}}
-    .qa-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:12px 6px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);text-align:center;transition:all .2s}
-    .qa-btn:hover{border-color:var(--teal);background:#161624;color:var(--teal)}
-    .qa-btn.ob:hover{border-color:var(--orange);color:var(--orange)}
-    .qa-icon{font-size:18px}.qa-label{font-size:8px;letter-spacing:1px;text-transform:uppercase;font-weight:700}
-
-    /* PROGRESS */
-    .pl{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:4px}
-    .pl span:last-child{font-weight:700}
-    .pt{width:100%;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--border);margin-bottom:8px}
-    .pf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal-dim),var(--teal));box-shadow:0 0 6px var(--teal)}
-    .pf.o{background:linear-gradient(90deg,var(--orange-dim),var(--orange));box-shadow:0 0 6px var(--orange)}
-    .pf.r{background:linear-gradient(90deg,#800,var(--red));box-shadow:0 0 6px var(--red)}
-    .pf.p{background:linear-gradient(90deg,#7c3aed,var(--purple));box-shadow:0 0 6px var(--purple)}
-    .pf.g{background:linear-gradient(90deg,#059669,var(--green));box-shadow:0 0 6px var(--green)}
-    .pf.y{background:linear-gradient(90deg,#a07000,var(--yellow));box-shadow:0 0 6px var(--yellow)}
+    .ci{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;background:var(--orange-glow);flex-shrink:0}
+    .ct{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange)}
 
     /* STATS */
     .sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
     @media(min-width:400px){.sgrid{grid-template-columns:repeat(4,1fr)}}
-    .sb{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:12px 8px;text-align:center;position:relative;overflow:hidden}
-    .sb::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal-dim),var(--teal))}
-    .sb.o::before{background:linear-gradient(90deg,var(--orange-dim),var(--orange))}
-    .sb.r::before{background:linear-gradient(90deg,#800,var(--red))}
-    .sb.p::before{background:linear-gradient(90deg,#7c3aed,var(--purple))}
-    .sb.g::before{background:linear-gradient(90deg,#059669,var(--green))}
-    .sb.y::before{background:linear-gradient(90deg,#a07000,var(--yellow))}
-    .sn{font-size:20px;font-weight:700;color:var(--teal);display:block;line-height:1;text-shadow:0 0 8px var(--teal)}
-    .sb.o .sn{color:var(--orange);text-shadow:0 0 8px var(--orange)}
-    .sb.r .sn{color:var(--red);text-shadow:0 0 8px var(--red)}
-    .sb.p .sn{color:var(--purple);text-shadow:0 0 8px var(--purple)}
-    .sb.g .sn{color:var(--green);text-shadow:0 0 8px var(--green)}
-    .sb.y .sn{color:var(--yellow);text-shadow:0 0 8px var(--yellow)}
+    .sb{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:12px 8px;text-align:center}
+    .sb::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--orange-dim),var(--orange))}
+    .sn{font-size:20px;font-weight:700;color:var(--orange);display:block;line-height:1;text-shadow:0 0 8px var(--orange)}
     .sl{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px;display:block}
 
     /* ROWS */
@@ -106,118 +50,10 @@
     .row-main{flex:1;min-width:0}
     .row-title{font-size:11px;font-weight:700}
     .row-sub{font-size:9px;color:var(--muted);margin-top:1px}
-
-    /* BADGES */
-    .badge{font-size:8px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0}
-    .badge.ok{background:rgba(57,217,138,.15);color:var(--green);border:1px solid rgba(57,217,138,.3)}
-    .badge.warn{background:rgba(245,197,24,.12);color:var(--yellow);border:1px solid rgba(245,197,24,.3)}
-    .badge.act{background:rgba(232,160,32,.12);color:var(--orange);border:1px solid rgba(232,160,32,.25)}
-    .badge.hot{background:rgba(168,85,247,.15);color:var(--purple);border:1px solid rgba(168,85,247,.3)}
-    .badge.new{background:rgba(0,180,216,.15);color:var(--teal);border:1px solid rgba(0,180,216,.3)}
-    .badge.done{background:rgba(57,217,138,.12);color:var(--green);border:1px solid rgba(57,217,138,.25)}
-    .badge.off{background:rgba(90,96,128,.1);color:var(--muted);border:1px solid var(--border)}
-
-    /* RUNWAY COUNTDOWN */
-    .runway-big{font-size:42px;font-weight:700;color:var(--orange);text-shadow:0 0 16px var(--orange);line-height:1}
-    .cd-row{display:flex;gap:8px;margin-top:10px}
-    .cd-box{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
-    .cd-num{font-size:22px;font-weight:700;color:var(--orange);text-shadow:0 0 10px var(--orange);line-height:1}
-    .cd-label{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
-    .rstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-    .rs{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
-    .rsv{font-size:13px;font-weight:700;color:var(--orange)}
-    .rsl{font-size:8px;color:var(--muted);margin-top:2px;letter-spacing:1px;text-transform:uppercase}
-
-    /* TOKEN CARD */
-    .tkgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
-    @media(min-width:400px){.tkgrid{grid-template-columns:repeat(4,1fr)}}
-    .tk{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
-    .tkv{font-size:13px;font-weight:700;color:var(--yellow)}
-    .tkl{font-size:8px;color:var(--muted);margin-top:2px;letter-spacing:1px;text-transform:uppercase}
-
-    /* PHASE */
-    .phase{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:7px}
-    .phase:last-child{margin-bottom:0}
-    .pnum{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px}
-    .pnum.done{background:var(--green);color:#000}
-    .pnum.active{background:var(--purple);color:#000;box-shadow:0 0 8px var(--purple)}
-    .pnum.pending{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
-    .ptitle{font-size:11px;font-weight:700}
-    .pdesc{font-size:9px;color:var(--muted);margin-top:2px}
-
-    /* BLOG / LOG */
-    .blog{padding:9px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;border-left:3px solid var(--teal);margin-bottom:7px}
-    .blog:last-child{margin-bottom:0}
-    .blog-time{font-size:8px;color:var(--teal);letter-spacing:1px;margin-bottom:3px}
-    .blog-text{font-size:10px;color:var(--text)}
-    .blog-tag{font-size:8px;color:var(--muted);margin-top:2px}
-
-    /* DRIVE LINKS */
-    .da{display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;text-decoration:none;color:var(--text);margin-bottom:7px;transition:all .2s}
-    .da:last-child{margin-bottom:0}
-    .da:hover{border-color:var(--teal-dim);color:var(--teal)}
-    .di{width:26px;height:26px;background:var(--teal-glow);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-    .dn{font-size:11px;font-weight:700}.dd{font-size:9px;color:var(--muted);margin-top:1px}
-    .darr{font-size:10px;color:var(--muted);margin-left:auto}
-
-    /* GIG */
-    .ga{font-size:26px;font-weight:700;color:var(--orange);text-shadow:0 0 10px var(--orange)}
-    .gstats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
-    @media(min-width:400px){.gstats{grid-template-columns:repeat(4,1fr)}}
-    .gs{padding:7px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;text-align:center}
-    .gsv{font-size:12px;font-weight:700;color:var(--orange)}
-    .gsl{font-size:8px;color:var(--muted);margin-top:2px}
-
-    /* DREAM HOME */
-    .dream-text{font-size:11px;color:var(--text);line-height:1.8;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;border-left:3px solid var(--purple)}
-
-    /* MEM */
-    .mrow{display:flex;gap:8px;margin-top:10px}
-    .ms{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
-    .mv{font-size:15px;font-weight:700;color:var(--teal);display:block}
-    .mlb{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
-
-    footer{text-align:center;padding:14px;font-size:8px;color:var(--muted);letter-spacing:2px;border-top:1px solid var(--border);margin-top:4px}
+    .badge{font-size:8px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0;background:rgba(232,160,32,.12);color:var(--orange);border:1px solid rgba(232,160,32,.25)}
   </style>
 </head>
 <body>
-<div id="pw-gate" style="position:fixed;inset:0;background:#0a0a0f;z-index:99999;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace">
-  <div style="text-align:center;padding:32px;border:1px solid #1e1e30;border-radius:12px;background:#0f0f18;min-width:300px">
-    <div style="font-size:11px;color:#00b4d8;letter-spacing:3px;font-weight:700;margin-bottom:6px">UNIT-00</div>
-    <div style="font-size:9px;color:#5a6080;letter-spacing:2px;margin-bottom:24px">ACCESS RESTRICTED</div>
-    <input id="pw-input" type="password" placeholder="enter password" autofocus
-      style="width:100%;background:#14141f;border:1px solid #1e1e30;border-radius:6px;padding:10px 14px;color:#c8cfe8;font-family:'Space Mono',monospace;font-size:13px;outline:none;text-align:center;letter-spacing:2px"
-      onkeydown="if(event.key==='Enter')checkPw()" />
-    <div id="pw-err" style="margin-top:10px;font-size:9px;color:#ff4f6e;letter-spacing:1px;min-height:14px"></div>
-  </div>
-</div>
-  <!-- TODAY'S SPEND -->
-  <div class="card orange">
-    <div class="ch"><div class="ci">💸</div><span class="ct">TODAY'S SPEND</span></div>
-    <div style="font-size:32px;font-weight:700;color:var(--orange);text-shadow:0 0 12px var(--orange);margin:10px 0;"><span id="spend-big">$2.53</span></div>
-    <div style="font-size:9px;color:var(--muted);margin-bottom:10px;">42 sessions today</div>
-    10</span></div>
-  </div>
-
-<script>
-(function(){
-  var k='spencerwire';
-  if(sessionStorage.getItem('u0auth')===k){
-    document.getElementById('pw-gate').style.display='none';
-  }
-})();
-function checkPw(){
-  var v=document.getElementById('pw-input').value;
-  if(v==='spencerwire'){
-    sessionStorage.setItem('u0auth','spencerwire');
-    document.getElementById('pw-gate').style.display='none';
-  } else {
-    document.getElementById('pw-err').textContent='ACCESS DENIED';
-    document.getElementById('pw-input').value='';
-    document.getElementById('pw-input').focus();
-  }
-}
-</script>
 
 <header>
   <div class="hl">
@@ -233,104 +69,37 @@ function checkPw(){
   </div>
 </header>
 
-<div class="ticker">
-  <span class="tick-inner">&nbsp;&nbsp;
-    <b>[RUNWAY]</b> <em id="td">97</em> days remaining &nbsp;|&nbsp;
-    <b>[TOKEN] 2-day spend: <em>$11.55</em> — &nbsp;\
-    <b>[TEAMWIRE]</b> 6 prospects profiled · Spencer skills ingested · SMP Inc research pending &nbsp;|&nbsp;
-    <b>[MERCH]</b> 3AM Club store build @ 12:30PM today &nbsp;|&nbsp;
-    <b>[CONTENT]</b> GR86 Last Rides series — window closing &nbsp;|&nbsp;
-    <b>[BRAND]</b> Nightshift Syndicate / Late Hour Syndicate — fully clear &nbsp;|&nbsp;
-    <b>[DREAM]</b> Luxury Bahay Kubo Mansion — Ilocos Norte &nbsp;|&nbsp;
-    <b>[SYS]</b> Unit 0 watching. Stay sharp, Tony.
-  </span>
-</div>
-
-<!-- NAV -->
-<div class="tabs">
-  <div class="tab active" onclick="showPage('overview')">📊 Overview</div>
-  <div class="tab" onclick="showPage('projects')">🚀 Projects</div>
-  <div class="tab" onclick="showPage('finance')">💰 Finance</div>
-  <div class="tab" onclick="showPage('content')">🎬 Content</div>
-  <div class="tab" onclick="showPage('teamwire')">🏢 TeamWire</div>
-  <div class="tab" onclick="showPage('dream')">🌴 Dream</div>
-  <div class="tab" onclick="showPage('behavior')">📈 Behavior</div>
-  <div class="tab" onclick="showPage('spend')">💸 Spend</div>
-  <div class="tab" onclick="showPage('kanban')">📋 Kanban</div>
-  <div class="tab" onclick="showPage('sleep')">😴 Sleep</div>
-  <div class="tab" onclick="showPage('system')">⚙️ System</div>
-</div>
-
-<!-- NAV -->
-<div id="page-overview" class="page active">
-
-  <!-- QUICK ACTIONS -->
-  <div class="card teal">
-    <div class="ch"><div class="ci">⚡</div><span class="ct">Quick Actions</span></div>
-    <div class="qa-grid">
-      <a class="qa-btn" href="https://t.me/idiotshinjibot" target="_blank"><div class="qa-icon">🤖</div><div class="qa-label">Unit 0</div></a>
-      <a class="qa-btn" href="https://docs.google.com/document/d/1E1_RFV3eN3LcuUUH_Wx8FbjQXGhJnZHAeH-jaKDxHUE" target="_blank"><div class="qa-icon">🧠</div><div class="qa-label">Brain Dump</div></a>
-      <a class="qa-btn" href="https://docs.google.com/document/d/17-KfqbZpt90W-cfNYHYiFFoWdhghXkoZyWIjHW_Mr-o" target="_blank"><div class="qa-icon">✅</div><div class="qa-label">Action Items</div></a>
-      <a class="qa-btn ob" href="https://docs.google.com/document/d/1OZSiims-ptaUl9cnMnrZskovBN3NrDZ6IQINKavbeQM" target="_blank"><div class="qa-icon">🛫</div><div class="qa-label">Runway Plan</div></a>
-      <a class="qa-btn" href="https://docs.google.com/document/d/1AkrZTpkiveuhSVCoiuar-waWyOg8T-6Wj0iN0AYL8jc" target="_blank"><div class="qa-icon">📚</div><div class="qa-label">KB</div></a>
-      <a class="qa-btn" href="https://aorque.github.io" target="_blank"><div class="qa-icon">🌐</div><div class="qa-label">Portfolio</div></a>
-    </div>
-  </div>
-
-  <!-- STATS + MEM -->
-  <div class="two">
-    <div class="card teal">
-      <div class="ch"><div class="ci">📈</div><span class="ct">Quick Stats</span></div>
-      <div class="sgrid">
-        <div class="sb">L</span><span class="sl">Sessions</span></div>
-        <div class="sb o" onclick="showPage('projects')" style="cursor:pointer"><span class="sn">7</span><span class="sl">Projects</span></div>
-        <div class="sb p" onclick="showPage('system')" style="cursor:pointer"><span class="sn">16</span><span class="sl">Cron Jobs</span></div>
-        <div class="sb"><span class="sn">3</span><span class="sl">Brain Dumps</span></div>
-        <div class="sb y"><span class="sn">121.9M</span><span class="sl">Tokens Used</span></div>
-        <div class="sb g"><span class="sn">31,707</span><span class="sl">Lines of Rules</span></div>
-        <div class="sb o"><span class="sn">461</span><span class="sl">Tool Calls</span></div>
-        <div class="sb p"><span class="sn">13</span><span class="sl">Agents Deployed</span></div>
-      </div>
-    </div>
-    <div class="card red">
-      <div class="ch"><div class="ci">💾</div><span class="ct">Memory</span><span class="cs" id="mem-badge" style="color:var(--yellow)">—</span></div>
-      <div class="pl"><span>Notes Memory</span><span id="mem-pct-label" style="font-weight:700">—</span></div>
-      <div class="pt"><div class="pf r" id="mem-bar" style="width:0%"></div></div>
-      <div class="pl" style="margin-top:6px"><span>User Profile</span><span id="user-pct-label" style="font-weight:700">—</span></div>
-      <div class="pt"><div class="pf r" id="user-bar" style="width:0%"></div></div>
-      <div class="mrow">
-        <div class="ms"><span class="mv" id="mem-used" style="color:var(--yellow)">—</span><div class="mlb">Notes</div></div>
-        <div class="ms"><span class="mv" id="user-used" style="color:var(--yellow)">—</span><div class="mlb">Profile</div></div>
-        <div class="ms"><span class="mv" style="color:var(--yellow);font-size:11px">80%</span><div class="mlb">Limit</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TODAY'S AGENDA -->
+<!-- TODAY'S SPEND -->
+<div style="padding:12px;max-width:1100px;margin:0 auto">
   <div class="card orange">
-    <div class="ch"><div class="ci">💸</div><span class="ct">7-DAY HISTORY</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-20 (SAT)</div><div class="row-sub">$5.27</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-21 (SUN)</div><div class="row-sub">$5.91</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-22 (MON)</div><div class="row-sub">$5.51</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-23 (TUE)</div><div class="row-sub">$6.44</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-24 (WED)</div><div class="row-sub">$5.54</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-25 (THU)</div><div class="row-sub">$7.47</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-26 (FRI)</div><div class="row-sub">$2.53</div></div><span class="badge act">💰</span></div>
-
+    <div class="ch"><div class="ci">💸</div><span class="ct">TODAY'S SPEND</span></div>
+    <div style="font-size:32px;font-weight:700;color:var(--orange);text-shadow:0 0 12px var(--orange);margin:10px 0;"><span id="spend-big">$2.56</span></div>
+    <div style="font-size:9px;color:var(--muted);margin-bottom:10px;">43 sessions today</div>
   </div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-21 (Sun)</div><div class="row-sub">$5.91</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-22 (Mon)</div><div class="row-sub">$5.51</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-23 (Tue)</div><div class="row-sub">$6.44</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-24 (Wed)</div><div class="row-sub">$5.54</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-25 (Thu)</div><div class="row-sub">$7.47</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-26 (Fri)</div><div class="row-sub">$2.45</div></div><span class="badge act">💰</span></div>
 
-  </div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-21 (Sat)</div><div class="row-sub">$5.91</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-22 (Sun)</div><div class="row-sub">$5.51</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-23 (Mon)</div><div class="row-sub">$6.44</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-24 (Tue)</div><div class="row-sub">$5.54</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-25 (Wed)</div><div class="row-sub">$7.47</div></div><span class="badge act">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-26 (Thu)</div><div class="row-sub">$2.17</div></div><span class="badge act">💰</span></div>
-    
-  
+  <!-- TODAY'S USAGE STATS -->
+  <div class="card orange">
+    <div class="ch"><div class="ci">📊</div><span class="ct">TODAY'S USAGE</span></div>
+    <div class="sgrid">
+      <div class="sb"><span class="sn">43</span><span class="sl">Sessions</span></div>
+      <div class="sb"><span class="sn">129.8K</span><span class="sl">Input Tokens</span></div>
+      <div class="sb"><span class="sn">124.3K</span><span class="sl">Output Tokens</span></div>
+      <div class="sb"><span class="sn">7.4M</span><span class="sl">Cache Read</span></div>
+    </div>
+  </div>
+
+  <!-- 7-DAY HISTORY -->
+  <div class="card orange">
+    <div class="ch"><div class="ci">📈</div><span class="ct">7-DAY HISTORY</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">2026-06-20 (FRI)</div><div class="row-sub">$5.27</div></div><span class="badge">💰</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">2026-06-21 (SAT)</div><div class="row-sub">$5.91</div></div><span class="badge">💰</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">2026-06-22 (SUN)</div><div class="row-sub">$5.51</div></div><span class="badge">💰</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">2026-06-23 (MON)</div><div class="row-sub">$6.44</div></div><span class="badge">💰</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">2026-06-24 (TUE)</div><div class="row-sub">$5.54</div></div><span class="badge">💰</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">2026-06-25 (WED)</div><div class="row-sub">$7.47</div></div><span class="badge">💰</span></div>
+    <div class="row"><div class="row-main"><div class="row-title">2026-06-26 (THU)</div><div class="row-sub">$2.56</div></div><span class="badge">💰</span></div>
+  </div>
+</div>
+
+</body>
+</html>
