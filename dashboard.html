@@ -301,14 +301,13 @@ function checkPw(){
   <!-- TODAY'S AGENDA -->
   <div class="card orange">
     <div class="ch"><div class="ci">💸</div><span class="ct">7-DAY HISTORY</span></div>
-    <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-26 · 1 sessions</span><span style="color:var(--orange);font-weight:700;">$0.0036</span></div>
     <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-20 · 54 sessions</span><span style="color:var(--orange);font-weight:700;">$5.2685</span></div>
     <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-21 · 57 sessions</span><span style="color:var(--orange);font-weight:700;">$5.9053</span></div>
     <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-22 · 55 sessions</span><span style="color:var(--orange);font-weight:700;">$5.5127</span></div>
     <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-23 · 55 sessions</span><span style="color:var(--orange);font-weight:700;">$6.4389</span></div>
     <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-24 · 57 sessions</span><span style="color:var(--orange);font-weight:700;">$5.5362</span></div>
-    <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-25 · 60 sessions</span><span style="color:var(--orange);font-weight:700;">$6.8268</span></div>
-    <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-26 · 1 sessions</span><span style="color:var(--orange);font-weight:700;">$0.0036</span></div>
+    <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-25 · 60 sessions</span><span style="color:var(--orange);font-weight:700;">$7.0311</span></div>
+    <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>2026-06-26 · 2 sessions</span><span style="color:var(--orange);font-weight:700;">$0.1235</span></div>
   </div>
 
 <script>
@@ -336,21 +335,22 @@ function checkPw(){
     ['mem-badge','mem-badge2'].forEach(function(id){var e=document.getElementById(id);if(e){e.textContent='Notes '+mp+'% · Profile '+up+'%';e.style.color=mcolor}});
   }
   
-  // auto-updated: 2026-06-26T07:21:00.805520+00:00
+  // auto-updated: 2026-06-26T07:52:31.048490+00:00
   var SPEND_DATA = {
-  "today_cost": 0.0036,
-  "today_sessions": 1,
-  "days":     [
+  "today_cost": 0.1235,
+  "today_sessions": 2,
+  "days": [
       {"date": "2026-06-20", "sessions": 54, "cost": 5.2685},
       {"date": "2026-06-21", "sessions": 57, "cost": 5.9053},
       {"date": "2026-06-22", "sessions": 55, "cost": 5.5127},
       {"date": "2026-06-23", "sessions": 55, "cost": 6.4389},
       {"date": "2026-06-24", "sessions": 57, "cost": 5.5362},
-      {"date": "2026-06-25", "sessions": 60, "cost": 6.8268},
-      {"date": "2026-06-26", "sessions": 1, "cost": 0.0036}
+      {"date": "2026-06-25", "sessions": 60, "cost": 7.0311},
+      {"date": "2026-06-26", "sessions": 2, "cost": 0.1235}
     ],
   "sessions_today": [
-    {"time": "00:20", "title": "untitled", "cost": 0.0036}
+    {"time": "00:51", "title": "untitled", "cost": 0.0611},
+    {"time": "00:20", "title": "untitled", "cost": 0.0624}
   ]
 };
       histDiv.innerHTML = html;
@@ -358,7 +358,7 @@ function checkPw(){
     
     // Update summary stats  
     var spendBig = document.getElementById('spend-big');
-    if (spendBig) spendBig.textContent = '$5.99';
+    if (spendBig) spendBig.textContent = '$0.12';
     
     var spendSessions = document.getElementById('spend-sessions');
     if (spendSessions) c;
