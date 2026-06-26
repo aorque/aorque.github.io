@@ -191,6 +191,14 @@
     <div id="pw-err" style="margin-top:10px;font-size:9px;color:#ff4f6e;letter-spacing:1px;min-height:14px"></div>
   </div>
 </div>
+  <!-- TODAY'S SPEND -->
+  <div class="card orange">
+    <div class="ch"><div class="ci">💸</div><span class="ct">TODAY'S SPEND</span></div>
+    <div style="font-size:32px;font-weight:700;color:var(--orange);text-shadow:0 0 12px var(--orange);margin:10px 0;"><span id="spend-big">$0.36</span></div>
+    <div style="font-size:9px;color:var(--muted);margin-bottom:10px;">4 sessions today</div>
+    <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;"><span>Sessions</span><span style="color:var(--orange);font-weight:700;">4</span></div>
+  </div>
+
 <script>
 (function(){
   var k='spencerwire';
@@ -337,21 +345,100 @@ function checkPw(){
   
   // auto-updated: 2026-06-26T07:52:31.048490+00:00
   var SPEND_DATA = {
-  "today_cost": 0.1235,
-  "today_sessions": 2,
-  "days": [
-      {"date": "2026-06-20", "sessions": 54, "cost": 5.2685},
-      {"date": "2026-06-21", "sessions": 57, "cost": 5.9053},
-      {"date": "2026-06-22", "sessions": 55, "cost": 5.5127},
-      {"date": "2026-06-23", "sessions": 55, "cost": 6.4389},
-      {"date": "2026-06-24", "sessions": 57, "cost": 5.5362},
-      {"date": "2026-06-25", "sessions": 60, "cost": 7.0311},
-      {"date": "2026-06-26", "sessions": 2, "cost": 0.1235}
+    "today_cost": 0.3614,
+    "today_sessions": 4,
+    "days": [
+        {
+            "date": "2026-06-20",
+            "sessions": 54,
+            "input": 168293,
+            "output": 215936,
+            "cache_read": 17502465,
+            "cost": 5.2685
+        },
+        {
+            "date": "2026-06-21",
+            "sessions": 57,
+            "input": 167880,
+            "output": 235342,
+            "cache_read": 19375663,
+            "cost": 5.9053
+        },
+        {
+            "date": "2026-06-22",
+            "sessions": 55,
+            "input": 174966,
+            "output": 248319,
+            "cache_read": 18497776,
+            "cost": 5.5127
+        },
+        {
+            "date": "2026-06-23",
+            "sessions": 55,
+            "input": 167649,
+            "output": 210596,
+            "cache_read": 20198968,
+            "cost": 6.4389
+        },
+        {
+            "date": "2026-06-24",
+            "sessions": 57,
+            "input": 164526,
+            "output": 195609,
+            "cache_read": 18176310,
+            "cost": 5.5362
+        },
+        {
+            "date": "2026-06-25",
+            "sessions": 60,
+            "input": 173502,
+            "output": 319709,
+            "cache_read": 25163418,
+            "cost": 7.3358
+        },
+        {
+            "date": "2026-06-26",
+            "sessions": 4,
+            "input": 27177,
+            "output": 17487,
+            "cache_read": 980142,
+            "cost": 0.3614
+        }
     ],
-  "sessions_today": [
-    {"time": "00:51", "title": "untitled", "cost": 0.0611},
-    {"time": "00:20", "title": "untitled", "cost": 0.0624}
-  ]
+    "sessions_today": [
+        {
+            "time": "01:23",
+            "title": "untitled",
+            "input": 3184,
+            "output": 91,
+            "cost": 0.0036,
+            "source": "cron"
+        },
+        {
+            "time": "01:00",
+            "title": "untitled",
+            "input": 17595,
+            "output": 6728,
+            "cost": 0.1976,
+            "source": "cron"
+        },
+        {
+            "time": "00:51",
+            "title": "untitled",
+            "input": 3199,
+            "output": 6128,
+            "cost": 0.0978,
+            "source": "cron"
+        },
+        {
+            "time": "00:20",
+            "title": "untitled",
+            "input": 3199,
+            "output": 4540,
+            "cost": 0.0624,
+            "source": "cron"
+        }
+    ]
 };
       histDiv.innerHTML = html;
     }
