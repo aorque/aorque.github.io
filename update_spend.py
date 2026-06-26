@@ -1,79 +1,68 @@
 import json
 import re
 
-# New spend data
+# Fetch current spend data
 spend_data = {
-    "generated_at": "2026-06-12T20:23:51.743080+00:00",
-    "grand_total": 287.5865,
-    "today_cost": 15.9264,
-    "today_sessions": 180,
-    "days": [
-        {"date": "2026-06-02", "sessions": 1, "input": 6, "output": 125, "cache_read": 18064, "cost": 0.0753},
-        {"date": "2026-06-03", "sessions": 6, "input": 1836, "output": 198763, "cache_read": 67116108, "cost": 45.4227},
-        {"date": "2026-06-04", "sessions": 7, "input": 1395, "output": 240644, "cache_read": 48071197, "cost": 44.7528},
-        {"date": "2026-06-05", "sessions": 10, "input": 17677, "output": 268456, "cache_read": 74855629, "cost": 46.2749},
-        {"date": "2026-06-06", "sessions": 21, "input": 34526, "output": 113268, "cache_read": 20000286, "cost": 12.5992},
-        {"date": "2026-06-07", "sessions": 64, "input": 204627, "output": 247172, "cache_read": 23062455, "cost": 6.6497},
-        {"date": "2026-06-08", "sessions": 238, "input": 209922, "output": 521879, "cache_read": 51329582, "cost": 21.3507},
-        {"date": "2026-06-09", "sessions": 324, "input": 193268, "output": 692836, "cache_read": 74634526, "cost": 28.8849},
-        {"date": "2026-06-10", "sessions": 323, "input": 180061, "output": 631923, "cache_read": 85152502, "cost": 31.6838},
-        {"date": "2026-06-11", "sessions": 331, "input": 194181, "output": 726115, "cache_read": 91031749, "cost": 33.9659},
-        {"date": "2026-06-12", "sessions": 180, "input": 111134, "output": 327217, "cache_read": 43858572, "cost": 15.9266}
-    ],
-    "sessions_today": [
-        {"time": "13:23", "title": "untitled", "input": 3184, "output": 117, "cost": 0.0038, "source": "cron"},
-        {"time": "13:22", "title": "untitled", "input": 23, "output": 1584, "cost": 0.0941, "source": "cron"},
-        {"time": "13:15", "title": "untitled", "input": 23, "output": 8233, "cost": 0.156, "source": "cron"}
+    "today_cost": 6.2552,
+    "today_sessions": 57,
+    "days_list": [
+        {"date": "2026-06-19", "sessions": 56, "cost": 6.0084},
+        {"date": "2026-06-20", "sessions": 54, "cost": 5.2685},
+        {"date": "2026-06-21", "sessions": 57, "cost": 5.9053},
+        {"date": "2026-06-22", "sessions": 55, "cost": 5.5127},
+        {"date": "2026-06-23", "sessions": 55, "cost": 6.4389},
+        {"date": "2026-06-24", "sessions": 57, "cost": 5.5362},
+        {"date": "2026-06-25", "sessions": 57, "cost": 6.2552},
     ]
 }
 
-# Read the current file
+# Read current HTML
 with open('dashboard.html', 'r') as f:
-    content = f.read()
+    html = f.read()
 
-# Find and replace the _spend_data variable
-spend_json = json.dumps(spend_data)
-pattern = r'var _spend_data = \{.*?\};'
-replacement = f'var _spend_data = {spend_json};'
+# Format spend big value
+spend_big = f"${spend_data['today_cost']:.2f}"
 
-content_new = re.sub(pattern, replacement, content, flags=re.DOTALL)
+# Update spend-big element
+pattern = r'(<span class="sn" id="spend-big">)[^<]+(</span>)'
+html = re.sub(pattern, rf'\1{spend_big}\2', html)
 
-# Also update the first renderSpend call data
-first_spend_pattern = r'renderSpend\(\{[^}]*?"today_cost":[^}]*?\}\);'
-# Keep just the necessary pattern simpler
-content_new = content_new.replace(
-    'var SPEND_DATA = {"generated_at"',
-    f'var SPEND_DATA = {spend_json}'[:100] + '..."'
-)
+# If not found, try different pattern
+if 'spend-big' not in html or spend_big not in html:
+    # Insert it in the Quick Stats section
+    pattern = r'(<div class="ct">Quick Stats</div>)'
+    insert_html = rf'\1<div class="spend-info" style="margin-top:8px;padding:8px;background:var(--orange-glow);border-radius:6px;text-align:center"><span class="sn" id="spend-big">{spend_big}</span><div class="sl">TODAY SPEND</div></div>'
+    html = re.sub(pattern, insert_html, html)
 
-# Update the SPEND_DATA variable directly to avoid complex regex
-pattern2 = r'var SPEND_DATA = \{[^}]*?"generated_at"[^;]*?\};'
-# This is safer - replace the entire SPEND_DATA declaration
-lines = content_new.split('\n')
-new_lines = []
-in_spend_var = False
-skip_lines = 0
+# Build spend history HTML
+history_html = '\n'.join([
+    f'<div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);"><span>{day["date"]} · {day["sessions"]} sessions</span><span style="color:var(--orange);font-weight:700;">${day["cost"]:.4f}</span></div>'
+    for day in spend_data['days_list']
+])
 
-for i, line in enumerate(lines):
-    if skip_lines > 0:
-        skip_lines -= 1
-        continue
-    
-    if 'var SPEND_DATA = {' in line and '"generated_at"' in line:
-        # Found start of SPEND_DATA, skip until we find the closing };
-        j = i
-        while j < len(lines) and '};' not in lines[j]:
-            j += 1
-        # Replace with new data
-        new_lines.append(f'  var SPEND_DATA = {spend_json};')
-        skip_lines = j - i
-    else:
-        new_lines.append(line)
+# Find and replace the spend history section
+# Look for the section with 7-DAY HISTORY or similar
+pattern = r'<div id="spend-history">.*?</div>\s*(?=<div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;border-bottom:1px solid var\(--border\);")'
+if re.search(pattern, html, re.DOTALL):
+    replacement = f'<div id="spend-history">\n{history_html}\n</div>'
+    html = re.sub(pattern, replacement, html, flags=re.DOTALL)
+else:
+    # Fallback: find the orange card and update it
+    pattern = r'(<div class="card orange">\s*<div style="display:flex;[^<]*<[^>]*>2026-06-09.*?</div>)'
+    if re.search(pattern, html, re.DOTALL):
+        replacement = f'''<div class="card orange">
+    <div class="ch"><div class="ci">💸</div><span class="ct">7-DAY HISTORY</span></div>
+{history_html}
+    </div>'''
+        html = re.sub(pattern, replacement, html, flags=re.DOTALL)
 
-content_new = '\n'.join(new_lines)
+# Update today's usage stats
+# Update sessions count
+pattern = r'(<span class="sn" id="spend-sessions">)[^<]+(</span>)'
+html = re.sub(pattern, rf'\1{spend_data["today_sessions"]}\2', html)
 
 # Write back
 with open('dashboard.html', 'w') as f:
-    f.write(content_new)
+    f.write(html)
 
 print("Updated dashboard.html")
