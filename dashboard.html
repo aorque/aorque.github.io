@@ -101,5 +101,20 @@
   </div>
 </div>
 
+
+  <!-- live clock restored by recovery -->
+  <script>
+  (function(){
+    function tick(){
+      var el=document.getElementById('clock');
+      if(!el) return;
+      var s;
+      try{ s=new Date().toLocaleTimeString('en-US',{timeZone:'America/Los_Angeles',hour:'numeric',minute:'2-digit',hour12:true}); }
+      catch(e){ var d=new Date(),h=d.getHours(),m=d.getMinutes(),ap=h<12?'AM':'PM'; h=h%12||12; s=h+':'+(m<10?'0'+m:m)+' '+ap; }
+      el.textContent=s+' PT';
+    }
+    tick(); setInterval(tick,1000);
+  })();
+  </script>
 </body>
 </html>
