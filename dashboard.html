@@ -39,7 +39,7 @@
     /* STATS */
     .sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
     @media(min-width:400px){.sgrid{grid-template-columns:repeat(4,1fr)}}
-    .sb{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:12px 8px;text-align:center}
+    .sb{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:12px 8px;text-align:center;position:relative}
     .sb::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--orange-dim),var(--orange))}
     .sn{font-size:20px;font-weight:700;color:var(--orange);display:block;line-height:1;text-shadow:0 0 8px var(--orange)}
     .sl{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px;display:block}
@@ -80,15 +80,15 @@
   <!-- TODAY'S USAGE STATS -->
   <div class="card orange">
     <div class="ch"><div class="ci">📊</div><span class="ct">TODAY'S USAGE</span></div>
-          <div class="sgrid">
+    <div class="sgrid">
       <div class="sb"><span class="sn">61</span><span class="sl">Sessions</span></div>
       <div class="sb"><span class="sn">173,816</span><span class="sl">Input Tokens</span></div>
       <div class="sb"><span class="sn">256,246</span><span class="sl">Output Tokens</span></div>
       <div class="sb"><span class="sn">N/A</span><span class="sl">Cache Read</span></div>
-    </div></div>
+    </div>
   </div>
 
-    <!-- 7-DAY HISTORY -->
+  <!-- 7-DAY HISTORY -->
   <div class="card orange">
     <div class="ch"><div class="ci">📈</div><span class="ct">7-DAY HISTORY</span></div>
     <div class="row"><div class="row-main"><div class="row-title">2026-06-20 (SAT)</div><div class="row-sub">$5.27</div></div><span class="badge">💰</span></div>
@@ -98,31 +98,6 @@
     <div class="row"><div class="row-main"><div class="row-title">2026-06-24 (WED)</div><div class="row-sub">$5.54</div></div><span class="badge">💰</span></div>
     <div class="row"><div class="row-main"><div class="row-title">2026-06-25 (THU)</div><div class="row-sub">$7.47</div></div><span class="badge">💰</span></div>
     <div class="row"><div class="row-main"><div class="row-title">2026-06-26 (FRI)</div><div class="row-sub">$4.44</div></div><span class="badge">💰</span></div>
-  </div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-21 (SUN)</div><div class="row-sub">$5.91</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-22 (MON)</div><div class="row-sub">$5.51</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-23 (TUE)</div><div class="row-sub">$6.44</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-24 (WED)</div><div class="row-sub">$5.54</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-25 (THU)</div><div class="row-sub">$7.47</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-26 (FRI)</div><div class="row-sub">$4.20</div></div><span class="badge">💰</span></div>
-  </div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-21 (SUN)</div><div class="row-sub">$5.91</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-22 (MON)</div><div class="row-sub">$5.51</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-23 (TUE)</div><div class="row-sub">$6.44</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-24 (WED)</div><div class="row-sub">$5.54</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-25 (THU)</div><div class="row-sub">$7.47</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-26 (FRI)</div><div class="row-sub">$3.58</div></div><span class="badge">💰</span></div>
-  </div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-21 (SUN)</div><div class="row-sub">$5.91</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-22 (MON)</div><div class="row-sub">$5.51</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-23 (TUE)</div><div class="row-sub">$6.44</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-24 (WED)</div><div class="row-sub">$5.54</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-25 (THU)</div><div class="row-sub">$7.47</div></div><span class="badge">💰</span></div>
-    <div class="row"><div class="row-main"><div class="row-title">2026-06-26 (FRI)</div><div class="row-sub">$3.48</div></div><span class="badge">💰</span></div>
-  </div>
-
-
-</div>
   </div>
 </div>
 
