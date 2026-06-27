@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Content Machine — Project Dashboard</title>
+<style>
+  :root{
+    --bg:#0b0e17; --panel:#141a2b; --panel2:#171c2c; --line:#242a3e; --ink:#e9ecf3; --mut:#9aa3b8;
+    --cy:#22d3ee; --vi:#a855f7; --pk:#ec4899; --grn:#34d399; --amb:#f0b429; --rd:#f87171;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5}
+  .bar{height:5px;background:linear-gradient(90deg,var(--cy),var(--vi),var(--pk))}
+  .wrap{max-width:1080px;margin:0 auto;padding:24px 20px 60px}
+  /* gate */
+  #gate{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:50}
+  .gatecard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:30px;width:330px;text-align:center}
+  .gatecard h1{font-size:15px;letter-spacing:.28em;color:var(--cy);margin:0 0 4px}
+  .gatecard p{color:var(--mut);font-size:12px;margin:0 0 18px;letter-spacing:.04em}
+  .gatecard input{width:100%;background:#0e1320;border:1px solid var(--line);border-radius:10px;padding:12px;color:var(--ink);font-size:14px;text-align:center}
+  .gatecard button{width:100%;margin-top:10px;border:0;border-radius:10px;padding:12px;font-weight:700;color:#08111a;background:linear-gradient(90deg,var(--cy),var(--vi));cursor:pointer}
+  .err{color:var(--rd);font-size:12px;margin-top:8px;min-height:14px}
+  /* header */
+  .head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:6px}
+  .head h2{font-size:24px;margin:0;font-weight:700}
+  .pill{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+  .sub{color:var(--mut);font-size:13.5px;margin:0 0 18px}
+  /* tiles */
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+  @media(max-width:680px){.tiles{grid-template-columns:repeat(2,1fr)}}
+  .tile{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px 16px}
+  .tile .n{font-size:26px;font-weight:700}
+  .tile .l{font-size:12px;color:var(--mut);margin-top:2px}
+  /* pipeline flow */
+  h3.sec{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:22px 0 10px}
+  .flow{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+  .stage{flex:1;min-width:150px;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px}
+  .stage .t{font-weight:700;font-size:14px}
+  .stage .r{font-size:11.5px;color:var(--mut);margin:3px 0 8px}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+  .badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;border-radius:999px;padding:2px 8px}
+  /* table */
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:13px;overflow:hidden}
+  th,td{text-align:left;padding:11px 14px;font-size:13px;border-bottom:1px solid var(--line)}
+  th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);background:#10162400}
+  tr:last-child td{border-bottom:0}
+  .st{font-size:10.5px;font-weight:700;border-radius:999px;padding:2px 8px}
+  footer{margin-top:26px;color:#6f7790;font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+  .cad{color:var(--mut);font-size:13px}
+  .cad b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+
+<!-- GATE -->
+<div id="gate">
+  <div class="gatecard">
+    <h1>CONTENT MACHINE</h1>
+    <p>ACCESS RESTRICTED</p>
+    <input id="pw" type="password" placeholder="enter password" autocomplete="off">
+    <button id="go">Enter</button>
+    <div class="err" id="err"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="wrap" id="app" style="display:none">
+  <div class="head">
+    <h2>Content Machine — Project Dashboard</h2>
+    <span class="pill">4-agent pipeline · live status</span>
+  </div>
+  <p class="sub">Researcher → Writer → Editor → Publisher. You approve at each gate; the agents do the production.</p>
+
+  <div class="tiles">
+    <div class="tile"><div class="n" id="t-queue">—</div><div class="l">In queue</div></div>
+    <div class="tile"><div class="n" id="t-prod">—</div><div class="l">In production</div></div>
+    <div class="tile"><div class="n" id="t-ready">—</div><div class="l">Ready to publish</div></div>
+    <div class="tile"><div class="n" id="t-pub">—</div><div class="l">Published (wk)</div></div>
+  </div>
+
+  <h3 class="sec">The pipeline</h3>
+  <div class="flow" id="flow"></div>
+
+  <h3 class="sec">Topics in motion</h3>
+  <table>
+    <thead><tr><th>Topic</th><th>Stage</th><th>Status</th><th>Updated</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <h3 class="sec">Daily cadence</h3>
+  <p class="cad"><b>7a</b> Researcher briefs · <b>10a</b> Writer drafts · <b>1p</b> Editor reviews · <b>3p</b> Publisher formats. Your input = four approval taps, not four writing sessions.</p>
+
+  <footer>
+    Content Machine · soft-gated demo dashboard · update the data block in source (or wire it to your Drive PIPELINE.md to go live). Built by Cowork.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var PASS="spencerwire", KEY="cm_auth";
+  var gate=document.getElementById('gate'), app=document.getElementById('app');
+  function open(){ gate.style.display='none'; app.style.display='block'; render(); }
+  if(sessionStorage.getItem(KEY)===PASS) open();
+  function tryPw(){
+    if(document.getElementById('pw').value===PASS){ sessionStorage.setItem(KEY,PASS); open(); }
+    else { document.getElementById('err').textContent='Nope. Try again.'; }
+  }
+  document.getElementById('go').onclick=tryPw;
+  document.getElementById('pw').addEventListener('keydown',function(e){ if(e.key==='Enter') tryPw(); });
+
+  // ---- editable data: update these as the pipeline moves ----
+  var stages=[
+    {t:'Researcher',r:'angle + brief + sources',c:'var(--cy)'},
+    {t:'Writer',r:'brief → first draft',c:'var(--vi)'},
+    {t:'Editor',r:'surgical review vs voice',c:'var(--pk)'},
+    {t:'Publisher',r:'format + ready to post',c:'var(--grn)'}
+  ];
+  var stageStatus=[
+    {label:'BRIEFING',color:'var(--cy)'},
+    {label:'DRAFTING',color:'var(--vi)'},
+    {label:'EDITING',color:'var(--pk)'},
+    {label:'READY',color:'var(--grn)'}
+  ];
+  var items=[
+    {topic:'How solopreneurs use Claude Projects to replace hiring', stage:2, status:'EDITED', updated:'today'},
+    {topic:'The unglamorous truth about events', stage:3, status:'READY', updated:'today'},
+    {topic:"Why your instincts don't scale (and systems do)", stage:1, status:'DRAFTED', updated:'1d'},
+    {topic:'Same job, different tools: events → AI', stage:0, status:'BRIEFED', updated:'2d'}
+  ];
+  var stColor={BRIEFED:'var(--cy)',DRAFTED:'var(--vi)',EDITED:'var(--pk)',READY:'var(--grn)',PUBLISHED:'var(--mut)'};
+
+  function render(){
+    var f=document.getElementById('flow'); f.innerHTML='';
+    stages.forEach(function(s,i){
+      var cnt=items.filter(function(x){return x.stage===i;}).length;
+      var ss=stageStatus[i];
+      f.innerHTML+='<div class="stage"><div class="t">'+(i+1)+'. '+s.t+'</div><div class="r">'+s.r+'</div>'+
+        '<span class="badge" style="background:'+ss.color+'22;color:'+ss.color+'"><span class="dot" style="background:'+ss.color+'"></span>'+cnt+' active</span></div>';
+    });
+    document.getElementById('t-queue').textContent=items.filter(function(x){return x.stage===0;}).length;
+    document.getElementById('t-prod').textContent=items.filter(function(x){return x.stage===1||x.stage===2;}).length;
+    document.getElementById('t-ready').textContent=items.filter(function(x){return x.stage===3;}).length;
+    document.getElementById('t-pub').textContent=2;
+    var rows=document.getElementById('rows'); rows.innerHTML='';
+    items.forEach(function(x){
+      var c=stColor[x.status]||'var(--mut)';
+      rows.innerHTML+='<tr><td>'+x.topic.replace(/</g,'&lt;')+'</td><td>'+stages[x.stage].t+'</td>'+
+        '<td><span class="st" style="background:'+c+'22;color:'+c+'">'+x.status+'</span></td><td style="color:var(--mut)">'+x.updated+'</td></tr>';
+    });
+  }
+})();
+</script>
+</body>
+</html>
